@@ -1,0 +1,84 @@
+
+main{
+    width: 100%;
+    margin-top: 3%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+form{
+
+    width: fit-content;
+    padding: 10px;
+    display: block;
+    justify-content: center;
+border: 1px solid #ccc;
+border-radius: 8px;
+}
+.input{
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    
+}
+.test{
+    width: 70%;
+    margin-top: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* background-color: rgb(240, 190, 97); */
+    border: 1px solid rgb(207, 205, 205);
+    border-radius: 10px;
+}
+.first-child{
+    width: 40%;
+}
+.second-chil{
+    width: 50%;
+}
+.label{
+    font-weight: bold;
+    margin-right: 30px;
+}
+.input-with{
+    width: 65%;
+}
+.input-withpass{
+    /* border: 1px solid greenyellow; */
+    width: fit-content;
+    margin-left: 0;
+   
+}
+h1{
+    font-weight: bold;
+}
+.radio-button{
+    display: flex;
+}
+a{
+    color: rgb(101, 101, 253);
+}
+#btn-label{
+    display: flex;
+    flex-direction: column;
+    padding-left: 20%;
+   margin-top: 10px;
+}
+/* .pass-chec{
+   border: solid 1px red;
+   width: 100%;
+} */
+.inputpassword{
+    /* border: 1px solid red; */
+    display: flex;
+    justify-content: space-between;
+}
+
+.contenaires{
+    display: flex;
+    justify-content: space-between;
+}

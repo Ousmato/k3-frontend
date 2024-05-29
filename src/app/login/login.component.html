@@ -1,0 +1,35 @@
+<div class="main">
+         
+    <div class="container mt-5 "> 
+    
+        <div class="row justify-content-center"> 
+            <div class="col-md-6"> 
+                <div class="card"> 
+                <h1 class="text-succes text-center"> 
+                    Connexion
+                </h1>
+                    <div class="card-body">
+                       
+                    <span id="error">Adress mail ou mot de passe est incorrect</span> 
+                        <form [formGroup]="userForm" (ngSubmit)="login()" > 
+                        <!-- action="php/Login/verifier.php" -->
+                            <div class="form form-group"> 
+                                <label for="email">Email</label> 
+                                <input type="email" name="email" class="form-control" id="email" formControlName="email" placeholder="Email" required> 
+                                
+                            </div> 
+                            <div class="form form-group"> 
+                                <label for="password">Password</label> 
+                                <input type="password" class="form-control" id="password" formControlName="password" placeholder="Password" required> 
+                                Afficher le mot de passe   <input type='checkbox' id='check' />
+                            </div> 
+                            <button class="btn btn-primary" type="submit" id="btn">Login</button> 
+                        </form> 
+                        
+                    </div> 
+                   
+                </div> 
+            </div> 
+        </div> 
+    </div>
+</div>

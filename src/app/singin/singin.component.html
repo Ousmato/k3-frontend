@@ -1,0 +1,98 @@
+
+<main>
+
+
+    <h1>Formulaire d'inscription</h1>
+    <form  [formGroup]="studentForm" (ngSubmit)="singin()" enctype="multipart/form-data">
+        <!-- action="/Gestion-scolaire/php/forms/form-inscription.php" -->
+        <!-- <input type="hidden" name="idAdmin" value="">  -->
+        <div class="contenaires">
+        <div class="first-chil">
+            <div class="input">
+                <label for="validationDefault01" class="label form-label">Nom :</label>
+                <input type="text" class="input-with form-control" formControlName="nomStudent" id="nom" required>
+            </div>
+
+            <div class="input">
+                <label for="validationDefault02" class="label form-label">Prenom :</label>
+                <input type="text" formControlName="prenom" class="input-with form-control" id="prenom"  required>
+            </div>
+
+            <div class="input">
+                <label for="validationDefault02" class="label form-label">Mcl :</label>
+                <input type="text" formControlName="matricule" class="input-with form-control"  required>
+            </div>
+
+            <div class="input">
+                <label  class="label form-label">Email :</label>
+                <!-- <div class="input-group"> -->
+                <!-- <span class="input-group-text" id="inputGroupPrepend2">@</span> -->
+                <input type="email" formControlName="email" class=" input-with form-control" id="validationDefaultUsername" aria-describedby="inputGroupPrepend2" required>
+                <!-- </div> -->
+            </div>
+
+            <div class="inputpassword">
+                <label for="validationDefault02" class="label form-label">Mot de Passe :</label>
+                <div class="pass-chec">
+                <input type="password" formControlName="password" class="input-withpass form-control" id="password" required>
+                Afficher le mot de passe   <input type='checkbox' id='check' />
+                </div>
+                
+            </div>
+        </div>
+        <!-- --------------------------------- -->
+        <div class="second-chil">
+            <div class="input">
+            <label for="validationDefault03" class="label form-label">Date de Naissance :</label>
+            <input type="date" formControlName="dateNaissance" class="input-with form-control" id="validationDefault04" required>
+            </div>
+            <div class="input">
+            <label for="validationDefault0" class="label form-label">Lieu de Naissance :</label>
+            <input type="text" formControlName="lieuNaissance" class="input-with form-control" id="validationDefaul" required>
+            </div>
+
+            <div class="input">
+            <label for="validationDefault03" class="label form-label">Telephone :</label>
+            <input type="number" formControlName="telephone" class="input-with form-control" id="telephone" required>
+            </div>
+
+            <div class="input">
+            <label for="validationDefault05" class="label form-label">Photo :</label>
+            <input type="file" formControlName="urlPhoto" accept="image/*,video/*" class="input-with form-control" id="inputPhoto" required>
+        </div>
+
+            <div class="input">
+            <label for="validationDefault03" class="label form-label">Scolarité :</label>
+            <input type="number" formControlName="scolarite" class="input-with form-control" required>
+        </div>
+        
+        </div>
+        </div>
+        <div class="form form-group">
+            <label for="validationDefault03" class="label form-label">Classe :</label>
+            <select class="form-select" formControlName="idClasse" id="select-modules-multiple"  required>
+            <option selected disabled value="">Choisir La classe</option>
+            
+        
+                </select>                       
+        </div>
+
+        <!-- button radio sexe start -->
+        
+        <div class="radio-button">
+            <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio1" value="Homme" required>
+            <label class="form-check-label" for="inlineRadio1">Homme</label>
+            </div>
+
+            <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio2" value="Femme" required>
+            <label class="form-check-label" for="inlineRadio2">Femme</label>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <button class="btn btn-primary" type="submit">Enregistrer</button>
+        </div>
+    </form>
+</main>

@@ -1,0 +1,17 @@
+.sb-sidenav{
+    /* border: 1px solid red; */
+    background-color: blue;
+}
+.bg-dark{
+    background-color: blue;
+    /* border: 1px solid red; */
+}
+.sb-sidenav-dark .sb-sidenav-footer{
+    border-top: 1px solid rgba(255, 255, 255, 0.623);
+    background-color: blue;
+}
+
+.sb-topnav.navbar-dark #sidebarToggle {
+    color: rgba(255, 255, 255, 0.5);
+    background-color: yellow;
+}
