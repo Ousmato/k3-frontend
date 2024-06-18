@@ -1,0 +1,240 @@
+<main>
+    <h2>Paramettre et Confidentialité</h2>
+    <!-- school information section--------------------- -->
+    <section class="contenaire">
+        <div class="first-child">
+            <h4>Informations de l'école</h4>
+            <a class="btn btn-primary" href="#"><img src="/Gestion-scolaire/app/assets/icons/pen-to-square.svg" alt="">Modifier</a>
+        </div>
+        <div class="second-child">
+            <div class="child">
+                <p><span>Nom :</span> APTECH - MALI</p>
+                <p><span>Tel :</span> +223 73 86 77 88</p>
+                <p><span>Email :</span> ousmatotoure98&#64;gmail.com</p>
+                <p><span>Address :</span> Sise a Hamdalaye ACI 200 Immeuble TOMOTA</p>
+            </div>
+           
+        </div>
+    </section>
+   
+    <!-- -----------------------------------semestre informations---------------------- -->
+    <section class="contenaire">
+        <div class="first-child">
+            <h4>Informations sur les semestre</h4>
+            <a class="btn btn-primary" href="#"><img src="/Gestion-scolaire/app/assets/icons/pen-to-square.svg" alt="">Modifier</a>
+        </div>
+        <div class="second-child">
+            <div class="chil"></div>
+            <div class="child">
+                <p><span>Semestre 1</span> date de fin : 20-02-2002</p>
+                <p><span>Semestre 2</span> Du 20-05-2004 au 12-03-2005</p>
+                <p><span>Semestre 3</span> Du 30-05 au 23-09-2007</p>
+            
+            </div>
+           
+        </div>
+    </section>
+    <!-- -----------------------------------Filiere informations---------------------- -->
+    <section class="contenaire">
+        <div class="first-child">
+            <h4>Les filieres disponobles</h4>
+            <div class="btn-contenair">
+               
+                <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Ajouter</a>
+                <a class="btn btn-warning" href="#">Modifier</a>
+                <a class="btn btn-danger" href="#">Supprimer</a>
+            </div>
+           
+        </div>
+        <div class="second-child">
+            <div class="chil"></div>
+            <div class="child">
+                <div *ngIf="objectNivFil && objectNivFil.length > 0; else noFiliere">
+                    <p *ngFor="let object of objectNivFil">{{object.idNiveau.nom}} {{object.idFiliere.nomFiliere}}</p>
+                  </div>
+                  <ng-template #noFiliere>
+                    <p>Aucune filiere disponible</p>
+                  </ng-template>
+            </div>
+           
+        </div>
+    </section>
+    <!-- ------------------------------------------------------- -->
+    <section class="contenaire">
+        <div class="first-child">
+            <h4>Les Classes</h4>
+            <div class="btn-contenair">
+               
+                <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClasseroom">Ajouter</a>
+                <a class="btn btn-warning" href="#">Modifier</a>
+                <a class="btn btn-danger" href="#">Supprimer</a>
+            </div>
+           
+        </div>
+        <div class="second-child">
+            <div class="chil"></div>
+            <div class="child">
+               <h4>Nombre de classe</h4>
+            </div>
+           
+        </div>
+    </section>
+    <!-- ------------------------------------------------------- -->
+    <section class="contenaire">
+        <div class="first-child">
+            <h4>Unite d'Enseignement</h4>
+            <div class="btn-contenair">
+               
+                <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUe">Ajouter Ue</a>
+                <a class="btn btn-warning"data-bs-toggle="modal" data-bs-target="#addModule">Ajouter un module</a>
+                <a class="btn btn-danger" href="#">Supprimer</a>
+            </div>
+           
+        </div>
+        <div class="second-child">
+            <div class="chil"></div>
+            <div class="child">
+               <h4>Ue</h4>
+            </div>
+           
+        </div>
+    </section>
+<!-- -------------------------------------------------modal add filiere------------------------ -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Ajouter une filiere</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+    
+                <div class="modal-body">
+                <form [formGroup]="addFiliere" (ngSubmit)="send()" > 
+                    <span id="error">Atteintion cette filiere existe deja</span>
+                <!-- action="/Gestion-scolaire/php/forms/form-filiere.php" -->
+                    <div class="form form-group"> 
+                        <label for="email">Nom</label> 
+                        <input type="text" formControlName="nomFiliere" class="form-control" id="nom" placeholder="nom de la filiere" required> 
+                        
+                    </div> 
+                    <div class="form form-group">
+                        <label for="select-modules-multiple" class="label form-label">Niveaux :</label>
+                        <select class="form-select" formControlName="idNiveau" id="select-modules-multiple" required>
+                          <option selected disabled value="">Choisir le niveau</option>
+                          <option *ngFor="let niveau of niveaux" [value]="niveau.id">{{ niveau.nom }}</option>
+                        </select>                      
+                    </div>
+                    
+                    <button class="btn btn-primary" type="submit" id="btn">Enregistrer</button> 
+                </form> 
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <!-- ----------------------modal add classe-------------------------------- -->
+    <div class="modal fade" id="addClasseroom" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Ajouter une classe</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+    
+                <div class="modal-body">
+                <form [formGroup]="addClass" (ngSubmit)="createClassroom()" > 
+                    <span id="error">Atteintion cette classe existe deja</span>
+                <!-- action="/Gestion-scolaire/php/forms/form-filiere.php" -->
+                    <div class="form form-group"> 
+                        <label for="email"></label> 
+                        <input type="hidden" formControlName="effectifs" class="form-control" id="nom" placeholder="nom de la filiere" required> 
+                        
+                    </div> 
+                    <div class="form form-group"> 
+                        <label for="email">Scolarité :</label> 
+                        <input type="text" formControlName="scolarite" class="form-control" id="nom" placeholder="La scolarite" required> 
+                        
+                    </div> 
+                    <div class="form form-group">
+                        <label for="select-modules-multiple" class="label form-label">Filiere :</label>
+                        <select class="form-select" formControlName="idNiveau" id="select-modules-multiple" placeholder="La filiere" required>
+                          <option selected disabled value="">Choisir la filiere</option>
+                          <option *ngFor="let filiere of objectNivFil" [value]="filiere.id">{{filiere.idNiveau.nom}} {{filiere.idFiliere.nomFiliere}}</option>
+                        </select>                      
+                    </div>
+                    
+                    <button class="btn btn-primary" type="submit" id="btn">Enregistrer</button> 
+                </form> 
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <!-- ------------------------------------------------------modal ue and modules------------------ -->
+    <div class="modal fade" id="addUe" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Ajouter une Unite d'Eseignement</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+    
+                <div class="modal-body">
+                <form [formGroup]="addUe" (ngSubmit)="creatUe()" > 
+                    <span id="error">Atteintion cette ue existe deja</span>
+                <!-- action="/Gestion-scolaire/php/forms/form-filiere.php" -->
+                   
+                    <div class="form form-group"> 
+                        <label for="email">Nom:</label> 
+                        <input type="text" formControlName="nomUE" class="form-control" id="nom" placeholder="nom de l'ue" required> 
+                        
+                    </div> 
+                   
+                    <button id="button" class="btn btn-primary" type="submit">Enregistrer</button> 
+                </form> 
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <!-- -------------------------------------------------- -->
+    <div class="modal fade" id="addModule" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Ajouter une Unite d'Eseignement</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+    
+                <div class="modal-body">
+                <form [formGroup]="addModule" (ngSubmit)="creatModule()" > 
+                    <span id="error">Atteintion cette ue existe deja</span>
+                <!-- action="/Gestion-scolaire/php/forms/form-filiere.php" -->
+                    
+                    <div class="form form-group"> 
+                        <label >Nom module:</label> 
+                        <input type="text" formControlName="nomModule" class="form-control" id="nom" placeholder="Nom du module" required> 
+                        
+                    </div> 
+                    <div class="form form-group"> 
+                        <label >Coefficient:</label> 
+                        <input type="number" formControlName="coefficient" class="form-control" id="coefficient" placeholder="Coefficient" required> 
+                        
+                    </div> 
+                    <div class="form form-group">
+                        <label for="select-modules-multiple" class="label form-label">UE :</label>
+                        <select class="form-select" formControlName="idUe" id="select-modules-multiple" placeholder="Choisir une unite d'enseignament" required>
+                          <option selected disabled value="">Choisir une unite d'enseignament</option>
+                          <option *ngFor="let ue of ueList" [value]="ue.id">{{ue.nomUE}}</option>
+                        </select>                      
+                    </div>
+                   
+                    <button id="button" class="btn btn-primary" type="submit">Enregistrer</button> 
+                </form> 
+                </div>
+                
+            </div>
+        </div>
+    </div>
+   
+</main>

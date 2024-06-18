@@ -4,13 +4,13 @@
 
     <h1>Formulaire d'inscription</h1>
     <form  [formGroup]="studentForm" (ngSubmit)="singin()" enctype="multipart/form-data">
-        <!-- action="/Gestion-scolaire/php/forms/form-inscription.php" -->
+       
         <!-- <input type="hidden" name="idAdmin" value="">  -->
         <div class="contenaires">
         <div class="first-chil">
             <div class="input">
                 <label for="validationDefault01" class="label form-label">Nom :</label>
-                <input type="text" class="input-with form-control" formControlName="nomStudent" id="nom" required>
+                <input type="text" class="input-with form-control" formControlName="nom" id="nom" required>
             </div>
 
             <div class="input">
@@ -58,7 +58,7 @@
 
             <div class="input">
             <label for="validationDefault05" class="label form-label">Photo :</label>
-            <input type="file" formControlName="urlPhoto" accept="image/*,video/*" class="input-with form-control" id="inputPhoto" required>
+            <input type="file" formControlName="urlPhoto" accept="image/*" class="input-with form-control" id="inputPhoto" (change)="onFileSelected($event)"  required>
         </div>
 
             <div class="input">
@@ -70,8 +70,9 @@
         </div>
         <div class="form form-group">
             <label for="validationDefault03" class="label form-label">Classe :</label>
-            <select class="form-select" formControlName="idClasse" id="select-modules-multiple"  required>
-            <option selected disabled value="">Choisir La classe</option>
+            <select class="form-select" formControlName="idClasse"  id="select-modules-multiple"  required>
+            <option  selected disabled value="">Choisir La classe</option>
+            <option *ngFor="let classe of classRoom" [ngValue]="classe.id">{{classe.idFiliere?.idNiveau?.nom}} {{classe.idFiliere?.idFiliere?.nomFiliere}}</option>
             
         
                 </select>                       

@@ -1,1 +1,43 @@
-<p>etudiants works!</p>
+
+  <main>
+    <a routerLink="/sidebar/inscription">
+        <button class="btn btn-primary">Inscription</button>
+    </a>
+    <table datatable datatable [dtOptions]="dtOptions" class="table table-striped table-hover">
+        <thead>
+            <tr>
+              <th>ID</th>
+              <th>Photo</th>
+              <th>Nom</th>
+              <th>Prenom</th>
+              <th>Email</th>
+              <th>Classe</th>
+              <th>Telephone</th>
+              <th>Action</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let studens of students">
+              <td>{{studens.idEtudiant}}</td>
+              <td><img src="{{studens.urlPhoto}}" alt=""></td>
+              <td>{{studens.nom}}</td>
+              <td >{{studens.prenom}}</td>
+              <td>{{studens.email}}</td>
+              <td class="class-name"  title="{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}">{{studens.idClasse.idFiliere?.idNiveau?.nom}}</td>
+              
+              <td>{{studens.telephone}}</td>
+                <td>
+                    <div class="btn-contenaire">
+                        <a ><fa-icon [icon]="icons.eye"></fa-icon><span>Details</span></a>
+                        <a><fa-icon [icon]="icons.edit"></fa-icon><span>Modifier</span></a>
+                        <a><fa-icon [icon]="icons.delete"></fa-icon><span>Supprimer</span></a>
+                    
+                    </div>
+                </td>
+             
+            </tr>
+            
+          </tbody>
+    </table>
+  </main>

@@ -1,0 +1,145 @@
+
+
+/* body{
+    
+    background-color: rgba(247, 10, 10, 0.836);
+  } */
+   .main{
+    width: 100%;
+    padding-top: 10px; 
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-gap: 20px;
+   }
+  .btn{
+    margin-top: 20px;
+    margin-left: 10px;
+  }
+  
+  .my-custom-style {
+	font-size: 25px;
+	margin-right: 10px;
+  }
+  .container-fluid{
+    padding-top: 20px;
+  }
+  .btn-add{
+      display: flex;
+      margin-top: 20px;
+      margin-bottom: 15px;
+      margin-left: 24px;
+      /* border: 1px solid red; */
+  }
+  #error{
+      display: none;
+      color: red;
+  }
+  #errorclass{
+      display: none;
+      color: red;
+  }
+  #error-module{
+      display: none;
+      color: red;
+  }
+  
+  .class-card{
+      margin-left: 2%;
+      border: 1px solid red;
+  }
+  /* .grid-container {
+    padding: 10px; 
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 2fr));
+    grid-gap: 20px;
+  } */
+    .grid-item {
+   
+      text-align: center;
+    }
+  
+    .btn-contenair{
+      width: 100px;
+      display: flex;
+      justify-content: space-between;
+    }
+  
+    .card-body h5 a{
+      cursor: pointer;
+    }
+    .icon-m{
+      width: 30%;
+      display: flex;
+      justify-content: end;
+      align-items: center;
+    }
+
+    .my-custom-style {
+      font-size: 24px;
+      color: #333;
+    }
+    
+    .dropdown-menu {
+      display: none;
+    }
+    
+    .dropdown-menu.show {
+      display: block;
+    }
+
+    .h4-head{
+      width: 80%;
+      display: flex;
+      justify-content: end;
+      align-items: center;
+    }
+    .card-header{
+      display: flex;
+    }
+    .btn img{
+      /* border: 1px solid red; */
+      height: 25px;
+    }
+    title{
+      background-color: rgb(114, 114, 255);
+      color: white;
+    }
+    .btn-contenair a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 40px;
+      width:  40px;
+      border: 1px solid #cac9c9;
+      border-radius: 50%;
+      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    a .etudian-detail{
+      margin: 0;
+      padding: 0;
+    }
+    .nom-class{
+      font-size: 16px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      background-color: #ccc;
+    }
+    #button{
+      margin-top: 10px;
+    }
+    #add-button{
+      margin-top: 10px;
+    }
+    .btn{
+      margin: 0;
+    }
+    h4{
+      text-overflow: ellipsis;
+      overflow: hidden;
+      font-size: 16px;
+    }
+    @media (max-width: 576px) {
+      .grid-container {
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      }
+  }

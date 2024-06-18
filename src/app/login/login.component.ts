@@ -32,13 +32,22 @@ export class LoginComponent implements OnInit {
     if (this.userForm.valid) { 
       this.authService.login(email, password).subscribe(data => {
         console.log('data:', data);
+
         if (data.idAdministra) {
-          this.route.navigate(["dasboard"])
+
+          const adminDataString = JSON.stringify(data);
+          localStorage.setItem("admin", adminDataString);
+          
+          this.route.navigate(["sidebar"])
           console.log('Je suis admin');
+          
+
         } else if (data.idEnseignant) {
           console.log('Je suis teacher');
+
         } else if (data.idEtudiant) {
           console.log('Je suis étudiant');
+
         } else {
           console.log('Utilisateur inconnu');
         }

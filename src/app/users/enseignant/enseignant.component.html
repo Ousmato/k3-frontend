@@ -1,1 +1,69 @@
-<!-- <p>enseignant works!</p> -->
+<main>
+
+
+    <div class="one-column">
+        <div class="child-1">
+            <h1>Creation de l'emplois du temps</h1>
+            <p><span>NB:</span> Creer l’emplois du temps avant d’ajouter de seance de formation par jour inclus entre la date de debut et la date de fin</p>
+        </div>
+    
+        <div class="child-2">
+            <form>
+            
+            <div class="phrase">
+                
+            <p>1. 1.  Choisir le semetre courants , la date du debut et la date de  fin</p>
+            </div>
+            
+            <div class="input-cont">
+                <div class="form form-group">
+                <label for="password">Semestre</label> 
+                    <select class="form-select" formControlName="idClasse"  id="select-modules-multiple" placeholder="semestre"  required>
+                    <option  selected disabled value="">Choisir Le semestre</option>
+                    <!-- <option *ngFor="let classe of classRoom" [ngValue]="classe.id">{{classe.idFiliere?.idNiveau?.nom}} {{classe.idFiliere?.idFiliere?.nomFiliere}}</option> -->
+                    </select>                       
+                    </div>
+
+                <div class="form form-group"> 
+                <label for="password">Date du debut</label> 
+                <input type="date" class="form-control" id="password" formControlName="password" placeholder="Date du debut" required>
+                </div>
+
+                <div class="form form-group"> 
+                <label for="password">Date de fin</label> 
+                <input type="date" class="form-control" id="password" formControlName="password" placeholder="Date de fin" required>
+                </div>
+            </div>
+            <div class="btn-con">
+                <p>2. Passer a la page suivante pour ajouter les seances de formation</p>
+           
+            <button type="submit" class="btn">Suivant <fa-icon [icon]="icon.next" class="icon"></fa-icon> </button>
+        
+            </div>
+        </form>
+        </div>
+            
+    </div>
+
+    <div class="secon-column">
+            
+            <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+             "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+            <svg class="svg-icon" version="1.0" xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 614.000000 1024.000000"
+             preserveAspectRatio="xMidYMid meet">
+            
+            <g transform="translate(0,1024) scale(0.1,-0.1)"
+            fill="#051395" stroke="none">
+            <path d="M2410 9993 c-1184 -1198 -2014 -2414 -2286 -3348 -41 -142 -89 -372
+            -104 -505 -6 -52 -13 -176 -17 -275 -37 -1112 500 -2547 1552 -4145 351 -534
+            777 -1105 1173 -1572 l125 -148 1644 0 1643 0 0 5120 0 5120 -1742 0 -1743 0
+            -245 -247z"/>
+            </g>
+            </svg>
+          <div class="i-con">
+            <fa-icon class="clock" [icon]="icon.clock"></fa-icon>
+          </div>
+    </div>
+</main>
+

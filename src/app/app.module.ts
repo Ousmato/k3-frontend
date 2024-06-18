@@ -10,7 +10,14 @@ import { EtudiantsComponent } from './Admin/Views/etudiants/etudiants.component'
 import { LoginComponent } from './login/login.component';
 import {  provideHttpClient } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SinginComponent } from './singin/singin.component'
+import { SinginComponent } from './singin/singin.component';
+import { StudentSidebarComponent } from './student-sidebar/student-sidebar.component';
+import { StudentDashboardComponent } from './student-dashboard/student-dashboard.component';
+import { ClassStudentsComponent } from './Admin/Views/class-students/class-students.component'
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { SettingsComponent } from './Admin/Views/settings/settings.component';
+import { DataTablesModule } from "angular-datatables";
+
 
 @NgModule({
   declarations: [
@@ -21,12 +28,18 @@ import { SinginComponent } from './singin/singin.component'
     EtudiantsComponent,
     LoginComponent,
     SinginComponent,
+    StudentSidebarComponent,
+    StudentDashboardComponent,
+    ClassStudentsComponent,
+    SettingsComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    FontAwesomeModule,
+    DataTablesModule
   ],
   providers: [provideHttpClient()],
   bootstrap: [AppComponent]

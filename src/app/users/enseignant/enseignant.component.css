@@ -1,0 +1,76 @@
+main{
+    padding-left: 20px;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+   
+}
+.secon-column{
+    position: relative;
+    right: -20px;
+    width: 40%;
+    height: 100%;
+    display: flex;
+    justify-content: end;
+    /* border: 1px solid red; */
+}
+
+.svg-icon{
+    width: fit-content !important ;
+    height: 100%;
+}
+
+.one-column{
+    /* margin-top: 100px; */
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+    margin-left: 60px ;
+    padding: 20px;
+    /* border: 1px solid; */
+    width: 60%;
+    height: 100%;
+}
+p{
+    text-align: left;
+    font-size: 18px;
+}
+.input-cont{
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+}
+.btn-con{
+    margin-top: 40px;
+}
+button{
+    height: 40px;
+    width: 150px;
+    border-radius: 8px;
+    background-color: #04098a;
+    color: white;
+    /* margin-top: 20px; */
+}
+.child-1{
+    margin-top: 100px;
+
+}
+fa-icon{
+    /* border: 1px solid red; */
+    width: 80px;
+    height: auto;
+    margin-left: 10px;
+}
+.i-icon fa-icon{
+    font-size: 3em;
+    width: 100px;
+    height: 100px;
+}
+.clock{
+    position: absolute;
+    color: rgb(255, 255, 255);
+    left: 250px;
+    width: 100px;
+    height: 100px;
+    margin-top: 220px;
+}

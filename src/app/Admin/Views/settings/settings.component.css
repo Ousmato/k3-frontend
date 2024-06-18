@@ -1,0 +1,131 @@
+main {
+    margin: 20px auto;
+    width: 90%;
+    max-width: 1200px;
+    border-radius: 10px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #cecbcb;
+}
+
+section {
+    width: 100%;
+    height: auto; /* Changed to auto to handle dynamic content */
+    display: flex;
+    flex-direction: column; /* Default to column for better stacking on smaller screens */
+    align-items: start;
+    justify-content: flex-start; /* Changed to flex-start for better alignment */
+    border-bottom: 1px solid blue;
+    padding-bottom: 30px;
+    padding-left: 20px;
+    margin-bottom: 20px; /* Added margin bottom for spacing between sections */
+}
+#button{
+    margin-top: 10px;
+  }
+h2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 50px;
+    text-align: center; /* Added for better alignment on small screens */
+}
+
+.first-child h4 {
+    margin-bottom: 10px; /* Added margin bottom for spacing */
+}
+
+.btn-contenair{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.first-child a {
+    margin-top: 20px; /* Adjusted top margin for spacing */
+    order: 2; /* Set default order */
+}
+
+a img {
+    height: 20px;
+    margin-right: 5px;
+}
+
+.first-child {
+    width: 100%; /* Ensure it takes full width on smaller screens */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    order: 1; /* Set default order */
+}
+
+p {
+    margin: 8px 0;
+}
+
+p span {
+    font-weight: 400;
+    color: rgb(121, 121, 252);
+}
+
+.second-child {
+    width: 100%; /* Ensure it takes full width on smaller screens */
+    display: flex;
+    flex-direction: column; /* Column layout for smaller screens */
+    align-items: flex-start; /* Align items to the start */
+    justify-content: flex-start; /* Justify content to the start */
+    order: 1; /* Set default order */
+}
+
+.child {
+    width: 100%; /* Ensure it takes full width */
+}
+
+/* Media queries for responsive design */
+
+@media (min-width: 768px) {
+    section {
+        flex-direction: row;
+        
+        background-color: #f8f8f8;
+        border-bottom: 1px solid #cecbcb;
+        align-items: start;
+        justify-content: space-between;
+        margin-left: 20px;
+        margin-bottom: 0; /* Remove bottom margin for larger screens */
+        height: 200px; /* Restore height for larger screens */
+    }
+
+    .first-child {
+        width: 45%; /* Adjust width for larger screens */
+        order: 1; /* Restore order */
+    }
+
+    .first-child a {
+        order: 1; /* Restore order */
+    }
+    main{
+        background-color: transparent;
+    }
+    .second-child {
+        width: 50%; /* Adjust width for larger screens */
+        flex-direction: row; /* Row layout for larger screens */
+        align-items: center; /* Center items vertically */
+        order: 2; /* Restore order */
+    }
+}
+
+@media (min-width: 1024px) {
+    main {
+        width: 70%; /* Restore original width for larger screens */
+    }
+
+    section {
+        margin-left: 20px; /* Restore margin for larger screens */
+    }
+}

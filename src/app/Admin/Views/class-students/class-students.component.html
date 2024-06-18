@@ -1,0 +1,76 @@
+
+<div class="main">
+
+    <div class="grid-container" *ngFor="let classRom of classRoms ">
+        <div class="grid-item">
+            <div class="card">
+                <div class="card-header">
+                    <div class="h4-head">
+                        <h4>{{ classRom.idFiliere?.idNiveau?.nom }} ({{ classRom.idFiliere?.idFiliere?.nomFiliere }})</h4>
+                    </div>
+                    <div class="icon-m">
+                        <div class="dropdown"  [ngClass]="{'show': isDropdownOpen(classRom.id!)}">
+                            <button class="btn  " type="button" (click)="toggleDropdown(classRom.id!)">
+                                <a class="btn-group "><fa-icon [icon]="faElip" class="my-custom-style dropdown-toggle"></fa-icon></a>
+                           
+                            </button>
+                            <div class="dropdown-menu"  [ngClass]="{'show': isDropdownOpen(classRom.id!)}">
+                              <a class="dropdown-item" href="#">Action</a>
+                              <a class="dropdown-item" href="#">Another action</a>
+                              <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                          </div>
+                      
+                    </div>
+                 </div>
+                <div class="card-body">
+                    <h5 class="card-title"><a id="detailButton" data-bs-toggle="modal" data-bs-target="#>">Les Modules</a></h5>
+                    <p class="card-text"> <a id="etudiant" data-bs-toggle="modal" data-bs-target="#>" class="btn etudian-detail" title="voir les etudiants de la classe">Effectif : {{classRom.effectifs}}</a></p>
+                    <div class="btn-container">
+                        <a class="btn" title="Créer un emploi du temps"><fa-icon [icon]="faEmploi" class="my-custom-style"></fa-icon></a>
+                        <a class="btn" title="Consulter un emploi du temps"><fa-icon [icon]="faEye" class="my-custom-style"></fa-icon></a>
+                        <a id="module" data-bs-toggle="modal" [attr.data-bs-target]="'#addModuleClass' + classRom.id" class="btn" title="Ajouter des modules à la classe" (click)="getAll_ues(classRom.id!)">
+                            <fa-icon [icon]="fabook" class="my-custom-style"></fa-icon>
+                          </a>
+                          
+                        <a  class="btn" title="Ajouter des notes aux étudiants"><fa-icon [icon]="fanote" class="my-custom-style"></fa-icon></a>
+                        <a class="btn" title="Notification de la classe"><fa-icon [icon]="fanot" class="my-custom-style"></fa-icon></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- -----------------------------------------------------modal add module in classe-------------- -->
+
+    <div class="modal fade"  [id]="'addModuleClass' + classRom.id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdro" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdrop">Attrubution des Modules </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                <form class="formModuleMatiere" [formGroup]="addModules" (ngSubmit)="createClassModule(classRom.id!)"> 
+                    <span id="errorclass">Atteintion cette classe existe deja</span>
+                <!-- action="/Gestion-scolaire/php/forms/form-filiere.php" -->
+                 <!-- <div >idClasse :{{classRom.id}}</div> -->
+                    <!-- <input type="number" hidden [value]="classRom.id" formControlName="idClasse"> -->
+                    <div class="nom-class">{{ classRom.idFiliere?.idNiveau?.nom }} ({{ classRom.idFiliere?.idFiliere?.nomFiliere }})</div>
+                    <div class="form form-group">
+                        <label for="validationDefault03" class="label form-label">Modules :</label>
+                        <select class="input-with form-select" formControlName="idUE" id="select-modules-multiple" multiple aria-label="Multiple select" required>
+                        <!-- <option selected disabled value="">Choisir Les Modules</option> -->
+                        
+                         <option *ngFor="let ue of ueList" [value]="ue.id">{{ue.nomUE}}</option>
+                            
+                        </select>
+                        
+                    </div>
+                    <button id="button" class="btn btn-primary" type="submit" >Enregistrer</button> 
+                </form> 
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div >
