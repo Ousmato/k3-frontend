@@ -17,6 +17,8 @@ import { ClassStudentsComponent } from './Admin/Views/class-students/class-stude
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SettingsComponent } from './Admin/Views/settings/settings.component';
 import { DataTablesModule } from "angular-datatables";
+import { EmploisDuTempsComponent } from './Admin/Views/emplois-du-temps/emplois-du-temps.component';
+import { EmploisSeanceComponent } from './Admin/Views/emplois-seance/emplois-seance.component';
 
 
 @NgModule({
@@ -32,6 +34,10 @@ import { DataTablesModule } from "angular-datatables";
     StudentDashboardComponent,
     ClassStudentsComponent,
     SettingsComponent,
+    EmploisDuTempsComponent,
+    EmploisSeanceComponent,
+  
+    
   ],
   imports: [
     BrowserModule,

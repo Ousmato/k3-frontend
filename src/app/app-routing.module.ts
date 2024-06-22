@@ -6,9 +6,11 @@ import { authGuard } from './auth.guard';
 import { DasboardComponent } from './Admin/Views/dasboard/dasboard.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { EnseignantComponent } from './users/enseignant/enseignant.component';
+import { EmploisSeanceComponent } from './Admin/Views/emplois-seance/emplois-seance.component';
+import { EmploisDuTempsComponent } from './Admin/Views/emplois-du-temps/emplois-du-temps.component';
 
 const routes: Routes = [
-  {path:'',component: EnseignantComponent},
+  {path:'',component: LoginComponent},
 
   {path:'enseignant',
     loadChildren: () => import('./users/enseignant/enseignant.module').then(m => m.EnseignantModule)

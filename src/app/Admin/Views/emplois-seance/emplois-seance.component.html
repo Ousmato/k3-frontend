@@ -1,0 +1,82 @@
+<main>
+    <section>
+        
+    </section>
+    <section class="content">
+        <div class="section-grid" >
+            <div class="grid-container" >
+                <div class="grid-item" *ngFor="let module of modules">{{module.nomModule}}</div>
+               
+            </div>
+        </div>
+        <!-- ------------------------------------------------------ -->
+         <div class="section-table">
+            <table class="table table-bordered border-primary">
+                <thead>
+                    <tr>
+                      <th *ngFor="let dateInfo of datesWithDays" scope="col">{{ dateInfo.day }}<br> <span>{{ dateInfo.date }}</span></th>
+                    </tr>
+                  </thead>
+                <tbody>
+                    <tr>
+                        <th> 
+                            <div class="heure-contenaire">
+                                <input type="time" name="heuredebut">
+                                <input type="time" name="heurefin" class="hidden">
+                                </div>
+                            
+                                <div  class="dropped" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    
+                            </div>
+                            <select  id="" formControlName ="enseignant" placeholder="enseignant">
+                                <option value=""></option>
+                            </select>
+                        </th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>mdo</td>
+                        <td>mdo</td>
+                        <td>mdo</td>
+                        <td>mdo</td>
+                        <td>mdo</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>fat</td>
+                        <td>fat</td>
+                        <td>fat</td>
+                        <td>fat</td>
+                        <td>fat</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>twitter</td>
+                        <td>twitter</td>
+                        <td>twitter</td>
+                        <td>twitter</td>
+                        <td>twitter</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>twitter</td>
+                        <td>twitter</td>
+                        <td>twitter</td>
+                        <td>twitter</td>
+                        <td>twitter</td>
+                    </tr>
+                    
+                </tbody>
+               
+              </table>
+         
+        </div>
+    </section>
+    <!-- --------------------------------------- -->
+      
+</main>

@@ -40,20 +40,22 @@ export class SetService {
   }
   // -----------------------------------------create ue 
   createUe(ue: Ue) : Observable<any>{
-    return this.http.post<any>(this.baseUrl+"api/add-ue", ue);
+    return this.http.post<any>(this.baseUrl+"api-class/add-ue", ue);
   }
-  // -----------------------------------------get all ue
+  // -----------------------------------------get all ue by class id
   getAll_ue(idClasse: number): Observable<Ue[]> {
-    return this.http.get<Ue[]>(`${this.baseUrl}api/list-ue`, {
-      params: new HttpParams().set('idClasse', idClasse.toString())
-    });
+    return this.http.get<Ue[]>(`${this.baseUrl}api-class/list-ue/${idClasse}`);
   }
   // ----------------------------------------------add module
   createModule(module: Module): Observable<any>{
-    return this.http.post<any>(this.baseUrl+"api/add-module", module);
+    return this.http.post<any>(this.baseUrl+"api-class/add-module", module);
   }
   // -----------------------------------get all module
   getAll_module() : Observable<Module[]>{
-    return this.http.get<Module[]>(this.baseUrl+"api/list-module");
+    return this.http.get<Module[]>(this.baseUrl+"api-class/list-module");
+  }
+  // -------------------------get all ue
+  getAll_ue_all(): Observable<Ue[]> {
+    return this.http.get<Ue[]>(`${this.baseUrl}api-class/all-ue`);
   }
 }

@@ -6,6 +6,8 @@ import { ClassStudentsComponent } from '../Admin/Views/class-students/class-stud
 import { SettingsComponent } from '../Admin/Views/settings/settings.component';
 import { EtudiantsComponent } from '../Admin/Views/etudiants/etudiants.component';
 import { SinginComponent } from '../singin/singin.component';
+import { EmploisDuTempsComponent } from '../Admin/Views/emplois-du-temps/emplois-du-temps.component';
+import { EmploisSeanceComponent } from '../Admin/Views/emplois-seance/emplois-seance.component';
 
 const routes: Routes = [{path: "", component: SidebarComponent,
     children: [
@@ -18,7 +20,9 @@ const routes: Routes = [{path: "", component: SidebarComponent,
     ]
 
   },
-  {path: 'inscription', component: SinginComponent}
+  {path: 'inscription', component: SinginComponent},
+  {path: 'emplois', component: EmploisDuTempsComponent},
+  {path: 'seance', component: EmploisSeanceComponent}
 ]
   
 @NgModule({

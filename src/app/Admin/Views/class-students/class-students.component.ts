@@ -7,6 +7,11 @@ import { Module } from '../../Models/Module';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ClassModules } from '../../Models/ClassModule';
 import { Ue } from '../../Models/UE';
+import { ServiceService } from '../emplois-du-temps/service.service';
+import { forkJoin } from 'rxjs';
+import { Emplois } from '../../Models/Emplois';
+import { map } from 'rxjs';
+import { NavigationExtras, Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-class-students',
@@ -17,11 +22,21 @@ export class ClassStudentsComponent implements OnInit {
   faEye = faEye; fanot = faBell; fanote = faClipboard; faElip = faEllipsis;
   fadd = faPlus; fabook = faBookOpen; faEmploi =faCalendar;
   classRoms : ClassRoom[]=[];
+  classesWithEmplois: ClassRoom[] = [];
   classes!: ClassRoom;
+  classroom: ClassRoom[] =[];
+  idCurrent!: ClassRoom;
+  emplois: any;
+  seance: any;
+  hasEmplois!: boolean;
+  emploisData: any;
+  // classesWithEmplois!: { [key: number]: boolean } = {};
   ueList: any[] = [];
+  isDesabled: boolean = false;
   addModules!: FormGroup;
 
-  constructor(private service : ClassStudentService, private setSevice: SetService, private fb: FormBuilder){
+  constructor(private service : ClassStudentService, private emploisService: ServiceService,
+    private setSevice: SetService, private fb: FormBuilder, private router: Router){
     
   }
 
@@ -38,24 +53,26 @@ export class ClassStudentsComponent implements OnInit {
      return this.dropdownStates[id] || false;
    }
   ngOnInit() {
-    
-    this.service.getAll().subscribe((classRoms : ClassRoom[]) =>{
-      this.classRoms = classRoms;
-      console.log(this.classRoms);
-    });
-    // ------------------------get all module
-    
+    // checkEmplois()
+  //  this.loadClassesWithEmplois(this.classes);
+   this.loadClasses();
     // -----------------------------------------form class modules
     this.addModules = this.fb.group({
-     
-      // idClasse: [],
       idUE: [[]]
+    });
+  }
+  // ------------------------------------------get all classRoom
+  loadClasses(): void {
+    this.service.getAll().subscribe((classRoms: ClassRoom[]) => {
+      this.classRoms = classRoms;
     });
   }
 // ----------------------------------------add module in classRoom
   createClassModule(idClasse: number){
+    
     const formData = this.addModules.value;
     const idClass: ClassRoom = this.classRoms.find(cl => cl.id === idClasse)!;
+    this.idCurrent = idClass;
     const modules = formData.idUE.map((idUe: number) => ({
       idStudentClasse: idClass,
       idUE: { id: idUe }
@@ -78,4 +95,43 @@ export class ClassStudentsComponent implements OnInit {
       console.log(this.ueList);
     })
   }
+ 
+   // --------------------methode appeller tout les classee et 
+    // pour verifier l'existence d'emplois
+   loadClassesWithEmplois(Classeroom : ClassRoom): void {
+    this.classesWithEmplois.push(Classeroom)
+   
+  }
+   // -----------------------------------------method de condition de navigation
+ 
+  navigateBasedOnCondition(classRom: ClassRoom): void {
+    // console.log(classRom.id);
+    this.emploisService.hasActiveEmploisByClasse(classRom.id!).subscribe(hasEmplois => {
+       if (hasEmplois === false) {
+       
+        console.log("avec des seance")
+        // Si la classe a un emploi du temps actif avec des séances, naviguer vers la page de création de séances
+        const navigationExtras: NavigationExtras = {
+          queryParams: { id: classRom.id }
+        };
+        this.router.navigate(['/sidebar/emplois'], navigationExtras);
+      } else if(hasEmplois === true) {
+        console.log("pas des seance")
+       
+        const navigationExtras: NavigationExtras = {
+          queryParams: { id: classRom.id }
+        };
+        this.router.navigate(['/sidebar/seance'], navigationExtras);
+        
+        // Sinon, naviguer vers la page de création d'emploi du temps
+        
+      }else{
+        this.loadClassesWithEmplois(classRom)
+        // this.classesWithEmplois.push(classRom);
+       
+      }
+    });
+  }
+  // -----------------------
+ 
 }

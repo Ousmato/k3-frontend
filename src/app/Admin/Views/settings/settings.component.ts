@@ -61,10 +61,10 @@ export class SettingsComponent implements OnInit {
         // console.log(this.objectNivFil);
       })
 // ------------------------------------------get list ue-----------------------
-  //  this.service.getAll_ue().subscribe((reponse: Ue[]) =>{
-  //   this.ueList = reponse;
+   this.service.getAll_ue_all().subscribe((reponse: Ue[]) =>{
+    this.ueList = reponse;
 
-  //  })
+   })
   }
   
   // --------------------------send filiere to backend---------------------------------

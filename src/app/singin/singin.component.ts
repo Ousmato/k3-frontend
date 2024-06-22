@@ -70,7 +70,7 @@ export class SinginComponent implements OnInit {
       } else {
         console.log("Aucune donnée d'administrateur trouvée dans le localStorage.");
       }
-      console.log(this.classRoom.find(c => c.id === formData.idClasse));
+      // console.log(this.classRoom.find(c => c.id === formData.idClasse));
       const classe: ClassRoom = this.classRoom.find(c => c.id === formData.idClasse)!;
       const student: Student = {
         nom: formData.nom,
