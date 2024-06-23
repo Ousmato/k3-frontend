@@ -1,82 +1,83 @@
 <main>
-    <section>
-        
-    </section>
-    <section class="content">
-        <div class="section-grid" >
-            <div class="grid-container" >
-                <div class="grid-item" *ngFor="let module of modules">{{module.nomModule}}</div>
-               
+    <section class="section-head">
+        <div class="month-contenaire">
+            <p>{{formattedDate}}</p>
+        </div>
+        <div class="btn-contenaire">
+            <div class="child-1">
+                <button *ngIf="!isCreating" class="btn btn-primary" type="button" (click)="show_form()"><fa-icon [icon]="icons.plus"></fa-icon> Créer une séance</button>
+                <button *ngIf="isCreating" class="btn btn-danger" type="button" (click)="annuller()">Annuler</button>
+              </div>
+            <div class="child-2">
+                <!-- <button class="btn btn-primary" type="submit" (click)="add_seance()">Enregistrer</button> -->
             </div>
         </div>
+
+    </section>
+    <section class="content">
+       
         <!-- ------------------------------------------------------ -->
-         <div class="section-table">
-            <table class="table table-bordered border-primary">
+         <div id="idTable" class="section-table">
+            <table class="table table-bordered">
                 <thead>
                     <tr>
                       <th *ngFor="let dateInfo of datesWithDays" scope="col">{{ dateInfo.day }}<br> <span>{{ dateInfo.date }}</span></th>
                     </tr>
                   </thead>
                 <tbody>
-                    <tr>
-                        <th> 
-                            <div class="heure-contenaire">
-                                <input type="time" name="heuredebut">
-                                <input type="time" name="heurefin" class="hidden">
-                                </div>
-                            
-                                <div  class="dropped" ondrop="drop(event)" ondragover="allowDrop(event)">
-                    
-                            </div>
-                            <select  id="" formControlName ="enseignant" placeholder="enseignant">
-                                <option value=""></option>
-                            </select>
-                        </th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>mdo</td>
-                        <td>mdo</td>
-                        <td>mdo</td>
-                        <td>mdo</td>
-                        <td>mdo</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>fat</td>
-                        <td>fat</td>
-                        <td>fat</td>
-                        <td>fat</td>
-                        <td>fat</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>twitter</td>
-                        <td>twitter</td>
-                        <td>twitter</td>
-                        <td>twitter</td>
-                        <td>twitter</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>twitter</td>
-                        <td>twitter</td>
-                        <td>twitter</td>
-                        <td>twitter</td>
-                        <td>twitter</td>
-                    </tr>
-                    
+                   
                 </tbody>
                
               </table>
          
         </div>
+        <div id="idForm" class="section-form" >
+            <form [formGroup]="form_seance" (ngSubmit)="create_seance()" *ngIf="isCreating">
+                <div class="form form-group">
+                    <label>Enseignants</label> 
+                        <select class="form-select" formControlName="idTeacher"  id="enseignant" placeholder="Enseignants"  required>
+                        <option  selected disabled value="">Choisir L'Enseignant</option>
+                        <option  ></option>
+                        </select> 
+                    </div>
+                    <div class="form form-group">
+                        <label>Modules</label> 
+                            <select class="form-select" formControlName="idModule"  id="idModule" placeholder="Modules"  required>
+                            <option  selected disabled value="">Choisir Le Module</option>
+                            <option *ngFor="let module of modules" value="{{module.id}}">{{module.nomModule}}</option>
+                            </select> 
+                    </div>
+                    <div class="form form-group"> 
+                        <label>Jours </label> 
+                        <select class="form-select" formControlName="jour"  required>
+                          <option selected disabled value="">Choisir Le Jour</option>
+                          <option *ngFor="let dateInfo of datesWithDays" [value]="dateInfo.date">{{dateInfo.day}}</option>
+                        </select> 
+                      </div>
+
+                
+                    <div class="input-time">
+                        <div class="form form-group">
+                             <label>Heure de début </label>
+                            <input type="time" class="form-control" id="heureDebut" formControlName="heureDebut" required>
+                        
+                        </div>
+                       <div class="form form-group">
+                            <label>Heure de Fin </label>
+                            <input type="time" class="form-control" id="heureFin" formControlName="heureFin" required>
+                        
+                        </div>
+                                    
+                    </div>
+                    <div class="form form-group"> 
+                        <label for="date">Date </label> 
+                        <input id="date" type="date" class="form-control" formControlName="date" [value]="selectedDate" readonly>
+                      </div>
+                  <button id="btn-submit" class="btn btn-primary" type="submit">Enregistrer</button>
+            </form>
+           
+        </div>
     </section>
     <!-- --------------------------------------- -->
-      
+
 </main>

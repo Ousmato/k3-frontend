@@ -72,7 +72,7 @@
             <label for="validationDefault03" class="label form-label">Classe :</label>
             <select class="form-select" formControlName="idClasse"  id="select-modules-multiple"  required>
             <option  selected disabled value="">Choisir La classe</option>
-            <option *ngFor="let classe of classRoom" [ngValue]="classe.id">{{classe.idFiliere?.idNiveau?.nom}} {{classe.idFiliere?.idFiliere?.nomFiliere}}</option>
+            <option *ngFor="let classe of classRoom" [value]="classe.id">{{classe.idFiliere?.idNiveau?.nom}} {{classe.idFiliere?.idFiliere?.nomFiliere}}</option>
             
         
                 </select>                       

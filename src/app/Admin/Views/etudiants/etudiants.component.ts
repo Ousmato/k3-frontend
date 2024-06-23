@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Config } from 'datatables.net';
 import { EtudeService } from './etude.service';
 import { ClassStudentService } from '../class-students/class-student.service';
 import { Student } from '../../Models/Students';

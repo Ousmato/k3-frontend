@@ -8,6 +8,7 @@ import { EtudiantsComponent } from '../Admin/Views/etudiants/etudiants.component
 import { SinginComponent } from '../singin/singin.component';
 import { EmploisDuTempsComponent } from '../Admin/Views/emplois-du-temps/emplois-du-temps.component';
 import { EmploisSeanceComponent } from '../Admin/Views/emplois-seance/emplois-seance.component';
+import { EnseignantComponent } from '../Admin/Views/enseignant/enseignant.component';
 
 const routes: Routes = [{path: "", component: SidebarComponent,
     children: [
@@ -15,6 +16,7 @@ const routes: Routes = [{path: "", component: SidebarComponent,
       { path: 'classe', component: ClassStudentsComponent },
       {path: 'setting', component: SettingsComponent},
       {path: 'etudiant', component: EtudiantsComponent},
+      {path: 'ensignant', component: EnseignantComponent}
       
      
     ]

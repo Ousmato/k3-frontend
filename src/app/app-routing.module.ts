@@ -1,21 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './users/home/home.component';
 import { LoginComponent } from './login/login.component';
 import { authGuard } from './auth.guard';
-import { DasboardComponent } from './Admin/Views/dasboard/dasboard.component';
-import { SidebarComponent } from './sidebar/sidebar.component';
-import { EnseignantComponent } from './users/enseignant/enseignant.component';
-import { EmploisSeanceComponent } from './Admin/Views/emplois-seance/emplois-seance.component';
-import { EmploisDuTempsComponent } from './Admin/Views/emplois-du-temps/emplois-du-temps.component';
 
 const routes: Routes = [
   {path:'',component: LoginComponent},
 
-  {path:'enseignant',
-    loadChildren: () => import('./users/enseignant/enseignant.module').then(m => m.EnseignantModule)
-  },
-
+ 
   {path: "sidebar",
     loadChildren: () => import('./sidebar/sidebar.module').then(m =>m.SidebarModule)
   },

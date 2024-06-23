@@ -26,7 +26,7 @@ export class ClassStudentsComponent implements OnInit {
   classes!: ClassRoom;
   classroom: ClassRoom[] =[];
   idCurrent!: ClassRoom;
-  emplois: any;
+  emplois!: Emplois;
   seance: any;
   hasEmplois!: boolean;
   emploisData: any;
@@ -118,6 +118,7 @@ export class ClassStudentsComponent implements OnInit {
       } else if(hasEmplois === true) {
         console.log("pas des seance")
        
+        this.emplois = hasEmplois;
         const navigationExtras: NavigationExtras = {
           queryParams: { id: classRom.id }
         };

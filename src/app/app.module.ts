@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { EnseignantComponent } from './users/enseignant/enseignant.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { DasboardComponent } from './Admin/Views/dasboard/dasboard.component';
 import { EtudiantsComponent } from './Admin/Views/etudiants/etudiants.component';
@@ -19,12 +18,12 @@ import { SettingsComponent } from './Admin/Views/settings/settings.component';
 import { DataTablesModule } from "angular-datatables";
 import { EmploisDuTempsComponent } from './Admin/Views/emplois-du-temps/emplois-du-temps.component';
 import { EmploisSeanceComponent } from './Admin/Views/emplois-seance/emplois-seance.component';
-
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { EnseignantComponent } from './Admin/Views/enseignant/enseignant.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    EnseignantComponent,
     SidebarComponent,
     DasboardComponent,
     EtudiantsComponent,
@@ -36,8 +35,7 @@ import { EmploisSeanceComponent } from './Admin/Views/emplois-seance/emplois-sea
     SettingsComponent,
     EmploisDuTempsComponent,
     EmploisSeanceComponent,
-  
-    
+    EnseignantComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +43,8 @@ import { EmploisSeanceComponent } from './Admin/Views/emplois-seance/emplois-sea
     FormsModule,
     ReactiveFormsModule,
     FontAwesomeModule,
-    DataTablesModule
+    DataTablesModule,
+    DragDropModule
   ],
   providers: [provideHttpClient()],
   bootstrap: [AppComponent]
