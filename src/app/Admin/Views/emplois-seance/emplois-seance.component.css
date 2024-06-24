@@ -13,7 +13,10 @@ span{
     /* font-weight: 300; */
 }
 /* --------------------------------------- */
-
+.month-contenaire{
+    display: flex;
+    gap: 20px;
+}
 
 .section-head{
     padding: 10px;

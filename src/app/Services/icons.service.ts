@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { faUsers, faGear, faTable, faChartArea, faHome, faBars, faGraduationCap, faSchool, faUser, faCog, faAngleDown, faSearch, faBookOpen, faAngleUp, faEye, faTrashCan, faEdit, faPenToSquare, faArrowRight, faClock, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faGear, faTable, faChartArea, faHome, faBars, faGraduationCap, faSchool, faUser, faCog, faAngleDown, faSearch, faBookOpen, faAngleUp, faEye, faTrashCan, faEdit, faPenToSquare, faArrowRight, faClock, faPlus, faCalendarCheck } from '@fortawesome/free-solid-svg-icons';
 
 @Injectable({
   providedIn: 'root'
@@ -23,5 +23,6 @@ export class IconsService {
   next = faArrowRight
   clock = faClock
   plus = faPlus
+  cl_check = faCalendarCheck
   constructor() { }
 }

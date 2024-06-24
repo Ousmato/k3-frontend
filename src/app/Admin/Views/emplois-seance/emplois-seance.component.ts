@@ -10,6 +10,8 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { IconsService } from '../../../Services/icons.service';
 import { Teacher } from '../../Models/Teachers';
 import { Seances } from '../../Models/Seances';
+import { EnseiService } from '../enseignant/ensei.service';
+import { SeancService } from './seanc.service';
 
 @Component({
   selector: 'app-emplois-seance',
@@ -28,10 +30,11 @@ export class EmploisSeanceComponent  implements OnInit{
     selectedDay: string = '';
     selectedDate: string = '';
     formattedDate!: string;
+    enseignants: Teacher[] =[];
 
 
-    constructor(private emploisService: ServiceService, public icons: IconsService,
-      private fb: FormBuilder,private route: ActivatedRoute, private classService: ClassStudentService ) { }
+    constructor(private emploisService: ServiceService, public icons: IconsService, private enseignantService: EnseiService,
+      private fb: FormBuilder,private route: ActivatedRoute, private classService: ClassStudentService,private seanceService: SeancService ) { }
     ngOnInit(): void {
       // ------------------------------get id in url path
       this.loadEmploisByClass();
@@ -40,6 +43,7 @@ export class EmploisSeanceComponent  implements OnInit{
       this.getSeance_date();
       this.updateWidth();
       this.getMonth();
+      this.load_enseignants();
 
     }
     load_form(){
@@ -118,13 +122,30 @@ export class EmploisSeanceComponent  implements OnInit{
       })
 
     }
+    // -----------------------------------load all enseignants
+    load_enseignants(){
+      this.enseignantService.getAll().subscribe((data: Teacher[]) => {
+        this.enseignants = data;
+        // console.log(this.enseignants, "enseignants");
+      })
+    }
+    // ----------------------------------------------add seance
+
   // ----------------------------------------
   show_form() : void{
     this.isCreating = true;
     this.updateWidth();
   }
-  add_seance() : void{
-
+  validate_emplois(){
+    this.emploisService.validateEmplois(this.emplois.id!).subscribe(data =>{
+      if(data === true)
+        {
+          alert("Emplois validé avec succes!!!");
+          console.log(data)
+        }else{
+        alert("emplois desactiver avec success");
+        }
+    })
   }
   annuller() : void{
     this.isCreating = false;
@@ -135,22 +156,27 @@ loadTime() : void{
   // let starTime = DateTim
 }
 // --------------------------------------form to create seance
-create_seance(){
-  const formData = this.form_seance.value;
-  const idModule: Module = this.modules.find(mod => mod.id === +formData.idModule)!;
-  const idEmploi: Emplois = this.emplois;
-  // const idTeacher: Teacher = this.teachers.find(t => t.id === +formData.idModule)!;
-  const seance: Seances = {
-    heureDebut: formData.heureDebut,
-    heureFin: formData.heureFin,
-    date: formData.date,
-    idEmplois: idEmploi,
-    idModule: idModule,
-    idTeacher: formData.idTeacher,
+  create_seance(){
+    const formData = this.form_seance.value;
+    const idModule: Module = this.modules.find(mod => mod.id === +formData.idModule)!;
+    const idEmploi: Emplois = this.emplois;
+    const idTeacher: Teacher = this.enseignants.find(t => t.idEnseignant === +formData.idTeacher)!;
+    const seance: Seances = {
+      heureDebut: formData.heureDebut,
+      heureFin: formData.heureFin,
+      date: formData.date,
+      idEmplois: idEmploi,
+      idModule: idModule,
+      idTeacher: idTeacher,
+    }
+    console.log("data:", seance)
+    this.seanceService.create(seance).subscribe(data =>{
+      console.log(data, "data");
+      alert("Ajout effectuer avec succes!!!");
+      this.form_seance.reset();
+      this.isCreating = false;
+      window.location.reload();
+    })
   }
-
-
-
-}
 
 }

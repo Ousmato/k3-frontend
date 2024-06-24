@@ -1,1 +1,119 @@
-<p>enseignant works!</p>
+
+<main>
+    <a data-bs-toggle="modal" data-bs-target="#form-add">
+        <button class="btn btn-primary">Inscription</button>
+    </a>
+    <table datatable datatable [dtOptions]="dtOptions" class="table table-striped table-hover">
+        <thead>
+            <tr>
+              <th>ID</th>
+              <th>Photo</th>
+              <th>Nom</th>
+              <th>Prenom</th>
+              <th>Email</th>
+              <th>Telephone</th>
+              <th>Action</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let enseign of enseignants">
+              <td>{{enseign.idEnseignant}}</td>
+              <td><img [src]="enseign.urlPhoto || icons.user" alt=""></td>
+              <td>{{enseign.nom}}</td>
+              <td >{{enseign.prenom}}</td>
+              <td>{{enseign.email}}</td>
+              
+              <td>{{enseign.telephone}}</td>
+                <td>
+                    <div class="btn-contenaire">
+                        <a ><fa-icon [icon]="icons.eye"></fa-icon><span>Details</span></a>
+                        <a><fa-icon [icon]="icons.edit"></fa-icon><span>Modifier</span></a>
+                        <a><fa-icon [icon]="icons.delete"></fa-icon><span>Supprimer</span></a>
+                    
+                    </div>
+                </td>
+             
+            </tr>
+            
+          </tbody>
+    </table>
+    <!-- ----------------------------------- form modal add -->
+    <div class="modal fade" id="form-add" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         
+        <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="head-modal modal-header">
+                  <h4>Ajouter un Enseignant</h4>
+                    <!-- <h1 class="modal-title fs-5" id="exampleModalLabel">Detail de l'apprenant </h1> -->
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+               <span id="erroform-add"> Cet enseignant avec cette addresse mail existe deja</span>
+                  <form id="formProf" class="row g-3 test" [formGroup]="teacher_form" (ngSubmit)="add_teacher()" >
+                    <div class="input">
+                      <label for="validationDefault01" class="label form-label">Nom :</label>
+                      <input type="text" class="input-with form-control" formControlName="nom"  required>
+                    </div>
+
+                    <div class="input">
+                      <label for="validationDefault02" class="label form-label">Prenom :</label>
+                      <input type="text" formControlName="prenom" class="input-with form-control"  required>
+                    </div>
+
+                    <div class="input">
+                      <label  class="label form-label">Email :</label>
+                      <!-- <div class="input-group"> -->
+                        <!-- <span class="input-group-text" id="inputGroupPrepend2">@</span> -->
+                        <input type="email" formControlName="email" class=" input-with form-control"  aria-describedby="inputGroupPrepend2" required>
+                      <!-- </div> -->
+                    </div>
+
+                    <div class="inputpassword">
+                      <label for="validationDefault02" class="label form-label">Mot de Passe :</label>
+                      <div class="pass-chec">
+                      <input type="password" formControlName="password" class="input-withpass form-control" id="password" required>
+                      Afficher le mot de passe   <input type='checkbox' id='check' />
+                      </div>
+                      
+                    </div>
+                    <div class="input">
+                      <label for="validationDefault03" class="label form-label">Telephone :</label>
+                      <input type="number" formControlName="telephone" class="input-with form-control"  required>
+                    </div>
+
+                    <!-- button radio sexe start -->
+                    <div class="radio-button">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio1" value="Homme" required>
+                        <label class="form-check-label" for="inlineRadio1">Homme</label>
+                      </div>
+
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio2" value="Femme" required>
+                        <label class="form-check-label" for="inlineRadio2">Femme</label>
+                      </div>
+                    </div>
+
+                    <div class="form form-group">
+                      <label>Status</label> 
+                          <select class="form-select" formControlName="status"  id="enseignant" placeholder="Status"  required>
+                          <option  selected disabled value="">Choisir Le status</option>
+                          <option *ngFor="let status of teacherStatusOptions" [value]="status" >{{status}}</option>
+                          </select> 
+                      </div>
+
+                        <div class="input">
+                        <label for="validationDefault05" class="label form-label">Photo :</label>
+                        <input type="file" formControlName="urlPhoto" accept="image/*" class="input-with form-control" id="inputPhoto" (change)="onFileSelected($event)">
+                        </div>
+                    <div class="col-12">
+                      <button class="btn btn-primary" name="btn-add" type="submit">Enregistrer</button>
+                    </div>
+                  </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+  </main>

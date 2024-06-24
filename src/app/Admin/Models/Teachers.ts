@@ -1,19 +1,17 @@
 export interface Teacher {
-    idEnseignant: number;
-    nomTeacher: string;
+    idEnseignant?: number;
+    nom: string;
     prenom: string;
     email: string;
+    sexe: string;
     password: string;
     telephone: number;
-    urlPhoto: string;
+    urlPhoto?: string;
     // isDeleted: boolean;
     status: TeachersStatus;
 }
 
 export enum TeachersStatus {
-    // Définir les différents statuts possibles des enseignants
-    // Par exemple :
-    ACTIVE = 'Active',
-    INACTIVE = 'Inactive',
-    PENDING = 'Pending'
+    PEMANENT = 'Permanent',
+    PRINCIPAL = 'Principale'
 }

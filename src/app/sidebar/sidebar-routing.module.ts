@@ -16,7 +16,7 @@ const routes: Routes = [{path: "", component: SidebarComponent,
       { path: 'classe', component: ClassStudentsComponent },
       {path: 'setting', component: SettingsComponent},
       {path: 'etudiant', component: EtudiantsComponent},
-      {path: 'ensignant', component: EnseignantComponent}
+      {path: 'enseignants', component: EnseignantComponent}
       
      
     ]

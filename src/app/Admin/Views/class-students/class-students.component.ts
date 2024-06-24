@@ -22,7 +22,7 @@ export class ClassStudentsComponent implements OnInit {
   faEye = faEye; fanot = faBell; fanote = faClipboard; faElip = faEllipsis;
   fadd = faPlus; fabook = faBookOpen; faEmploi =faCalendar;
   classRoms : ClassRoom[]=[];
-  classesWithEmplois: ClassRoom[] = [];
+  classesWithEmplois = false;
   classes!: ClassRoom;
   classroom: ClassRoom[] =[];
   idCurrent!: ClassRoom;
@@ -98,8 +98,15 @@ export class ClassStudentsComponent implements OnInit {
  
    // --------------------methode appeller tout les classee et 
     // pour verifier l'existence d'emplois
-   loadClassesWithEmplois(Classeroom : ClassRoom): void {
-    this.classesWithEmplois.push(Classeroom)
+   loadClassesWithEmplois(ClasseroomId : number): void {
+    // this.classesWithEmplois.push(Classeroom)
+    this.emploisService.validateEmplois(ClasseroomId).subscribe(data =>{
+      if(data === true){
+          this.classesWithEmplois = true;
+      }else{
+        this.classesWithEmplois = false;
+      }
+    })
    
   }
    // -----------------------------------------method de condition de navigation
@@ -127,7 +134,7 @@ export class ClassStudentsComponent implements OnInit {
         // Sinon, naviguer vers la page de création d'emploi du temps
         
       }else{
-        this.loadClassesWithEmplois(classRom)
+        this.loadClassesWithEmplois(classRom.id!)
         // this.classesWithEmplois.push(classRom);
        
       }

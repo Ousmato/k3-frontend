@@ -2,6 +2,7 @@
     <section class="section-head">
         <div class="month-contenaire">
             <p>{{formattedDate}}</p>
+            <button (click)="validate_emplois()" class="btn btn-primary" type="button"><fa-icon [icon]="icons.cl_check"></fa-icon> Valider</button>
         </div>
         <div class="btn-contenaire">
             <div class="child-1">
@@ -37,7 +38,7 @@
                     <label>Enseignants</label> 
                         <select class="form-select" formControlName="idTeacher"  id="enseignant" placeholder="Enseignants"  required>
                         <option  selected disabled value="">Choisir L'Enseignant</option>
-                        <option  ></option>
+                        <option *ngFor="let enseignant of enseignants" [value]="enseignant.idEnseignant">{{enseignant.nom}}</option>
                         </select> 
                     </div>
                     <div class="form form-group">
