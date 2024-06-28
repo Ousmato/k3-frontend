@@ -12,4 +12,5 @@ export interface Seances{
     idTeacher: Teacher;
     idModule: Module;
     jour?: string;
+    date_string?: string;
 }

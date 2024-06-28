@@ -12,6 +12,7 @@ import { forkJoin } from 'rxjs';
 import { Emplois } from '../../Models/Emplois';
 import { map } from 'rxjs';
 import { NavigationExtras, Route, Router } from '@angular/router';
+import { data } from 'jquery';
 
 @Component({
   selector: 'app-class-students',
@@ -22,7 +23,7 @@ export class ClassStudentsComponent implements OnInit {
   faEye = faEye; fanot = faBell; fanote = faClipboard; faElip = faEllipsis;
   fadd = faPlus; fabook = faBookOpen; faEmploi =faCalendar;
   classRoms : ClassRoom[]=[];
-  classesWithEmplois = false;
+  classesWithEmplois: ClassRoom[] = [];
   classes!: ClassRoom;
   classroom: ClassRoom[] =[];
   idCurrent!: ClassRoom;
@@ -32,7 +33,7 @@ export class ClassStudentsComponent implements OnInit {
   emploisData: any;
   // classesWithEmplois!: { [key: number]: boolean } = {};
   ueList: any[] = [];
-  isDesabled: boolean = false;
+  isDesabled: boolean = true;
   addModules!: FormGroup;
 
   constructor(private service : ClassStudentService, private emploisService: ServiceService,
@@ -98,34 +99,27 @@ export class ClassStudentsComponent implements OnInit {
  
    // --------------------methode appeller tout les classee et 
     // pour verifier l'existence d'emplois
-   loadClassesWithEmplois(ClasseroomId : number): void {
-    // this.classesWithEmplois.push(Classeroom)
-    this.emploisService.validateEmplois(ClasseroomId).subscribe(data =>{
-      if(data === true){
-          this.classesWithEmplois = true;
-      }else{
-        this.classesWithEmplois = false;
-      }
-    })
+   loadClassesWithEmplois(Classeroom : ClassRoom): void {
+    this.classesWithEmplois.push(Classeroom)
    
   }
    // -----------------------------------------method de condition de navigation
- 
+ button_display_condition(){
+
+ }
   navigateBasedOnCondition(classRom: ClassRoom): void {
     // console.log(classRom.id);
     this.emploisService.hasActiveEmploisByClasse(classRom.id!).subscribe(hasEmplois => {
        if (hasEmplois === false) {
-       
-        console.log("avec des seance")
+        this.isDesabled === false;
         // Si la classe a un emploi du temps actif avec des séances, naviguer vers la page de création de séances
         const navigationExtras: NavigationExtras = {
           queryParams: { id: classRom.id }
         };
+         console.log("pas des seance")
         this.router.navigate(['/sidebar/emplois'], navigationExtras);
       } else if(hasEmplois === true) {
-        console.log("pas des seance")
        
-        this.emplois = hasEmplois;
         const navigationExtras: NavigationExtras = {
           queryParams: { id: classRom.id }
         };
@@ -134,7 +128,22 @@ export class ClassStudentsComponent implements OnInit {
         // Sinon, naviguer vers la page de création d'emploi du temps
         
       }else{
-        this.loadClassesWithEmplois(classRom.id!)
+        this.emploisService.getEmploisByClasse2(classRom.id!).subscribe(data =>{
+          this.emplois = data;
+          this.emploisService.isEmploisValid(this.emplois.id!).subscribe(data =>{
+            if(data === true){
+              this.isDesabled === false;
+              console.log(data, "datttttaaaaa")
+               this.loadClassesWithEmplois(classRom)
+            }
+            const navigationExtras: NavigationExtras = {
+              queryParams: { id: classRom.id }
+            };
+            this.router.navigate(['/sidebar/seance'], navigationExtras);
+            
+          })
+        })
+       
         // this.classesWithEmplois.push(classRom);
        
       }

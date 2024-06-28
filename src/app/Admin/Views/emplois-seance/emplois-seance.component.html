@@ -21,15 +21,42 @@
          <div id="idTable" class="section-table">
             <table class="table table-bordered">
                 <thead>
-                    <tr>
-                      <th *ngFor="let dateInfo of datesWithDays" scope="col">{{ dateInfo.day }}<br> <span>{{ dateInfo.date }}</span></th>
-                    </tr>
-                  </thead>
+                  <tr>
+                    <th class="horaire">Horaires</th>
+                    <ng-container *ngFor="let dateInfo of datesWithDays">
+                      <td scope="col">{{ dateInfo.day }}<br><span>{{ dateInfo.date }}</span></td>
+                    </ng-container>
+                  </tr>
+                </thead>
                 <tbody>
-                   
+                  <ng-container *ngFor="let heure of hoursList">
+                    <tr>
+                      <th scope="row" class="text-left">{{ heure }}</th>
+                      <ng-container *ngFor="let dateInfo of datesWithDays">
+                        <td scope="col">
+                          <ng-container *ngFor="let seance of seances">
+                            <ng-container *ngIf="dateInfo.date === seance.date.toString() && heure === (seance.heureDebut + ' - ' + seance.heureFin)">
+                            <div class="seance-content">
+                              <div class="childre-1">
+                              <strong>{{ seance.idTeacher.nom }}  {{seance.idTeacher.prenom}}</strong><br>
+                              {{ seance.heureDebut }} - {{ seance.heureFin }} <br>
+                              {{seance.idModule.nomModule}}
+                              </div>
+                              <div class="childre-2">
+                                <button class="btn" type="button" ><fa-icon [icon]="icons.delete"></fa-icon></button>
+                                <button class="btn" type="button" ><fa-icon [icon]="icons.edit"></fa-icon></button>
+                              </div>
+                            </div> 
+                            </ng-container>
+                          </ng-container>
+                        </td>
+                      </ng-container>
+                    </tr>
+                  </ng-container>
                 </tbody>
-               
               </table>
+              
+              
          
         </div>
         <div id="idForm" class="section-form" >

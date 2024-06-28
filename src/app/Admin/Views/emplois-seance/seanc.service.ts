@@ -10,10 +10,11 @@ export class SeancService {
 
   constructor(private http: HttpClient) { }
   private baseUrl = 'http://localhost:8080/api-seance/'
-  // -----------------------------get all seances
-  getAll() : Observable<Seances[]>{
-    return this.http.get<Seances[]>(this.baseUrl + 'list');
+  // -----------------------------get all seances by emplois id
+  getAllByEmploisId(id: number) : Observable<Seances[]>{
+    return this.http.get<Seances[]>(this.baseUrl + 'list/' + id);
   }
+  
   // ------------------------------add seance
   create(seance: Seances): Observable<any>{
     return this.http.post<any>(this.baseUrl + 'add', seance);

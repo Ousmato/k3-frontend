@@ -34,6 +34,10 @@ export class ServiceService {
   validateEmplois(idEmplois: number) : Observable<any>{
     return this.http.get<any>(`${this.baseUrl}valid/${idEmplois}`);
   }
+  // ---------------------------method to verifier emplois is valid
+  isEmploisValid(idEmplois: number): Observable<any>{
+    return this.http.get<any>(`${this.baseUrl}is-valid/${idEmplois}`);
+  }
   // ------------------------------------calcule dates and get list dates between dateDebut and dateFin
   getDaysBetweenDates(dateDebut: Date, dateFin: Date): { day: string, date: string }[] {
     const sDate = new Date(dateDebut);

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -18,9 +18,14 @@ import { SettingsComponent } from './Admin/Views/settings/settings.component';
 import { DataTablesModule } from "angular-datatables";
 import { EmploisDuTempsComponent } from './Admin/Views/emplois-du-temps/emplois-du-temps.component';
 import { EmploisSeanceComponent } from './Admin/Views/emplois-seance/emplois-seance.component';
-import { DragDropModule } from '@angular/cdk/drag-drop';
 import { EnseignantComponent } from './Admin/Views/enseignant/enseignant.component';
+import { DatePipe, registerLocaleData } from '@angular/common';
 
+import localeFr from '@angular/common/locales/fr';
+import { TeachersPresenceComponent } from './Admin/Views/teachers-presence/teachers-presence.component';
+import { EnseignantPrDetailsComponent } from './Admin/Views/enseignant-pr-details/enseignant-pr-details.component';
+
+registerLocaleData(localeFr);
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +40,9 @@ import { EnseignantComponent } from './Admin/Views/enseignant/enseignant.compone
     SettingsComponent,
     EmploisDuTempsComponent,
     EmploisSeanceComponent,
-    EnseignantComponent
+    EnseignantComponent,
+    TeachersPresenceComponent,
+    EnseignantPrDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -43,10 +50,12 @@ import { EnseignantComponent } from './Admin/Views/enseignant/enseignant.compone
     FormsModule,
     ReactiveFormsModule,
     FontAwesomeModule,
-    DataTablesModule,
-    DragDropModule
+    DataTablesModule
   ],
-  providers: [provideHttpClient()],
+  providers: [provideHttpClient(),
+    DatePipe,
+    { provide: LOCALE_ID, useValue: 'fr' }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

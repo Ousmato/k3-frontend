@@ -9,6 +9,8 @@ import { SinginComponent } from '../singin/singin.component';
 import { EmploisDuTempsComponent } from '../Admin/Views/emplois-du-temps/emplois-du-temps.component';
 import { EmploisSeanceComponent } from '../Admin/Views/emplois-seance/emplois-seance.component';
 import { EnseignantComponent } from '../Admin/Views/enseignant/enseignant.component';
+import { TeachersPresenceComponent } from '../Admin/Views/teachers-presence/teachers-presence.component';
+import { EnseignantPrDetailsComponent } from '../Admin/Views/enseignant-pr-details/enseignant-pr-details.component';
 
 const routes: Routes = [{path: "", component: SidebarComponent,
     children: [
@@ -16,15 +18,18 @@ const routes: Routes = [{path: "", component: SidebarComponent,
       { path: 'classe', component: ClassStudentsComponent },
       {path: 'setting', component: SettingsComponent},
       {path: 'etudiant', component: EtudiantsComponent},
-      {path: 'enseignants', component: EnseignantComponent}
-      
+      {path: 'enseignants', component: EnseignantComponent},
+      {path: 'list-presence', component: TeachersPresenceComponent}
+     
      
     ]
 
   },
   {path: 'inscription', component: SinginComponent},
   {path: 'emplois', component: EmploisDuTempsComponent},
-  {path: 'seance', component: EmploisSeanceComponent}
+  {path: 'seance', component: EmploisSeanceComponent},
+  {path: 'enseignant-pre-detail', component: EnseignantPrDetailsComponent}
+      
 ]
   
 @NgModule({

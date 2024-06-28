@@ -1,17 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Emplois } from '../../Models/Emplois';
 import { ServiceService } from '../emplois-du-temps/service.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { data, param } from 'jquery';
 import { ClassStudentService } from '../class-students/class-student.service';
 import { Module } from '../../Models/Module';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { Pipe, PipeTransform } from '@angular/core';
+
 import { IconsService } from '../../../Services/icons.service';
 import { Teacher } from '../../Models/Teachers';
 import { Seances } from '../../Models/Seances';
 import { EnseiService } from '../enseignant/ensei.service';
 import { SeancService } from './seanc.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-emplois-seance',
@@ -24,6 +25,7 @@ export class EmploisSeanceComponent  implements OnInit{
     form_seance! : FormGroup;
     idEmplois!: number;
     modules: Module[] = [];
+    seances : Seances[] = [];
     empModule : Module[] = [];
     datesWithDays: { day: string, date: string }[] = [];
     isCreating: boolean = false;
@@ -31,10 +33,12 @@ export class EmploisSeanceComponent  implements OnInit{
     selectedDate: string = '';
     formattedDate!: string;
     enseignants: Teacher[] =[];
+    hoursList: any[] =[];
+    cellules: number[] = [];
 
 
-    constructor(private emploisService: ServiceService, public icons: IconsService, private enseignantService: EnseiService,
-      private fb: FormBuilder,private route: ActivatedRoute, private classService: ClassStudentService,private seanceService: SeancService ) { }
+    constructor(private emploisService: ServiceService, public icons: IconsService, private enseignantService: EnseiService,private cdr: ChangeDetectorRef,
+      private fb: FormBuilder, private datePipe: DatePipe,private route: ActivatedRoute, private classService: ClassStudentService,private seanceService: SeancService ) { }
     ngOnInit(): void {
       // ------------------------------get id in url path
       this.loadEmploisByClass();
@@ -70,6 +74,7 @@ export class EmploisSeanceComponent  implements OnInit{
           // console.log(this.emplois, "emplois trouver");
           this.datesWithDays = this.emploisService.getDaysBetweenDates(dateDebut, dateFin)
           // console.log(this.datesWithDays, "list date");
+          this.getAllSeance(this.emplois.id!);
         })
        });
     }
@@ -115,12 +120,29 @@ export class EmploisSeanceComponent  implements OnInit{
     getSeance_date(){
       this.form_seance.get("jour")?.valueChanges.subscribe((value: any) => {
         if(value){
-          this.form_seance.get("date")?.setValue(value); // Mise à jour du contrôle du formulaire
+          this.form_seance.get("date")?.setValue(value); 
         }else{
-          this.form_seance.get("date")?.setValue(''); // Mise à jour du contrôle du formulaire
+          this.form_seance.get("date")?.setValue('');
         }
       })
 
+    }
+    // ----------------------get all seance
+    getAllSeance(idEmplois : number){
+      this.seanceService.getAllByEmploisId(idEmplois).subscribe((data: Seances[]) => {
+        this.seances = data;
+        this.seances.forEach(seance => {
+         seance.heureDebut = seance.heureDebut.slice(0, 5); // Garder les 5 premiers caractères (HH:mm)
+          seance.heureFin = seance.heureFin.slice(0, 5); 
+
+          const timePair = `${seance.heureDebut} - ${seance.heureFin}`;
+          if (!this.hoursList.includes(timePair)) {
+            this.hoursList.push(timePair);
+          }
+          // this.hoursList.push("heureFin", seance.heureFin);
+        });
+        console.log(this.seances, "seances");
+      })
     }
     // -----------------------------------load all enseignants
     load_enseignants(){
@@ -134,8 +156,14 @@ export class EmploisSeanceComponent  implements OnInit{
   // ----------------------------------------
   show_form() : void{
     this.isCreating = true;
+    this.cdr.detectChanges();
     this.updateWidth();
   }
+  // -------------------------------------------metho pour filtrer par date
+  getSeancesForDate(date: string): any[] {
+    return this.seances.filter(seance => seance.date.toString() === date);
+  }
+  // -------------------------------------------meth
   validate_emplois(){
     this.emploisService.validateEmplois(this.emplois.id!).subscribe(data =>{
       if(data === true)
@@ -152,8 +180,26 @@ export class EmploisSeanceComponent  implements OnInit{
     this.updateWidth();
   }
 // -----------------------------------load times
-loadTime() : void{
-  // let starTime = DateTim
+loadTime() : string[]{
+  const toDayHourStart : Date = new Date();
+  const toDayHourEnd : Date = new Date();
+
+  toDayHourStart.setHours(8, 0, 0, 0);
+  toDayHourEnd.setHours(18, 0, 0, 0);
+  // let times
+  for (let i = toDayHourStart; i < toDayHourEnd; i.setHours(i.getHours() + 1)) {
+    const hourStart = this.datePipe.transform(i, 'HH:mm');
+    const nextHour = new Date(i);
+    nextHour.setHours(i.getHours() + 1);
+    const hourEnd = this.datePipe.transform(nextHour, 'HH:mm');
+    
+    this.hoursList.push(`${hourStart} - ${hourEnd}`);
+  }
+  
+  console.log(this.hoursList, "hours");
+  return this.hoursList;
+
+
 }
 // --------------------------------------form to create seance
   create_seance(){

@@ -1,0 +1,68 @@
+<main>
+    <section class="content">
+       
+         <div id="idTable" class="section-table">
+            <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th class="horaire">Horaires</th>
+                    <ng-container *ngFor="let dateInfo of dates_emplois">
+                      <td scope="col">{{ dateInfo.day.toUpperCase() }}</td>
+                    </ng-container>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- <ng-container *ngFor="let heure of hoursList"> -->
+                    <tr>
+                      <!-- <th scope="row" class="text-left">{{ heure }}</th> -->
+                      <ng-container *ngFor="let dateInfo of dates_emplois">
+                        <td scope="col">
+                          <ng-container *ngFor="let seance of seances">
+                            <ng-container *ngIf="dateInfo.day.toUpperCase() === seance.jour">
+                            <div class="seance-content">
+                               
+                              <div class="childre-1">
+                              <strong>{{teacher.nom }}  {{teacher.prenom}}</strong><br>
+                              {{ seance.heureDebut }} - {{ seance.heureFin }} <br>
+                              {{seance.idModule.nomModule}}
+                              </div>
+                              <div class="childre-2"> 
+                                <span id="date"> {{seance.date_string}}</span>
+                                 
+                                  <div class="chil">
+                                    <ng-container *ngIf="currentDay(dateInfo.day)">
+                                      <!-- <form [formGroup]="presen_form" (ngSubmit)="presence_add(seance)"> -->
+
+                                        <!-- <input type="hidden" formControlName="idEnseignant"> -->
+                                      
+                                        <button *ngIf="!isPresent" class="btn" type="submit" (click)="present(seance.id!)" >Present<img src="assets/attendance-icon.svg" alt="photo"></button>
+                                        <button *ngIf="isPresent" class="btn" type="submit" (click)="abscent(seance.idTeacher.idEnseignant!)" >Abscent<img src="assets/remove-cancel-user-icon.svg" alt=""></button>
+                                      <!-- </form> -->
+                                    </ng-container>
+                                     
+                                  </div>
+                                  <ng-container *ngFor="let emploi_classe of empois_class">
+                                  <ng-container *ngIf="seance.idEmplois.id === emploi_classe.emploi.id" >
+                                      <span id="classe"> {{emploi_classe.classe.idFiliere?.idNiveau?.nom}} ({{emploi_classe.classe.idFiliere?.idFiliere?.nomFiliere}})
+                                      </span>
+                                  </ng-container>
+                                    
+                                  </ng-container>
+                                  
+                                </div>
+                            </div> 
+                            </ng-container>
+                          </ng-container>
+                        </td>
+                      </ng-container>
+                    </tr>
+                  <!-- </ng-container> -->
+                </tbody>
+              </table>
+              
+              
+         
+        </div>
+        
+    </section>
+</main>

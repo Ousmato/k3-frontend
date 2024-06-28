@@ -6,7 +6,24 @@ main{
     display: flex;
     gap: 20px;
 }
-
+.childre-2{
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: end;
+}
+#date{
+    font-size: 13px;
+    color: blue;
+    margin-bottom: 10px;
+}
+#classe{
+    font-size: 11px;
+}
+img{
+    height: 30px;
+    width:auto;
+}
 span{
     font-size: 12px;
     /* color: blue; */
@@ -17,7 +34,11 @@ span{
     display: flex;
     gap: 20px;
 }
+.section-table{
+    width: 100%;
+}
 .seance-content{
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -46,26 +67,15 @@ p{
 }
 
  .btn{
+    font-size: 10px;
     margin-left: 20px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    /* box-shadow: 0 4px 8px rgba(0,0,0,0.1); */
  }
  #btn-submit{
     margin-top: 10px;
  }
  /* ----------------------form style */
-form{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 100%;
-    height: 80vh;
-    border: #ccc;
-    border-radius: 8px;
-    padding: 20px;
-    margin-top: 20px;
-    margin-left: 20px 0 20px 0;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
+
 .input-time{
     display: flex;
     justify-content: space-between;

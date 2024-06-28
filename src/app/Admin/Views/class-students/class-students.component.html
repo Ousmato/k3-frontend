@@ -27,10 +27,10 @@
                     <h5 class="card-title"><a id="detailButton" data-bs-toggle="modal" data-bs-target="#>">Les Modules</a></h5>
                     <p class="card-text"> <a id="etudiant" data-bs-toggle="modal" data-bs-target="#>" class="btn etudian-detail" title="voir les etudiants de la classe">Effectif : {{classRom.effectifs}}</a></p>
                     <div class="btn-container">
-                        <!-- <div >  -->
-                            <a *ngIf="loadClassesWithEmplois(classRom.id!)" (click)="navigateBasedOnCondition(classRom)"  class="btn" title="Créer un emploi du temps"><fa-icon [icon]="faEmploi" class="my-custom-style"></fa-icon></a>
-                        <!-- </div> -->
-                         <a class="btn" title="Consulter un emploi du temps"><fa-icon [icon]="faEye" class="my-custom-style"></fa-icon></a>
+                        
+                            <a *ngIf="isDesabled" (click)="navigateBasedOnCondition(classRom)"  class="btn" title="Créer un emploi du temps"><fa-icon [icon]="faEmploi" class="my-custom-style"></fa-icon></a>
+                        
+                         <a *ngIf="!isDesabled" class="btn" title="Consulter un emploi du temps"><fa-icon [icon]="faEye" class="my-custom-style"></fa-icon></a>
                         <a id="module" data-bs-toggle="modal" [attr.data-bs-target]="'#addModuleClass' + classRom.id" class="btn" title="Ajouter des modules à la classe" (click)="getAll_ues(classRom.id!)">
                             <fa-icon [icon]="fabook" class="my-custom-style"></fa-icon>
                           </a>

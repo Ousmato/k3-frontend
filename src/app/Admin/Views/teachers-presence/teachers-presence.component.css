@@ -1,0 +1,40 @@
+table{
+    margin-top: 20px;
+}
+main{width: 100%;
+
+    padding-top: 20px;
+}
+a button{
+    margin-bottom: 30px;
+}
+
+/* Styler l'en-tête du tableau */
+th {
+    background-color: #84a2cf49;
+}
+
+tr td{
+    font-size: 16px;
+    text-overflow: ellipsis;
+}
+.btn-contenaire{
+    display: flex;
+    justify-content: space-between;
+}
+span{
+    font-size: 10px;
+    color: blue;
+}
+.class-name{
+    cursor: pointer;
+}
+strong{
+    font-size: 12px;
+}
+img{
+    border-radius: 100%;
+    border: 1px solid #ccc;
+    height: 50px;
+    width: auto;
+}
