@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ClassModules } from '../../Models/ClassModule';
 import { Module } from '../../Models/Module';
+import { Ue } from '../../Models/UE';
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +30,14 @@ export class ClassStudentService {
     return this.http.get<Module[]>(`${this.baseUrl}all-module/${id}`);
    
   }
-//  ------------------------update class
+//  ------------------------get all module without note
+  getAllModulesWithoutNote(id: number): Observable<Module[]> {
+    return this.http.get<Module[]>(this.baseUrl + "all-module-without-note/" +id);
+   
+  }
+//  -----------------------get all ue by classe id
+  getAll_ue(idClasse: number): Observable<Ue[]> {
+    return this.http.get<Ue[]>(`${this.baseUrl}list-ue/${idClasse}`);
+  }
+  
 }

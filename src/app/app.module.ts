@@ -24,6 +24,10 @@ import { DatePipe, registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { TeachersPresenceComponent } from './Admin/Views/teachers-presence/teachers-presence.component';
 import { EnseignantPrDetailsComponent } from './Admin/Views/enseignant-pr-details/enseignant-pr-details.component';
+import { ArchivesComponent } from './Admin/Views/archives/archives.component';
+import { FichePaieComponent } from './Admin/Views/fiche-paie/fiche-paie.component';
+import { StudentNoteComponent } from './Admin/Views/student-note/student-note.component';
+import { AllNotesSemestreComponent } from './Admin/Views/all-notes-semestre/all-notes-semestre.component';
 
 registerLocaleData(localeFr);
 @NgModule({
@@ -42,7 +46,11 @@ registerLocaleData(localeFr);
     EmploisSeanceComponent,
     EnseignantComponent,
     TeachersPresenceComponent,
-    EnseignantPrDetailsComponent
+    EnseignantPrDetailsComponent,
+    ArchivesComponent,
+    FichePaieComponent,
+    StudentNoteComponent,
+    AllNotesSemestreComponent
   ],
   imports: [
     BrowserModule,

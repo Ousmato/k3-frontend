@@ -60,18 +60,17 @@ export class SinginComponent implements OnInit {
     if (this.studentForm.valid) {
       const formData = this.studentForm.value;
       const adminData = localStorage.getItem("admin");
+      console.log("fom", formData);
       
       if (adminData) {
         // Convertir les données JSON en objet JavaScript
        this.admin = JSON.parse(adminData);
       
-        // Utiliser les données comme nécessaire
-        console.log("Données de l'administrateur:", this.admin);
       } else {
         console.log("Aucune donnée d'administrateur trouvée dans le localStorage.");
       }
       // console.log(this.classRoom.find(c => c.id === formData.idClasse));
-      const classe: ClassRoom = this.classRoom.find(c => c.id === formData.idClasse)!;
+      const classe: ClassRoom = this.classRoom.find(c => c.id === +formData.idClasse)!;
       const student: Student = {
         nom: formData.nom,
         prenom: formData.prenom,

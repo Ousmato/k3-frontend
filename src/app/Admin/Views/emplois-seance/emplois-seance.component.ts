@@ -13,6 +13,7 @@ import { Seances } from '../../Models/Seances';
 import { EnseiService } from '../enseignant/ensei.service';
 import { SeancService } from './seanc.service';
 import { DatePipe } from '@angular/common';
+import { ClassRoom } from '../../Models/Classe';
 
 @Component({
   selector: 'app-emplois-seance',
@@ -21,6 +22,7 @@ import { DatePipe } from '@angular/common';
 })
 export class EmploisSeanceComponent  implements OnInit{
     idUrl!: number;
+    classId!: ClassRoom
     emplois!: Emplois;
     form_seance! : FormGroup;
     idEmplois!: number;
@@ -42,7 +44,7 @@ export class EmploisSeanceComponent  implements OnInit{
     ngOnInit(): void {
       // ------------------------------get id in url path
       this.loadEmploisByClass();
-      this.loadModulesByClass();
+      // this.loadModulesByClass();
       this.load_form();
       this.getSeance_date();
       this.updateWidth();
@@ -66,21 +68,30 @@ export class EmploisSeanceComponent  implements OnInit{
       this.route.queryParams.subscribe(param =>{
         // console.log(param["id"],"param")
         this.idUrl = +param['id'];
-        // console.log(this.idUrl,"id");
-        this.emploisService.getEmploisByClasse2(this.idUrl).subscribe(data  =>{
-          this.emplois = data;
-          const dateDebut = this.emplois.dateDebut;
-          const dateFin = this.emplois.dateFin;
-          // console.log(this.emplois, "emplois trouver");
-          this.datesWithDays = this.emploisService.getDaysBetweenDates(dateDebut, dateFin)
-          // console.log(this.datesWithDays, "list date");
-          this.getAllSeance(this.emplois.id!);
+        console.log(this.idUrl,"id emplois");
+        // this.emploisService.getEmploisById(this.idUrl).subscribe((data: Emplois) =>{
+        //   this.classId = data.idClasse;
+        //   console.log(data.idClasse, "cla---------------------")
+
+          this.emploisService.getEmploisByClasse2(this.idUrl).subscribe(data  =>{
+            this.emplois = data;
+            const dateDebut = this.emplois.dateDebut;
+            const dateFin = this.emplois.dateFin;
+            console.log(this.emplois, "emplois trouver");
+            this.datesWithDays = this.emploisService.getDaysBetweenDates(dateDebut, dateFin)
+            console.log(this.datesWithDays, "list date");
+            this.getAllSeance(this.emplois.id!);
+
+            this.loadModulesByClass(this.idUrl)
+          })
         })
-       });
+       
+      //  });
     }
     // --------------------------------load all modules of class
-    loadModulesByClass() : void{
-       this.classService.getAllModules(this.idUrl).subscribe((data: Module[]) => {
+    loadModulesByClass(idClasse: number) : void{
+      console.log(this.classId, "classId")
+       this.classService.getAllModules(idClasse).subscribe((data: Module[]) => {
         this.modules = data;
         console.log(this.modules,"modules");
       //  });

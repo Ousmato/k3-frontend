@@ -42,6 +42,9 @@ span{
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    border-bottom: 1px solid #f1f1f1;
+    padding-bottom: 10px;
+    padding-top: 10px;
     
 }
 
@@ -65,7 +68,9 @@ p{
     font-size: 20px;
     font-weight: 500;
 }
-
+.td-classe{
+    border-bottom: 1px solid #ccc !important;
+}
  .btn{
     font-size: 10px;
     margin-left: 20px;

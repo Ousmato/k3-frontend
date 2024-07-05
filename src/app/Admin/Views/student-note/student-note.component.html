@@ -1,0 +1,201 @@
+
+<main>
+    <!-- <a routerLink="/sidebar/inscription">
+        <button class="btn btn-primary">Inscription</button>
+    </a> -->
+    <table datatable datatable [dtOptions]="dtOptions" class="table table-striped table-hover">
+        <thead>
+            <tr>
+              <th>ID</th>
+              <th>Photo</th>
+              <th>Nom</th>
+              <th>Prenom</th>
+              <th>Email</th>
+              <th>Classe</th>
+              <th>Filiere</th>
+
+              <th>Telephone</th>
+              <th>Action</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let studens of students">
+                <tr >
+                <td>{{studens.idEtudiant}}</td>
+                <td><img src="{{studens.urlPhoto}}" alt=""></td>
+                <td>{{studens.nom}}</td>
+                <td>{{studens.prenom}}</td>
+                <td>{{studens.email}}</td>
+                <td class="class-name"  title="{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}">{{studens.idClasse.idFiliere?.idNiveau?.nom}}</td>
+                <td class="class-name"  title="{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}">{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}</td>
+                
+                <td>{{studens.telephone}}</td>
+                    <td>
+                        <div class="btn-contenaire">
+                            <a *ngIf="!isShow_button" data-bs-toggle="modal"   [attr.data-bs-target]="'#modal-' + studens.idEtudiant"><span (click)="load_module_without_note(studens.idEtudiant!)"><fa-icon  [icon]="icons.plus" class="icons"></fa-icon>Ajouter</span></a>
+                            <a *ngIf="!isShow_button" data-bs-toggle="modal"   [attr.data-bs-target]="'#bulletin-' + studens.idEtudiant"><span (click)="load_bulletin(studens.idEtudiant!)"><fa-icon  [icon]="icons.eye" class="icons"></fa-icon>bulletin</span></a>
+                            <a><fa-icon [icon]="icons.edit" class="icons"></fa-icon><span>Modifier</span></a>
+                            <!-- <a><fa-icon [icon]="icons.delete"></fa-icon><span>Supprimer</span></a> -->
+                        
+                        </div>
+                    </td>
+                
+                </tr>
+                <!-- -----------------------modal add----------------- -->
+                <div class="modal fade" [id]="'modal-' + studens.idEtudiant"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Notes des </h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-container">
+                                
+                                    <!-- <input type="hidden" formControlName="idStudents"> -->
+                                <!-- <ng-container *ngFor="let m_s of modules"> -->
+                                    <div *ngFor="let module of modules">
+                                        <div class="flex-container">
+                                            <label id="label" class="label" value="" [for]="'module_' + module.id" (click)="show_form(module.id!)"><strong></strong>
+                                                {{ module.nomModule }} (Coef {{ module.coefficient }}) :</label>
+                                           <ng-container *ngIf="showFormId === module.id" >
+                                            <form [formGroup]="moduleForm" (ngSubmit)="onSubmit(studens, module)">
+                                                <div class="input-content">
+                                                    <div class="exam-note">
+                                                        <p id="flex-container">Note exam</p>
+                                                        <input type="number" [id]="'module_' + module.id + '_examNote'" formControlName="examNote" placeholder="Exam Note">
+                                                    
+                                                    </div>
+                                                    <div class="class-note">
+                                                        <p>Note de classe</p>
+                                                        <input type="number" [id]="'module_' + module.id+ '_classNote'" formControlName="classeNote" placeholder="Class Note">
+                                                    </div>
+                                                
+                                                </div>
+
+                                                <div class="form form-group">
+                                                    <label for="select-semestre" class="label form-label">Semestre :</label>
+                                                    <select class="form-select" formControlName="idSemestre" id="select-semestre" required>
+                                                        <option value="" disabled selected>Choisir Le semestre</option>
+                                                        <option *ngFor="let semestre of semestres" [value]="semestre.id">{{ semestre.nomSemetre }}</option>
+                                                    </select>
+                                                </div>
+                                                <button  type="submit">Soumettre</button>
+                                            </form>
+                                           </ng-container>
+                                                
+                                        </div>
+                                    </div>
+                                <!-- </ng-container> -->
+                                
+                            </div>
+                        
+                        </div>
+                        <!--  -->
+                        </div>
+                    </div>
+                </div>
+                <!-- -----------------------modal bulletin----------------- -->
+                <div class="modal fade" [id]="'bulletin-' + studens.idEtudiant"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Bulletin de {{studens.nom}} {{studens.prenom}}</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="main-content">
+                                    <div class="all-section">
+                                        <section class="first-column">
+                                            <div class="header">
+                                                <div class="img-contenaire">
+                                                    <img src="{{studens.urlPhoto}}" alt="photo">
+                                                </div>
+                                                <div class="school-contenaire">
+                                                    <h2>APTECH-MALI</h2>
+                                                    <p>Ecole Supérieure de Technologie Appliquée</p>
+                                                </div>
+                                            </div>
+                                        </section>
+                                        <section class="second-column">
+                                            <div class="row">
+                                                <div class="child">
+                                                    <div class="child-item">
+                                                        <h4>Nom et Prénom: {{studens.nom}} {{studens.prenom}}</h4>
+                                                    </div>
+                                                    <div class="child-item">
+                                                        <h4>Date de naissance: {{studens.dateNaissance}}</h4>
+                                                    </div>
+                                                    <div class="child-item">
+                                                        <h4>Classe: {{studens.idClasse.idFiliere?.idNiveau?.nom}}</h4>
+                                                    </div>
+                                                </div>
+                                                <div class="child">
+                                                    <div class="child-item">
+                                                        <h4>Filière: {{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}</h4>
+                                                    </div>
+                                                    <div class="child-item">
+                                                        <h4>Semestre: </h4>
+                                                    </div>
+                                                    <div class="child-item">
+                                                        <h4>Année scolaire: 2023-2024</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                        <!-- <h2>Modules de Formation</h2> -->
+                                        <div class="container">
+                                            <table  class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Module</th>
+                                                        <th>Coefficient</th>
+                                                        <th>Note Exam</th>
+                                                        <th>Note de Classe</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <ng-container *ngFor="let note of notes">
+                                                        <tr>
+                                                        <td>{{note.idModule.nomModule}}</td>
+                                                        <td>{{note.idModule.coefficient}}</td>
+                                                        <td>{{note.examNote}}</td>
+                                                        <td>{{note.classeNote}}</td>
+                                                    </tr>
+                                                    </ng-container>
+                                                    
+                                                    
+                                                </tbody>
+                                            </table>
+                                            
+                                            
+                                        </div>
+                                        <section class="fourth-column">
+                                            <div class="moyennes">
+                                                <div class="m-child1">
+                                                    <p>Moyenne: {{moyenneGenerale}}</p>
+                                                </div>
+                                                <div class="m-child2">
+                                                    <p>Rang: <span> 6ème / <span>45</span></span></p>
+                                                </div>
+                                            </div>
+                                        </section>
+                                        <h2>Mentions</h2>
+                                        <section class="fifth-column">
+                                            <div class="mention"><h5>{{mention}}</h5></div>
+                                        </section>
+                                        <div class="btn-container">
+                                            <button id="print" type="button" class="print-button btn btn-primary">Télécharger en PDF</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </ng-container>
+          </tbody>
+    </table>
+  </main>

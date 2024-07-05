@@ -47,7 +47,7 @@ export class EmploisDuTempsComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.classRomId = params['id'];
       // Utilisez `classRomId` pour vos besoins
-      console.log(this.classRomId);
+      console.log(this.classRomId, "room id");
     });
     this.classService.getClassById(this.classRomId).subscribe(data =>{
       this.classRoom = data;
@@ -89,12 +89,12 @@ export class EmploisDuTempsComponent implements OnInit {
   addEmplois(){
     if (this.EmploisAdd.valid) {
       const formData = this.EmploisAdd.value;
-      console.log(formData, "-----------------")
+      // console.log(formData, "-----------------")
       
       const classe: ClassRoom = this.classRoom;
-      // console.log(classe);
+      // console.log(classe, "classe-----------");
        const semestre: Semestres = this.semestre.find(sm => sm.id === formData.idSemestre)!;
-       console.log("semetre : ", semestre);
+      //  console.log("semetre : ", semestre);
           const emplois : Emplois = {
             idSemestre: semestre,
             dateDebut: formData.dateDebut,
@@ -102,6 +102,7 @@ export class EmploisDuTempsComponent implements OnInit {
             idClasse: classe,
 
           }
+        //  console.log(emplois, "emplis-----")
        this.emploiService.addEmplois(emplois).subscribe(dt =>{
         this.current_emplois = dt;
          console.log(dt);
@@ -109,7 +110,7 @@ export class EmploisDuTempsComponent implements OnInit {
          // Naviguer vers la route avec les paramètres
          const navigationExtras: NavigationExtras = {
              queryParams: {
-                 id: this.current_emplois.id
+                 id: this.current_emplois.idClasse.id
              }
          };
          this.routeLink.navigate(['/sidebar/seance'], navigationExtras);

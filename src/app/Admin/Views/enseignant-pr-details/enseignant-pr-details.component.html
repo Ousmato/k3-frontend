@@ -16,7 +16,7 @@
                     <tr>
                       <!-- <th scope="row" class="text-left">{{ heure }}</th> -->
                       <ng-container *ngFor="let dateInfo of dates_emplois">
-                        <td scope="col">
+                        <td scope="col td-classe" >
                           <ng-container *ngFor="let seance of seances">
                             <ng-container *ngIf="dateInfo.day.toUpperCase() === seance.jour">
                             <div class="seance-content">
@@ -35,8 +35,8 @@
 
                                         <!-- <input type="hidden" formControlName="idEnseignant"> -->
                                       
-                                        <button *ngIf="!isPresent" class="btn" type="submit" (click)="present(seance.id!)" >Present<img src="assets/attendance-icon.svg" alt="photo"></button>
-                                        <button *ngIf="isPresent" class="btn" type="submit" (click)="abscent(seance.idTeacher.idEnseignant!)" >Abscent<img src="assets/remove-cancel-user-icon.svg" alt=""></button>
+                                        <button *ngIf="!seance.observation" class="btn" type="submit"   (click)="present(seance.id!)" >Abscent<img src="assets/remove-cancel-user-icon.svg" alt=""></button>
+                                        <button *ngIf="seance.observation" class="btn" type="submit" (click)="abscent(seance.id!)"  >Present<img src="assets/attendance-icon.svg" alt="photo"></button>
                                       <!-- </form> -->
                                     </ng-container>
                                      

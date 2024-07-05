@@ -15,7 +15,7 @@
                            
                             </button>
                             <div class="dropdown-menu"  [ngClass]="{'show': isDropdownOpen(classRom.id!)}">
-                              <a class="dropdown-item" href="#">Action</a>
+                              <a class="dropdown-item" (click)="smestre_notes(classRom.id!)">Les notes du semestre en cours</a>
                               <a class="dropdown-item" href="#">Another action</a>
                               <a class="dropdown-item" href="#">Something else here</a>
                             </div>
@@ -31,11 +31,13 @@
                             <a *ngIf="isDesabled" (click)="navigateBasedOnCondition(classRom)"  class="btn" title="Créer un emploi du temps"><fa-icon [icon]="faEmploi" class="my-custom-style"></fa-icon></a>
                         
                          <a *ngIf="!isDesabled" class="btn" title="Consulter un emploi du temps"><fa-icon [icon]="faEye" class="my-custom-style"></fa-icon></a>
-                        <a id="module" data-bs-toggle="modal" [attr.data-bs-target]="'#addModuleClass' + classRom.id" class="btn" title="Ajouter des modules à la classe" (click)="getAll_ues(classRom.id!)">
+                        <a id="module" data-bs-toggle="modal" [attr.data-bs-target]="'#addModuleClass' + classRom.id" class="btn" title="Ajouter des modules à la classe"
+                         (click)="getAll_ues(classRom.id!)">
                             <fa-icon [icon]="fabook" class="my-custom-style"></fa-icon>
+                            <span *ngIf="" class="tooltiptext">Ajouter des modules</span>
                           </a>
                           
-                        <a  class="btn" title="Ajouter des notes aux étudiants"><fa-icon [icon]="fanote" class="my-custom-style"></fa-icon></a>
+                        <a  class="btn" title="Ajouter des notes aux étudiants" (click)="add_notes(classRom.id!)"><fa-icon [icon]="fanote" class="my-custom-style"></fa-icon> </a>
                         <a class="btn" title="Notification de la classe"><fa-icon [icon]="fanot" class="my-custom-style"></fa-icon></a>
                     </div>
                 </div>

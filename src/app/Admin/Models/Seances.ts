@@ -8,6 +8,7 @@ export interface Seances{
     heureDebut: string;
     heureFin: string;
     date: Date;
+    observation?: boolean;
     idEmplois: Emplois;
     idTeacher: Teacher;
     idModule: Module;

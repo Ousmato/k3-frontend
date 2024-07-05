@@ -11,6 +11,10 @@ import { EmploisSeanceComponent } from '../Admin/Views/emplois-seance/emplois-se
 import { EnseignantComponent } from '../Admin/Views/enseignant/enseignant.component';
 import { TeachersPresenceComponent } from '../Admin/Views/teachers-presence/teachers-presence.component';
 import { EnseignantPrDetailsComponent } from '../Admin/Views/enseignant-pr-details/enseignant-pr-details.component';
+import { ArchivesComponent } from '../Admin/Views/archives/archives.component';
+import { FichePaieComponent } from '../Admin/Views/fiche-paie/fiche-paie.component';
+import { StudentNoteComponent } from '../Admin/Views/student-note/student-note.component';
+import { AllNotesSemestreComponent } from '../Admin/Views/all-notes-semestre/all-notes-semestre.component';
 
 const routes: Routes = [{path: "", component: SidebarComponent,
     children: [
@@ -19,7 +23,11 @@ const routes: Routes = [{path: "", component: SidebarComponent,
       {path: 'setting', component: SettingsComponent},
       {path: 'etudiant', component: EtudiantsComponent},
       {path: 'enseignants', component: EnseignantComponent},
-      {path: 'list-presence', component: TeachersPresenceComponent}
+      {path: 'list-presence', component: TeachersPresenceComponent},
+      {path: 'archive', component: ArchivesComponent},
+      {path: 'fiche-paie', component: FichePaieComponent},
+      {path: 'student-notes', component: StudentNoteComponent}
+
      
      
     ]
@@ -28,7 +36,8 @@ const routes: Routes = [{path: "", component: SidebarComponent,
   {path: 'inscription', component: SinginComponent},
   {path: 'emplois', component: EmploisDuTempsComponent},
   {path: 'seance', component: EmploisSeanceComponent},
-  {path: 'enseignant-pre-detail', component: EnseignantPrDetailsComponent}
+  {path: 'enseignant-pre-detail', component: EnseignantPrDetailsComponent},
+  {path: 'all-notes', component: AllNotesSemestreComponent}
       
 ]
   

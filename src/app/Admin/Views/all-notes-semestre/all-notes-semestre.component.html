@@ -1,0 +1,53 @@
+<main>
+    <section class="head">
+        <div class="logo">
+            <img src="assets/logounivsegou.png" alt="PHOTO">
+        </div>
+        <div class="info">
+                <h4>APTECH-MALI</h4>
+                <p>Annee Universitaire 2023-2024</p>
+                <p>Resultat definitifs premier semestre</p>
+                <p>Filiere : </p>
+            </div>
+    </section>
+    <!-- -------------------------------------------------- -->
+    <section class="section-table">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nom et Prenom</th>
+                <th scope="col">Date et lieu de naissance</th>
+                <ng-container *ngFor="let module of modules">
+                    <th scope='col' class='vertical-header'>{{module.nomModule}}</th>
+                </ng-container>
+                <th scope="col" class='vertical-header'>Moyenne</th>
+                <th scope="col" class='vertical-header'>Observation</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <ng-container *ngFor="let studus of students">
+
+            
+            <!-- <ng-container *ngFor="let student of notes; trackBy: trackByIdEtudiant"> -->
+                <tr>
+                  <td>{{studus.numero}}</td>
+                  <td>{{studus.nom}} {{studus.prenom}}</td>
+                  <td>{{studus.dateNaissance | date:'dd/MM/yyyy'}}, {{studus.lieuNaissance}}</td>
+                   
+                  <ng-container *ngFor="let mod of modules">
+                    <td>
+                      {{ getStudentModuleScore(studus.idEtudiant!, mod.id!) }}
+                    </td>
+                  </ng-container> 
+          
+                  <td>{{ calculateAverage(studus) }}</td>
+                  <td>{{ determineObservation(studus) }}</td>
+                </tr>
+              <!-- </ng-container> -->
+            </ng-container>
+        </tbody>
+    </table>  
+    </section>
+</main>

@@ -5,6 +5,7 @@ import { Teacher } from '../../Models/Teachers';
 import { Teacher_presence } from '../../Models/objectPresence';
 import { Seances } from '../../Models/Seances';
 import { Presence } from '../../Models/Teacher-presence';
+import { Paie } from '../../Models/paie';
 
 @Injectable({
   providedIn: 'root'
@@ -38,11 +39,24 @@ export class EnseiService {
     return this.http.post<any>(this.baseUrl+ "add-presence", idSeance);
   }
   // ------------------------------method pour absenter un teacher
-  abscenter(teachId : number) : Observable<boolean>{
-    return this.http.get<boolean>(this.baseUrl+"abscent/"+teachId);
+  abscenter(idSeance : Presence) : Observable<any>{
+    console.log(idSeance, "service")
+    return this.http.post<any>(this.baseUrl+ "abscent", idSeance);
   }
   // ------------get status
-  getStatus(idTeacher : number) : Observable<boolean>{
-    return this.http.get<boolean>(this.baseUrl+"status/"+idTeacher);
+  getStatus(idTeacher : number) : Observable<Presence[]>{
+    return this.http.get<Presence[]>(this.baseUrl+"status/"+idTeacher);
+  }
+  // ---------------------------------get All teacher in presence
+  getAllPresence() : Observable<Presence[]>{
+    return this.http.get<Presence[]>(this.baseUrl + 'list-presence');
+  }
+  // --------------------------------add paie
+  addPaie(paie: Paie) : Observable<any>{
+    return this.http.post<any>(this.baseUrl+"add-paie", paie);
+  }
+  // -----------------------------------get all paie
+  getAllPaie() : Observable<Paie[]>{
+    return this.http.get<Paie[]>(this.baseUrl + 'list-paie');
   }
 }

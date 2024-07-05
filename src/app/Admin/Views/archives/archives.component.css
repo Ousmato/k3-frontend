@@ -1,0 +1,119 @@
+table{
+    margin-top: 20px;
+}
+main{width: 100%;
+
+    padding-top: 20px;
+}
+a button{
+    margin-bottom: 30px;
+}
+
+/* Styler l'en-tête du tableau */
+th {
+    background-color: #84a2cf49;
+}
+
+tr td{
+    font-size: 16px;
+    text-overflow: ellipsis;
+}
+.btn-contenaire{
+    display: flex;
+    justify-content: space-between;
+}
+span{
+    font-size: 10px;
+    color: blue;
+}
+.class-name{
+    cursor: pointer;
+}
+strong{
+    font-size: 12px;
+}
+.image{
+    vertical-align: middle;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+.icon-paie{
+    /* height: 40px; */
+    width: auto;
+    cursor: pointer;
+    font-size: 25px;
+}
+.icon-paie:hover{
+    padding: 5px;
+    color: orange;
+    border-radius: 10px;
+    transition: 0.3s;
+    border: 1px solid orange;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.nom-class{
+    width: 150px;
+    height: 30px;
+}
+/* --------------------------------- */
+.row {
+    
+    margin-top: 5px;
+    display: flex;
+    /* border-bottom: 1px solid #dee2e6; */
+  }
+  .row-edit {
+    
+    margin-top: 5px;
+    display: flex;
+    /* border-bottom: 1px solid red; */
+  }
+  .card-body{
+    border-top: none;
+  }
+
+  .header {
+    font-weight: bold;
+    background-color: #f8f9fa;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+
+  .col {
+    border: 1px solid #ccc;
+    flex: 1;
+    padding: 10px;
+  }
+
+  .col:first-child {
+    border-right: 1px solid #dee2e6;
+  }
+
+  .col:last-child {
+    border-left: 1px solid #dee2e6;
+  }
+  .btn-display{
+    display: none;
+  }
+  .button{
+    display: block;
+    align-items: end;
+    margin-top: 10px;
+    width: 150px;
+    /* padding: 20px; */
+  }
+  #button{
+    margin-top: 15px;
+    width: 100%;
+  }
+  .nbrHeure{
+    font-size: 16px;
+  }
+  #input-none{
+    display: none;
+  }
+  .tresultat input{
+    border: none;
+  }

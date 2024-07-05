@@ -32,7 +32,7 @@ export class EnseignantPrDetailsComponent implements OnInit {
  detaille!: any;
  isPresent: boolean = false;
  empois_class: Emplois_Classe[] =[];
-//  status!: Presence;
+ status!: Presence;
  presen_form!: FormGroup
 
 
@@ -60,6 +60,7 @@ export class EnseignantPrDetailsComponent implements OnInit {
         this.teacher = this.detail_teacher.teacher;
           this.classes = this.detail_teacher.classRoom;
           this.seances = this.detail_teacher.seances;
+          console.log(this.seances[0].observation+"----------------------------------")
           
         // }))
        
@@ -79,11 +80,13 @@ export class EnseignantPrDetailsComponent implements OnInit {
           }
           
         })
-      
+        
         this.detail_teacher.seances.forEach((snce) =>{
+          let seanceIdEmplois: number;
           snce.heureDebut = snce.heureDebut.slice(0, 5);
           snce.heureFin = snce.heureFin.slice(0, 5); 
           snce.date = new Date(snce.date); 
+          seanceIdEmplois = snce.idEmplois.id!;
 
           const formattedDate = this.datePipe.transform(snce.date, 'dd, MMMM yyyy', 'fr-FR');
           // console.log(formattedDate, 'formatted date');
@@ -95,32 +98,36 @@ export class EnseignantPrDetailsComponent implements OnInit {
           if (!this.hoursList.includes(timePair)) {
             this.hoursList.push(timePair);
           }
-        })
-        this.checkIfEmploiExists(data.seances, data.emplois, data.classRoom)
+          const emploi_found = data.emplois.find(emp => emp.id === seanceIdEmplois)
+          const classe_found = data.classRoom.find( cl_found => cl_found.id === emploi_found?.idClasse.id);
+          
+          if (!this.empois_class.some(item => item.emploi.id === emploi_found!.id && item.classe.id === classe_found!.id)){
+          this.empois_class.push({emploi: emploi_found!, classe: classe_found!});
+        }
+        });
+        this.checkIfEmploiExists(data.seances)
       });
       // this.currentDay(days)
     });
     }
     // -----------------------------------------emplois an classe  is found
-    checkIfEmploiExists(seances: Seances[], emplois: Emplois[], classes: ClassRoom[]) {
-     
-    
+   async checkIfEmploiExists(seances: Seances[]) {
       // Parcourir chaque seance
       for (let seance of seances) {
-        const seanceIdEmplois = seance.idEmplois.id;
-      
-     this.load_status(seance.idTeacher.idEnseignant!)
-        // Vérifiez si un emploi correspondant existe
-       const emploi_found = emplois.find(emp => emp.id === seanceIdEmplois)
-
-         for(let cla of classes){
-         
-          if(cla.id === emploi_found!.idClasse.id){
-           this.empois_class.push({emploi: emploi_found!, classe: cla});
-            
-          }
+        try {
+          const data = await this.teacherService.getStatus(seance.idTeacher.idEnseignant!).toPromise();
+          this.status = data?.find(dp => dp.idSeance.id == seance.id)!;
+          if (this.status?.observation == true) {
+           seance.observation = true;
           
-         }      
+          }else {
+           seance.observation = false;
+         
+          }
+        } catch (error) {
+          console.error("Error fetching status:", error);
+          // Handle error if needed
+        }
       }
     }
     // -------------------------------get current day
@@ -128,7 +135,7 @@ export class EnseignantPrDetailsComponent implements OnInit {
       days = days.toUpperCase();
       const currentDate = new Date();
       const day = this.datePipe.transform(currentDate, 'EEEE', 'fr-FR')?.toUpperCase();
-     const day_correspond = days === day
+      const day_correspond = days === day
       
       return day_correspond;
     }
@@ -148,25 +155,22 @@ export class EnseignantPrDetailsComponent implements OnInit {
       })
     }
   
-  //  ------------------------------load status of teacher
-  load_status(idTeacher: number){
-    this.teacherService.getStatus(idTeacher).subscribe(data => {
-      if(data === true){
-        this.isPresent = true;
-      }else{
-        this.isPresent = false;
-        console.log(data, "status of teacher false")
-      }
-    });
-  }
+  
   // ----------------------------------method abscenter un teacher
-    abscent(teachId: number) {
-      this.teacherService.abscenter(teachId).subscribe(data =>{
-        if(data === true){
+    abscent(seanceId: number) {
+      const seance = this.seances.find(s => s.id === seanceId);
+      // console.log(seance, "seabbb")
+      const present_seance : Presence ={
+        idSeance: seance!
 
+      }
+      this.teacherService.abscenter(present_seance!).subscribe(data =>{
+        // console.log(data, "data")
+        if(data === true){
+         
           alert("L'absence ajouter avec success!!");
           window.location.reload();
-          this.isPresent = false;
+           present_seance.idSeance.observation = false;
         }
       })
     }

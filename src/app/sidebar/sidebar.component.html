@@ -8,7 +8,7 @@
       <div class="side-child">
         <ul class="list-unstyled components">
           <li class="menu-link">
-            <a href="#">
+            <a routerLink="/sidebar">
               <span><fa-icon [icon]="icons.home"></fa-icon>Acceuil</span>
             </a>
           </li>
@@ -21,7 +21,7 @@
             <ul class="sub-menu" *ngIf="isSubMenuOpen.enseignants">
               <li><a routerLink="/sidebar/list-presence">Liste de Presence</a></li>
               <li><a routerLink="/sidebar/enseignants">Liste des Enseignants</a></li>
-              <li><a href="#">Fiche de Paie</a></li>
+              <li><a routerLink="/sidebar/fiche-paie"> Fiche de Paie</a></li>
             </ul>
           </li>
           <li class="menu-link">
@@ -38,6 +38,11 @@
           <li class="menu-link">
             <a routerLink="/sidebar/classe">
               <span><fa-icon [icon]="icons.scool"></fa-icon> Classes</span>
+            </a>
+          </li>
+          <li class="menu-link">
+            <a routerLink="#">
+              <span><img src="assets/book-shop-icon.svg" alt=""> Bibliotheque</span>
             </a>
           </li>
           <li class="menu-link">

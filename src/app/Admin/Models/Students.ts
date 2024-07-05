@@ -1,7 +1,9 @@
 import { Admin } from "./Admin";
 import { ClassRoom } from "./Classe";
+import { Module } from "./Module";
 
 export interface Student {
+    numero?: number;
     idEtudiant?: number;
     nom: string;
     prenom: string;
@@ -18,4 +20,5 @@ export interface Student {
     dateNaissance: string; 
     idClasse : ClassRoom;
     idAdmin?: Admin;
+    modules?: Module[]
 }

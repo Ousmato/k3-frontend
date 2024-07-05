@@ -133,7 +133,7 @@ export class ClassStudentsComponent implements OnInit {
           this.emploisService.isEmploisValid(this.emplois.id!).subscribe(data =>{
             if(data === true){
               this.isDesabled === false;
-              console.log(data, "datttttaaaaa")
+              // console.log(data, "datttttaaaaa")
                this.loadClassesWithEmplois(classRom)
             }
             const navigationExtras: NavigationExtras = {
@@ -149,6 +149,18 @@ export class ClassStudentsComponent implements OnInit {
       }
     });
   }
-  // -----------------------
- 
+  // ----------------------- method go to add notes aux student
+  add_notes(idClasse: number){
+    const navigationExtras: NavigationExtras = {
+      queryParams: { id: idClasse }
+    };
+    this.router.navigate(['/sidebar/student-notes'], navigationExtras);
+  }
+  //  -------------------------hover bottom button 
+  smestre_notes(idClasse: number){
+    const navigationExtras: NavigationExtras = {
+      queryParams: { id: idClasse }
+    };
+    this.router.navigate(['/sidebar/all-notes'], navigationExtras);
+  }
 }

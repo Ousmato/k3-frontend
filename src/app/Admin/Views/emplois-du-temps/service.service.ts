@@ -16,8 +16,8 @@ export class ServiceService {
     return this.http.post(`${this.baseUrl}add`, emplois);
   }
   // -----------------------------------------------------------get emplois by id
-  getEmploisById(id: number): Observable<any>{
-    return this.http.get(`${this.baseUrl}emplois/${id}`);
+  getEmploisById(id: number): Observable<Emplois>{
+    return this.http.get<Emplois>(`${this.baseUrl}emplois/${id}`);
   }
   // --------------------------------------get by id classe
   getEmploisByClasse(id: number): Observable<Emplois[]>{
@@ -59,5 +59,11 @@ export class ServiceService {
   }
     return dates;
   }
-  // 
+  // ----------------------------------------grt all emplois actifs
+  getAllEmploisActifs(): Observable<Emplois[]>{
+    return this.http.get<Emplois[]>(`${this.baseUrl}all-actifs-emplois`);
+  }
+  // ------------------------get all emplois by id
+ 
 }
+

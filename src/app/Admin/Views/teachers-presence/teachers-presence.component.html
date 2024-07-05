@@ -1,6 +1,6 @@
 
 <main>
-    <a data-bs-toggle="modal" data-bs-target="#form-add">
+    <a routerLink="/sidebar/archive">
         <button class="btn btn-primary">Presence du mois</button>
     </a>
     <table datatable datatable [dtOptions]="dtOptions" class="table table-striped table-hover">
@@ -12,8 +12,6 @@
               <th>Prenom</th>
               <th>Email</th>
               <th>Telephone</th>
-              <th>Classe</th>
-              <th>Action</th>
 
             </tr>
           </thead>
@@ -28,16 +26,6 @@
                 <td>{{enseign.email}}</td>
                 
                 <td>{{enseign.telephone}}</td>
-                <td><strong></strong></td>
-                  <td>
-                      <!-- <div class="btn-contenaire">
-                          <a ><fa-icon [icon]="icons.eye"></fa-icon><span>Details</span></a>
-                          <a><fa-icon [icon]="icons.edit"></fa-icon><span>Modifier</span></a>
-                          <a><fa-icon [icon]="icons.delete"></fa-icon><span>Supprimer</span></a>
-                      
-                      </div> -->
-                  </td>
-               
               </tr>
             </ng-container>
             

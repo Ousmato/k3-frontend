@@ -1,1 +1,156 @@
-<h4>Dashboard works heinn</h4>
+<main>
+    <div class="first-container">
+        <div class="head-card-content">
+            <div class="child-card">
+                <div class="child-card-content">
+                    <div class="card-img">
+                        <img src="assets/study-group-icon.svg" alt="Logo">
+                    </div>
+                    <div class="card-text">
+                        <p>Nombres d'Etudiants</p>
+                        <h1>{{studentsCount}}</h1>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            <div class="child-card">
+                <div class="child-card-content">
+                    <div class="card-img">
+                        <img  src="assets/group-icon.svg" alt="Logo">
+                    </div>
+                    <div class="card-text">
+                        <p>Nombres d'Enseignants</p>
+                        <h1>{{teachersCount}}</h1>
+                    </div>
+                    
+                </div>
+                
+                
+            </div>
+            <div class="child-card">
+                <div class="child-card-content">
+                    <div class="card-img">
+                        <img src="assets/school-admission-icon.svg" alt="Logo">
+                    </div>
+                    <div class="card-text">
+                        <p>Nombres de Classes</p>
+                        <h1>{{classesCount}}</h1>
+                    </div>
+                    
+                </div>
+                
+                
+            </div>
+           
+        </div>
+        <!-- -------------------------------------------------------------- -->
+        <div class="body-content">
+            <div class="child-cards">
+                <!-- <div class="child-card-content"> -->
+                    <div  id="card-img">
+                        <img id="calendar" src="assets/booking-confirmed-icon.svg" alt="Logo">
+                    </div>
+                    <div id="cart-text" class="card-text">
+                        <h5>Nombres d'Emplois Actifs</h5>
+                        <h1>{{emploisCount}}</h1>
+                    <!-- </div> -->
+                    
+                </div>
+            </div>
+                <div class="class-scrol">
+                    <ng-container *ngFor="let classe of emplois">
+                        <div class="calendar-classes-content">
+                        <p>{{classe.idClasse.idFiliere?.idNiveau?.nom}} ({{classe.idClasse.idFiliere?.idFiliere?.nomFiliere}})</p>
+                        <div class="date-content">
+                            <p> Debuté le : {{classe.dateDebut}}</p>
+                            <p> Prend fin le : <span id="span">{{classe.dateFin}}</span></p>
+                        </div>
+                    </div>
+                    </ng-container>
+                </div>
+            
+            <!-- <h2>Body Content</h2>
+            <p>Here you can add more detailed information, graphs, tables, etc.</p> -->
+        </div>
+    </div>
+    <div class="second-container">
+       
+        <section class="section-scrolable"> 
+            <h4>Notifications</h4>
+            <div class="div-notification">
+                 
+                <div class="fisrt-col">
+                    <img src="" alt="Photo">
+                </div>
+                <div class="second-col">
+                    <h6>22-09-2023</h6>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, quidem.</p>
+                    <div class="proprio"><span>M.DIARRA</span></div>
+                    
+                </div>
+            </div>
+            <div class="div-notification">
+                 <h4>Notifications</h4>
+                <div class="fisrt-col">
+                    <img src="" alt="Photo">
+                </div>
+                <div class="second-col">
+                    <h6>22-09-2023</h6>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, quidem.</p>
+                    <div class="proprio"><span>M.DIARRA</span></div>
+                    
+                </div>
+            </div>
+            <div class="div-notification">
+                 <h4>Notifications</h4>
+                <div class="fisrt-col">
+                    <img src="" alt="Photo">
+                </div>
+                <div class="second-col">
+                    <h6>22-09-2023</h6>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, quidem.</p>
+                    <div class="proprio"><span>M.DIARRA</span></div>
+                    
+                </div>
+            </div>
+            <div class="div-notification">
+                 <h4>Notifications</h4>
+                <div class="fisrt-col">
+                    <img src="" alt="Photo">
+                </div>
+                <div class="second-col">
+                    <h6>22-09-2023</h6>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, quidem.</p>
+                    <div class="proprio"><span>M.DIARRA</span></div>
+                    
+                </div>
+            </div>
+            <div class="div-notification">
+                 <h4>Notifications</h4>
+                <div class="fisrt-col">
+                    <img src="" alt="Photo">
+                </div>
+                <div class="second-col">
+                    <h6>22-09-2023</h6>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, quidem.</p>
+                    <div class="proprio"><span>M.DIARRA</span></div>
+                    
+                </div>
+            </div>
+           
+        </section>
+        <div class="input-content">
+            <form [formGroup]="noti_form" (ngSubmit)="add_notification()">
+                <div class="form-group">
+                    <!-- <input type="text" class="form-control"  formControlName="Object"  placeholder="Object..."> -->
+                    <input type="text" class="form-control"  formControlName="titre"  placeholder="Objet..."> 
+                    <textarea type="text" class="form-control"  formControlName="description"  placeholder="Messages..."></textarea>
+               
+                </div>
+                 <button type="submit"><img src="assets/map-direction-navigation-right-orange-icon.svg" alt="uuu"></button>
+       
+            </form>
+             </div>
+    </div>
+</main>
