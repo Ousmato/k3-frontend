@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Seances } from '../../Models/Seances';
+import { Response_String } from '../../Models/Response_String';
 
 @Injectable({
   providedIn: 'root'
@@ -19,4 +20,13 @@ export class SeancService {
   create(seance: Seances): Observable<any>{
     return this.http.post<any>(this.baseUrl + 'add', seance);
   }
+  // ---------------------------------------delete seance 
+  delete(id: number): Observable<Response_String>{
+    return this.http.delete<Response_String>(this.baseUrl + 'delete/' + id);
+  }
+  // --------------------------------update seance method 
+  update(seance: Seances) : Observable<Response_String>{
+    return this.http.put<Response_String>(this.baseUrl+"update", seance);
+  }
+  
 }

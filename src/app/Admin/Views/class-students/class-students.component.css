@@ -11,13 +11,7 @@
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     grid-gap: 20px;
    }
-  .btn{
-    margin-top: 20px;
-    margin-left: 10px;
-  }
-  .dropdown-item{
-    cursor: pointer;
-  }
+ 
   
   .my-custom-style {
 	font-size: 25px;
@@ -50,27 +44,21 @@
       margin-left: 2%;
       border: 1px solid red;
   }
-  /* .grid-container {
+  .grid-container {
+    position: relative;
     padding: 10px; 
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 2fr));
-    grid-gap: 20px;
-  } */
+    grid-gap: 10px;
+  }
     .grid-item {
    
       text-align: center;
     }
   
-    .btn-contenair{
-      position: relative;
-
-      width: 100px;
-      display: flex;
-      justify-content: space-between;
-    }
-  
-    .card-body h5 a{
-      cursor: pointer;
+    label{
+      color: var(--primary);
+      font-weight: 500;
     }
     .icon-m{
       width: 30%;
@@ -84,13 +72,6 @@
       color: #333;
     }
     
-    .dropdown-menu {
-      display: none;
-    }
-    
-    .dropdown-menu.show {
-      display: block;
-    }
 
     .h4-head{
       width: 80%;
@@ -101,40 +82,9 @@
     .card-header{
       display: flex;
     }
-    .btn img{
-      /* border: 1px solid red; */
-      height: 25px;
-    }
-    title{
-      background-color: rgb(114, 114, 255);
-      color: white;
-    }
-    .btn-contenair a {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 40px;
-      width:  40px;
-      border: 1px solid #cac9c9;
-      border-radius: 50%;
-      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-    }
-    a .etudian-detail{
-      margin: 0;
-      padding: 0;
-    }
-    .nom-class{
-      font-size: 16px;
-      padding: 8px;
-      border: 1px solid #ccc;
-      background-color: #ccc;
-    }
-    #button{
-      margin-top: 10px;
-    }
-    #add-button{
-      margin-top: 10px;
-    }
+    
+   
+  
     .btn{
       margin: 0;
     }
@@ -150,24 +100,219 @@
   }
 
   /* ------------------------------------------------ */
-  .tooltip .tooltiptext {
-    visibility: hidden;
-    width: 160px; /* Adjust the width as needed */
-    background-color: black;
-    color: #fff;
-    text-align: center;
+  
+
+  /* ----------------------------- */
+  .class-folder{
+    height: 100px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--tertiary);
+    padding: 10px;
     border-radius: 5px;
-    padding: 5px 0;
-    position: absolute;
-    z-index: 1;
-    bottom: -30px; /* Adjust the position as needed */
-    left: 50%;
-    transform: translateX(-50%);
-    opacity: 0;
-    transition: opacity 0.3s;
+  }
+  .class-folder h2{
+    margin: 0px;
+    font-size: 16px;
+    font-weight: 800;
+  }
+  
+  .icons-style{
+    color: rgb(255, 196, 0);
+    font-size: 5.7rem;
+  }
+  .info-folder p{
+    margin: 0;
+    font-size: 14px;
+  }
+  .info-folder{
+    text-align: left;
+  }
+  .info-folder a{
+    text-decoration: none;
+    display: flex;
+    gap: 8px;
+     margin: 0;
+     cursor: pointer;
+    color: var(--primary);
+    font-size: 14px;
+    &:hover{
+      color: var(--secondary);
+      background-color: var(--primary);
+      padding: 2px;
+      border-radius: 5px;
+      width: 100px;
+    }
+  }
+ .info-folder .title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+  /* .views{
+    padding: 8px;
+    border: 1px solid var(--tertiary);
+  } */
+
+  .views li{
+    /* font-weight: 800; */
+   text-align: left;
+    padding: 5px;
+    color: var(--primary);
+    border-bottom: 1px solid var(--tertiary);
+    cursor: pointer;
+    &:hover{
+      color: var(--secondary);
+    }
   }
 
-  .tooltip:hover .tooltiptext {
-    visibility: visible;
-    opacity: 1;
+  .views{
+    background-color: #fff;
+    position: absolute;
+    top: 105px;
+    left: 11px;
+    border: 1px solid #ddd;
+    padding: 8px;
+    /* border-radius: 4px; */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    z-index: 10001;
+   
+    }
+  .views-add-ues{
+    background-color: #fff;
+    position: absolute;
+    width: 400px;
+    top: 105px;
+    left: 11px;
+    border: 1px solid #ddd;
+    padding: 8px;
+    /* border-radius: 4px; */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    z-index: 10001;
+   
+    }
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); 
+    z-index: 1000; /* Assurez-vous que l'overlay est au-dessus de tout */
   }
+
+  .button-cash a{
+    text-decoration: none;
+     border: none;
+     margin-top: 8px;
+     padding: 5px;
+     border-radius: 5px;
+     background-color: var(--secondary);
+     cursor: pointer;
+     &:hover{
+         
+     background-color: red;
+         color: var(--primary);
+     }
+    
+  }
+  .button-cash button{
+    text-decoration: none;
+     border: none;
+     margin-top: 8px;
+     padding: 5px;
+     border-radius: 5px;
+     color: var(--secondary);
+     background-color: var(--primary);
+     cursor: pointer;
+     &:hover{
+         
+     background-color: var(--secondary);
+         color: var(--primary);
+     }
+    
+  }
+  .button-cash{
+
+    display: flex;
+    gap: 20px;
+    justify-content: end;
+    
+}
+
+/* ------------------------------------ */
+.custom-select {
+  border: none;
+  width: 100%;
+  font-size: 16px;
+  color: #333;
+  appearance: none; /* Remove default arrow */
+  -webkit-appearance: none; /* Remove default arrow in Safari */
+  -moz-appearance: none; /* Remove default arrow in Firefox */
+  position: relative;
+  overflow: hidden; 
+  outline: none;
+  overflow: scroll;
+}
+
+
+.custom-select option {
+  padding: 10px;
+  /* background-color: #fff; */
+  color: #333;
+  border-bottom: 1px solid var(--primary);
+}
+
+
+
+.custom-select option:hover {
+  background-color: var(--primary);
+  color: var(--secondary);
+}
+
+.custom-select option:checked {
+  background-color: var(--primary);
+  color: var(--secondary);
+}
+
+
+.custom-select::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge, and Firefox */
+.custom-select {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.not-found img{
+  width: 30%;
+  height: 30%;
+  
+
+}
+.not-found .img{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.not-found p{
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+.not-found a{
+  color: var(--secondary);
+  font-size: 18px;
+  padding: 8px;
+  cursor: pointer;
+  background-color: var(--primary);
+  text-decoration: none;
+  border-radius: 5px;
+  &:hover{
+    color: var(--primary);
+    background-color: var(--secondary);
+  }
+}

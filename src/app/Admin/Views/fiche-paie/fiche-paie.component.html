@@ -1,7 +1,7 @@
 
 <main>
    
-    <table datatable datatable [dtOptions]="dtOptions" class="table table-striped table-hover">
+    <table class="table table-striped table-hover">
         <thead>
             <tr>
               <th>ID</th>
@@ -32,7 +32,7 @@
 
               <!-- modal add paie -->
               <div class="modal fade" [id]="'modal-' + enseign.idEnseignant"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
+                <div class="modal-dialog modal-lg" [id]="'imprime'+enseign.idEnseignant" >
                     <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Fiche de paie du mois</h5>
@@ -43,10 +43,10 @@
                         <section class="contenaire-head">
                             <div class="first-child">
                                 <h4>Employeur</h4>
-                                <p>Nom : Aptech-Mali</p>
-                                <p>Sise : Hamdalaye ACI Immeuble TOMOTA</p>
-                                <p>Tel : +223 73 85 51 56</p>
-                                <p>Email : william.henry.harrisonexample-pet-store.com</p>
+                                <p>Nom : {{schoolInfo.nomSchool}}</p>
+                                <p>Sise :{{schoolInfo.localite}}</p>
+                                <p>Tel : +223 {{schoolInfo.telephone}}</p>
+                                <p>Email : {{schoolInfo.email}}</p>
 
                             </div>
                             <div class="second-child">
@@ -58,7 +58,7 @@
                             </div>
                             </section>
                         <!-- second-section -->
-                        <div class="card" >
+                        <div class="card">
                             <div class="card-body">
                             <!-- <div class="container"> -->
 
@@ -88,7 +88,7 @@
                                            
                                     </ng-container>
                                     <div class="btn-content">
-                                        <button id="button" type="button" class="btn btn-primary">Telecharger en PDF</button>
+                                        <button (click)="imprimer('imprime'+enseign.idEnseignant, enseign.nom)" id="button" type="button" class="btn btn-primary">Telecharger en PDF</button>
                                 
                                     </div>
                                     

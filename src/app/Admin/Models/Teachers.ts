@@ -7,7 +7,7 @@ export interface Teacher {
     password: string;
     telephone: number;
     urlPhoto?: string;
-    // isDeleted: boolean;
+    isDeleted?: boolean;
     status: TeachersStatus;
 }
 

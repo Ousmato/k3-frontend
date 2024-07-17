@@ -12,6 +12,9 @@ import { Module } from '../../Models/Module';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Students_Module } from '../../Models/studends_modules';
 import { StudenModules_classe } from '../../Classes/Module_classe';
+import { SchoolService } from '../../../Services/school.service';
+import { SchoolInfo } from '../../Models/School-info';
+import { empty } from 'rxjs';
 
 @Component({
   selector: 'app-student-note',
@@ -19,15 +22,21 @@ import { StudenModules_classe } from '../../Classes/Module_classe';
   styleUrl: './student-note.component.css'
 })
 export class StudentNoteComponent implements OnInit {
+  searchTerm: string = '';
   students: Student [] = [];
   notes: Notes[] = [];
   dtOptions: any = {};
   idUrl! : number;
+  moduleSelect!: any
+
   semestres: Semestres[] = [];
   modules: Module[] = [];
+
   moduleForm!: FormGroup;
+  update_note_form!: FormGroup;
   student!: Student;
   showFormId: number | null = null;
+  schoolInfo!: SchoolInfo
   modules_of_student: Students_Module[] = [];
   isShow_button: boolean = false
   moyenneGenerale: number = 0
@@ -37,11 +46,14 @@ export class StudentNoteComponent implements OnInit {
   
 
   constructor(public icons: IconsService, private fb: FormBuilder,
-    private studentService: EtudeService, 
+    private studentService: EtudeService, private schoolService: SchoolService,
     private route: ActivatedRoute, private semestreService: SemestreService, private classeService: ClassStudentService) {}
   ngOnInit(): void {
+    this.getSchoolInfo();
     this.loadStudent();
     this.loadSemestre();
+    this.load_update_form();
+    
     // this.desable_button();
     
    // Initialisation du formulaire
@@ -138,10 +150,16 @@ export class StudentNoteComponent implements OnInit {
 
     // ---------------------------------get module without not of student
     load_module_without_note(idStudent: number){
-      this.studentService.getAllModulesWithoutNoteFilter(idStudent,this.idUrl).subscribe((module: Module[]) =>{
-        this.modules = module;
-       this.desable_button(this.modules);
-          //  this.load_student_module(student, module)
+      this.studentService.getAllModulesWithoutNoteFilter(idStudent,this.idUrl).subscribe({
+        next : (module: Module[]) =>{
+          this.modules = module;
+          // this.load_student_module(student, module)
+          // this.desable_button(this.modules);
+        },
+        error : (erreur) => console.error('Erreur lors de la récupération des modules sans notes :', erreur.error.message)
+        // this.modules = module;
+       
+          //  
         } )
     }
     // ---------------------------desable or aviable button
@@ -161,7 +179,7 @@ export class StudentNoteComponent implements OnInit {
         const idSemestre = semestre
         this.studentService.getAllNoteByIdStudent(idStudent, idSemestre.id!).subscribe(note =>{
           
-
+          console.log(note, "note-------")
           // ---------------------------calculate moyen ponderer
           let totalCoefficient = 0;
           let totalPonderedScore = 0;
@@ -197,5 +215,92 @@ export class StudentNoteComponent implements OnInit {
         
       })
     }
+// --------------------------------------------------------------------------method filter
+  filteredStudents() {
+    if (!this.searchTerm) {
+      return this.students;
+    }
+    return this.students.filter(student =>
+      student.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      student.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      student.idClasse.idFiliere?.idFiliere?.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase())
+      // student.telephone.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
+  // ----------------------------------------------------methode get school informations
+  getSchoolInfo() {
+    this.schoolService.getSchools().subscribe(data => {
+      this.schoolInfo = data;
+    });
+  }
+  // ---------------------update note
+  load_update(student: Student){
+    this.semestreService.getCurentSemestre().subscribe(semestre =>{
+      const idSemestre = semestre
+      this.studentService.getAllNoteByIdStudent(student.idEtudiant!, idSemestre.id!).subscribe(note =>{
+        note.forEach(n => {
+          if(!this.modules.some(module => module.id === n.idModule.id)){
+            this.modules.push(n.idModule)
+          }
+          this.moduleSelect = n
+          
+        });
+        this.notes = note
+       
+      })
+    })
+  }
+  // ---------------------load update form
+  load_update_form(){
+    this.update_note_form = this.fb.group({
+      examNote: ['', [Validators.required, Validators.min(0), Validators.max(20)]],
+      classeNote: ['', [Validators.required, Validators.min(0), Validators.max(20)]],
+      idModule: ['', Validators.required],
+      idSemestre: ['', Validators.required]
+    })
+  }
+  // --------------------------------------------method update
+  update_note(student: Student){
+    const formData = this.update_note_form.value
+    const note : Notes = {
+      id: this.moduleSelect!.id,
+      idStudents: student,
+      idModule: this.moduleSelect.idModule,
+      idSemestre: this.moduleSelect.idSemestre,
+      classeNote: formData.classeNote,
+      examNote: formData.examNote
+    }
+// console.log(note, "note-up")
+  }
+  // -------------------------------
+  onSelecteModule(event: any){
+    console.log("clic ici")
+    const evenSelect = event.target.value
+    this.notes.forEach(n =>{
+       console.log(this.moduleSelect, "module-select");
+      if(evenSelect == n.idModule.id){
+        if(this.moduleSelect == null){
 
+        }
+          this.moduleSelect = n
+        
+        console.log(this.moduleSelect, "module-select")
+      }
+    })
+    this.update_note_form.get('examNote')?.setValue(this.moduleSelect.examNote);
+    this.update_note_form.get('classeNote')?.setValue(this.moduleSelect.classeNote);
+    
+    // console.log(this.notesSelectModule, "module-select")
+  }
+  // ------------------------------------exit button
+  exit(){
+  //  this.moduleSelect =  null
+//  notes.forEach(note =>{
+//   if(note == this.moduleSelect){
+// if()
+    this.moduleSelect = null
+//   }
+//  })
+    console.log(this.moduleSelect, "exit module")
+  }
 }

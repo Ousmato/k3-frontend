@@ -59,4 +59,11 @@ export class EnseiService {
   getAllPaie() : Observable<Paie[]>{
     return this.http.get<Paie[]>(this.baseUrl + 'list-paie');
   }
+  // -------------------------------------------update teacher
+  updateTeacher(teacher: Teacher, photo: File): Observable<any>{
+    const formData = new FormData();
+    formData.append('teacher', JSON.stringify(teacher));
+      formData.append('file', photo);
+    return this.http.put<any>(this.baseUrl + 'update', formData);
+  }
 }

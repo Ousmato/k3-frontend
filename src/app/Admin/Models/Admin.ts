@@ -1,6 +1,6 @@
 export interface Admin{
     idAdministra:number;
-    nomAdmin:string;
+    nom:string;
     prenom:string;
     email:string;
     telephone:number;

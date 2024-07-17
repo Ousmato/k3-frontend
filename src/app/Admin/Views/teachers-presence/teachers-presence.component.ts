@@ -8,7 +8,6 @@ import { Observable } from 'rxjs';
 import { ServiceService } from '../emplois-du-temps/service.service';
 import { DatePipe } from '@angular/common';
 import { Emplois } from '../../Models/Emplois';
-import { data } from 'jquery';
 
 @Component({
   selector: 'app-teachers-presence',
@@ -19,8 +18,6 @@ export class TeachersPresenceComponent  implements OnInit {
   enseignants!: Teacher [];
 teacher_info: Teacher_presence[] = [];
   detaille: Teacher_presence [] = [];
-  dtOptions: any = {};
-
   datesWithDays: { day: string, date: string }[] = [];
 emplois!: Emplois;
 
@@ -47,23 +44,7 @@ emplois!: Emplois;
       });
       console.log(this.enseignants)
     });
-    this.dtOptions = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      // processing: true,
-      // serverSide: true,
-      columnDefs: [
-        { orderable: false, targets: '_all' }
-      ],
-      language: {
-        info: 'Affichage de _START_ à _END_ sur _TOTAL_ entrées',
-        infoEmpty: 'Affichage de 0 à 0 sur 0 entrée',
-        infoFiltered: '(filtré à partir de _MAX_ entrées au total)',
-        lengthMenu: '_MENU_ Entrées par page',
-        search: 'Recherche :'
-      }
-      // Ajoutez d'autres options au besoin
-    };
+   
   }
   // --------------------------------------------------method go to detail teacher presence
   selectedTeacher(teachId: number): void {

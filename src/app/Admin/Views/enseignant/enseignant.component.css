@@ -11,7 +11,7 @@ a button{
 
 /* Styler l'en-tête du tableau */
 th {
-    background-color: #84a2cf49;
+    background-color: var(--primary-light);
 }
 
 tr td{
@@ -21,10 +21,18 @@ tr td{
 .btn-contenaire{
     display: flex;
     justify-content: space-between;
+    
+}
+.btn-contenaire a{
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    
 }
 span{
     font-size: 10px;
-    color: blue;
+    font-weight: 800;
+    color: var(--primary);
 }
 .class-name{
     cursor: pointer;
@@ -34,4 +42,39 @@ img{
     border: 1px solid #ccc;
     height: 50px;
     width: auto;
+}
+li{
+    list-style-type: none;
+    padding: 8px;
+    border: #ccc 1px solid;
+    margin-top: 8px;
+
+}
+li span{
+    font-size: 16px;
+    color: var(--primary);
+}
+.img-contenaire img{
+    height: 100px;
+    width: auto;
+    border: #ccc 1px solid;
+    border-radius: 0;
+}
+.img-contenaire{
+    display: flex;
+    gap: 10px;
+    align-items: end;
+}
+.classe h4{
+    font-size: 16px;
+    font-weight: 800;
+}
+.btn-add{
+    padding: 8px;
+    background-color: var(--primary);
+    color: var(--secondary);
+    &:hover{
+        color: var(--primary);
+        background-color: var(--secondary);
+    }
 }

@@ -17,7 +17,6 @@ import { Paie } from '../../Models/paie';
 export class ArchivesComponent  implements OnInit{
   form_paie!: FormGroup;
   Enseignants: Presence [] =[]
-  dtOptions: any = {};
   diff_heure: number = 0;
 
   constructor (private teacherService: EnseiService, public icons: IconsService, private fb: FormBuilder, 
@@ -45,23 +44,7 @@ export class ArchivesComponent  implements OnInit{
       console.log(this.Enseignants, "---enseignant------")
       this.load_diff(this.Enseignants);
     }))
-    this.dtOptions = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      // processing: true,
-      // serverSide: true,
-      columnDefs: [
-        { orderable: false, targets: '_all' }
-      ],
-      language: {
-        info: 'Affichage de _START_ à _END_ sur _TOTAL_ entrées',
-        infoEmpty: 'Affichage de 0 à 0 sur 0 entrée',
-        infoFiltered: '(filtré à partir de _MAX_ entrées au total)',
-        lengthMenu: '_MENU_ Entrées par page',
-        search: 'Recherche :'
-      }
-      // Ajoutez d'autres options au besoin
-    };
+   
 
   }
   // -----------------------------------get difference of time

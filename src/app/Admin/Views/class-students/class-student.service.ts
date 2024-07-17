@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ClassModules } from '../../Models/ClassModule';
 import { Module } from '../../Models/Module';
 import { Ue } from '../../Models/UE';
+import { ClassRoom } from '../../Models/Classe';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,8 @@ export class ClassStudentService {
   private getAll_url = 'http://localhost:8080/api-class/list-class';
   private baseUrl = "http://localhost:8080/api-class/";
 
-  getAll() : Observable<any>{
-    return this.http.get<any>(this.getAll_url);
+  getAll() : Observable<ClassRoom[]>{
+    return this.http.get<ClassRoom[]>(this.getAll_url);
   }
   // -------------------------------------add modules in classroom
   createClassModule(modules: ClassModules[]): Observable<any> {
@@ -30,14 +31,26 @@ export class ClassStudentService {
     return this.http.get<Module[]>(`${this.baseUrl}all-module/${id}`);
    
   }
-//  ------------------------get all module without note
-  getAllModulesWithoutNote(id: number): Observable<Module[]> {
-    return this.http.get<Module[]>(this.baseUrl + "all-module-without-note/" +id);
+//  ------------------------get all module without note in classe
+  getAllModulesWithoutNote(idClasse: number): Observable<Module[]> {
+    return this.http.get<Module[]>(this.baseUrl + "all-module-without-note/" +idClasse);
    
+  }
+  // ---------------------all module without note
+  allModuleWithoutNotes() : Observable<Module[]>{
+    return this.http.get<Module[]>(this.baseUrl + "all-module-without-note_all");
+  }
+  // ------------------------------------------------------------------
+  getAllModulesByUeId(idUe: number) :Observable<Module[]>{
+    return this.http.get<Module[]>(`${this.baseUrl}list-by-idUe/${idUe}`);
   }
 //  -----------------------get all ue by classe id
   getAll_ue(idClasse: number): Observable<Ue[]> {
     return this.http.get<Ue[]>(`${this.baseUrl}list-ue/${idClasse}`);
+  }
+  // --------------------------------------------update classe
+  update_classe(classe: ClassRoom): Observable<any> {
+    return this.http.put<any>(this.baseUrl + 'update-class', classe);
   }
   
 }

@@ -1,0 +1,74 @@
+table{
+    margin-top: 10px;
+}
+main{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+
+    padding-top: 20px;
+}
+a button{
+    margin-bottom: 30px;
+}
+
+/* Styler l'en-tête du tableau */
+th {
+    background-color: var(--primary-light);
+}
+
+tr td{
+    font-size: 16px;
+    text-overflow: ellipsis;
+}
+.search-icon {
+    position: absolute;
+    transform: translateY(50%);
+    color: var(--secondary);
+    pointer-events: none;
+    right: 544px;
+    background-color: var(--primary-light);
+    bottom: 25px;
+    border-radius: 3px;
+    padding: 8px;
+    font-size: 1.2rem;
+}
+span{
+    margin-left: 5px;
+    font-size: 10px;
+    color: var(--primary);
+}
+.class-name{
+    cursor: pointer;
+}
+img{
+    border-radius: 100%;
+    border: 1px solid #ccc;
+    height: 50px;
+    width: auto;
+}
+.input-search {
+    position: relative;
+    width: 100%;
+    display: flex;
+    /* justify-content: center; */
+    /* margin: 20px 0; */
+}
+
+.search-input {
+    width: 50%;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.search-input:focus {
+    border-color: var(--primary-light);
+    /* box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3); */
+    outline: none;
+}

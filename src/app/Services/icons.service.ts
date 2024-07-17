@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { faUsers, faGear, faTable, faChartArea, faHome, faBars, faGraduationCap, faSchool, faUser, faCog, faAngleDown, faSearch, faBookOpen, faAngleUp, faEye, faTrashCan, faEdit, faPenToSquare, faArrowRight, faClock, faPlus, faCalendarCheck, faTrash, faHandHoldingDollar, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faGear, faTable, faChartArea, faHome, faBars, faGraduationCap, faSchool, faUser, faCog, faAngleDown, faSearch, faBookOpen, faAngleUp, faEye, faTrashCan, faEdit, faPenToSquare, faArrowRight, faClock, faPlus, faCalendarCheck, faTrash, faHandHoldingDollar, faPaperPlane, faCircleChevronRight, faPlusCircle, faSquarePlus, faFolderOpen, faSquareCheck, faSquareXmark, faArrowsLeftRight, faArrowRightArrowLeft, faFolder, faBan, faXmark, faRotate, faRotateRight, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IconsService {
-
+  actualise = faRotateRight
   menu = faBars; grade = faGraduationCap;
   home = faHome; scool = faSchool;
   user = faUser;
@@ -23,8 +23,19 @@ export class IconsService {
   next = faArrowRight
   clock = faClock
   plus = faPlus
+  squarePlus = faSquarePlus
   cl_check = faCalendarCheck
   dollar = faHandHoldingDollar
   send = faPaperPlane
+  nexte_circle = faCircleChevronRight
+  archive = faFolderOpen
+  active = faSquareCheck
+  desactive = faSquareXmark
+  arrow = faArrowRightArrowLeft
+  recherche = faSearch
+  folder = faFolder
+  notFound = faBan
+  xmark = faXmark
+  eyeSlash = faEyeSlash
   constructor() { }
 }

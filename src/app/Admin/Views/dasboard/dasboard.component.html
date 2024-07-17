@@ -78,66 +78,25 @@
        
         <section class="section-scrolable"> 
             <h4>Notifications</h4>
-            <div class="div-notification">
+            <ng-container *ngFor="let notific of notifs">
+                 <div class="div-notification">
                  
                 <div class="fisrt-col">
                     <img src="" alt="Photo">
                 </div>
                 <div class="second-col">
-                    <h6>22-09-2023</h6>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, quidem.</p>
-                    <div class="proprio"><span>M.DIARRA</span></div>
+                    <h6>{{notific.date}}</h6>
+                    <span>{{notific.titre}}</span>
+                    <p>{{notific.description}}</p>
+                    <div class="proprio"><span>{{notific.idAdmin?.nom}} {{notific.idAdmin?.prenom}}</span></div>
                     
                 </div>
             </div>
-            <div class="div-notification">
-                 <h4>Notifications</h4>
-                <div class="fisrt-col">
-                    <img src="" alt="Photo">
-                </div>
-                <div class="second-col">
-                    <h6>22-09-2023</h6>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, quidem.</p>
-                    <div class="proprio"><span>M.DIARRA</span></div>
-                    
-                </div>
-            </div>
-            <div class="div-notification">
-                 <h4>Notifications</h4>
-                <div class="fisrt-col">
-                    <img src="" alt="Photo">
-                </div>
-                <div class="second-col">
-                    <h6>22-09-2023</h6>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, quidem.</p>
-                    <div class="proprio"><span>M.DIARRA</span></div>
-                    
-                </div>
-            </div>
-            <div class="div-notification">
-                 <h4>Notifications</h4>
-                <div class="fisrt-col">
-                    <img src="" alt="Photo">
-                </div>
-                <div class="second-col">
-                    <h6>22-09-2023</h6>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, quidem.</p>
-                    <div class="proprio"><span>M.DIARRA</span></div>
-                    
-                </div>
-            </div>
-            <div class="div-notification">
-                 <h4>Notifications</h4>
-                <div class="fisrt-col">
-                    <img src="" alt="Photo">
-                </div>
-                <div class="second-col">
-                    <h6>22-09-2023</h6>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, quidem.</p>
-                    <div class="proprio"><span>M.DIARRA</span></div>
-                    
-                </div>
-            </div>
+            </ng-container>
+           <ng-container *ngFor="let book of books">
+            <div class="book-name">{{ book.author_alternative_name?.join(', ') || 'Unknown' }}</div>
+           </ng-container>
+            
            
         </section>
         <div class="input-content">

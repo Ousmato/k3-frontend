@@ -1,9 +1,10 @@
 
 <main>
-    <!-- <a routerLink="/sidebar/inscription">
-        <button class="btn btn-primary">Inscription</button>
-    </a> -->
-    <table datatable datatable [dtOptions]="dtOptions" class="table table-striped table-hover">
+    <div class="input-search">
+        <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..."  class="search-input">
+    <fa-icon [icon]="icons.recherche" class="search-icon"></fa-icon>
+    </div>
+    <table  class="table table-striped table-hover">
         <thead>
             <tr>
               <th>ID</th>
@@ -33,9 +34,9 @@
                 <td>{{studens.telephone}}</td>
                     <td>
                         <div class="btn-contenaire">
-                            <a *ngIf="!isShow_button" data-bs-toggle="modal"   [attr.data-bs-target]="'#modal-' + studens.idEtudiant"><span (click)="load_module_without_note(studens.idEtudiant!)"><fa-icon  [icon]="icons.plus" class="icons"></fa-icon>Ajouter</span></a>
-                            <a *ngIf="!isShow_button" data-bs-toggle="modal"   [attr.data-bs-target]="'#bulletin-' + studens.idEtudiant"><span (click)="load_bulletin(studens.idEtudiant!)"><fa-icon  [icon]="icons.eye" class="icons"></fa-icon>bulletin</span></a>
-                            <a><fa-icon [icon]="icons.edit" class="icons"></fa-icon><span>Modifier</span></a>
+                            <a (click)="load_module_without_note(studens.idEtudiant!)" data-bs-toggle="modal"   [attr.data-bs-target]="'#modal-' + studens.idEtudiant"><fa-icon  [icon]="icons.plus" class="icons"></fa-icon><span >Ajouter</span></a>
+                            <a (click)="load_bulletin(studens.idEtudiant!)" data-bs-toggle="modal"   [attr.data-bs-target]="'#bulletin-' + studens.idEtudiant"><fa-icon  [icon]="icons.eye" class="icons"></fa-icon><span>bulletin</span></a>
+                            <a (click)="load_update(studens)" data-bs-toggle="modal"   [attr.data-bs-target]="'#noteEdite_' + studens.idEtudiant"><fa-icon [icon]="icons.edit" class="icons"></fa-icon><span>Modifier</span></a>
                             <!-- <a><fa-icon [icon]="icons.delete"></fa-icon><span>Supprimer</span></a> -->
                         
                         </div>
@@ -44,6 +45,9 @@
                 </tr>
                 <!-- -----------------------modal add----------------- -->
                 <div class="modal fade" [id]="'modal-' + studens.idEtudiant"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <!-- <ng-container *ngIf="modules.length > 0"> -->
+                        
+                    
                     <div class="modal-dialog">
                         <div class="modal-content">
                         <div class="modal-header">
@@ -54,8 +58,9 @@
                             <div class="form-container">
                                 
                                     <!-- <input type="hidden" formControlName="idStudents"> -->
-                                <!-- <ng-container *ngFor="let m_s of modules"> -->
+                                    <ng-container *ngIf="modules.length > 0; else noModules">
                                     <div *ngFor="let module of modules">
+                                        
                                         <div class="flex-container">
                                             <label id="label" class="label" value="" [for]="'module_' + module.id" (click)="show_form(module.id!)"><strong></strong>
                                                 {{ module.nomModule }} (Coef {{ module.coefficient }}) :</label>
@@ -87,22 +92,29 @@
                                                 
                                         </div>
                                     </div>
-                                <!-- </ng-container> -->
-                                
+                                </ng-container>
+                                <ng-template #noModules>
+                                    <div class="no-module-template">
+                                        <p><fa-icon [icon]="icons.notFound"></fa-icon> Aucun module disponible</p>
+                                    </div>
+                                </ng-template>
                             </div>
                         
                         </div>
                         <!--  -->
                         </div>
                     </div>
+                <!-- </ng-container>
+                <p>no modules</p> -->
                 </div>
+                
                 <!-- -----------------------modal bulletin----------------- -->
                 <div class="modal fade" [id]="'bulletin-' + studens.idEtudiant"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Bulletin de {{studens.nom}} {{studens.prenom}}</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <div class="header-bulletin">
+                                <!-- <h1 class="modal-title fs-5" id="staticBackdropLabel">Bulletin de {{studens.nom}} {{studens.prenom}}</h1> -->
+                                <button type="button"  data-bs-dismiss="modal" aria-label="Close"><fa-icon [icon]="icons.xmark" class="icons-style"></fa-icon></button>
                             </div>
                             <div class="modal-body">
                                 <div class="main-content">
@@ -113,8 +125,10 @@
                                                     <img src="{{studens.urlPhoto}}" alt="photo">
                                                 </div>
                                                 <div class="school-contenaire">
-                                                    <h2>APTECH-MALI</h2>
-                                                    <p>Ecole Supérieure de Technologie Appliquée</p>
+                                                    <h4>{{schoolInfo.nomSchool}}</h4>
+                                                    <p> Email : {{schoolInfo.email}}</p>
+                                                    <p>Tel : {{schoolInfo.telephone}}</p>
+                                                    <p>Adresse : {{schoolInfo.localite}}</p>
                                                 </div>
                                             </div>
                                         </section>
@@ -194,8 +208,59 @@
                         </div>
                     </div>
                 </div>
+                <!-- ----------------------------------------------modal update notes----------- -->
+            <div class="modal fade"  [id]="'noteEdite_' + studens.idEtudiant"  data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="head-modal modal-header">
+                    <h4>Modifier Informations</h4>
+                      <button (click)="exit()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                     
+                      <div class="form-update">
+                        <form [formGroup]="update_note_form" (ngSubmit)="update_note(studens)">
+                            <!-- <ng-container *ngFor="let note of notes"> -->
+                                <ng-container *ngIf="notes.length > 0; else notFoundModule">
+                                <div class="views">
+                                    <label for="validationDefault01" class="label form-label">Module:</label>
+                                    
+                                    <select formControlName="idModule" class="form-select" aria-label="Default select example" (change)="onSelecteModule($event)">
+                                        <option disabled value="">Selectionner un module</option>
+                                        <option *ngFor="let module of modules" [value]="module.id">{{module.nomModule}}</option>
+                                    </select>
+                                </div>
+                            </ng-container>
 
-            </ng-container>
-          </tbody>
+                            <ng-template #notFoundModule>
+                                <p>Aucun module disponible</p>
+                            </ng-template>
+
+                                <ng-container *ngIf="moduleSelect" >
+                                 <div class="input" *ngIf="update_note_form.get('classeNote')!.value || update_note_form.get('classeNote')!.value == ''"  >
+                                    <label for="validationDefault01" class="label form-label">Note de classe :</label>
+                                    <input type="text" class="input-with form-control"   formControlName="classeNote" required>
+                                    
+                                </div>
+                                 <div class="input" *ngIf="update_note_form.get('examNote')!.value || update_note_form.get('examNote')!.value == ''"  >
+                                    
+                                    <label for="validationDefault02" class="label form-label">Note d'examen :</label>
+                                    <input type="text" formControlName="examNote" class="input-with form-control"  required>
+                                </div>
+                              
+                            </ng-container>
+                            <div class="btn-contenair col-12" *ngIf="moduleSelect">
+                            <button class="btn btn-primary" type="submit" name="btn-edited" >Enregistrer</button>
+                            </div>
+                      </form>
+                      </div>
+                    
+                      
+                    </div>
+                  </div>
+                </div> 
+            </div> 
+        </ng-container>
+        </tbody>
     </table>
-  </main>
+</main>

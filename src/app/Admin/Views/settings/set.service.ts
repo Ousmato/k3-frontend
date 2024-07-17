@@ -1,12 +1,14 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { Niveau } from '../../Models/Niveau';
 import { Filiere } from '../../Models/Filieres';
 import { NivFiliere } from '../../Models/NivFiliere';
 import { ClassRoom } from '../../Models/Classe';
 import { Ue } from '../../Models/UE';
 import { Module } from '../../Models/Module';
+import { Semestres } from '../../Models/Semestre';
+import { error } from 'jquery';
 
 @Injectable({
   providedIn: 'root'
@@ -27,23 +29,29 @@ export class SetService {
   getAll_Niveau_filiere() : Observable<NivFiliere[]>{
     return this.http.get<NivFiliere[]>(this.getNivFiltUrl);
   }
+  // -------------------------------------------------update niveau filiere
+  updateNiveauFiliere(nivFiliere: NivFiliere) : Observable<any>{
+    return this.http.put<any>(this.baseUrl+"filiere/update-niveau-filiere", nivFiliere);
+  }
     createFiliere(filiere: Filiere): Observable<Filiere>{
       return this.http.post<Filiere>(this.postUrl, filiere);
     }
     addClass(classe: ClassRoom) : Observable<any>{
-      return this.http.post<any>(this.postClassUrl, classe);
+      return this.http.post<any>(this.baseUrl+"api-class/add", classe);
     }
 
     addFiliere(filiereData: any): Observable<any> {
       console.log(filiereData, "------------------------------------------------");
       return this.http.post<any>(this.baseUrl+"filiere/add", filiereData);
   }
+
+
   // -----------------------------------------create ue 
   createUe(ue: Ue) : Observable<any>{
     return this.http.post<any>(this.baseUrl+"api-class/add-ue", ue);
   }
   // -----------------------------------------get all ue by class id
-  getAll_ue(idClasse: number): Observable<Ue[]> {
+  getAll_ue_not_associate_class(idClasse: number): Observable<Ue[]> {
     return this.http.get<Ue[]>(`${this.baseUrl}api-class/list-ue/${idClasse}`);
   }
   // ----------------------------------------------add module
@@ -58,4 +66,38 @@ export class SetService {
   getAll_ue_all(): Observable<Ue[]> {
     return this.http.get<Ue[]>(`${this.baseUrl}api-class/all-ue`);
   }
+  // -------------------------get all ue
+  getAll_ue_all_without_module_and_classe(): Observable<Ue[]> {
+    return this.http.get<Ue[]>(`${this.baseUrl}api-class/all-ues-without-modules-and-classe`);
+  }
+  // -----------------------------update ue
+  updateUe(ue: Ue): Observable<any>{
+    return this.http.put<any>(this.baseUrl+"api-class/update-ue", ue);
+  }
+  // -----------------------------update module
+  updateModule(module: Module): Observable<any>{
+    return this.http.put<any>(this.baseUrl+"api-class/update-module", module);
+  }
+  // -----------------------------delete module
+  deleteModule(id: number): Observable<any>{
+    return this.http.delete<any>(`${this.baseUrl}api-class/delete-module-by-id/${id}`);
+  }
+  // -----------------------------delete ue
+  deleteUe(id: number): Observable<any>{
+    return this.http.delete<any>(`${this.baseUrl}api-class/delete-ue-by-id/${id}`);
+  }
+  // ---------------------------------------get all semestre
+  getSemestres() : Observable<Semestres[]>{
+    return this.http.get<Semestres[]>(this.baseUrl+"api-semestre/list");
+  }
+  // ------------------------------------update semestre
+  updateSemestre(semestre: Semestres) : Observable<any>{
+    return this.http.put<any>(this.baseUrl+"api-semestre/update", semestre)
+  }
+  // -----------------------------get all module by class id
+  getAll_module_without_note(): Observable<Module[]>{
+    return this.http.get<Module[]>(this.baseUrl+"api-class/all-module-without-note_all");
+  }
+
+ 
 }

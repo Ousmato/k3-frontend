@@ -1,60 +1,47 @@
 
 main{
-    margin-top: 3%;
-    margin-left: 10%;
-    margin-right: 10%;
     display: flex;
     flex-direction: column;
     /* justify-content: center; */
     /* align-items: center; */
     
 }
+button{
+    color: var(--secondary);
+    margin-top: 20px;
+    background-color: var(--primary);
+    border: none;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+}
 form{
     width: 100%;
     padding: 10px;
-    display: block;
     justify-content: center;
-    border: 1px solid #ccc;
+    /* border: 1px solid #ccc; */
     border-radius: 8px;
 }
+
+
 .input{
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    
-}
-.test{
-    width: 70%;
     margin-top: 10px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    /* background-color: rgb(240, 190, 97); */
-    border: 1px solid rgb(207, 205, 205);
-    border-radius: 10px;
-}
-.first-child{
-    width: 40%;
-}
-.second-chil{
-    width: 50%;
 }
 .label{
     font-weight: bold;
     margin-right: 30px;
 }
-.input-with{
-    width: 65%;
+
+.chil{
+    width: 30%;
 }
-.input-withpass{
-    /* border: 1px solid greenyellow; */
-    width: fit-content;
-    margin-left: 0;
-   
+.position-relative {
+    position: relative;
 }
-h1{
-    font-weight: bold;
+
+.position-absolute {
+    position: absolute;
 }
 .radio-button{
     display: flex;
@@ -68,17 +55,14 @@ a{
     padding-left: 20%;
    margin-top: 10px;
 }
-/* .pass-chec{
-   border: solid 1px red;
-   width: 100%;
-} */
-.inputpassword{
-    /* border: 1px solid red; */
-    display: flex;
-    justify-content: space-between;
-}
+
 
 .contenaires{
     display: flex;
     justify-content: space-between;
+}
+label span{
+    font-size: 12px;
+    color: var(--tertiary);
+    font-weight: 300;
 }

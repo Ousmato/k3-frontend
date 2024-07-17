@@ -1,13 +1,13 @@
 <main>
     <section class="head">
-        <div class="logo">
-            <img src="assets/logounivsegou.png" alt="PHOTO">
+        <div class="logo" *ngIf="school.urlPhoto">
+            <img [src]="school.urlPhoto" alt="PHOTO">
         </div>
         <div class="info">
-                <h4>APTECH-MALI</h4>
-                <p>Annee Universitaire 2023-2024</p>
-                <p>Resultat definitifs premier semestre</p>
-                <p>Filiere : </p>
+                <h4>{{school.nomSchool}}</h4>
+                <p>Annee Universitaire {{school.annee}}</p>
+                <p>Resultat definitifs du {{semestre.nomSemetre.toLowerCase()}}</p>
+                <p>Filiere : {{classe.idFiliere?.idNiveau?.nom}}</p>
             </div>
     </section>
     <!-- -------------------------------------------------- -->

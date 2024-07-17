@@ -13,6 +13,7 @@ import { Emplois } from '../../Models/Emplois';
 import { map } from 'rxjs';
 import { NavigationExtras, Route, Router } from '@angular/router';
 import { data } from 'jquery';
+import { IconsService } from '../../../Services/icons.service';
 
 @Component({
   selector: 'app-class-students',
@@ -31,13 +32,19 @@ export class ClassStudentsComponent implements OnInit {
   seance: any;
   hasEmplois!: boolean;
   emploisData: any;
-  // classesWithEmplois!: { [key: number]: boolean } = {};
+
+  classeSelect!: any
+  class_extrate_ue!: any
+
   ueList: any[] = [];
-  isDesabled: boolean = true;
+  isDesabled: boolean = false;
+  isShow_add_module : boolean = false
+  notFund_modal : boolean = true
+  isShow_link_modal : boolean = true
   addModules!: FormGroup;
 
   constructor(private service : ClassStudentService, private emploisService: ServiceService,
-    private setSevice: SetService, private fb: FormBuilder, private router: Router){
+    private setSevice: SetService, private fb: FormBuilder, private router: Router, public icons: IconsService){
     
   }
 
@@ -69,17 +76,19 @@ export class ClassStudentsComponent implements OnInit {
     });
   }
 // ----------------------------------------add module in classRoom
-  createClassModule(idClasse: number){
+  createClassModule(classe: any){
     
     const formData = this.addModules.value;
-    const idClass: ClassRoom = this.classRoms.find(cl => cl.id === idClasse)!;
+    // console.log(idClasse, "formdata");
+    const idClass: ClassRoom = this.classRoms.find(cl => cl.id === classe.id)!;
     this.idCurrent = idClass;
+    console.log(this.idCurrent, "clall------------")
     const modules = formData.idUE.map((idUe: number) => ({
       idStudentClasse: idClass,
       idUE: { id: idUe }
     }));
 
-    console.log(modules);
+    console.log(modules, "Select modules");
     // return
     
    this.service.createClassModule(modules).subscribe(response =>{
@@ -91,9 +100,18 @@ export class ClassStudentsComponent implements OnInit {
   }
   // ------------------------------------------get all ue by class id
   getAll_ues(idClasse: number){
-    this.setSevice.getAll_ue(idClasse).subscribe((response: Ue[]) =>{
+    this.classeSelect = null;
+    this.setSevice.getAll_ue_not_associate_class(idClasse).subscribe((response: Ue[]) =>{
       this.ueList = response;
-      console.log(this.ueList);
+      console.log(this.ueList, "id de la classe")
+      if(this.ueList.length == 0){
+        this.notFund_modal = true
+        this.isShow_add_module = true
+      }
+      // this.show_views()
+    //  this.isShow_add_module =! this.isShow_add_module
+    //  this.isShow_link_modal  =! this.isShow_link_modal
+      
     })
   }
  
@@ -104,21 +122,44 @@ export class ClassStudentsComponent implements OnInit {
    
   }
    // -----------------------------------------method de condition de navigation
- button_display_condition(){
+ show_views(classe: any){
+  // console.log(classe, "la classe-------------")
+  if (this.classeSelect === classe) {
+    this.classeSelect = null; // Deselect if already selected
+  } else {
+    this.classeSelect = classe; // Select the clicked item
+    this.emploisService.hasActiveEmploisByClasse(classe.id!).subscribe(hasEmplois => {
+      if(hasEmplois == false){
+        this.isDesabled = false
+      }else{
+        this.isDesabled = true
+      }
 
- }
-  navigateBasedOnCondition(classRom: ClassRoom): void {
+    })
+  }
+}
+exit(){
+    this.ueList = []; 
+   
+  //  this.isShow_link_modal = false
+}
+
+exit_modal(){
+  this.notFund_modal = !this.notFund_modal
+}
+ 
+toggle_to_emplois(classRom: ClassRoom): void {
     // console.log(classRom.id);
     this.emploisService.hasActiveEmploisByClasse(classRom.id!).subscribe(hasEmplois => {
-       if (hasEmplois === false) {
-        this.isDesabled === false;
+       if (hasEmplois == false) {
+       
         // Si la classe a un emploi du temps actif avec des séances, naviguer vers la page de création de séances
         const navigationExtras: NavigationExtras = {
           queryParams: { id: classRom.id }
         };
-         console.log("pas des seance")
+
         this.router.navigate(['/sidebar/emplois'], navigationExtras);
-      } else if(hasEmplois === true) {
+      } else {
        
         const navigationExtras: NavigationExtras = {
           queryParams: { id: classRom.id }
@@ -127,40 +168,33 @@ export class ClassStudentsComponent implements OnInit {
         
         // Sinon, naviguer vers la page de création d'emploi du temps
         
-      }else{
-        this.emploisService.getEmploisByClasse2(classRom.id!).subscribe(data =>{
-          this.emplois = data;
-          this.emploisService.isEmploisValid(this.emplois.id!).subscribe(data =>{
-            if(data === true){
-              this.isDesabled === false;
-              // console.log(data, "datttttaaaaa")
-               this.loadClassesWithEmplois(classRom)
-            }
-            const navigationExtras: NavigationExtras = {
-              queryParams: { id: classRom.id }
-            };
-            this.router.navigate(['/sidebar/seance'], navigationExtras);
-            
-          })
-        })
-       
-        // this.classesWithEmplois.push(classRom);
-       
       }
+    
     });
   }
   // ----------------------- method go to add notes aux student
-  add_notes(idClasse: number){
+  toggle_to_notes(idClasse: number){
     const navigationExtras: NavigationExtras = {
       queryParams: { id: idClasse }
     };
     this.router.navigate(['/sidebar/student-notes'], navigationExtras);
   }
   //  -------------------------hover bottom button 
-  smestre_notes(idClasse: number){
+  toggle_to_noteSemestre(idClasse: number){
     const navigationExtras: NavigationExtras = {
       queryParams: { id: idClasse }
     };
     this.router.navigate(['/sidebar/all-notes'], navigationExtras);
+  }
+  // ------------------------------link go to list students by class
+  toggle_to_presence(idClasse: number){
+    const navigationExtras: NavigationExtras = {
+      queryParams: { id: idClasse }
+    };
+    this.router.navigate(['/sidebar/etudiant-de-la-classe'], navigationExtras);
+  }
+  // ----------------------------------------lint to go to the param
+  goToParamettre(){
+    this.router.navigate(['/sidebar/parametre']);
   }
 }

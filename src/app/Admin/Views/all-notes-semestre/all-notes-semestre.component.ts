@@ -7,6 +7,10 @@ import { Ue } from '../../Models/UE';
 import { Module } from '../../Models/Module';
 import { Student } from '../../Models/Students';
 import { ClassRoom } from '../../Models/Classe';
+import { SchoolService } from '../../../Services/school.service';
+import { SchoolInfo } from '../../Models/School-info';
+import { SemestreService } from '../../../Services/semestre.service';
+import { Semestres } from '../../Models/Semestre';
 
 @Component({
   selector: 'app-all-notes-semestre',
@@ -20,10 +24,16 @@ export class AllNotesSemestreComponent  implements OnInit{
   modules: Module[] = []
   students: Student[] =[]
   classe !: ClassRoom
+  school!: SchoolInfo
+  semestre!: Semestres
 
-  constructor(private etudiantService: EtudeService, private route: ActivatedRoute, private classService: ClassStudentService) { }
+  constructor(private etudiantService: EtudeService, private semestreService: SemestreService, private clasService: ClassStudentService,
+    private route: ActivatedRoute, private schollService: SchoolService) { }
   ngOnInit(): void {
     this.getNotes_classe();
+    this.getSchoolInfo();
+    this.getCurrentSemestre();
+    this.getClasse();
   }
 
   // -----------------------get all notes of classe
@@ -38,24 +48,13 @@ export class AllNotesSemestreComponent  implements OnInit{
        this.modules.push(item.idModule)
        
        sts.push(item.idStudents)
-      //  this.calculateAverage(item.idStudents);
-      //  this.determineObservation(item.idStudents);
       })
-      // const classe = data.find(cl => cl.idStudents.idClasse.id === this.idClasse)
-      // this.classe = classe?.idStudents.idClasse!;
       this.students = this.extractUniqueStudents(sts)
       // this.students = sts;
     })
 
-    // this.classService.getAll_ue(this.idClasse).subscribe(data =>{
-    //   this.ueListe = data;
-    //   console.log(this.ueListe, "ue")
-    // })
   }
-  // trackByIdEtudiant(index: number, student: any): number {
-  //   return student.idStudents.idEtudiant; // Retourne l'identifiant unique de l'étudiant
-  // }
-
+// -----------------------------------------------------------
   getStudentModuleScore(student: number, moduleId: number): number {
     
     // console.log(this.notes, "monn8888")
@@ -121,6 +120,32 @@ export class AllNotesSemestreComponent  implements OnInit{
     });
 
     return result;
+  }
+  // --------------------------------------get information of school
+  getSchoolInfo(){
+    this.schollService.getSchools().subscribe(data => {
+      this.school = data;
+      this.school.urlPhoto = `http://localhost/StudentImg/${this.school.urlPhoto}`;
+     const dte = new Date(this.school.debutAnnee);
+     const dtf = new Date(this.school.finAnnee);
+      const yearDte = dte.getFullYear();
+      const yearDtf = dtf.getFullYear();
+     this.school.annee = yearDte + '-' + yearDtf;
+    //  console.log(this.school.annee_de, "0000000000000000")
+
+    })
+  }
+  // -------------------------------------------get currente semestre
+  getCurrentSemestre(){
+    this.semestreService.getCurentSemestre().subscribe(data => {
+      this.semestre = data;
+    })
+  }
+  // -------------------------------------------get classe
+  getClasse(){
+    this.clasService.getClassById(this.idClasse).subscribe(data => {
+      this.classe = data;
+    })
   }
 }
 

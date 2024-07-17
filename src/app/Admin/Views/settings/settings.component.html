@@ -1,18 +1,63 @@
 <main>
-    <h2>Paramettre et Confidentialité</h2>
+    <!-- <h2>Paramettre et Confidentialité</h2> -->
     <!-- school information section--------------------- -->
     <section class="contenaire">
         <div class="first-child">
-            <h4>Informations de l'école</h4>
-            <a class="btn btn-primary" href="#"><img src="/Gestion-scolaire/app/assets/icons/pen-to-square.svg" alt="">Modifier</a>
+           
+               <div class="child">
+                <div class="logo">
+                    <img src="{{school.urlPhoto}}" alt="">
+                    <h4>INFORMATION DE L'ECOLE</h4>
+                </div>
+                 <p>NB : Ici vous pouvez modifier les information de l'etablissement</p>
+
+                 <ng-container *ngIf="isshow_school_detail">
+                    <div class="views">
+                        <div class="view-school">
+                            <p><strong>Nom de l'école :</strong> {{school.nomSchool}}</p>
+                            <p><strong>Email :</strong> {{school.email}}</p>
+                            <p><strong>Téléphone :</strong> {{school.telephone}}</p>
+                            <p><strong>Début de l'année : </strong>{{school.debutAnnee}}</p>
+                            <p><strong>Fin de l'année : </strong>{{school.finAnnee}}</p>
+                            <p><strong>Localité : </strong>{{school.localite}}</p>
+                        </div>
+                        <div class="button-cash">
+                            <a (click)="annuler()" class="submit" ><span>Annuler</span></a>
+                        </div>
+                    </div>
+                 </ng-container>
+
+                 <ng-container *ngIf="isshow_school_update">
+                    <div class="views">
+                        <div class="img-container">
+                            <!-- <img src="{{school.urlPhoto}}" alt="Image"> -->
+                            
+                            </div>
+                        <form [formGroup]="update_school_form" (ngSubmit)="update_school()">
+                            <input type="text" class="form-control" formControlName="id" *ngIf="false">
+                            <input type="text" class="form-control" formControlName="nomSchool">
+                            <input type="text" class="form-control" formControlName="email">
+                            <input type="number" class="form-control" formControlName="telephone">
+                            <input type="date" class="form-control" formControlName="debutAnnee">
+                            <input type="date" class="form-control" formControlName="finAnnee">
+                            <input type="text" class="form-control" formControlName="localite">
+                             <input  id="urlPhoto" class="form-control" type="file" formControlName="urlPhoto" accept="image/*" (change)="onFileSelected($event)">
+                         
+
+                            <div class="button-cash">
+                                <a (click)="annuler()" class="submit"  ><span>Annuler</span></a>
+                                <button class="submit" type="submit" ><span>Enregistrer</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                            </div>
+                
+                        </form>
+                    </div>
+                 </ng-container>
+                  </div>
         </div>
         <div class="second-child">
-            <div class="child">
-                <p><span>Nom :</span> APTECH - MALI</p>
-                <p><span>Tel :</span> +223 73 86 77 88</p>
-                <p><span>Email :</span> ousmatotoure98&#64;gmail.com</p>
-                <p><span>Address :</span> Sise a Hamdalaye ACI 200 Immeuble TOMOTA</p>
-            </div>
+            <a (click)="show_school_detail()" ><fa-icon [icon]="icons.eye"></fa-icon><span>Details</span></a>
+            <a (click)="show_school_update()"><fa-icon [icon]="icons.edit"></fa-icon><span>Modifier</span></a>
+           
            
         </div>
     </section>
@@ -20,221 +65,381 @@
     <!-- -----------------------------------semestre informations---------------------- -->
     <section class="contenaire">
         <div class="first-child">
-            <h4>Informations sur les semestre</h4>
-            <a class="btn btn-primary" href="#"><img src="/Gestion-scolaire/app/assets/icons/pen-to-square.svg" alt="">Modifier</a>
+            <div class="child">
+                <div class="logo">
+                <img  src="assets/time-period-icon.svg" alt="">
+                <h4>INFORMATION SUR LES SEMESTRES</h4>
+                <!-- <a class="btn btn-primary" href="#"><img src="/" alt="">Modifier</a> -->
+                </div>
+                <p>NB : Ici vous pouvez modifier les information des semestres</p>
+                <ng-container *ngIf="ishow_semestre_detail">
+                    <div class="views">
+                        <p *ngFor="let semes of semestres"><span>{{semes.nomSemetre}}</span> date de fin : {{semes.datFin}}</p>
+                        <div class="button-cash">
+                            <a (click)="annuler()" class="submit"  ><span>Annuler</span></a>
+                        </div>
+                    </div>
+                    </ng-container>
+                <ng-container *ngIf="ishow_semestre_update">
+                    <div class="views">
+                        <form  [formGroup]="update_semestre_form" (ngSubmit)="update_semestre(selectedSemestreId)">
+                            <select *ngIf="!selectedSemestreId" class="form-select" formControlName="id" placeholder="Choisir la clase" (change)="onSemestreChange($event)">
+                            <option  selected disabled value="">Choisir Le Semestre...</option>
+                            
+                            <option  *ngFor="let s of semestres" [value]="s.id">{{s.nomSemetre}}</option>
+                            </select>
+                            <input type="text"  class=" form-control" formControlName="nomSemetre" *ngIf="update_semestre_form.get('nomSemetre')!.value || update_semestre_form.get('nomSemetre')!.value == ''" >
+                            <input type="text"  class=" form-control" formControlName="dateDebut" *ngIf="update_semestre_form.get('dateDebut')!.value || update_semestre_form.get('dateDebut')!.value == ''">
+                            <input type="text"  class=" form-control" formControlName="datFin" *ngIf="update_semestre_form.get('datFin')!.value || update_semestre_form.get('datFin')!.value == ''">
+                    
+                            <div class="button-cash">
+                                <a (click)="annuler()" class="submit"  ><span>Annuler</span></a>
+                                <button class="submit" type="submit" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                            </div>
+                        </form>
+                    </div>
+                
+            </ng-container>
+                
+            </div>
+            
         </div>
         <div class="second-child">
-            <div class="chil"></div>
-            <div class="child">
-                <p><span>Semestre 1</span> date de fin : 20-02-2002</p>
-                <p><span>Semestre 2</span> Du 20-05-2004 au 12-03-2005</p>
-                <p><span>Semestre 3</span> Du 30-05 au 23-09-2007</p>
-            
-            </div>
+            <a (click)="show_detail_semestre()"><fa-icon [icon]="icons.eye"></fa-icon><span>Details</span></a>
+            <a (click)="show_update_semestre()"><fa-icon [icon]="icons.edit"></fa-icon><span>Modifier</span></a>
            
         </div>
     </section>
     <!-- -----------------------------------Filiere informations---------------------- -->
     <section class="contenaire">
         <div class="first-child">
-            <h4>Les filieres disponobles</h4>
-            <div class="btn-contenair">
-               
-                <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Ajouter</a>
-                <a class="btn btn-warning" href="#">Modifier</a>
-                <a class="btn btn-danger" href="#">Supprimer</a>
+            <div class="child">
+                <div class="logo">
+                <img id="idFiliere" src="assets/book-open-icon.svg" alt="">
+                <h4>INFORMATIONS SUR LES FILIERES</h4>
             </div>
+            <p>NB : Ici vous pouvez modifier les information des semestres</p>
+            
+            <ng-container *ngIf="ishow_filiere">
+                <div class="views">
+                    <form  [formGroup]="update_filiere_form" (ngSubmit)="update_filiere(selectedFiliereId)">
+                        <select *ngIf="!selectedFiliereId" class="form-select" formControlName="id" placeholder="Choisir la clase" (change)="onFiliereChange($event)">
+                        <option  selected disabled value="">Choisir Le niveau...</option>
+                        
+                        <option  *ngFor="let nv of objectNivFil" [value]="nv.id">{{nv.idNiveau.nom}}</option>
+                        </select>
+                        <input type="text"  class=" form-control" formControlName="idFiliere" *ngIf="update_filiere_form.get('idFiliere')!.value || update_filiere_form.get('idNiveau')!.value == ''" >
+                        <input type="text"  class=" form-control" formControlName="idNiveau" *ngIf="update_filiere_form.get('idNiveau')!.value || update_filiere_form.get('idNiveau')!.value == ''">
+                
+                        <div class="button-cash">
+                            <a (click)="annuler()" class="submit" ><span>Annuler</span></a>
+                            <button class="submit" type="submit" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                        </div>
+                    </form>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="isshow_add_filiere" >
+                <div class="views">
+                    <form [formGroup]="addFiliere" (ngSubmit)="send()" > 
+                        <span id="error">FORMULAIRE AJOUTER FILIERERE</span>
+                    <!-- action="/Gestion-scolaire/php/forms/form-filiere.php" -->
+                        <div class="form form-group"> 
+                            <label for="email">Nom</label> 
+                            <input type="text" formControlName="nomFiliere" class="form-control" id="nom" placeholder="nom de la filiere" required> 
+                            
+                        </div> 
+                        <div class="form form-group">
+                            <label for="select-modules-multiple" class="label form-label">Niveaux :</label>
+                            <select class="form-select" formControlName="idNiveau" id="select-modules-multiple" required>
+                              <option selected disabled value="">Choisir le niveau</option>
+                              <option *ngFor="let niveau of niveaux" [value]="niveau.id">{{ niveau.nom }}</option>
+                            </select>                      
+                        </div>
+                        <div class="button-cash">
+                            <a (click)="annuler()" class="submit" ><span>Annuler</span></a>
+                            <button class="submit" type="submit" ><span>Enregistre</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                        </div>
+                    </form> 
+                </div>
+            </ng-container>
+            </div>
+            
            
         </div>
         <div class="second-child">
-            <div class="chil"></div>
-            <div class="child">
-                <div *ngIf="objectNivFil && objectNivFil.length > 0; else noFiliere">
-                    <p *ngFor="let object of objectNivFil">{{object.idNiveau.nom}} {{object.idFiliere.nomFiliere}}</p>
-                  </div>
-                  <ng-template #noFiliere>
-                    <p>Aucune filiere disponible</p>
-                  </ng-template>
-            </div>
+            <a (click)="show_add_form_filiere()"> <fa-icon [icon]="icons.squarePlus"></fa-icon><span>Ajouter</span></a>
+            <a (click)="show_input_filierre()"><fa-icon [icon]="icons.edit"></fa-icon><span>Modifier</span></a>
+            <a><fa-icon [icon]="icons.delete" class="delete"></fa-icon><span>Supprimer</span></a>
            
         </div>
     </section>
     <!-- ------------------------------------------------------- -->
     <section class="contenaire">
         <div class="first-child">
-            <h4>Les Classes</h4>
-            <div class="btn-contenair">
-               
-                <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClasseroom">Ajouter</a>
-                <a class="btn btn-warning" href="#">Modifier</a>
-                <a class="btn btn-danger" href="#">Supprimer</a>
+            <div class="child">
+                <div class="logo">
+                    <img src="assets/school-admission-icon.svg" alt="">
+                    <h4>INFORMATION DES CLASSES</h4>
+                </div>
+            <p>NB : Ici vous pouvez modifier les information des Classes</p>
+            <ng-container *ngIf="ishow_classe">
+                <div class="views">
+                    <form  [formGroup]="update_classe_form" (ngSubmit)="update_classe(selectedClasseId)">
+                        <select *ngIf="!selectedClasseId" class="form-select" formControlName="id" placeholder="Choisir la clase" (change)="onClasseChange($event)">
+                        <option  selected disabled value="">Choisir La classe</option>
+                        
+                        <option  *ngFor="let cl of classes" [value]="cl.id">{{cl.idFiliere?.idNiveau?.nom}}({{cl.idFiliere?.idFiliere?.nomFiliere}})</option>
+                        </select>
+                        <input type="text"  class=" form-control" formControlName="idFiliere" *ngIf="false" >
+                        <input type="text"  class=" form-control" formControlName="scolarite" *ngIf="update_classe_form.get('scolarite')!.value || update_classe_form.get('scolarite')!.value == ''">
+                
+                        <div class="button-cash">
+                            <a (click)="annuler()" class="submit"  ><span>Annuler</span></a>
+                            <button class="submit" type="submit" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                        </div>
+                    </form>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="isshow_add_classe">
+                <div class="views">
+                    <form [formGroup]="addClass" (ngSubmit)="createClassroom()" > 
+                        <span id="error">FORMULAIRE AJOUTER CLASSE</span>
+                        <div class="form form-group"> 
+                            <label for="email"></label> 
+                            <input type="hidden" formControlName="effectifs" class="form-control" id="nom" placeholder="nom de la filiere" required> 
+                            
+                        </div> 
+                        <div class="form form-group"> 
+                            <label for="email">Scolarité :</label> 
+                            <input type="text" formControlName="scolarite" class="form-control" id="nom" placeholder="La scolarite" required> 
+                            
+                        </div> 
+                        <div class="form form-group">
+                            <label for="select-modules-multiple" class="label form-label">Filiere :</label>
+                            <select class="form-select" formControlName="idNiveau" id="select-modules-multiple" placeholder="La filiere" required>
+                              <option selected disabled value="">Choisir la filiere</option>
+                              <option *ngFor="let filiere of objectNivFil" [value]="filiere.id">{{filiere.idNiveau.nom}} {{filiere.idFiliere.nomFiliere}}</option>
+                            </select>                      
+                        </div>
+                        
+                        <div class="button-cash">
+                            <a (click)="annuler()" class="submit"  ><span>Annuler</span></a>
+                            <button class="submit" type="submit" ><span>Enregistrer</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                        </div>
+                    </form> 
+                </div>
+            </ng-container>
             </div>
-           
+            
         </div>
         <div class="second-child">
-            <div class="chil"></div>
-            <div class="child">
-               <h4>Nombre de classe</h4>
-            </div>
-           
+            <a (click)="show_add_class_form()"><fa-icon [icon]="icons.squarePlus"></fa-icon> <span>Ajouter</span></a>
+            <a (click)="show_input_classe()"><fa-icon [icon]="icons.edit"></fa-icon><span>Modifier</span></a>
+            <a><fa-icon [icon]="icons.delete" class="delete"></fa-icon><span>Supprimer</span></a>
+        
         </div>
+        
     </section>
-    <!-- ------------------------------------------------------- -->
+    <!-- -------------------------UEs section------------------------------ -->
     <section class="contenaire">
         <div class="first-child">
-            <h4>Unite d'Enseignement</h4>
-            <div class="btn-contenair">
-               
-                <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUe">Ajouter Ue</a>
-                <a class="btn btn-warning"data-bs-toggle="modal" data-bs-target="#addModule">Ajouter un module</a>
-                <a class="btn btn-danger" href="#">Supprimer</a>
+            <div class="child">
+                <div class="logo">
+                    <img src="assets/school-graduation-icon.svg" alt="">
+                    <h4>INFORMATION DES UE</h4>
+                </div>
+            <p>NB : Ici vous pouvez modifier les information des Unite d'enseignament</p>
+            <ng-container *ngIf="ishow_ue">
+                <div class="views">
+                     <form  [formGroup]="update_ue_form" (ngSubmit)="update_ue(selectedUeId)">
+                        <select *ngIf="!selectedUeId" class="form-select" formControlName="id" placeholder="Choisir la clase" (change)="onUeChange($event)">
+                        <option  selected disabled value="">Choisir L'Ue</option>
+                        
+                        <option  *ngFor="let ue of ueList" [value]="ue.id">{{ue.nomUE}}</option>
+                        </select>
+                        <label *ngIf="update_ue_form.get('id')!.value || update_ue_form.get('id')!.value !== ''">Nom UE :</label>
+                        <input type="text"  class=" form-control" formControlName="nomUE" *ngIf="update_ue_form.get('id')!.value || update_ue_form.get('id')!.value !== ''">
+                
+                        <div class="button-cash">
+                            <a (click)="annuler()" class="submit"  ><span>Annuler</span></a>
+                            <button class="submit" type="submit" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                        </div>
+                    </form>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="isshow_add_ue" >
+                <div class="views">
+                    <form [formGroup]="addUe" (ngSubmit)="creatUe()" > 
+                        <span id="error">FORMULAIRE AJOUTER UE</span>
+                       
+                        <div class="form form-group"> 
+                            <label for="email">Nom:</label> 
+                            <input type="text" formControlName="nomUE" class="form-control" id="nom" placeholder="nom de l'ue" required> 
+                            
+                        </div> 
+                        <div class="button-cash">
+                            <a (click)="annuler()" class="submit"  ><span>Annuler</span></a>
+                            <button class="submit" type="submit" ><span>Enregistrer</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                        </div> 
+                    </form> 
+                </div>
+            </ng-container>
+            <!--------- contenaire pour supprimer ue de la liste---------------------  -->
+            <ng-container *ngIf="isHow_delete" >
+                <div class="views-delete" *ngIf="ueListForDelete.length > 0, else ueListForDeleteNotFund">
+                        <div class="grid-container" >
+                            <div *ngFor="let item of ueListForDelete" class="grid-item" (click)="deleted_ue(item.id!)">
+                                <p>{{item.nomUE}}</p>
+                            </div>
+                        </div>
+                        <div  class="button-cash">
+                            <a (click)="exit()"><span>Annuler</span></a>
+                        </div>
+                    
+                </div>
+                <ng-template #ueListForDeleteNotFund>
+                    <div class="views-delete">
+                        <div class="template-vide">
+                           
+                                <p>Aucune UE à supprimer.</p>
+                                <div  class="button-cash">
+                                    <a (click)="exit()"><span>Annuler</span></a>
+                                </div>
+                        </div>
+                    </div>
+                <!-- <p>Aucune UE à supprimer.</p> -->
+                </ng-template>
+            </ng-container>
+           
+            
+            </div>    
+        </div>
+        <!-- ----------------------------------------------------------- -->
+        <div class="second-child">
+            <div></div>
+            <a (click)="show_add_ue_form()" ><fa-icon [icon]="icons.squarePlus" ></fa-icon > <span>Ajouter</span></a>
+            <a (click)="show_input_ue()"><fa-icon [icon]="icons.edit"></fa-icon> <span>Modifier</span></a>
+            <a (click)="showDeleted()"><fa-icon [icon]="icons.delete" class="delete"></fa-icon> <span>Supprimer</span></a>
+            <!-- <a data-bs-toggle="modal" data-bs-target="#addModule">Ajouter un module</a> -->
+            
+        </div>
+    </section>
+    <!-- ------------------------------Modules section------------------------- -->
+    <section class="contenaire">
+        <div class="first-child">
+            <div class="child">
+                <div class="logo">
+                    <img src="assets/school-graduation-icon.svg" alt="">
+                    <h4>INFORMATION DES MODULES</h4>
+                </div>
+            <p>NB : Ici vous pouvez modifier les information des Modules</p>
+            <ng-container *ngIf="isshow_add_module"  >
+                <div class="div-parent">
+                    <div class="views">
+                    <form [formGroup]="addModule" (ngSubmit)="creatModule()" > 
+                        <span id="error">FORMULAIRE AJOUTER MODULE</span>
+                        
+                        <div class="form form-group"> 
+                            <label >Nom module:</label> 
+                            <input type="text" formControlName="nomModule" class="form-control" id="nom" placeholder="Nom du module" required> 
+                            
+                        </div> 
+                        <div class="form form-group"> 
+                            <label >Coefficient:</label> 
+                            <input type="number" formControlName="coefficient" class="form-control" id="coefficient" placeholder="Coefficient" required> 
+                            
+                        </div> 
+                        <div class="form form-group">
+                            <label for="select-modules-multiple" class="label form-label">UE :</label>
+                            <select class="form-select" formControlName="idUe" id="select-modules-multiple" placeholder="Choisir une unite d'enseignament" required>
+                              <option selected disabled value="">Choisir une unite d'enseignament</option>
+                              <option *ngFor="let ue of ueList" [value]="ue.id">{{ue.nomUE}}</option>
+                            </select>                      
+                        </div>
+                       
+                        <div class="button-cash">
+                            <a (click)="annuler()" class="submit" ><span>Annuler</span></a>
+                            <button class="submit" type="submit" ><span>Enregistrer</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                        </div>
+                    </form> 
+                </div>
+                </div>
+                
+            </ng-container>
+
+            
+                <ng-container *ngIf="modules.length > 0">
+                    <div class="views">
+                        <form [formGroup]="update_module_form" (ngSubmit)="update_module(moduleFind)"> 
+                        <!-- <div *ngIf="!ishow_module_select_ue"> -->
+                            <select  class="form-select" formControlName="id" placeholder="Choisir un module"  (change)="onModuleChange($event)">
+                                <option  selected disabled value="">Choisir un module</option>
+                                <option  *ngFor="let module of modules" [value]="module.id">{{module.nomModule}}</option>
+                            </select>
+                            
+                                <input type="text"  class="form-control" formControlName="nomModule" *ngIf="update_module_form.get('nomModule')!.value || update_module_form.get('nomModule')!.value !== ''">
+                                <input type="number"  class="form-control" formControlName="coefficient" *ngIf="update_module_form.get('coefficient')!.value || update_module_form.get('coefficient')!.value !== ''">
+                                <input type="text"  class="form-control" formControlName="idUe" [readonly]="true" *ngIf="update_module_form.get('idUe')!.value || update_module_form.get('idUe')!.value !== ''">
+                                
+                                <div class="button-cash">
+                                <a (click)="exit()" class="submit" ><span>Annuler</span></a>
+                                <button class="submit" type="submit" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                                
+                                </div>
+                        </form>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="isHow_delete_module" >
+                    <div class="views-delete" *ngIf="modulForDelete.length > 0, else modulForDeleteNotFund">
+                        <h4 class="views-head"></h4>
+                            <div class="grid-container" >
+                                <div *ngFor="let item of modulForDelete" class="grid-item" (click)="deleted_module(item.id!)">
+                                    <p>{{item.nomModule}}</p>
+                                </div>
+                            </div>
+                            <div  class="button-cash">
+                                <a (click)="exit()"><span>Annuler</span></a>
+                            </div>
+                        
+                    </div>
+                    <ng-template #modulForDeleteNotFund>
+                        <div class="views-delete">
+                            <div class="template-vide">
+                               
+                                    <p>Aucun Module à supprimer.</p>
+                                    <div  class="button-cash">
+                                        <a (click)="exit()"><span>Annuler</span></a>
+                                    </div>
+                            </div>
+                        </div>
+                    <!-- <p>Aucune UE à supprimer.</p> -->
+                    </ng-template>
+                </ng-container>
+           
             </div>
            
         </div>
         <div class="second-child">
-            <div class="chil"></div>
-            <div class="child">
-               <h4>Ue</h4>
-            </div>
+            <a (click)="show_module_form()"><fa-icon [icon]="icons.squarePlus"></fa-icon> <span>Ajouter</span></a>
+            <a (click)="show_update_module()" ><fa-icon [icon]="icons.edit"></fa-icon> <span>Modifier</span></a>
+            <a (click)="delete_module()" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> <span >Supprimer</span></a>
            
         </div>
     </section>
-<!-- -------------------------------------------------modal add filiere------------------------ -->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Ajouter une filiere</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-    
-                <div class="modal-body">
-                <form [formGroup]="addFiliere" (ngSubmit)="send()" > 
-                    <span id="error">Atteintion cette filiere existe deja</span>
-                <!-- action="/Gestion-scolaire/php/forms/form-filiere.php" -->
-                    <div class="form form-group"> 
-                        <label for="email">Nom</label> 
-                        <input type="text" formControlName="nomFiliere" class="form-control" id="nom" placeholder="nom de la filiere" required> 
-                        
-                    </div> 
-                    <div class="form form-group">
-                        <label for="select-modules-multiple" class="label form-label">Niveaux :</label>
-                        <select class="form-select" formControlName="idNiveau" id="select-modules-multiple" required>
-                          <option selected disabled value="">Choisir le niveau</option>
-                          <option *ngFor="let niveau of niveaux" [value]="niveau.id">{{ niveau.nom }}</option>
-                        </select>                      
-                    </div>
-                    
-                    <button class="btn btn-primary" type="submit" id="btn">Enregistrer</button> 
-                </form> 
-                </div>
-                
-            </div>
-        </div>
-    </div>
-    <!-- ----------------------modal add classe-------------------------------- -->
-    <div class="modal fade" id="addClasseroom" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Ajouter une classe</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-    
-                <div class="modal-body">
-                <form [formGroup]="addClass" (ngSubmit)="createClassroom()" > 
-                    <span id="error">Atteintion cette classe existe deja</span>
-                <!-- action="/Gestion-scolaire/php/forms/form-filiere.php" -->
-                    <div class="form form-group"> 
-                        <label for="email"></label> 
-                        <input type="hidden" formControlName="effectifs" class="form-control" id="nom" placeholder="nom de la filiere" required> 
-                        
-                    </div> 
-                    <div class="form form-group"> 
-                        <label for="email">Scolarité :</label> 
-                        <input type="text" formControlName="scolarite" class="form-control" id="nom" placeholder="La scolarite" required> 
-                        
-                    </div> 
-                    <div class="form form-group">
-                        <label for="select-modules-multiple" class="label form-label">Filiere :</label>
-                        <select class="form-select" formControlName="idNiveau" id="select-modules-multiple" placeholder="La filiere" required>
-                          <option selected disabled value="">Choisir la filiere</option>
-                          <option *ngFor="let filiere of objectNivFil" [value]="filiere.id">{{filiere.idNiveau.nom}} {{filiere.idFiliere.nomFiliere}}</option>
-                        </select>                      
-                    </div>
-                    
-                    <button class="btn btn-primary" type="submit" id="btn">Enregistrer</button> 
-                </form> 
-                </div>
-                
-            </div>
-        </div>
-    </div>
-    <!-- ------------------------------------------------------modal ue and modules------------------ -->
-    <div class="modal fade" id="addUe" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Ajouter une Unite d'Eseignement</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-    
-                <div class="modal-body">
-                <form [formGroup]="addUe" (ngSubmit)="creatUe()" > 
-                    <span id="error">Atteintion cette ue existe deja</span>
-                <!-- action="/Gestion-scolaire/php/forms/form-filiere.php" -->
-                   
-                    <div class="form form-group"> 
-                        <label for="email">Nom:</label> 
-                        <input type="text" formControlName="nomUE" class="form-control" id="nom" placeholder="nom de l'ue" required> 
-                        
-                    </div> 
-                   
-                    <button id="button" class="btn btn-primary" type="submit">Enregistrer</button> 
-                </form> 
-                </div>
-                
-            </div>
-        </div>
-    </div>
-    <!-- -------------------------------------------------- -->
-    <div class="modal fade" id="addModule" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Ajouter une Unite d'Eseignement</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-    
-                <div class="modal-body">
-                <form [formGroup]="addModule" (ngSubmit)="creatModule()" > 
-                    <span id="error">Atteintion cette ue existe deja</span>
-                <!-- action="/Gestion-scolaire/php/forms/form-filiere.php" -->
-                    
-                    <div class="form form-group"> 
-                        <label >Nom module:</label> 
-                        <input type="text" formControlName="nomModule" class="form-control" id="nom" placeholder="Nom du module" required> 
-                        
-                    </div> 
-                    <div class="form form-group"> 
-                        <label >Coefficient:</label> 
-                        <input type="number" formControlName="coefficient" class="form-control" id="coefficient" placeholder="Coefficient" required> 
-                        
-                    </div> 
-                    <div class="form form-group">
-                        <label for="select-modules-multiple" class="label form-label">UE :</label>
-                        <select class="form-select" formControlName="idUe" id="select-modules-multiple" placeholder="Choisir une unite d'enseignament" required>
-                          <option selected disabled value="">Choisir une unite d'enseignament</option>
-                          <option *ngFor="let ue of ueList" [value]="ue.id">{{ue.nomUE}}</option>
-                        </select>                      
-                    </div>
-                   
-                    <button id="button" class="btn btn-primary" type="submit">Enregistrer</button> 
-                </form> 
-                </div>
-                
-            </div>
-        </div>
-    </div>
-   
+
+    <div class="overlay" *ngIf="isshow_school_detail" (click)="preventClick($event)"></div>
+    <div class="overlay" *ngIf="ishow_semestre_detail" (click)="preventClick($event)"></div>
+    <div class="overlay" *ngIf="isshow_add_classe" (click)="preventClick($event)"></div>
+    <div class="overlay" *ngIf="ishow_semestre_update" (click)="preventClick($event)"></div>
+    <div class="overlay" *ngIf="isshow_add_module" (click)="preventClick($event)"></div>
+    <div class="overlay" *ngIf="isshow_add_filiere" (click)="preventClick($event)"></div>
+    <div class="overlay" *ngIf="isshow_add_ue" (click)="preventClick($event)"></div>
+    <div class="overlay" *ngIf="isshow_school_update" (click)="preventClick($event)"></div>
+    <div class="overlay" *ngIf="ishow_ue" (click)="preventClick($event)"></div>
+    <div class="overlay" *ngIf="ishow_classe" (click)="preventClick($event)"></div>
+    <div class="overlay" *ngIf="ishow_module" (click)="preventClick($event)"></div>
+    <div class="overlay" *ngIf="ishow_filiere" (click)="preventClick($event)"></div>
+    <div class="overlay-delete" *ngIf="isHow_delete" (click)="preventClick_delete($event)"></div>  
+    <div class="overlay-delete" *ngIf="isHow_delete_module" (click)="preventClick_delete($event)"></div>  
+
 </main>

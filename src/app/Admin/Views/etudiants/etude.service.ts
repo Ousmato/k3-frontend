@@ -42,4 +42,8 @@ export class EtudeService {
     return this.http.get<Notes[]>(this.baseUrl_note + "read-all-of-semestre/" +idClasse);
    
   }
+  // -----------------------------------------desactive student by id
+  desactiveStudent(id: number): Observable<Student>{
+    return this.http.get<Student>(this.baseUrl + "desable/" + id);
+  }
 }

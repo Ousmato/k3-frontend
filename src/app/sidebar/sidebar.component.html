@@ -2,8 +2,9 @@
     <!-- Sidebar -->
     <nav id="sidebar">
       <div class="sidebar-header">
-        <h1>UAM</h1>
-        <strong>UNIVERSITE-APTECH-MALI</strong>
+        <img  src="{{school.urlPhoto}}" alt="">
+        <!-- <h1>UAM</h1> -->
+        <strong>{{school.nomSchool}}</strong>
       </div>
       <div class="side-child">
         <ul class="list-unstyled components">
@@ -31,8 +32,8 @@
               </a>
             </div>
             <ul class="sub-menu" *ngIf="isSubMenuOpen.etudiants">
-              <li><a routerLink="/sidebar/etudiant">Fiche d'inscription</a></li>
-              <li><a href="#">Liste des presence</a></li>
+              <li><a routerLink="/sidebar/etudiant">Liste des Etudiants</a></li>
+              <li><a routerLink="/sidebar/inscription">Fiche d'inscription</a></li>
             </ul>
           </li>
           <li class="menu-link">
@@ -40,14 +41,27 @@
               <span><fa-icon [icon]="icons.scool"></fa-icon> Classes</span>
             </a>
           </li>
-          <li class="menu-link">
+          <li class="menu-link" >
             <a routerLink="#">
               <span><img src="assets/book-shop-icon.svg" alt=""> Bibliotheque</span>
             </a>
-          </li>
+          <!-- <li class="menu-link">
+            <div (click)="toggleSubMenuArchive()">
+                <a routerLink="#">
+                  <span><fa-icon [icon]="icons.archive" ></fa-icon>Archives 
+                    <fa-icon [icon]="isSubMenuOpen.etudiants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
+                </a>
+            </div>
+            <ul class="sub-menu" *ngIf="isSubMenuOpen.archive">
+              <li><a routerLink="">2020 - 2021</a></li>
+              <li><a href="#">2021 - 2022</a></li>
+              <li><a href="#">2022 - 2023</a></li>
+            </ul>
+            
+          </li> -->
           <li class="menu-link">
             <a routerLink="/sidebar/setting">
-              <span><fa-icon [icon]="icons.setting"></fa-icon> Paramettre</span>
+              <span><fa-icon [icon]="icons.setting"></fa-icon> Paramètre</span>
             </a>
           </li>
         </ul>
@@ -62,16 +76,19 @@
                 <div class="btn-contenair">
                     <button type="button" id="sidebarCollapse" class="btn btn-info" (click)="toggleSidebar()">
                     <fa-icon [icon]="icons.menu"></fa-icon>
+                    
                     </button>
-                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                     <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <fa-icon [icon]="icons.menu"></fa-icon>
                     </button>
+                    
                 </div>
+                <div class="title-page"><h3>{{title}}</h3></div>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      <fa-icon [icon]="icons.user" class="my-custom-style"></fa-icon>
+                      <fa-icon  class="my-custom-style"></fa-icon><img src="{{dataAdmin.urlPhoto}}" alt="">
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                       <li><a class="dropdown-item" href="#!">Settings</a></li>
@@ -87,7 +104,7 @@
       </div>
       <div id="layoutSidenav_content">
         <main>
-          <div class="container-fluid px-4">
+          <div class="container-fluid px-1">
             <!--  -->
             <router-outlet />
           </div>

@@ -13,8 +13,12 @@ export class EnseignantComponent implements OnInit {
   enseignants: Teacher [] =[];
   dtOptions: any = {};
   teacher_form!: FormGroup;
+  update_enseignant_form!: FormGroup
+
   current_enseignat_create!: Teacher;
   fileName!: File;
+  photoSelect!: File
+  urlImage! : string | ArrayBuffer
   teacherStatusOptions!: string[];
 
   constructor(public icons: IconsService, private enseignantService: EnseiService, private fb: FormBuilder) { }
@@ -33,32 +37,17 @@ export class EnseignantComponent implements OnInit {
     })
 
     this.load_enseignants();
+   this. load_update_form()
   }
 
   load_enseignants(){
     this.enseignantService.getAll().subscribe(data =>{
-      data.forEach((item: any) => {
+      data.forEach((item: Teacher) => {
         item.urlPhoto = `http://localhost/StudentImg/${item.urlPhoto}`;
       });
       this.enseignants = data;
     })
-    this.dtOptions = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      // processing: true,
-      // serverSide: true,
-      columnDefs: [
-        { orderable: false, targets: '_all' }
-      ],
-      language: {
-        info: 'Affichage de _START_ à _END_ sur _TOTAL_ entrées',
-        infoEmpty: 'Affichage de 0 à 0 sur 0 entrée',
-        infoFiltered: '(filtré à partir de _MAX_ entrées au total)',
-        lengthMenu: '_MENU_ Entrées par page',
-        search: 'Recherche :'
-      }
-      // Ajoutez d'autres options au besoin
-    };
+    
   }
   // ------------------------------add enseignant form
   
@@ -87,5 +76,73 @@ export class EnseignantComponent implements OnInit {
     // reload this page
     window.location.reload();
    })
+  }
+  // --------------------------------------------------------update student
+  getTeacher(enseignant: Teacher){
+    this.update_enseignant_form.get('nom')?.setValue(enseignant.nom);
+    this.update_enseignant_form.get('idEnseignant')?.setValue(enseignant.idEnseignant);
+    this.update_enseignant_form.get('prenom')?.setValue(enseignant.prenom);
+    this.update_enseignant_form.get('email')?.setValue(enseignant.email);
+    this.update_enseignant_form.get('sexe')?.setValue(enseignant.sexe);
+    this.update_enseignant_form.get('telephone')?.setValue(enseignant.telephone);
+   this.update_enseignant_form.get('status')?.setValue(enseignant.status);
+  }
+
+  // ---------------------------------update teacher
+  onPhotoSelected(event: any){
+    
+    console.log(this.fileName, "fill")
+    this.photoSelect = event.target.files[0];
+    // console.log(this.photoSelect, "photo select")
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.urlImage = e.target.result;
+    };
+    reader.readAsDataURL(this.photoSelect);
+  }
+  // -------------------------------- 
+  load_update_form(){
+    this.update_enseignant_form = this.fb.group({
+      idEnseignant: [''],
+      nom: [''],
+      prenom: [''],
+      email: [''],
+      sexe: [''],
+      password: [''],
+      telephone: [''],
+      urlPhoto: [''],
+      // isDeleted: [enseignant.isDeleted],
+      status: ['']
+    })
+   
+  }
+  // ----------------------------------------------load input value
+
+  update_enseignant(enseignant: Teacher){
+    const formData = this.update_enseignant_form.value
+   const ensei = this.enseignants.find(e =>e.idEnseignant == enseignant.idEnseignant);
+   ensei!.idEnseignant = ensei?.idEnseignant;
+   ensei!.nom = formData.nom;
+   ensei!.prenom = formData.prenom;
+   ensei!.email = formData.email;
+   ensei!.sexe = formData.sexe;
+   ensei!.telephone = formData.telephone;
+   ensei!.status = formData.status;
+  //  console.log(ensei, "ensei", this.photoSelect)
+  
+   this.enseignantService.updateTeacher(ensei!, this.photoSelect).subscribe({
+    next: (response) => {
+      console.log(response, "response")
+      alert("Mise à jour effectuée avec succès!")
+      this.update_enseignant_form.reset();
+      // window.location.reload();
+    },
+    error: (erreur) => {
+      console.log("Error", erreur.error.message);
+      alert("Erreur lors de la mise à jour!")
+    }
+    // complete: () => console.log('The operation is complete!')
+   })
+    
   }
 }

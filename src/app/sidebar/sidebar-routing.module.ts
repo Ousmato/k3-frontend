@@ -15,30 +15,36 @@ import { ArchivesComponent } from '../Admin/Views/archives/archives.component';
 import { FichePaieComponent } from '../Admin/Views/fiche-paie/fiche-paie.component';
 import { StudentNoteComponent } from '../Admin/Views/student-note/student-note.component';
 import { AllNotesSemestreComponent } from '../Admin/Views/all-notes-semestre/all-notes-semestre.component';
+import { EtudiantsDeLaClasseComponent } from '../Admin/Views/etudiants-de-la-classe/etudiants-de-la-classe.component';
 
 const routes: Routes = [{path: "", component: SidebarComponent,
     children: [
       { path: '', component: DasboardComponent },
       { path: 'classe', component: ClassStudentsComponent },
-      {path: 'setting', component: SettingsComponent},
       {path: 'etudiant', component: EtudiantsComponent},
       {path: 'enseignants', component: EnseignantComponent},
       {path: 'list-presence', component: TeachersPresenceComponent},
       {path: 'archive', component: ArchivesComponent},
       {path: 'fiche-paie', component: FichePaieComponent},
-      {path: 'student-notes', component: StudentNoteComponent}
+      {path: 'student-notes', component: StudentNoteComponent},
+      {path: 'etudiant-de-la-classe', component : EtudiantsDeLaClasseComponent},
+      {path: 'setting', component: SettingsComponent},
+      {path: 'parametre', component: SettingsComponent},
 
-     
+      {path: 'inscription', component: SinginComponent, data:{title: "Formulaire d'inscription"}},
+      {path: 'emplois', component: EmploisDuTempsComponent, data:{title: "Creation d'emploi du temps"}},
+      {path: 'seance', component: EmploisSeanceComponent, data:{title: "Ajout des seances"}},
+      {path: 'enseignant-pre-detail', component: EnseignantPrDetailsComponent},
+      {path: 'all-notes', component: AllNotesSemestreComponent}
+      
      
     ]
 
   },
-  {path: 'inscription', component: SinginComponent},
-  {path: 'emplois', component: EmploisDuTempsComponent},
-  {path: 'seance', component: EmploisSeanceComponent},
-  {path: 'enseignant-pre-detail', component: EnseignantPrDetailsComponent},
-  {path: 'all-notes', component: AllNotesSemestreComponent}
-      
+  
+  
+  
+ 
 ]
   
 @NgModule({

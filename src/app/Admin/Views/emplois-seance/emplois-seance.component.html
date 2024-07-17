@@ -2,11 +2,14 @@
     <section class="section-head">
         <div class="month-contenaire">
             <p>{{formattedDate}}</p>
-            <button (click)="validate_emplois()" class="btn btn-primary" type="button"><fa-icon [icon]="icons.cl_check"></fa-icon> Valider</button>
-        </div>
+            <div class="refresh" (click)="refreshPage()"><fa-icon  [icon]="icons.actualise" class="icon-actualise"></fa-icon><span>Actualiser</span></div>
+                   
+            </div>
         <div class="btn-contenaire">
             <div class="child-1">
-                <button *ngIf="!isCreating" class="btn btn-primary" type="button" (click)="show_form()"><fa-icon [icon]="icons.plus"></fa-icon> Créer une séance</button>
+              <button (click)="validate_emplois()" class="btn btn-valid-emplois" type="button"><fa-icon [icon]="icons.cl_check"></fa-icon> Valider l'Emplois</button>
+       
+                <button *ngIf="!isCreating" class="btn btn-show-form" type="button" (click)="show_form()"><fa-icon [icon]="icons.plus"></fa-icon> Créer une séance</button>
                 <button *ngIf="isCreating" class="btn btn-danger" type="button" (click)="annuller()">Annuler</button>
               </div>
             <div class="child-2">
@@ -19,80 +22,145 @@
        
         <!-- ------------------------------------------------------ -->
          <div id="idTable" class="section-table">
-            <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th class="horaire">Horaires</th>
-                    <ng-container *ngFor="let dateInfo of datesWithDays">
-                      <td scope="col">{{ dateInfo.day }}<br><span>{{ dateInfo.date }}</span></td>
-                    </ng-container>
-                  </tr>
-                </thead>
-                <tbody>
-                  <ng-container *ngFor="let heure of hoursList">
-                    <tr>
-                      <th scope="row" class="text-left">{{ heure }}</th>
-                      <ng-container *ngFor="let dateInfo of datesWithDays">
-                        <td scope="col">
-                          <ng-container *ngFor="let seance of seances">
-                            <ng-container *ngIf="dateInfo.date === seance.date.toString() && heure === (seance.heureDebut + ' - ' + seance.heureFin)">
-                            <div class="seance-content">
-                              <div class="childre-1">
-                              <strong>{{ seance.idTeacher.nom }}  {{seance.idTeacher.prenom}}</strong><br>
-                              {{ seance.heureDebut }} - {{ seance.heureFin }} <br>
-                              {{seance.idModule.nomModule}}
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th class="horaire">Horaires</th>
+                <ng-container *ngFor="let dateInfo of day_of_head">
+                  <td scope="col">{{ dateInfo }}</td>
+                </ng-container>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- <ng-container *ngFor="let heure of hoursList"> -->
+                <tr>
+                  <!-- <th scope="row" class="text-left">{{ heure }}</th> -->
+                  
+                  <ng-container *ngFor="let dateInfo of datesWithDaysTest; ">
+                    <td scope="col">
+                      <ng-container *ngFor="let seance of seances">
+                        <ng-container *ngIf="dateInfo.dates.includes(seance.date.toString())">
+
+                        <div class="seance-content">
+                            <div class="childre-1">
+                                <strong> {{ seance.idTeacher.nom.charAt(0).toUpperCase() }}.  {{seance.idTeacher.prenom.toUpperCase()}}</strong><br>
+                                {{ seance.heureDebut }} - {{ seance.heureFin }} <br>
+                                {{seance.idModule.nomModule}} <br>
+                                
+                            </div>
+                            <div class="childre-2">
+                              <span>{{seance.date.toString()}}</span>
+                              <div class="btn-cont">
+                                <button (click)="show_comfirme_delete(seance.heureDebut, seance.heureFin)" type="button" ><fa-icon [icon]="icons.delete" [ngStyle]="{color: 'red'}" class="icon"></fa-icon></button>
+                                <button (click)="show_update_seance(seance.heureFin, seance)"  ><fa-icon [icon]="icons.edit" class="icon"></fa-icon></button>
+                            
                               </div>
-                              <div class="childre-2">
-                                <button class="btn" type="button" ><fa-icon [icon]="icons.delete"></fa-icon></button>
-                                <button class="btn" type="button" ><fa-icon [icon]="icons.edit"></fa-icon></button>
-                              </div>
-                            </div> 
-                            </ng-container>
-                          </ng-container>
-                        </td>
+                            </div>
+                        </div> 
+
+                        </ng-container>
                       </ng-container>
-                    </tr>
+                    </td>
                   </ng-container>
-                </tbody>
-              </table>
+                </tr>
+              <!-- </ng-container> -->
+            </tbody>
+          </table>
               
-              
+              <div class="views" *ngIf="selected_seance_heure_fin">
+                <h4>Modifier la séance</h4>
+                <form class="form-up" [formGroup]="update_seance_form" (ngSubmit)="update_seance()" >
+                  <div class="input-class">
+                     <label>Enseignants</label> 
+                    <select class="form-select" formControlName="idTeacher"  id="enseignant" placeholder="Enseignants" [class.is-invalid]="update_seance_form.get('idTeacher')!.invalid && update_seance_form.get('idTeacher')!.touched"   required>
+                      <option  selected disabled value="">Choisir L'Enseignant</option>
+                      <option *ngFor="let enseignant of enseignants" [value]="enseignant.idEnseignant">{{enseignant.nom}}</option>
+                    </select>
+                    <span *ngIf="update_seance_form.controls['idTeacher'].invalid && update_seance_form.controls['idTeacher'].touched" [ngStyle]="{color: 'red'}">
+                      Obligatoire*
+                    </span>
+                  </div>
+                   
+                  <div class="input-class">
+                    <label>Modules</label> 
+                    <select class="form-select" formControlName="idModule"  id="idModule" placeholder="Modules"  [class.is-invalid]="update_seance_form.get('idModule')!.invalid && update_seance_form.get('idModule')!.touched"   required>
+                      <option  selected disabled value="">Choisir Le Module</option>
+                      <option *ngFor="let module of modules" value="{{module.id}}">{{module.nomModule}}</option>
+                    </select>
+                    <span *ngIf="update_seance_form.controls['idModule'].invalid && update_seance_form.controls['idModule'].touched" [ngStyle]="{color: 'red'}">
+                      Obligatoire*
+                    </span>
+                  </div>
+                    
+
+
+                      <input *ngIf="false" type="number" formControlName="id" class="form-control" id="id">
+                      <input *ngIf="false" type="date" formControlName="date" class="form-control" id="date">
+                      <div class="input-class">
+                        <label>Heure début</label>
+                        <input type="time" formControlName="heureDebut" class="form-control" id="heureDebut"  [class.is-invalid]="update_seance_form.get('heureDebut')!.invalid && update_seance_form.get('heureDebut')!.touched"  required>
+                    
+                      </div>
+                      <div class="input-class">
+                        <label>Heure fin</label>
+                        <input type="time" formControlName="heureFin" class="form-control" id="heureFin"  [class.is-invalid]="update_seance_form.get('heureFin')!.invalid && update_seance_form.get('heureFin')!.touched"  required>
+                 
+                      </div>
+                     
+                  <div class="button-cash">
+                    <a (click)="exit()"   ><span>Annuler</span></a>
+                    <button class="submit" type="submit" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                  </div>
+                </form>
+              </div>
          
         </div>
         <div id="idForm" class="section-form" >
-            <form [formGroup]="form_seance" (ngSubmit)="create_seance()" *ngIf="isCreating">
-                <div class="form form-group">
+            <form class="form-add" [formGroup]="form_seance" (ngSubmit)="create_seance()" *ngIf="isCreating">
+                  <div class="form form-group">
                     <label>Enseignants</label> 
-                        <select class="form-select" formControlName="idTeacher"  id="enseignant" placeholder="Enseignants"  required>
-                        <option  selected disabled value="">Choisir L'Enseignant</option>
-                        <option *ngFor="let enseignant of enseignants" [value]="enseignant.idEnseignant">{{enseignant.nom}}</option>
-                        </select> 
-                    </div>
+                    <select class="form-select" formControlName="idTeacher"  id="enseignant" placeholder="Enseignants" [class.is-invalid]="form_seance.get('idTeacher')!.invalid && form_seance.get('idTeacher')!.touched" required>
+                      <option  selected disabled value="">Choisir L'Enseignant</option>
+                      <option *ngFor="let enseignant of enseignants" [value]="enseignant.idEnseignant">{{enseignant.nom}}</option>
+                    </select> 
+                    <span *ngIf="form_seance.controls['idTeacher'].invalid && form_seance.controls['idTeacher'].touched" [ngStyle]="{color: 'red'}">
+                      Ce champ est obligatoire
+                    </span>
+                  </div>
                     <div class="form form-group">
-                        <label>Modules</label> 
-                            <select class="form-select" formControlName="idModule"  id="idModule" placeholder="Modules"  required>
-                            <option  selected disabled value="">Choisir Le Module</option>
-                            <option *ngFor="let module of modules" value="{{module.id}}">{{module.nomModule}}</option>
-                            </select> 
+                      <label>Modules</label> 
+                      <select class="form-select" formControlName="idModule"  id="idModule" placeholder="Modules"  [class.is-invalid]="form_seance.get('idModule')!.invalid && form_seance.get('idModule')!.touched"  required>
+                        <option  selected disabled value="">Choisir Le Module</option>
+                        <option *ngFor="let module of modules" value="{{module.id}}">{{module.nomModule}}</option>
+                      </select> 
+                      <span *ngIf="form_seance.controls['idModule'].invalid && form_seance.controls['idModule'].touched" [ngStyle]="{color: 'red'}">
+                        Ce champ est obligatoire
+                      </span>
                     </div>
                     <div class="form form-group"> 
                         <label>Jours </label> 
-                        <select class="form-select" formControlName="jour"  required>
+                        <select class="form-select" formControlName="jour"  [class.is-invalid]="form_seance.get('jour')!.invalid && form_seance.get('jour')!.touched " required>
                           <option selected disabled value="">Choisir Le Jour</option>
-                          <option *ngFor="let dateInfo of datesWithDays" [value]="dateInfo.date">{{dateInfo.day}}</option>
+                          <option *ngFor="let dateInfo of datesWithDays" [value]="dateInfo.date">{{dateInfo.day}} - {{dateInfo.date}}</option>
                         </select> 
+                        <span *ngIf="form_seance.controls['jour'].invalid && form_seance.controls['jour']!.touched" [ngStyle]="{color:'red'}">
+                          Ce champ est obligatoire
+                        </span>
                       </div>
 
                 
                     <div class="input-time">
                         <div class="form form-group">
                              <label>Heure de début </label>
-                            <input type="time" class="form-control" id="heureDebut" formControlName="heureDebut" required>
+                            <input type="time" class="form-control" id="heureDebut" formControlName="heureDebut" [class.is-invalid]="form_seance.get('heureDebut')!.invalid && form_seance.get('heureDebut')!.touched" required>
+                            <!-- <span *ngIf="form_seance.controls['heureDebut'].invalid && form_seance.controls['heureDebut']!.touched" [ngStyle]="{color:'red'}">
+                              Ce champ est obligatoire
+                            </span> -->
                         
                         </div>
                        <div class="form form-group">
                             <label>Heure de Fin </label>
-                            <input type="time" class="form-control" id="heureFin" formControlName="heureFin" required>
+                            <input type="time" class="form-control" id="heureFin" formControlName="heureFin" [class.is-invalid]="form_seance.get('heureFin')!.invalid && form_seance.get('heureFin')!.touched" required>
                         
                         </div>
                                     
@@ -108,4 +176,16 @@
     </section>
     <!-- --------------------------------------- -->
 
+    <div class="overlay" *ngIf="selected_seance_heure_fin" (click)="preventClick($event)"></div>
+
+    <div class="views delete-modal" *ngIf="deleted_modal">
+      <h4>Confirmation de suppression</h4>
+      <div class="content">
+        <p>Êtes-vous sûr de vouloir supprimer cet élément ?</p>
+      </div>
+      <div class="button-cash">
+        <a (click)="close_delete_modal()"><span>Annuler</span></a>
+        <button class="submit" (click)="deleted(hasDeleted)" ><span>Confirmer</span></button>
+      </div>
+    </div>
 </main>

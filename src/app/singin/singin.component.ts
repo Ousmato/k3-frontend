@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SinginServiceService } from './singin-service.service';
 import { ClassStudentService } from '../Admin/Views/class-students/class-student.service';
 import { ClassRoom } from '../Admin/Models/Classe';
-import { data } from 'jquery';
 import { Student } from '../Admin/Models/Students';
 import { Admin } from '../Admin/Models/Admin';
+import { IconsService } from '../Services/icons.service';
+import { PageTitleService } from '../Services/page-title.service';
 
 @Component({
   selector: 'app-singin',
@@ -14,17 +15,22 @@ import { Admin } from '../Admin/Models/Admin';
 })
 export class SinginComponent implements OnInit {
 // adminConnect: 
+
+title = 'Sign In';
+
+@Output() titleEvent = new EventEmitter<string>();
   studentForm!: FormGroup;
   classRoom: ClassRoom [] = [];
   fileName!: File;
   admin!: Admin;
-  // classe!: ClassRoom [];
-  constructor(private formBuilder: FormBuilder, 
-    private service: SinginServiceService, 
+
+  passwordVisible : boolean = false
+
+  constructor(private formBuilder: FormBuilder, private pageTitle: PageTitleService,
+    private service: SinginServiceService, public icons: IconsService,
     private classeService: ClassStudentService){}
   ngOnInit(): void {
     this.studentForm = this.formBuilder.group({
-      // id: [null], 
       nom: ['', Validators.required],
       prenom: ['', Validators.required],
       sexe: ['', Validators.required],
@@ -33,13 +39,11 @@ export class SinginComponent implements OnInit {
       password: ['', Validators.required],
       urlPhoto: ['',Validators.required],
       matricule: ['', Validators.required],
-      scolarite: ['', Validators.required],
-      // date: [''],
-      idClasse: [],
+      scolarite: ['',Validators.required],
+      idClasse: ['', Validators.required],
       lieuNaissance: ['',Validators.required],
       dateNaissance: ['',Validators.required],
-      active: [false],
-      admin: [] 
+      // admin: [''] 
     });
     // ----------------------------------------------------------------------
     
@@ -47,17 +51,26 @@ export class SinginComponent implements OnInit {
       this.classRoom = data;
       console.log(this.classRoom);
     });
+
+    this.sendTitle();
   }
   // -------------------------------------------
  
-  
+
+  sendTitle() {
+    this.titleEvent.emit(this.title);
+  }
+   // Méthode pour basculer l'état du mot de passe
+   togglePasswordVisibility(): void {
+    this.passwordVisible = !this.passwordVisible;
+}
 
   
  onFileSelected(event: any)  {
     this.fileName = event.target.files[0];
   }
   singin() {
-    if (this.studentForm.valid) {
+    
       const formData = this.studentForm.value;
       const adminData = localStorage.getItem("admin");
       console.log("fom", formData);
@@ -89,18 +102,22 @@ export class SinginComponent implements OnInit {
       };
       console.log(student,"student");
       // return;
-      this.service.singIn(student, this.fileName).subscribe(
-        (response) => {
-          console.log('Student signed in successfully:', response);
-          alert("Inscription effectuee avec sucees!");
-          this.studentForm.reset();
-          // Handle success, like navigating to another page
-        },
-        (error) => {
-          console.error('Error signing in:', error);
-          // Handle error
-        }
-      );
+      if (this.studentForm.valid) {
+        this.service.singIn(student, this.fileName).subscribe(
+          {
+            next:(response) =>{
+              this.pageTitle.showSuccessToast(response.message);
+              this.studentForm.reset();
+
+            },
+            error: (erreur) =>{
+              this.pageTitle.showErrorToast(erreur.error.message);
+            }
+
+        })
+    }else{
+      this.studentForm.markAllAsTouched();
+      console.log("Veuillez remplir tous les champs correctement!");
     }
   }
   

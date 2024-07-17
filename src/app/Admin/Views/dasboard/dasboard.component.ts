@@ -25,6 +25,8 @@ export class DasboardComponent  implements OnInit{
   emploisCount!: number;
   classes : ClassRoom [] = []
   emplois: Emplois [] = []
+  notifs: Notifications_gestion [] = []
+  books : any[] = []
   noti_form!: FormGroup
 
   constructor(private teacherService: EnseiService, private notifiService: NotificationService, private emploisService: ServiceService, private fb: FormBuilder,
@@ -43,6 +45,8 @@ export class DasboardComponent  implements OnInit{
     this.countClasses()
     this.countTeachers()
     this.countEmplois()
+    this.get_all_notifi()
+    // this.searchBooks("henry")
   }
   countStudents(){
     this.etudiantService.getAll().subscribe(res =>{
@@ -100,4 +104,41 @@ export class DasboardComponent  implements OnInit{
       this.noti_form.reset()
     })
   }
+  // -----------------------------get all notification
+  get_all_notifi(){
+    this.notifiService.getAll().subscribe(res => {
+      this.notifs = res;
+      console.log(res, "not");
+    })
+  }
+  // ------------------------------get book 
+  // getBook(){
+  //     const url = "https://openlibrary.org/search.json?q=henry";
+  // const headers = new Headers({
+  //     "User-Agent": "Gestion-scolaire/1.0 (ousmatotoure98@gmail.com)"
+  // });
+  // const options = {
+  //     method: 'GET',
+  //     headers: headers
+  // };
+  // fetch(url, options)
+  //     .then(response => response.json())
+  //     .then(data => console.log(data, "data"))
+  //     .catch(error => console.error('Error:', error));
+  //   // this.notifiService.getBooks("Harry Potter").subscribe(response =>{
+  //   //   this.books = response
+  //   //   console.log("book :", response);
+  //   // })
+  // }
+  // searchBooks(query: string): void {
+  //   this.notifiService.getBooksss(query).subscribe(
+  //     (data: any) => {
+  //       this.books = data.docs; // Assuming 'docs' contains the array of books
+  //       console.log('Books:', this.books);
+  //     },
+  //     (error: any) => {
+  //       console.error('Error fetching books:', error);
+  //     }
+  //   );
+  // }
 }

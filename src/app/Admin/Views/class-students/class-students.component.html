@@ -1,79 +1,83 @@
 
 <div class="main">
 
-    <div class="grid-container" *ngFor="let classRom of classRoms ">
-        <div class="grid-item">
-            <div class="card">
-                <div class="card-header">
-                    <div class="h4-head">
-                        <h4>{{ classRom.idFiliere?.idNiveau?.nom }} ({{ classRom.idFiliere?.idFiliere?.nomFiliere }})</h4>
-                    </div>
-                    <div class="icon-m">
-                        <div class="dropdown"  [ngClass]="{'show': isDropdownOpen(classRom.id!)}">
-                            <button class="btn  " type="button" (click)="toggleDropdown(classRom.id!)">
-                                <a class="btn-group "><fa-icon [icon]="faElip" class="my-custom-style dropdown-toggle"></fa-icon></a>
-                           
-                            </button>
-                            <div class="dropdown-menu"  [ngClass]="{'show': isDropdownOpen(classRom.id!)}">
-                              <a class="dropdown-item" (click)="smestre_notes(classRom.id!)">Les notes du semestre en cours</a>
-                              <a class="dropdown-item" href="#">Another action</a>
-                              <a class="dropdown-item" href="#">Something else here</a>
-                            </div>
-                          </div>
-                      
-                    </div>
-                 </div>
-                <div class="card-body">
-                    <h5 class="card-title"><a id="detailButton" data-bs-toggle="modal" data-bs-target="#>">Les Modules</a></h5>
-                    <p class="card-text"> <a id="etudiant" data-bs-toggle="modal" data-bs-target="#>" class="btn etudian-detail" title="voir les etudiants de la classe">Effectif : {{classRom.effectifs}}</a></p>
-                    <div class="btn-container">
-                        
-                            <a *ngIf="isDesabled" (click)="navigateBasedOnCondition(classRom)"  class="btn" title="Créer un emploi du temps"><fa-icon [icon]="faEmploi" class="my-custom-style"></fa-icon></a>
-                        
-                         <a *ngIf="!isDesabled" class="btn" title="Consulter un emploi du temps"><fa-icon [icon]="faEye" class="my-custom-style"></fa-icon></a>
-                        <a id="module" data-bs-toggle="modal" [attr.data-bs-target]="'#addModuleClass' + classRom.id" class="btn" title="Ajouter des modules à la classe"
-                         (click)="getAll_ues(classRom.id!)">
-                            <fa-icon [icon]="fabook" class="my-custom-style"></fa-icon>
-                            <span *ngIf="" class="tooltiptext">Ajouter des modules</span>
-                          </a>
-                          
-                        <a  class="btn" title="Ajouter des notes aux étudiants" (click)="add_notes(classRom.id!)"><fa-icon [icon]="fanote" class="my-custom-style"></fa-icon> </a>
-                        <a class="btn" title="Notification de la classe"><fa-icon [icon]="fanot" class="my-custom-style"></fa-icon></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+   
     <!-- -----------------------------------------------------modal add module in classe-------------- -->
 
-    <div class="modal fade"  [id]="'addModuleClass' + classRom.id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdro" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdrop">Attrubution des Modules </h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    
+<!-- </div > -->
+<!-- section  -->
+ <ng-container *ngIf="classRoms.length > 0, else notFundTemplate">
+<div class="grid-container" *ngFor="let classRom of classRoms ">
+
+    <div class="grid-item">
+        <div class="section-folder">
+            <div class="class-folder">
+                <div class="icon-folder">
+                    <fa-icon [icon]="icons.folder" class="icons-style"></fa-icon>
                 </div>
 
-                <div class="modal-body">
-                <form class="formModuleMatiere" [formGroup]="addModules" (ngSubmit)="createClassModule(classRom.id!)"> 
-                    <span id="errorclass">Atteintion cette classe existe deja</span>
-                   
-                    <div class="nom-class">{{ classRom.idFiliere?.idNiveau?.nom }} ({{ classRom.idFiliere?.idFiliere?.nomFiliere }})</div>
-                    <div class="form form-group">
-                        <label for="validationDefault03" class="label form-label">Modules :</label>
-                        <select class="input-with form-select" formControlName="idUE" id="select-modules-multiple" multiple aria-label="Multiple select" required>
-                        <!-- <option selected disabled value="">Choisir Les Modules</option> -->
-                        
-                         <option *ngFor="let ue of ueList" [value]="ue.id">{{ue.nomUE}}</option>
-                            
-                        </select>
-                        
-                    </div>
-                    <button id="button" class="btn btn-primary" type="submit" >Enregistrer</button> 
-                </form> 
+                <div class="info-folder">
+                    <h2 class="title">Classe : {{classRom.idFiliere?.idNiveau?.nom}} </h2>
+                    <p class="title">Filiere : {{classRom.idFiliere?.idFiliere?.nomFiliere}}</p>
+                    <p>Effectifs : {{classRom.effectifs}}</p>
+                    <a (click)="show_views(classRom)">Clique ici<fa-icon [icon]="icons.angleDown"></fa-icon></a>
                 </div>
+            </div>
+            <ng-container *ngIf=" classRom === classeSelect">
+                <div class="views" *ngIf="isShow_link_modal">
+                    <li> <a (click)="toggle_to_emplois(classeSelect)" > {{ isDesabled ? 'Consulter l\'emploi' : 'Créer un emploi' }}</a></li>
+                    <li><a (click)="getAll_ues(classeSelect.id!)" >Ajouter des modules</a></li>
+                    <li><a (click)="toggle_to_notes(classeSelect.id!)" >Ajouter des notes</a></li>
+                    <li><a (click)="toggle_to_presence(classeSelect.id!)" >Liste de presences</a></li>
+                    <li><a (click)="toggle_to_noteSemestre(classeSelect.id!)" >Notes du semestre</a></li>
+                    <li><a >Archives</a></li>
+                </div>
+            </ng-container>
+        </div>
+        <!-- ----------------------------- -->
+        
+    </div> 
+</div>
+</ng-container>
+<ng-template #notFundTemplate>
+    <div class="not-found">
+        <div class="img">
+            <img src="assets/error-404-monochrome.svg" alt="">
+        </div>
+        
+        <p>Aucune classe trouvée, veillez vous rendre dans le parametre pour en ajouter</p>
+        <a (click)="goToParamettre()">Cliquer ici <fa-icon [icon]="icons.next"></fa-icon></a>
+    </div>
+</ng-template>
+<ng-container *ngIf="isShow_add_module">
+    <div class="views-add-ues" *ngIf="ueList.length > 0, else notFundModule">
+        <form class="formModuleMatiere" [formGroup]="addModules" (ngSubmit)="createClassModule(classeSelect)"> 
+            <!-- <span id="errorclass">Atteintion cette classe existe deja</span> -->
+           
+            <div class="nom-class"></div>
+            <div class="form form-group">
+                <label  class="label form-label">Choisir une ou plusieurs unite d'enseignement</label>
+                 <select class="custom-select input" formControlName="idUE" id="select-modules-multiple[]" multiple aria-label="Multiple select" required>
+                
+                 <option *ngFor="let ue of ueList" [value]="ue.id">{{ue.nomUE}}</option>
+                    
+                </select>
                 
             </div>
+            <div class="button-cash">
+                <a (click)="exit()"   ><span>Annuler</span></a>
+                <button class="submit" type="submit" ><span>Enregistrer</span></button>
+              </div>
+        </form> 
         </div>
+ </ng-container>
+ <ng-template #notFundModule>
+    <div class="views-add-ues" *ngIf="notFund_modal">
+        <p>Aucun Unité d'enseignemants trouver veillez vous rendre dans le Paramètre pour ajouter </p>
+        <div class="button-cash">
+            <a (click)="exit_modal()"   ><span>Annuler</span></a>
+          </div>
     </div>
-</div >
-<!-- section  -->
+ </ng-template>
+</div>
