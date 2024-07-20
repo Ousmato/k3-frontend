@@ -12,6 +12,7 @@ import { ClassStudentService } from '../class-students/class-student.service';
 import { Semestres } from '../../Models/Semestre';
 import { SchoolInfo } from '../../Models/School-info';
 import { SchoolService } from '../../../Services/school.service';
+import { PageTitleService } from '../../../Services/page-title.service';
 
 @Component({
   selector: 'app-settings',
@@ -26,7 +27,7 @@ export class SettingsComponent implements OnInit {
   fileName?: File;
 
   idNiveau!: Niveau
-  school!: SchoolInfo
+  school?: SchoolInfo
   selectedUeId! : number
   selectedClasseId! : number
   moduleFind! : Module
@@ -73,7 +74,7 @@ export class SettingsComponent implements OnInit {
   modulForDelete: Module[] = [];
   isHow_delete_module: boolean = false;
 
-  constructor(private fb: FormBuilder, private schoolService: SchoolService,
+  constructor(private fb: FormBuilder, private schoolService: SchoolService, private pageTitle: PageTitleService,
     private service: SetService, public icons: IconsService, private classService: ClassStudentService){}
   ngOnInit() {
     this.load_school_form();
@@ -109,7 +110,6 @@ export class SettingsComponent implements OnInit {
     this.service.getAll_Niveau_filiere().subscribe((
       nivFil: NivFiliere[]) =>{
         this.objectNivFil = nivFil;
-        console.log(this.objectNivFil, "--------------------------fili");
         this.load_filiere_input_value(nivFil)
       })
 
@@ -150,12 +150,16 @@ export class SettingsComponent implements OnInit {
         idFiliere: createdFiliere
       };
 
-      this.service.addFiliere(nivFiliere).subscribe(response => {
-        console.log('Filiere ajoutée avec succès', response);
-        this.addFiliere.reset();
-      }, error => {
-        console.error('Erreur lors de l\'ajout de la filiere', error);
-      });
+      this.service.addFiliere(nivFiliere).subscribe({
+        next: (response) => {
+         
+          this.pageTitle.showSuccessToast(response.message);
+          window.location.reload();
+        },
+        error: (erreur) => {
+          this.pageTitle.showErrorToast(erreur.error.message);
+        }
+      })
     }, error => {
       console.error('Erreur lors de la création de la filiere', error);
     });
@@ -351,10 +355,14 @@ export class SettingsComponent implements OnInit {
       coefficient: formData.coefficient,
       idUe: ue
     }
-    this.service.createModule(module).subscribe(response => {
-      console.log(response);
-      alert("Ajout Effectuee avec succees!")
-      this.addModule.reset();
+    this.service.createModule(module).subscribe({
+      next: (response) => {
+        this.pageTitle.showSuccessToast(response.message)
+        this.addModule.reset();
+      },
+      error: (erreur) => {
+        this.pageTitle.showErrorToast(erreur.error.message)
+      }
     })
   }
   // -------------------------------get all semestre
@@ -381,17 +389,16 @@ export class SettingsComponent implements OnInit {
       dateDebut: formData.dateDebut,
       datFin: formData.datFin
     }
-    this.service.updateSemestre(semestre).subscribe(response =>{
-      // console.log(response);
-      alert("Mise à jour effectuée avec succès!")
-      this.update_semestre_form.reset();
-      window.location.reload();
-    },
-    error => {
-      this.errorMessage = error;
-      alert("Error : "+ this.errorMessage);
-    }
-  )
+    this.service.updateSemestre(semestre).subscribe({
+      next: (response) =>{
+        this.pageTitle.showSuccessToast(response.message)
+        this.update_semestre_form.reset();
+        window.location.reload();
+      },
+      error: (erreur) => {
+        this.pageTitle.showErrorToast(erreur.error.message)
+      }
+    } )
 
   }
   // -------------------------------------------------------------------

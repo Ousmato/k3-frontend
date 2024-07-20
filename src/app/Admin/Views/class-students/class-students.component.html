@@ -31,6 +31,7 @@
                     <li><a (click)="toggle_to_notes(classeSelect.id!)" >Ajouter des notes</a></li>
                     <li><a (click)="toggle_to_presence(classeSelect.id!)" >Liste de presences</a></li>
                     <li><a (click)="toggle_to_noteSemestre(classeSelect.id!)" >Notes du semestre</a></li>
+                    <li><a (click)="toggle_to_update_emplois (classeSelect.id!)" >Modifier l'emploi du temps</a></li>
                     <li><a >Archives</a></li>
                 </div>
             </ng-container>
@@ -50,20 +51,27 @@
         <a (click)="goToParamettre()">Cliquer ici <fa-icon [icon]="icons.next"></fa-icon></a>
     </div>
 </ng-template>
+
+<ng-container *ngIf="isShow_update_emplois">
+   <app-emplois-widget [idClasse]="classeSelect.id" (closeUpdateModal)="onCloseUpdateModal()"></app-emplois-widget>
+</ng-container>
+
 <ng-container *ngIf="isShow_add_module">
-    <div class="views-add-ues" *ngIf="ueList.length > 0, else notFundModule">
+    <div class="views-add-ues" *ngIf="ueList.length > 0">
+        <div class="nom-class"> <h5 >Choisir une ou plusieurs unite d'enseignement</h5></div>
         <form class="formModuleMatiere" [formGroup]="addModules" (ngSubmit)="createClassModule(classeSelect)"> 
-            <!-- <span id="errorclass">Atteintion cette classe existe deja</span> -->
-           
-            <div class="nom-class"></div>
+           <div class="select-all">
+                <span>Tout</span>
+                    <input type="checkbox" class="float-end" (change)="selectAll($event)" [checked]="areAllChecked()">
+                </div>
             <div class="form form-group">
-                <label  class="label form-label">Choisir une ou plusieurs unite d'enseignement</label>
-                 <select class="custom-select input" formControlName="idUE" id="select-modules-multiple[]" multiple aria-label="Multiple select" required>
                 
-                 <option *ngFor="let ue of ueList" [value]="ue.id">{{ue.nomUE}}</option>
-                    
-                </select>
-                
+                <ng-container *ngFor="let ue of ueList" >
+                    <div class="input">
+                        <label >{{ue.nomUE}}</label>
+                        <input type="checkbox"  (change)="ue_check(ue.id, $event)" [checked]="is_checked(ue.id)" >
+                    </div>
+                </ng-container>
             </div>
             <div class="button-cash">
                 <a (click)="exit()"   ><span>Annuler</span></a>
@@ -72,12 +80,14 @@
         </form> 
         </div>
  </ng-container>
- <ng-template #notFundModule>
+ <!-- <ng-template #notFundModule>
     <div class="views-add-ues" *ngIf="notFund_modal">
         <p>Aucun Unité d'enseignemants trouver veillez vous rendre dans le Paramètre pour ajouter </p>
         <div class="button-cash">
             <a (click)="exit_modal()"   ><span>Annuler</span></a>
           </div>
     </div>
- </ng-template>
+ </ng-template> -->
+
 </div>
+<div class="overlay" *ngIf="isShow_add_module" (click)="preventClick($event)"></div>

@@ -141,3 +141,15 @@ li span{
 .pop-img .icons .arrow{
     font-size: 4rem;
 }
+.refresh{
+    padding: 8px;
+    font-size: 14px;
+    background-color: var(--primary-light);
+    border-radius: 5px;
+    color: var(--secondary);
+    cursor: pointer;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+}

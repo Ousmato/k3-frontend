@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Student } from '../../Models/Students';
 import { Notes } from '../../Models/Notes';
 import { Module } from '../../Models/Module';
+import { Response_String } from '../../Models/Response_String';
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +44,23 @@ export class EtudeService {
    
   }
   // -----------------------------------------desactive student by id
-  desactiveStudent(id: number): Observable<Student>{
-    return this.http.get<Student>(this.baseUrl + "desable/" + id);
+  desactiveStudent(id: number): Observable<Response_String>{
+    return this.http.get<Response_String>(this.baseUrl + "desable/" + id);
+  }
+  // ------------------------get stuudent by id
+  getStudent_by_id(idStudent: number) : Observable<Student>{
+    return this.http.get<Student>(this.baseUrl+"student-by-id/"+idStudent)
+  }
+  // ---------------------update student
+  updateStudent(student: Student, file?: File): Observable<Response_String> {
+    const formData = new FormData();
+    formData.append('student', JSON.stringify(student));
+    formData.append('file', file!);
+    return this.http.put<Response_String>(this.baseUrl + 'update', formData);
+  }
+  // -----------------------update scolarite
+  update_student_scolarite(idEtudiant: number, scolarite: number): Observable<Response_String> {
+    const url = `${this.baseUrl}update-scolarite/${idEtudiant}`;
+    return this.http.put<Response_String>(url, { scolarite });
   }
 }

@@ -6,7 +6,7 @@
            
                <div class="child">
                 <div class="logo">
-                    <img src="{{school.urlPhoto}}" alt="">
+                    <img src="{{school?.urlPhoto}}" alt="">
                     <h4>INFORMATION DE L'ECOLE</h4>
                 </div>
                  <p>NB : Ici vous pouvez modifier les information de l'etablissement</p>
@@ -14,12 +14,12 @@
                  <ng-container *ngIf="isshow_school_detail">
                     <div class="views">
                         <div class="view-school">
-                            <p><strong>Nom de l'école :</strong> {{school.nomSchool}}</p>
-                            <p><strong>Email :</strong> {{school.email}}</p>
-                            <p><strong>Téléphone :</strong> {{school.telephone}}</p>
-                            <p><strong>Début de l'année : </strong>{{school.debutAnnee}}</p>
-                            <p><strong>Fin de l'année : </strong>{{school.finAnnee}}</p>
-                            <p><strong>Localité : </strong>{{school.localite}}</p>
+                            <p><strong>Nom de l'école :</strong> {{school?.nomSchool}}</p>
+                            <p><strong>Email :</strong> {{school?.email}}</p>
+                            <p><strong>Téléphone :</strong> {{school?.telephone}}</p>
+                            <p><strong>Début de l'année : </strong>{{school?.debutAnnee}}</p>
+                            <p><strong>Fin de l'année : </strong>{{school?.finAnnee}}</p>
+                            <p><strong>Localité : </strong>{{school?.localite}}</p>
                         </div>
                         <div class="button-cash">
                             <a (click)="annuler()" class="submit" ><span>Annuler</span></a>

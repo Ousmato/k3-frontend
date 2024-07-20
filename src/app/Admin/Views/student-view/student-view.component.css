@@ -1,0 +1,198 @@
+
+main{
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    /* align-items: center; */
+    
+}
+button{
+    color: var(--secondary);
+    margin-top: 20px;
+    background-color: var(--primary);
+    border: none;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+}
+form{
+    width: 100%;
+    padding: 10px;
+    justify-content: center;
+    /* border: 1px solid #ccc; */
+    border-radius: 8px;
+}
+
+
+.input{
+    margin-top: 10px;
+}
+.label{
+    font-weight: bold;
+    margin-right: 30px;
+}
+.label-nom-prenom{
+    font-weight: bold;
+}
+.chil{
+    width: 30%;
+}
+.position-relative {
+    position: relative;
+}
+
+.position-absolute {
+    position: absolute;
+}
+.radio-button{
+    display: flex;
+}
+a{
+    color: rgb(101, 101, 253);
+}
+#btn-label{
+    display: flex;
+    flex-direction: column;
+    padding-left: 20%;
+   margin-top: 10px;
+}
+
+
+.contenaires{
+    display: flex;
+    justify-content: space-between;
+}
+label span{
+    font-size: 12px;
+    color: var(--tertiary);
+    font-weight: 300;
+}
+.image-column{
+    margin-top: 37px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+.pop-img img{
+    height: 120px;
+    width: auto;
+    border: #ccc 1px solid;
+    border-radius: 0;
+}
+
+input{
+    border-radius: 0;
+    border: none;
+    padding: 0;
+    padding-bottom: 5px;
+    border-bottom: 2px solid var(--primary);
+    cursor: default;
+    
+}
+input:focus{
+    border-bottom: 2px solid var(--primary);
+    outline: none;
+    box-shadow: none;
+}
+.footer{
+    position: relative;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: var(--tertiary);
+    width: 100%;
+    text-align: center;
+}
+.footer p{
+    margin: 0;
+}
+.footer span{
+    color: var(--primary);
+    font-weight: bold;
+}
+.float-end p{
+    text-decoration: none;
+    color: var(--primary);
+    font-weight: bold;
+    cursor: pointer;
+    padding: 5px;
+    margin: 0;
+    border-radius: 5px;
+    margin-top: -30px;
+    &:hover{
+        color: var(--secondary);
+        /* background-color: var(--primary); */
+        
+    }
+}
+.footer .views{
+    width: 250px;
+    background-color: white;
+    position: absolute;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    right: 20px;
+    top: -180px;
+    z-index: 10001;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15);
+    
+    }
+   
+    .scolarite-input{
+        width: 100%;
+        padding: 5px;
+        border-radius: 4px;
+        border: 1px solid var(--tertiary);
+        margin-top: 10px;
+    }
+    .button-cash{
+        display: flex;
+        gap: 20px;
+        justify-content: end;
+        
+       
+    }
+   
+    .button-cash button{
+        color: var(--secondary);
+        border: none;
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+        padding: 5px;
+        border-radius: 5px;
+        /* background-color: var(--primary); */
+        
+        cursor: pointer;
+        &:hover{
+            background-color: var(--secondary);
+            color: var(--primary);
+        }
+       
+    }
+    .button-cash button span{
+        color: var(--secondary);
+        &:hover{
+            color: var(--primary);
+        }
+    }
+    .views form input{
+        cursor: text;
+    }
+.back-button{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    font-size: 20px;
+    margin: 10px 0;
+    &:hover{
+        background-color: var(--tertiary);
+        color: var(--primary);
+        border: none;
+        border-radius: 50%;
+    }
+
+}

@@ -16,6 +16,8 @@ import { FichePaieComponent } from '../Admin/Views/fiche-paie/fiche-paie.compone
 import { StudentNoteComponent } from '../Admin/Views/student-note/student-note.component';
 import { AllNotesSemestreComponent } from '../Admin/Views/all-notes-semestre/all-notes-semestre.component';
 import { EtudiantsDeLaClasseComponent } from '../Admin/Views/etudiants-de-la-classe/etudiants-de-la-classe.component';
+import { StudentEditComponent } from '../Admin/Views/student-edit/student-edit.component';
+import { StudentViewComponent } from '../Admin/Views/student-view/student-view.component';
 
 const routes: Routes = [{path: "", component: SidebarComponent,
     children: [
@@ -35,7 +37,9 @@ const routes: Routes = [{path: "", component: SidebarComponent,
       {path: 'emplois', component: EmploisDuTempsComponent, data:{title: "Creation d'emploi du temps"}},
       {path: 'seance', component: EmploisSeanceComponent, data:{title: "Ajout des seances"}},
       {path: 'enseignant-pre-detail', component: EnseignantPrDetailsComponent},
-      {path: 'all-notes', component: AllNotesSemestreComponent}
+      {path: 'all-notes', component: AllNotesSemestreComponent},
+      {path: 'student-edit', component: StudentEditComponent, data:{title: "Formulaire de Modification"}},
+      {path: 'student-view', component: StudentViewComponent, data:{title: "Information de l'etudiant"}},
       
      
     ]

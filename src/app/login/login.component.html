@@ -10,18 +10,24 @@
                 </h1>
                     <div class="card-body">
                        
-                    <span id="error">Adress mail ou mot de passe est incorrect</span> 
+                    <span *ngIf="invalid" id="error">{{message}}</span> 
                         <form [formGroup]="userForm" (ngSubmit)="login()" > 
-                        <!-- action="php/Login/verifier.php" -->
                             <div class="form form-group"> 
-                                <label for="email">Email</label> 
-                                <input type="email" name="email" class="form-control" id="email" formControlName="email" placeholder="Email" required> 
-                                
+                                <label  class="label form-label">Email :</label>
+                                <input type="email" formControlName="email" class=" input-with form-control" [class.is-invalid]="userForm.get('email')!.invalid && userForm.get('email')!.touched" placeholder="Email...">
+                                <span *ngIf="userForm.controls['email'].invalid && userForm.controls['email'].touched" [ngStyle]="{color: 'red'}">
+                                Champ bligatoire*
+                                </span>
                             </div> 
                             <div class="form form-group"> 
-                                <label for="password">Password</label> 
-                                <input type="password" class="form-control" id="password" formControlName="password" placeholder="Password" required> 
-                                Afficher le mot de passe   <input type='checkbox' id='check' />
+                                <label for="validationDefault02" class="label form-label">Mot de Passe :</label>
+                                <div class="pass-chec position-relative">
+                                    <input type="{{ passwordVisible ? 'text' : 'password' }}" class="form-control" formControlName="password" [class.is-invalid]="userForm.get('password')!.invalid && userForm.get('password')!.touched" id="password" placeholder="Mot de passe....">
+                                    <span *ngIf="userForm.controls['password'].invalid && userForm.controls['password'].touched" [ngStyle]="{color: 'red'}">
+                                        Champ obligatoire*
+                                    </span>
+                                    <fa-icon [icon]="passwordVisible ? icons.eyeSlash : icons.eye" class="toggle-password position-absolute" id="togglePassword" [ngStyle]="{cursor: 'pointer', right: '10px', top: '50%', transform: 'translateY(-50%)'}" (click)="togglePasswordVisibility()"></fa-icon>
+                                </div>
                             </div> 
                             <button class="btn btn-login" type="submit" id="btn">Login</button> 
                         </form> 

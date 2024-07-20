@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Semestres } from '../../Models/Semestre';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IconsService } from '../../../Services/icons.service';
 import { SemestreService } from '../../../Services/semestre.service';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
@@ -10,7 +10,9 @@ import { forkJoin, map } from 'rxjs';
 import { Emplois } from '../../Models/Emplois';
 import { ClassModules } from '../../Models/ClassModule';
 import { ServiceService } from './service.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
+import { PageTitleService } from '../../../Services/page-title.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-emplois-du-temps',
@@ -31,22 +33,21 @@ export class EmploisDuTempsComponent implements OnInit {
  formattedDateFin: any;
 //  -----------------------------------constructor
   constructor(
-    public icon : IconsService, 
+    public icon : IconsService, private toastr: ToastrService,
     private semestreService: SemestreService, private classService: ClassStudentService, private datePipe: DatePipe,
-    private fb: FormBuilder,private route: ActivatedRoute, private emploiService: ServiceService,private routeLink: Router){}
+    private fb: FormBuilder,private route: ActivatedRoute, private emploiService: ServiceService,private routeLink: Router, private location: Location){}
   // -------------------------------------------ngOinit
     ngOnInit(): void {
 
     this.EmploisAdd = this.fb.group({
-      idSemestre: [''],
-      idClasse: [],
-      nomSemestre: [''],
-      dateDebut: [''],
+      idSemestre: ['',Validators.required],
+      // idClasse: [],
+      // nomSemestre: ['', Validators.required],
+      dateDebut: ['', Validators.required],
       dateFin: [{ value: '', disabled: true }]
     })
     this.route.queryParams.subscribe(params => {
       this.classRomId = params['id'];
-      // Utilisez `classRomId` pour vos besoins
       console.log(this.classRomId, "room id");
     });
     this.classService.getClassById(this.classRomId).subscribe(data =>{
@@ -81,41 +82,43 @@ export class EmploisDuTempsComponent implements OnInit {
   // ----------------------------get list dates between dateDebut emplois and dateFin emplois
   
 }
-
-// ======================================================================================================
-
+goBack(){
+  this.location.back();
+}
 
   // --------------------------------add emplois
   addEmplois(){
     if (this.EmploisAdd.valid) {
       const formData = this.EmploisAdd.value;
-      // console.log(formData, "-----------------")
-      
+
       const classe: ClassRoom = this.classRoom;
-      // console.log(classe, "classe-----------");
-       const semestre: Semestres = this.semestre.find(sm => sm.id === formData.idSemestre)!;
-      //  console.log("semetre : ", semestre);
-          const emplois : Emplois = {
-            idSemestre: semestre,
-            dateDebut: formData.dateDebut,
-            dateFin: this.formattedDateFin,
-            idClasse: classe,
+      const semestre: Semestres = this.semestre.find(sm => sm.id === formData.idSemestre)!;
+      const emplois : Emplois = {
+        idSemestre: semestre,
+        dateDebut: formData.dateDebut,
+        dateFin: this.formattedDateFin,
+        idClasse: classe,
 
-          }
+      }
         //  console.log(emplois, "emplis-----")
-       this.emploiService.addEmplois(emplois).subscribe(dt =>{
-        this.current_emplois = dt;
-         console.log(dt);
-         alert("Ajout Effectuee avec succees!"+dt.id); 
-         // Naviguer vers la route avec les paramètres
-         const navigationExtras: NavigationExtras = {
-             queryParams: {
-                 id: this.current_emplois.idClasse.id
-             }
-         };
-         this.routeLink.navigate(['/sidebar/seance'], navigationExtras);
+       this.emploiService.addEmplois(emplois).subscribe({
+        next: dt => {
+          this.current_emplois = dt;
+          const navigationExtras: NavigationExtras = {
+            queryParams: {
+                id: this.current_emplois.idClasse.id
+            }
+        };
+        if(this.current_emplois.id){
+          this.toastr.success('Ajout effectuee avec succé', 'Success')
+        }
+        this.routeLink.navigate(['/sidebar/seance'], navigationExtras);
 
-         this.EmploisAdd.reset();
+        this.EmploisAdd.reset();
+        },
+        error: (err) => {
+          this.toastr.error(err.error.message)
+        }
        })
 
      

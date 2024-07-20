@@ -6,6 +6,8 @@ import { data } from 'jquery';
 import { IconsService } from '../../../Services/icons.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { dom } from '@fortawesome/fontawesome-svg-core';
+import { ActivatedRoute, NavigationExtras, Route, Router } from '@angular/router';
+import { PageTitleService } from '../../../Services/page-title.service';
 
 @Component({
   selector: 'app-etudiants',
@@ -22,10 +24,15 @@ export class EtudiantsComponent implements OnInit {
   urlImage! : string | ArrayBuffer
   
   constructor(private service: EtudeService,private fb: FormBuilder, 
-    private classeService: ClassStudentService, public icons: IconsService) { }
+    private root: Router, public icons: IconsService, private pageTitle : PageTitleService) { }
 
   ngOnInit(): void {
     
+   this.load_students();
+    this.load_student_form();
+  }
+  // ----------------------load students
+  load_students(){
     this.service.getAll().subscribe(data =>{
       data.forEach((item: any) => {
         item.urlPhoto = `http://localhost/StudentImg/${item.urlPhoto}`;
@@ -33,9 +40,10 @@ export class EtudiantsComponent implements OnInit {
       });
       this.students = data;
     })
-   
-  
-    this.load_student_form();
+  }
+  // ----------------------------refresh page
+  refresh(){
+    this.load_students();
   }
 // -----------------------------------------------load form update student
   load_student_form(){
@@ -73,27 +81,33 @@ export class EtudiantsComponent implements OnInit {
   update_student(student: Student){}
   // ------------------------------------------------------------
   getStudent(student?: Student) {
-console.log(student?.sexe, "student sexe")
-    this.update_student_form.get('nom')?.setValue( student!.nom);
-    this.update_student_form.get('prenom')?.setValue(student!.prenom);
-    this.update_student_form.get('sexe')?.setValue(student!.sexe);
-    this.update_student_form.get('email')?.setValue(student!.email);
-    this.update_student_form.get('telephone')?.setValue(student!.telephone);
-    this.update_student_form.get('lieuNaissance')?.setValue(student!.lieuNaissance);
-    this.update_student_form.get('dateNaissance')?.setValue(student!.dateNaissance);
-    this.update_student_form.get('matricule')?.setValue(student!.matricule);
-    this.update_student_form.get('scolarite')?.setValue(student!.scolarite);
-
-
+    
+    const navigationExtras: NavigationExtras = {
+      queryParams: { id: student?.idEtudiant }
+    };
+    this.root.navigate(['/sidebar/student-edit'], navigationExtras)
   }
 
+  // ------------------------------------------------------------
+  getStudentView(student: Student){
+    
+    const navigationExtras: NavigationExtras = {
+      queryParams: { id: student?.idEtudiant }
+    };
+    this.root.navigate(['/sidebar/student-view'], navigationExtras)
+  }
   // ----------------------------------------------------------
   deleted_student(id: number) {
-    this.service.desactiveStudent(id).subscribe(data => {
-      alert("Desactivation avec success!!");
-      window.location.reload();
-      console.log(data, "ttttt--------")
-    });
+    this.service.desactiveStudent(id).subscribe(
+      {
+        next: (response) => {
+          this.pageTitle.showSuccessToast(response.message);
+        },
+        error: (erreur) => {
+          this.pageTitle.showErrorToast(erreur.error.message);
+        }
+      }
+    )
   }
   // ------------------------------filter methode
    filteredStudents() {

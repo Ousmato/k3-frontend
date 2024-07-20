@@ -1,0 +1,56 @@
+
+
+<div class="views" *ngIf="isShow_update">
+    <div class="head-views">
+        <h5>Modifier les information</h5>
+    </div>
+    <form class="form-update-emplois" [formGroup]="updateEmplois" (ngSubmit)="submit_update_form()">
+        <div class="input-cont">
+            <div class="form form-group">
+                <label for="password">Semestre</label> 
+                <select class="form-select" formControlName="idSemestre"  id="semestre" placeholder="semestre"   [class.is-invalid]="updateEmplois.get('idSemestre')!.invalid && updateEmplois.get('idSemestre')!.touched">
+                <option  selected disabled value="">Choisir le semestre</option>
+                <option *ngFor="let seme of semestre" [ngValue]="seme.id">{{seme.nomSemetre}}</option>
+                </select>         
+                <span *ngIf="updateEmplois.controls['idSemestre'].invalid && updateEmplois.controls['idSemestre'].touched" [ngStyle]="{color: 'red'}">
+                    Champ obligatoire*
+                    </span>              
+            </div>
+            <div class="form form-group">
+                
+                <label for="password">Classe</label> 
+                <select class="form-select" formControlName="idClasse" placeholder="classe..."   [class.is-invalid]="updateEmplois.get('idClasse')!.invalid && updateEmplois.get('idClasse')!.touched">
+                <option  selected disabled value="">Choisir la classe</option>
+                <option *ngFor="let cl of classes" [ngValue]="cl.id">{{cl.idFiliere?.idNiveau?.nom}} {{cl.idFiliere?.idFiliere?.nomFiliere}}</option>
+                </select>         
+                <span *ngIf="updateEmplois.controls['idClasse'].invalid && updateEmplois.controls['idClasse'].touched" [ngStyle]="{color: 'red'}">
+                    Champ obligatoire*
+                    </span>              
+            </div>
+
+            <div class="form form-group"> 
+            <label for="password">Date du debut</label> 
+            <input type="number"   formControlName="id" placeholder="Date du debut" *ngIf="false">
+            <input type="date" class="form-control" formControlName="dateDebut" [class.is-invalid]="updateEmplois.get('dateDebut')!.invalid && updateEmplois.get('dateDebut')!.touched" (change)="onDateChange($event)" >
+            <span *ngIf="updateEmplois.controls['dateDebut'].invalid && updateEmplois.controls['dateDebut'].touched" [ngStyle]="{color: 'red'}">
+            Champ obligatoire*
+            </span>
+            </div>
+
+            <div class="form form-group"> 
+            <label for="password">Date de fin</label> 
+            <input type="date" class="form-control" formControlName="dateFin" placeholder="Date de fin" >
+            </div>
+        </div>
+        <div class="btn-cash">
+            
+            <div class="button-cash">
+                <a (click)="close_update_modal()"><span>Annuler</span></a>
+                <button type="submit" ><span>Modifier</span></button>
+              </div>
+        </div>
+    </form>
+
+</div>
+
+<div class="overlay" *ngIf="isOverlay"></div>

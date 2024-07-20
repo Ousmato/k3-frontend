@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Emplois } from '../../Models/Emplois';
 import { Observable } from 'rxjs';
+import { Response_String } from '../../Models/Response_String';
 
 @Injectable({
   providedIn: 'root'
@@ -12,17 +13,18 @@ export class ServiceService {
   private baseUrl = 'http://localhost:8080/api-emplois/';
 
   // -------------------------------add emplois
-  addEmplois(emplois: Emplois): Observable<any>{
-    return this.http.post(`${this.baseUrl}add`, emplois);
+  addEmplois(emplois: Emplois): Observable<Emplois>{
+    return this.http.post<Emplois>(`${this.baseUrl}add`, emplois);
   }
   // -----------------------------------------------------------get emplois by id
   getEmploisById(id: number): Observable<Emplois>{
     return this.http.get<Emplois>(`${this.baseUrl}emplois/${id}`);
   }
-  // --------------------------------------get by id classe
+  // --------------------------------------get list emplois by id classe
   getEmploisByClasse(id: number): Observable<Emplois[]>{
     return this.http.get<Emplois[]>(`${this.baseUrl}read/${id}`);
   }
+  // --------------------------get emplois by id class
   getEmploisByClasse2(id: number): Observable<Emplois>{
     return this.http.get<Emplois>(`${this.baseUrl}read/${id}`);
   }
@@ -94,7 +96,10 @@ export class ServiceService {
   getAllEmploisActifs(): Observable<Emplois[]>{
     return this.http.get<Emplois[]>(`${this.baseUrl}all-actifs-emplois`);
   }
-  // ------------------------get all emplois by id
+  // ------------------------update emplois without seance
+  updateEmplois(emplois: Emplois): Observable<Response_String>{
+    return this.http.put<Response_String>(`${this.baseUrl}update`, emplois);
+  }
  
 }
 

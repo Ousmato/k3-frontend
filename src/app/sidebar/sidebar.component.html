@@ -2,21 +2,23 @@
     <!-- Sidebar -->
     <nav id="sidebar">
       <div class="sidebar-header">
-        <img  src="{{school.urlPhoto}}" alt="">
+        <img  [src]="school?.urlPhoto" alt="">
         <!-- <h1>UAM</h1> -->
-        <strong>{{school.nomSchool}}</strong>
+        <strong>{{school?.nomSchool}}</strong>
       </div>
       <div class="side-child">
         <ul class="list-unstyled components">
+         <div>
           <li class="menu-link">
             <a routerLink="/sidebar">
               <span><fa-icon [icon]="icons.home"></fa-icon>Acceuil</span>
             </a>
           </li>
+         </div>
           <li class="menu-link">
             <div (click)="toggleSubMenuEnseignant()">
-              <a><span><fa-icon [icon]="icons.users"></fa-icon>
-                    Enseignants<fa-icon [icon]="isSubMenuOpen.enseignants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
+              <a><span><fa-icon [icon]="icons.users"></fa-icon>Enseignants<fa-icon [icon]="isSubMenuOpen.enseignants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
+                    
               </a>
             </div>
             <ul class="sub-menu" *ngIf="isSubMenuOpen.enseignants">
@@ -27,8 +29,7 @@
           </li>
           <li class="menu-link">
             <div (click)="toggleSubMenuStudent()">
-              <a> <span><fa-icon [icon]="icons.grade"></fa-icon> 
-                    Etudiants<fa-icon [icon]="isSubMenuOpen.etudiants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
+              <a> <span><fa-icon [icon]="icons.grade"></fa-icon>Etudiants<fa-icon [icon]="isSubMenuOpen.etudiants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
               </a>
             </div>
             <ul class="sub-menu" *ngIf="isSubMenuOpen.etudiants">
@@ -38,12 +39,12 @@
           </li>
           <li class="menu-link">
             <a routerLink="/sidebar/classe">
-              <span><fa-icon [icon]="icons.scool"></fa-icon> Classes</span>
+              <span><fa-icon [icon]="icons.scool"></fa-icon>Classes</span>
             </a>
           </li>
           <li class="menu-link" >
             <a routerLink="#">
-              <span><img src="assets/book-shop-icon.svg" alt=""> Bibliotheque</span>
+              <span><img src="assets/book-shop-icon.svg" alt="">Bibliotheque</span>
             </a>
           <!-- <li class="menu-link">
             <div (click)="toggleSubMenuArchive()">
@@ -61,7 +62,7 @@
           </li> -->
           <li class="menu-link">
             <a routerLink="/sidebar/setting">
-              <span><fa-icon [icon]="icons.setting"></fa-icon> Paramètre</span>
+              <span><fa-icon [icon]="icons.setting"></fa-icon>Paramètre</span>
             </a>
           </li>
         </ul>
@@ -83,7 +84,7 @@
                     </button>
                     
                 </div>
-                <div class="title-page"><h3>{{title}}</h3></div>
+                <div class="title-page"><h5>{{title}}</h5></div>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                   <li class="nav-item dropdown">

@@ -12,7 +12,7 @@ import { Teacher } from '../../Models/Teachers';
 import { Seances } from '../../Models/Seances';
 import { EnseiService } from '../enseignant/ensei.service';
 import { SeancService } from './seanc.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import { ClassRoom } from '../../Models/Classe';
 import { IndividualConfig, ToastrService } from 'ngx-toastr';
 import { ToastrNotificationService } from '../../Classes/delete-modal';
@@ -54,7 +54,7 @@ export class EmploisSeanceComponent  implements OnInit{
 
     constructor(private emploisService: ServiceService, public icons: IconsService, private toastr: ToastrService,
        private enseignantService: EnseiService,private cdr: ChangeDetectorRef, private toastrService: ToastrNotificationService,
-      private fb: FormBuilder, private datePipe: DatePipe,private route: ActivatedRoute, private classService: ClassStudentService,private seanceService: SeancService ) { }
+      private fb: FormBuilder, private location: Location,private route: ActivatedRoute, private classService: ClassStudentService,private seanceService: SeancService ) { }
     ngOnInit(): void {
       // ------------------------------get id in url path
       this.loadEmploisByClass();
@@ -80,6 +80,10 @@ export class EmploisSeanceComponent  implements OnInit{
     // ---------------------------------------button to refresh page
     refreshPage(){
       this.loadEmploisByClass();
+    }
+    // ---------------------------go back button 
+    goBack(){
+      this.location.back();
     }
     load_form(){
       this.form_seance = this.fb.group({

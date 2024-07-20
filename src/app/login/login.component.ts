@@ -5,6 +5,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Admin } from '../Admin/Models/Admin';
 import { Teacher } from '../Admin/Models/Teachers';
 import { Router } from '@angular/router';
+import { IconsService } from '../Services/icons.service';
+import { PageTitleService } from '../Services/page-title.service';
+import { data } from 'jquery';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +19,13 @@ export class LoginComponent implements OnInit {
   userForm!: FormGroup; 
   admin!: Admin;
   teacher!: Teacher;
-  constructor(private authService: AuthServiceService, private formBuilder: FormBuilder, private route: Router) { } 
+  passwordVisible: boolean = false
+  invalid : boolean = false
+  message: any;
+
+
+  constructor(private authService: AuthServiceService, public icons:IconsService, private toastr: ToastrService,
+    private formBuilder: FormBuilder, private route: Router) { } 
 
   ngOnInit() {
     this.userForm = this.formBuilder.group({
@@ -30,32 +40,41 @@ export class LoginComponent implements OnInit {
    var password = this.userForm.value.password
     // return;
     if (this.userForm.valid) { 
-      this.authService.login(email, password).subscribe(data => {
-        console.log('data:', data);
+      this.authService.login(email, password).subscribe({
+        next: (data) =>{
+          if (data.idAdministra) {
 
-        if (data.idAdministra) {
-
-          const adminDataString = JSON.stringify(data);
-          localStorage.setItem("admin", adminDataString);
-          
-          this.route.navigate(["sidebar"])
-          console.log('Je suis admin');
-          
-
-        } else if (data.idEnseignant) {
-          console.log('Je suis teacher');
-
-        } else if (data.idEtudiant) {
-          console.log('Je suis étudiant');
-
-        } else {
-          console.log('Utilisateur inconnu');
+            const adminDataString = JSON.stringify(data);
+            localStorage.setItem("admin", adminDataString);
+            this.toastr.success('Connexion avec succé!!', 'Success',{timeOut: 3000})
+            
+            this.route.navigate(["sidebar"])
+            // console.log('Je suis admin');
+            
+            
+  
+          } else if (data.idEnseignant) {
+            console.log('Je suis teacher');
+  
+          } else if (data.idEtudiant) {
+            console.log('Je suis étudiant');
+  
+          } else {
+            console.log('Utilisateur inconnu');
+          }
+        },
+        error: (erreur) =>{
+        this.message = erreur.error.message;
+        this.invalid =! this.invalid;
+          // this.pageTitle.showErrorToast(erreur.error.message)
         }
-      }, error => {
-        console.error('Error during login:', error);
-      });
+      })
     }
   }
+  // --------------------------------method password visible
+  togglePasswordVisibility(): void {
+    this.passwordVisible = !this.passwordVisible;
+}
 }
 
 

@@ -15,6 +15,7 @@ import { StudenModules_classe } from '../../Classes/Module_classe';
 import { SchoolService } from '../../../Services/school.service';
 import { SchoolInfo } from '../../Models/School-info';
 import { empty } from 'rxjs';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-student-note',
@@ -47,15 +48,12 @@ export class StudentNoteComponent implements OnInit {
 
   constructor(public icons: IconsService, private fb: FormBuilder,
     private studentService: EtudeService, private schoolService: SchoolService,
-    private route: ActivatedRoute, private semestreService: SemestreService, private classeService: ClassStudentService) {}
+    private route: ActivatedRoute, private semestreService: SemestreService, private location: Location) {}
   ngOnInit(): void {
     this.getSchoolInfo();
     this.loadStudent();
     this.loadSemestre();
     this.load_update_form();
-    
-    // this.desable_button();
-    
    // Initialisation du formulaire
    this.moduleForm = this.fb.group({
     // idStudents: [this.student.idEtudiant, Validators.required],
@@ -67,6 +65,9 @@ export class StudentNoteComponent implements OnInit {
    
   }
 
+  goBack(){
+    this.location.back();
+  }
   // ----------------------------------get all semestre 
   loadSemestre(){
     this.semestreService.getAllSemestre().subscribe(data =>{
@@ -92,23 +93,7 @@ export class StudentNoteComponent implements OnInit {
       //  this.load_student_module(stud, this.modules);
        this.students = data;
      })
-     this.dtOptions = {
-       pagingType: 'full_numbers',
-       pageLength: 10,
-       // processing: true,
-       // serverSide: true,
-       columnDefs: [
-         { orderable: false, targets: '_all' }
-       ],
-       language: {
-         info: 'Affichage de _START_ à _END_ sur _TOTAL_ entrées',
-         infoEmpty: 'Affichage de 0 à 0 sur 0 entrée',
-         infoFiltered: '(filtré à partir de _MAX_ entrées au total)',
-         lengthMenu: '_MENU_ Entrées par page',
-         search: 'Recherche :'
-       }
-       // Ajoutez d'autres options au besoin
-     };
+    
    })
   
 }
@@ -153,8 +138,6 @@ export class StudentNoteComponent implements OnInit {
       this.studentService.getAllModulesWithoutNoteFilter(idStudent,this.idUrl).subscribe({
         next : (module: Module[]) =>{
           this.modules = module;
-          // this.load_student_module(student, module)
-          // this.desable_button(this.modules);
         },
         error : (erreur) => console.error('Erreur lors de la récupération des modules sans notes :', erreur.error.message)
         // this.modules = module;

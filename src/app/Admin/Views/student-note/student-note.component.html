@@ -1,5 +1,8 @@
 
 <main>
+    <div (click)="goBack()" class="back-button">
+        <fa-icon [icon]="icons.back"></fa-icon>
+    </div>
     <div class="input-search">
         <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..."  class="search-input">
     <fa-icon [icon]="icons.recherche" class="search-icon"></fa-icon>
@@ -21,7 +24,7 @@
             </tr>
           </thead>
           <tbody>
-            <ng-container *ngFor="let studens of students">
+            <ng-container *ngFor="let studens of filteredStudents()">
                 <tr >
                 <td>{{studens.idEtudiant}}</td>
                 <td><img src="{{studens.urlPhoto}}" alt=""></td>

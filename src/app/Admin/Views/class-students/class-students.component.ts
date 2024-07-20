@@ -4,7 +4,7 @@ import { ClassStudentService } from './class-student.service';
 import { ClassRoom } from '../../Models/Classe';
 import { SetService } from '../settings/set.service';
 import { Module } from '../../Models/Module';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClassModules } from '../../Models/ClassModule';
 import { Ue } from '../../Models/UE';
 import { ServiceService } from '../emplois-du-temps/service.service';
@@ -14,6 +14,8 @@ import { map } from 'rxjs';
 import { NavigationExtras, Route, Router } from '@angular/router';
 import { data } from 'jquery';
 import { IconsService } from '../../../Services/icons.service';
+import { ToastrService } from 'ngx-toastr';
+import { bootstrapApplication } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-class-students',
@@ -37,13 +39,15 @@ export class ClassStudentsComponent implements OnInit {
   class_extrate_ue!: any
 
   ueList: any[] = [];
+  list_checked: any[] = [];
   isDesabled: boolean = false;
   isShow_add_module : boolean = false
   notFund_modal : boolean = true
   isShow_link_modal : boolean = true
+  isShow_update_emplois: boolean = false
   addModules!: FormGroup;
 
-  constructor(private service : ClassStudentService, private emploisService: ServiceService,
+  constructor(private service : ClassStudentService, private emploisService: ServiceService, private toastr: ToastrService,
     private setSevice: SetService, private fb: FormBuilder, private router: Router, public icons: IconsService){
     
   }
@@ -60,14 +64,25 @@ export class ClassStudentsComponent implements OnInit {
    isDropdownOpen(id: number): boolean {
      return this.dropdownStates[id] || false;
    }
+  //  -------------------------methode pour empecher les clic
+  preventClick(event: MouseEvent): void {
+    event.stopPropagation(); // Empêche la propagation de l'événement de clic
+  }
   ngOnInit() {
     // checkEmplois()
   //  this.loadClassesWithEmplois(this.classes);
    this.loadClasses();
     // -----------------------------------------form class modules
-    this.addModules = this.fb.group({
-      idUE: [[]]
+    // this.addModules = this.fb.group({
+    //   list_checked: this.fb.array([])
+    // });
+
+    const formGroupControls: any = {};
+    this.ueList.forEach(ue => {
+      formGroupControls[ue.id] = new FormControl(false); // Initialisation avec false (non coché)
     });
+
+    this.addModules = new FormGroup(formGroupControls);
   }
   // ------------------------------------------get all classRoom
   loadClasses(): void {
@@ -100,22 +115,68 @@ export class ClassStudentsComponent implements OnInit {
   }
   // ------------------------------------------get all ue by class id
   getAll_ues(idClasse: number){
-    this.classeSelect = null;
-    this.setSevice.getAll_ue_not_associate_class(idClasse).subscribe((response: Ue[]) =>{
-      this.ueList = response;
-      console.log(this.ueList, "id de la classe")
-      if(this.ueList.length == 0){
-        this.notFund_modal = true
-        this.isShow_add_module = true
+    this.setSevice.getAll_ue_not_associate_class(idClasse).subscribe({
+      next: (response) =>{
+        if(response.length > 0){
+          this.ueList  = response;
+          console.log(this.ueList, "id de la classe")
+          this.isShow_link_modal = false
+          this.isShow_add_module = true
+          // this.ueList.forEach(ul =>{
+          //   ul.nomUE
+          //   console.log(ul.nomUE, "nom de la UE")
+          //   this.addModules.get('idUE')?.setValue(ul.nomUE);
+          // })
+        }else if(this.ueList.length ==0){
+          
+          this.toastr.error("Aucun Unité d'enseignemants trouver veillez vous rendre dans le Paramètre pour ajouter", "Auccun");
+        }
       }
-      // this.show_views()
-    //  this.isShow_add_module =! this.isShow_add_module
-    //  this.isShow_link_modal  =! this.isShow_link_modal
-      
     })
+    // this.classeSelect = null;
+    // this.setSevice.getAll_ue_not_associate_class(idClasse).subscribe((response: Ue[]) =>{
+    //   this.ueList = response;
+    //   console.log(this.ueList, "id de la classe")
+    //   if(this.ueList.length == 0){
+    //     this.notFund_modal = true
+    //     this.isShow_add_module = true
+    //   }
+    // })
   }
  
-   // --------------------methode appeller tout les classee et 
+  ue_check(idUe : number, event: any){
+    const ue_find = this.ueList.find(uel => uel.id == idUe);
+    if (ue_find) {
+      if (!this.list_checked.some(lc => lc.id === ue_find.id)) {
+        this.list_checked.push(ue_find);
+        console.log(this.list_checked, "checked");
+      } else {
+        this.list_checked = this.list_checked.filter(lc => lc.id !== ue_find.id);
+        console.log(this.list_checked, "unchecked");
+      }
+    }
+  }
+// -----------------select all ues
+selectAll(event : any){
+  console.log("click ------")
+  if(event.target.checked){
+    if(this.list_checked.length == 0){
+      this.list_checked = [...this.ueList];
+    console.log(this.list_checked, "tous checked");
+    }else{
+      this.list_checked = []
+      console.log(this.list_checked, "tous unchecked");
+    }
+    
+  }
+}
+  is_checked(idUe: number): boolean {
+    return this.list_checked.some(lc => lc.id === idUe);
+  }
+
+  areAllChecked(): boolean {
+    return this.list_checked.length === this.ueList.length;
+  }
     // pour verifier l'existence d'emplois
    loadClassesWithEmplois(Classeroom : ClassRoom): void {
     this.classesWithEmplois.push(Classeroom)
@@ -139,9 +200,10 @@ export class ClassStudentsComponent implements OnInit {
   }
 }
 exit(){
-    this.ueList = []; 
+    // this.ueList = []; 
+    this.isShow_add_module = false
    
-  //  this.isShow_link_modal = false
+   this.isShow_link_modal = true
 }
 
 exit_modal(){
@@ -197,4 +259,34 @@ toggle_to_emplois(classRom: ClassRoom): void {
   goToParamettre(){
     this.router.navigate(['/sidebar/parametre']);
   }
+  // -----------------------------------link to update emploi du temps
+  toggle_to_update_emplois(idClasse: number){
+    this.emploisService.hasActiveEmploisByClasse(idClasse).subscribe({
+      next: (hasEmplois) => {
+        if(hasEmplois == true){
+          console.log(hasEmplois, "pas de seance")
+          this.isShow_update_emplois = true
+          this.isShow_link_modal = false
+
+         
+        } else if(hasEmplois == false) {
+          console.log(hasEmplois, "seance pas d'emplois actif")
+          this.toastr.error("Auccun emplois disponible", "Erreur")
+        }else{
+          this.toastr.error("L'emploi du temps ne peut pas etre modifier, des seances son deja associer", "Erreur")
+           console.log(hasEmplois, "objet")
+        }
+       
+      }
+    })
+    
+
+  }
+  // ----------------------event emit from child widget
+  onCloseUpdateModal(){
+    this.isShow_update_emplois = false;
+    this.isShow_link_modal = true;
+    this.loadClasses();
+  }
+  // ----------------------
 }

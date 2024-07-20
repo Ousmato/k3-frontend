@@ -18,7 +18,7 @@ export class SidebarComponent implements OnInit {
   isSidebarCollapsed = false;
   isSubmenuCollapsed = false;
 
-  school!: SchoolInfo;
+  school?: SchoolInfo;
   dataAdmin!: Admin
 
   

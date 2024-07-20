@@ -9,6 +9,7 @@ import { Ue } from '../../Models/UE';
 import { Module } from '../../Models/Module';
 import { Semestres } from '../../Models/Semestre';
 import { error } from 'jquery';
+import { Response_String } from '../../Models/Response_String';
 
 @Injectable({
   providedIn: 'root'
@@ -40,9 +41,8 @@ export class SetService {
       return this.http.post<any>(this.baseUrl+"api-class/add", classe);
     }
 
-    addFiliere(filiereData: any): Observable<any> {
-      console.log(filiereData, "------------------------------------------------");
-      return this.http.post<any>(this.baseUrl+"filiere/add", filiereData);
+    addFiliere(filiereData: any): Observable<Response_String> {
+      return this.http.post<Response_String>(this.baseUrl+"filiere/add", filiereData);
   }
 
 
@@ -55,8 +55,8 @@ export class SetService {
     return this.http.get<Ue[]>(`${this.baseUrl}api-class/list-ue/${idClasse}`);
   }
   // ----------------------------------------------add module
-  createModule(module: Module): Observable<any>{
-    return this.http.post<any>(this.baseUrl+"api-class/add-module", module);
+  createModule(module: Module): Observable<Response_String>{
+    return this.http.post<Response_String>(this.baseUrl+"api-class/add-module", module);
   }
   // -----------------------------------get all module
   getAll_module() : Observable<Module[]>{
@@ -83,16 +83,16 @@ export class SetService {
     return this.http.delete<any>(`${this.baseUrl}api-class/delete-module-by-id/${id}`);
   }
   // -----------------------------delete ue
-  deleteUe(id: number): Observable<any>{
-    return this.http.delete<any>(`${this.baseUrl}api-class/delete-ue-by-id/${id}`);
+  deleteUe(id: number): Observable<Response_String>{
+    return this.http.delete<Response_String>(`${this.baseUrl}api-class/delete-ue-by-id/${id}`);
   }
   // ---------------------------------------get all semestre
   getSemestres() : Observable<Semestres[]>{
     return this.http.get<Semestres[]>(this.baseUrl+"api-semestre/list");
   }
   // ------------------------------------update semestre
-  updateSemestre(semestre: Semestres) : Observable<any>{
-    return this.http.put<any>(this.baseUrl+"api-semestre/update", semestre)
+  updateSemestre(semestre: Semestres) : Observable<Response_String>{
+    return this.http.put<Response_String>(this.baseUrl+"api-semestre/update", semestre)
   }
   // -----------------------------get all module by class id
   getAll_module_without_note(): Observable<Module[]>{

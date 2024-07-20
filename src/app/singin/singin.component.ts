@@ -16,7 +16,7 @@ import { PageTitleService } from '../Services/page-title.service';
 export class SinginComponent implements OnInit {
 // adminConnect: 
 
-title = 'Sign In';
+title = '';
 
 @Output() titleEvent = new EventEmitter<string>();
   studentForm!: FormGroup;

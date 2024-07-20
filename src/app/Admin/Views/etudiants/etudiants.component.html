@@ -19,7 +19,7 @@
               <th>Filiere</th>
 
               <th>Telephone</th>
-              <th>Action</th>
+              <th>Action <span class="refresh" (click)="refresh()"><fa-icon [icon]="icons.actualise"></fa-icon> Actualiser</span></th>
 
             </tr>
           </thead>
@@ -36,8 +36,8 @@
               <td>{{studens.telephone}}</td>
                 <td>
                     <div class="btn-contenaire">
-                        <a data-bs-toggle="modal" [attr.data-bs-target]="'#studentDetail_' + studens.idEtudiant" ><fa-icon [icon]="icons.eye"></fa-icon><span>Details</span></a>
-                        <a (click)="getStudent(studens)" data-bs-toggle="modal" [attr.data-bs-target]="'#studentEdite_' + studens.idEtudiant"><fa-icon [icon]="icons.edit"></fa-icon><span>Modifier</span></a>
+                        <a (click)="getStudentView(studens)" ><fa-icon [icon]="icons.eye"></fa-icon><span>Details</span></a>
+                        <a (click)="getStudent(studens)"><fa-icon [icon]="icons.edit"></fa-icon><span>Modifier</span></a>
                         <a data-bs-toggle="modal" [attr.data-bs-target]="'#studentDelete_' +studens.idEtudiant">
                           <fa-icon [icon]="studens.active ? icons.active : icons.desactive " [ngStyle]="{ color: studens.active ? 'green' : 'red' }"></fa-icon><span >{{ studens.active ? 'Active' : 'Inactive' }}</span></a>
                     
@@ -99,108 +99,7 @@
                 </div>
               </div>
             <!---------------------------------------------modaledit student----------------------------------------------------  -->
-            <div class="modal fade"  [id]="'studentEdite_' + studens.idEtudiant"  data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="head-modal modal-header">
-                  <h4>Modifier Informations</h4>
-                    <!-- <h1 class="modal-title fs-5" id="exampleModalLabel">Detail de l'apprenant </h1> -->
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="pop-img">
-
-                      <img [src]="studens.urlPhoto" alt="">
-                      <div class="icons" *ngIf="urlImage">
-                        <fa-icon [icon]="icons.arrow " class="arrow" ></fa-icon>
-                      </div>
-                      <img *ngIf="urlImage" [src]="urlImage" alt="">
-                    </div>
-                    <form [formGroup]="update_student_form" (ngSubmit)="update_student(studens)" enctype="multipart/form-data">
-                        <div class="input">
-                          <label for="validationDefault01" class="label form-label">Nom :</label>
-                          <input type="text" class="input-with form-control"   formControlName="nom" required>
-                        </div>
-
-                        <div class="input">
-                          <label for="validationDefault02" class="label form-label">Prenom :</label>
-                          <input type="text" formControlName="prenom" class="input-with form-control"  required>
-                        </div>
-
-                        <div class="input">
-                          <label  class="label form-label">Email :</label>
-                            <input type="email" formControlName="email" class=" input-with form-control"  required>
-                          <!-- </div> -->
-                        </div>
-
-                        <div class="input">
-                          <label for="validationDefault02" class="label form-label">Mot de Passe :</label>
-                          <input type="password" formControlName="password" class="input-with form-control"   required>
-                        </div>
-
-                        <div class="input">
-                          <label for="validationDefault03" class="label form-label">Age :</label>
-                          <input type="date" formControlName="dateNaissance" class="input-with form-control"   required>
-                        </div>
-
-                        <div class="input">
-                          <label for="validationDefault03" class="label form-label">Telephone :</label>
-                          <input type="number" formControlName="telephone" class="input-with form-control"  required>
-                        </div>
-
-                        
-                      <div class="input">
-                          <label for="validationDefault03" class="label form-label">Lieu de naissance :</label>
-                          
-                        <input type="text" formControlName="lieuNaissance" class="input-with form-control" required>
-
-                      </div>
-
-                      <div class="input">
-                          <label class="label form-label">Matricule :</label>
-                          
-                        <input type="text" formControlName="matricule" class="input-with form-control" required>
-                      </div>
-                      <div class="input">
-                          <label class="label form-label">Scolarité :</label>
-                          
-                        <input type="text" formControlName="scolarite" class="input-with form-control"  required>
-                      </div>
-
-                        <div class="input">
-                          <label  class="label form-label">Photo :</label>
-                          
-                          <input  type="file" formControlName="urlPhoto" accept="image/*"  class="input-photo input-with form-control" (change)="onPhotoSelected($event)">
-                        </div>
-                        
-
-                        <!-- button radio sexe start -->
-                        <div class="radio-button">
-                          <div class="rad-btn">
-                            <div class="form-check form-check-inline">
-                            
-                              <input class="form-check-input" type="radio" formControlName="sexe" value="Homme" [ngStyle]="{ color: update_student_form.get('sexe')?.value === 'Homme' ? 'green' : 'red'}" required>
-                              <label class="form-check-label" for="inlineRadio11">Homme</label>
-                            </div>
-
-                            <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" formControlName="sexe" value="Femme" [ngStyle]="{color: update_student_form.get('sexe')?.value === 'Femme' ? 'green' : 'red'}"  required>
-                              <label class="form-check-label" for="inlineRadio12">Femme</label>
-                            </div>
-
-                            <div class="btn-contenair col-12">
-                              <!-- <a href="edit_controller.php?id=" name="btn-edited" class="btn btn-primary">Enregistrer</a> -->
-                              <button class="btn btn-primary" type="submit" name="btn-edited" >Enregistrer</button>
-                            </div>
-                          </div>
-
-                          
-                        </div>
-                    </form>
-                  </div>
-                </div>
-              </div> 
-            </div> 
+            
           </tr>
             
           </tbody>

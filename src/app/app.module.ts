@@ -30,6 +30,12 @@ import { FichePaieComponent } from './Admin/Views/fiche-paie/fiche-paie.componen
 import { StudentNoteComponent } from './Admin/Views/student-note/student-note.component';
 import { AllNotesSemestreComponent } from './Admin/Views/all-notes-semestre/all-notes-semestre.component';
 import { EtudiantsDeLaClasseComponent } from './Admin/Views/etudiants-de-la-classe/etudiants-de-la-classe.component';
+import { StudentEditComponent } from './Admin/Views/student-edit/student-edit.component';
+import { StudentViewComponent } from './Admin/Views/student-view/student-view.component';
+import { SemestreComponent } from './Widget/semestre/semestre.component';
+import { ClasseRomComponent } from './Widget/classe-rom/classe-rom.component';
+import { MatieresComponent } from './Widget/matieres/matieres.component';
+import { EmploisWidgetComponent } from './Widget/emplois-widget/emplois-widget.component';
 
 registerLocaleData(localeFr);
 @NgModule({
@@ -53,7 +59,13 @@ registerLocaleData(localeFr);
     FichePaieComponent,
     StudentNoteComponent,
     AllNotesSemestreComponent,
-    EtudiantsDeLaClasseComponent
+    EtudiantsDeLaClasseComponent,
+    StudentEditComponent,
+    StudentViewComponent,
+    SemestreComponent,
+    ClasseRomComponent,
+    MatieresComponent,
+    EmploisWidgetComponent
   ],
   imports: [
     BrowserModule,
@@ -70,7 +82,7 @@ registerLocaleData(localeFr);
    
     provideToastr(
       {
-        timeOut: 9000,
+        timeOut: 6000,
         progressBar: true,
         progressAnimation: "decreasing",
         positionClass: "toast-top-right",
