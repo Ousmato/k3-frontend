@@ -1,12 +1,12 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SinginServiceService } from './singin-service.service';
-import { ClassStudentService } from '../Admin/Views/class-students/class-student.service';
-import { ClassRoom } from '../Admin/Models/Classe';
-import { Student } from '../Admin/Models/Students';
-import { Admin } from '../Admin/Models/Admin';
-import { IconsService } from '../Services/icons.service';
-import { PageTitleService } from '../Services/page-title.service';
+import { ClassStudentService } from '../../Views/class-students/class-student.service';
+import { ClassRoom } from '../../Models/Classe';
+import { Student } from '../../Models/Students';
+import { Admin } from '../../Models/Admin';
+import { IconsService } from '../../../Services/icons.service';
+import { PageTitleService } from '../../../Services/page-title.service';
 
 @Component({
   selector: 'app-singin',
@@ -120,7 +120,10 @@ title = '';
       console.log("Veuillez remplir tous les champs correctement!");
     }
   }
-  
+  // --------------------------back button
+  goBack(){
+    window.history.back();
+  }
  
 }
   

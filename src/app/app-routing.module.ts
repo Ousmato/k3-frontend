@@ -16,7 +16,7 @@ const routes: Routes = [
   // },
 
   {path: "singin",
-    loadChildren: () => import('./singin/singin.module').then(m =>m.SinginModule)
+    loadChildren: () => import('./Admin/Component/singin/singin.module').then(m =>m.SinginModule)
   },
 
   {path: "student-dashboard",

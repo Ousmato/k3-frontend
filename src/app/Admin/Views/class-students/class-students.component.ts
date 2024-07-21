@@ -69,14 +69,7 @@ export class ClassStudentsComponent implements OnInit {
     event.stopPropagation(); // Empêche la propagation de l'événement de clic
   }
   ngOnInit() {
-    // checkEmplois()
-  //  this.loadClassesWithEmplois(this.classes);
    this.loadClasses();
-    // -----------------------------------------form class modules
-    // this.addModules = this.fb.group({
-    //   list_checked: this.fb.array([])
-    // });
-
     const formGroupControls: any = {};
     this.ueList.forEach(ue => {
       formGroupControls[ue.id] = new FormControl(false); // Initialisation avec false (non coché)
@@ -93,24 +86,28 @@ export class ClassStudentsComponent implements OnInit {
 // ----------------------------------------add module in classRoom
   createClassModule(classe: any){
     
-    const formData = this.addModules.value;
-    // console.log(idClasse, "formdata");
     const idClass: ClassRoom = this.classRoms.find(cl => cl.id === classe.id)!;
     this.idCurrent = idClass;
-    console.log(this.idCurrent, "clall------------")
-    const modules = formData.idUE.map((idUe: number) => ({
+ 
+    const ues : ClassModules ={
       idStudentClasse: idClass,
-      idUE: { id: idUe }
-    }));
-
-    console.log(modules, "Select modules");
-    // return
-    
-   this.service.createClassModule(modules).subscribe(response =>{
-    console.log(response);
-    alert("Ajout avec succees!");
-    window.location.reload();
-   })
+      idUE: this.list_checked,
+      
+    }
+    this.service.createClassModule(ues).subscribe({
+      next: (response) =>{
+       
+          
+          this.isShow_add_module = false
+          this.isShow_link_modal = true
+          this.list_checked = [];
+        this.toastr.success(response.message, "Succès");
+      },
+      error: (erreur) => {
+        this.toastr.error(erreur.error.message, "Erreur");
+      }
+    })
+    console.log(ues, "object --liste")
 
   }
   // ------------------------------------------get all ue by class id
@@ -119,56 +116,41 @@ export class ClassStudentsComponent implements OnInit {
       next: (response) =>{
         if(response.length > 0){
           this.ueList  = response;
-          console.log(this.ueList, "id de la classe")
+
           this.isShow_link_modal = false
           this.isShow_add_module = true
-          // this.ueList.forEach(ul =>{
-          //   ul.nomUE
-          //   console.log(ul.nomUE, "nom de la UE")
-          //   this.addModules.get('idUE')?.setValue(ul.nomUE);
-          // })
         }else if(this.ueList.length ==0){
           
           this.toastr.error("Aucun Unité d'enseignemants trouver veillez vous rendre dans le Paramètre pour ajouter", "Auccun");
         }
       }
     })
-    // this.classeSelect = null;
-    // this.setSevice.getAll_ue_not_associate_class(idClasse).subscribe((response: Ue[]) =>{
-    //   this.ueList = response;
-    //   console.log(this.ueList, "id de la classe")
-    //   if(this.ueList.length == 0){
-    //     this.notFund_modal = true
-    //     this.isShow_add_module = true
-    //   }
-    // })
+    
   }
  
   ue_check(idUe : number, event: any){
-    const ue_find = this.ueList.find(uel => uel.id == idUe);
+    const ue_find = this.ueList.find(uel => uel.id === idUe);
+ 
     if (ue_find) {
-      if (!this.list_checked.some(lc => lc.id === ue_find.id)) {
-        this.list_checked.push(ue_find);
-        console.log(this.list_checked, "checked");
+      if (event.target.checked) {
+        if (!this.list_checked.some(lc => lc.id === ue_find.id)) {
+          this.list_checked.push(ue_find);
+        }
       } else {
         this.list_checked = this.list_checked.filter(lc => lc.id !== ue_find.id);
-        console.log(this.list_checked, "unchecked");
       }
+      console.log(this.list_checked, event.target.checked ? "checked" : "unchecked");
     }
   }
 // -----------------select all ues
 selectAll(event : any){
-  console.log("click ------")
-  if(event.target.checked){
-    if(this.list_checked.length == 0){
-      this.list_checked = [...this.ueList];
-    console.log(this.list_checked, "tous checked");
-    }else{
-      this.list_checked = []
-      console.log(this.list_checked, "tous unchecked");
-    }
-    
+  if (event.target.checked) {
+    this.list_checked = [...this.ueList];
+  } else {
+    this.list_checked = [];
   }
+  console.log(this.list_checked, event.target.checked ? "tous checked" : "tous unchecked");
+
 }
   is_checked(idUe: number): boolean {
     return this.list_checked.some(lc => lc.id === idUe);
@@ -184,7 +166,7 @@ selectAll(event : any){
   }
    // -----------------------------------------method de condition de navigation
  show_views(classe: any){
-  // console.log(classe, "la classe-------------")
+  console.log(classe,"dois etre changer")
   if (this.classeSelect === classe) {
     this.classeSelect = null; // Deselect if already selected
   } else {
@@ -283,10 +265,17 @@ toggle_to_emplois(classRom: ClassRoom): void {
 
   }
   // ----------------------event emit from child widget
-  onCloseUpdateModal(){
+  onCloseUpdateModal(idClasse: number){
     this.isShow_update_emplois = false;
+     const clfind = this.classRoms.find(cl => cl.id == idClasse);
+     console.log(clfind,  "event class")
     this.isShow_link_modal = true;
     this.loadClasses();
+    if(this.classeSelect == clfind){
+      this.show_views(clfind)
+
+    }
+    
   }
   // ----------------------
 }

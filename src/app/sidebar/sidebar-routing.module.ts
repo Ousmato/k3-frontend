@@ -5,7 +5,7 @@ import { DasboardComponent } from '../Admin/Views/dasboard/dasboard.component';
 import { ClassStudentsComponent } from '../Admin/Views/class-students/class-students.component';
 import { SettingsComponent } from '../Admin/Views/settings/settings.component';
 import { EtudiantsComponent } from '../Admin/Views/etudiants/etudiants.component';
-import { SinginComponent } from '../singin/singin.component';
+import { SinginComponent } from '../Admin/Component/singin/singin.component';
 import { EmploisDuTempsComponent } from '../Admin/Views/emplois-du-temps/emplois-du-temps.component';
 import { EmploisSeanceComponent } from '../Admin/Views/emplois-seance/emplois-seance.component';
 import { EnseignantComponent } from '../Admin/Views/enseignant/enseignant.component';
@@ -16,8 +16,10 @@ import { FichePaieComponent } from '../Admin/Views/fiche-paie/fiche-paie.compone
 import { StudentNoteComponent } from '../Admin/Views/student-note/student-note.component';
 import { AllNotesSemestreComponent } from '../Admin/Views/all-notes-semestre/all-notes-semestre.component';
 import { EtudiantsDeLaClasseComponent } from '../Admin/Views/etudiants-de-la-classe/etudiants-de-la-classe.component';
-import { StudentEditComponent } from '../Admin/Views/student-edit/student-edit.component';
-import { StudentViewComponent } from '../Admin/Views/student-view/student-view.component';
+import { StudentEditComponent } from '../Admin/Component/student-edit/student-edit.component';
+import { StudentViewComponent } from '../Admin/Component/student-view/student-view.component';
+import { TeachersSinginComponent } from '../Admin/Component/teachers-singin/teachers-singin.component';
+import { TeachersEditComponent } from '../Admin/Component/teachers-edit/teachers-edit.component';
 
 const routes: Routes = [{path: "", component: SidebarComponent,
     children: [
@@ -32,6 +34,8 @@ const routes: Routes = [{path: "", component: SidebarComponent,
       {path: 'etudiant-de-la-classe', component : EtudiantsDeLaClasseComponent},
       {path: 'setting', component: SettingsComponent},
       {path: 'parametre', component: SettingsComponent},
+      {path: 't-singin', component: TeachersSinginComponent},
+      {path: 't-edit', component: TeachersEditComponent},
 
       {path: 'inscription', component: SinginComponent, data:{title: "Formulaire d'inscription"}},
       {path: 'emplois', component: EmploisDuTempsComponent, data:{title: "Creation d'emploi du temps"}},

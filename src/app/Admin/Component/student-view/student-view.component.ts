@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Student } from '../../Models/Students';
-import { ClassStudentService } from '../class-students/class-student.service';
-import { EtudeService } from '../etudiants/etude.service';
+import { ClassStudentService } from '../../Views/class-students/class-student.service';
+import { EtudeService } from '../../Views/etudiants/etude.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IconsService } from '../../../Services/icons.service';
 import { PageTitleService } from '../../../Services/page-title.service';

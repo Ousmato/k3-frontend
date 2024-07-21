@@ -5,6 +5,7 @@ import { Student } from '../../Models/Students';
 import { Notes } from '../../Models/Notes';
 import { Module } from '../../Models/Module';
 import { Response_String } from '../../Models/Response_String';
+import { StudentPages } from '../../Models/TeachesPage';
 
 @Injectable({
   providedIn: 'root'
@@ -62,5 +63,9 @@ export class EtudeService {
   update_student_scolarite(idEtudiant: number, scolarite: number): Observable<Response_String> {
     const url = `${this.baseUrl}update-scolarite/${idEtudiant}`;
     return this.http.put<Response_String>(url, { scolarite });
+  }
+  // ----------------------------------lad teacher by pagination
+  getSudents(page: number, size: number): Observable<StudentPages> {
+    return this.http.get<StudentPages>(`${this.baseUrl}list?page=${page}&size=${size}`);
   }
 }

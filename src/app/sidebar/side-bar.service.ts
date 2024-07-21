@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -25,4 +26,14 @@ export class SideBarService {
     const storedState = localStorage.getItem(this.storageKey);
     this._isToggled = storedState === 'true';
   }
+
+
+  private searchTerm = new BehaviorSubject<string>('');
+  currentSearchTerm = this.searchTerm.asObservable();
+
+  changeSearchTerm(term: string) {
+    console.log('Search term changed:', term);
+    this.searchTerm.next(term);
+  }
+
 }

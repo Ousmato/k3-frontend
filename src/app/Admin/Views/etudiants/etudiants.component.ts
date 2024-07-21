@@ -8,6 +8,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { dom } from '@fortawesome/fontawesome-svg-core';
 import { ActivatedRoute, NavigationExtras, Route, Router } from '@angular/router';
 import { PageTitleService } from '../../../Services/page-title.service';
+import { StudentPages, TeacherPages } from '../../Models/TeachesPage';
+import { SideBarService } from '../../../sidebar/side-bar.service';
 
 @Component({
   selector: 'app-etudiants',
@@ -17,33 +19,89 @@ import { PageTitleService } from '../../../Services/page-title.service';
 export class EtudiantsComponent implements OnInit {
   searchTerm: string = '';
   students: Student[] = [];
+
+  studentspage!: StudentPages;
+  page = 0;
+  size = 10;
+  filteredItems : Student[] = []
+  pages: number[] = []
+  
   update_student_form!: FormGroup
   student!: Student;
   fileName!: File
   photoSelect!: File
   urlImage! : string | ArrayBuffer
   
-  constructor(private service: EtudeService,private fb: FormBuilder, 
+  constructor(private service: EtudeService,private fb: FormBuilder, private sideBarService: SideBarService,
     private root: Router, public icons: IconsService, private pageTitle : PageTitleService) { }
 
   ngOnInit(): void {
     
-   this.load_students();
+   this.loadStudents();
     this.load_student_form();
+    this.sideBarService.currentSearchTerm.subscribe(term => {
+      this.searchTerm = term;
+      this.filterStudents();
+    
+    });
+  }
+  // ------------------------------filter students
+  filterStudents() {
+    if (!this.searchTerm) {
+     return this.filteredItems = this.students;
+    } else {
+    return  this.filteredItems = this.students.filter(student =>
+        student.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        student.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        student.email.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    }
   }
   // ----------------------load students
-  load_students(){
-    this.service.getAll().subscribe(data =>{
-      data.forEach((item: any) => {
+  // load_students(){
+  //   this.service.getAll().subscribe(data =>{
+  //     data.forEach((item: any) => {
+  //       item.urlPhoto = `http://localhost/StudentImg/${item.urlPhoto}`;
+  //       // this.student = item
+  //     });
+  //     this.students = data;
+  //   })
+  // }
+  loadStudents(): void {
+    this.service.getSudents(this.page, this.size).subscribe(data => {
+      this.students = data.content;
+      this.students.forEach((item : Student) => {
         item.urlPhoto = `http://localhost/StudentImg/${item.urlPhoto}`;
-        // this.student = item
-      });
-      this.students = data;
-    })
+      })
+      this.studentspage = data;
+      this.filteredItems = this.students;
+      this.pages = Array.from({ length: data.totalPages }, (_, i) => i);
+
+      console.log(this.students, "pagenation teachers")
+    });
+  }
+  // ------------------------------next page
+  setPage(page: number): void {
+    if (page >= 0 && page < this.studentspage.totalPages) {
+      this.page = page;
+      this.loadStudents();
+    }
+  }
+
+  nextPage(): void {
+    if (this.page < this.studentspage.totalPages - 1) {
+      this.setPage(this.page + 1);
+    }
+  }
+
+  previousPage(): void {
+    if (this.page > 0) {
+      this.setPage(this.page - 1);
+    }
   }
   // ----------------------------refresh page
   refresh(){
-    this.load_students();
+    this.loadStudents();
   }
 // -----------------------------------------------load form update student
   load_student_form(){
@@ -110,15 +168,15 @@ export class EtudiantsComponent implements OnInit {
     )
   }
   // ------------------------------filter methode
-   filteredStudents() {
-    if (!this.searchTerm) {
-      return this.students;
-    }
-    return this.students.filter(student =>
-      student.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      student.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      student.idClasse.idFiliere?.idFiliere?.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase())
-      // student.telephone.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
-  }
+  //  filteredStudents() {
+  //   if (!this.searchTerm) {
+  //     return this.students;
+  //   }
+  //   return this.students.filter(student =>
+  //     student.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+  //     student.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+  //     student.idClasse.idFiliere?.idFiliere?.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase())
+  //     // student.telephone.toLowerCase().includes(this.searchTerm.toLowerCase())
+  //   );
+  // }
 }

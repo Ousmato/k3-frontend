@@ -5,6 +5,7 @@ import { ClassModules } from '../../Models/ClassModule';
 import { Module } from '../../Models/Module';
 import { Ue } from '../../Models/UE';
 import { ClassRoom } from '../../Models/Classe';
+import { Response_String } from '../../Models/Response_String';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +20,8 @@ export class ClassStudentService {
     return this.http.get<ClassRoom[]>(this.getAll_url);
   }
   // -------------------------------------add modules in classroom
-  createClassModule(modules: ClassModules[]): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}add-module-class`, modules);
+  createClassModule(modules: ClassModules): Observable<Response_String> {
+    return this.http.post<Response_String>(`${this.baseUrl}add-module-class`, modules);
   }
 //  ------------------------get class by id
   getClassById(id: number): Observable<any> {

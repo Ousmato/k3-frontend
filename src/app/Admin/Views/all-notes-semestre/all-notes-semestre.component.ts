@@ -11,6 +11,7 @@ import { SchoolService } from '../../../Services/school.service';
 import { SchoolInfo } from '../../Models/School-info';
 import { SemestreService } from '../../../Services/semestre.service';
 import { Semestres } from '../../Models/Semestre';
+import { IconsService } from '../../../Services/icons.service';
 
 @Component({
   selector: 'app-all-notes-semestre',
@@ -23,11 +24,12 @@ export class AllNotesSemestreComponent  implements OnInit{
   ueListe : Ue[] =[]
   modules: Module[] = []
   students: Student[] =[]
-  classe !: ClassRoom
-  school!: SchoolInfo
-  semestre!: Semestres
+  classe ?: ClassRoom
+  school?: SchoolInfo
+  semestre?: Semestres
 
-  constructor(private etudiantService: EtudeService, private semestreService: SemestreService, private clasService: ClassStudentService,
+  constructor(private etudiantService: EtudeService, public icons: IconsService,
+    private semestreService: SemestreService, private clasService: ClassStudentService,
     private route: ActivatedRoute, private schollService: SchoolService) { }
   ngOnInit(): void {
     this.getNotes_classe();
@@ -146,6 +148,10 @@ export class AllNotesSemestreComponent  implements OnInit{
     this.clasService.getClassById(this.idClasse).subscribe(data => {
       this.classe = data;
     })
+  }
+  // -------------------------------------button got back
+  goBack(){
+    window.history.back();
   }
 }
 

@@ -17,7 +17,7 @@ import { PageTitleService } from '../../Services/page-title.service';
 export class EmploisWidgetComponent implements OnInit, OnChanges {
 
  @Input() idClasse!: number
- @Output() closeUpdateModal = new EventEmitter<void>();
+ @Output() closeUpdateModal = new EventEmitter<ClassRoom>();
   updateEmplois!: FormGroup
   semestre: Semestres[] = [];
   semestreSelect!: Semestres
@@ -85,7 +85,7 @@ export class EmploisWidgetComponent implements OnInit, OnChanges {
     this.emploisService.updateEmplois(emplois).subscribe({
      next: (responae) => {
        this.isShow_update = false;
-       this.closeUpdateModal.emit();
+       this.closeUpdateModal.emit(idClasse);
        this.isOverlay = false;
        this.pageTitle.showSuccessToast(responae.message);
        // this.load_emploi();

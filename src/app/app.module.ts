@@ -9,7 +9,7 @@ import { EtudiantsComponent } from './Admin/Views/etudiants/etudiants.component'
 import { LoginComponent } from './login/login.component';
 import {  provideHttpClient } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SinginComponent } from './singin/singin.component';
+import { SinginComponent } from './Admin/Component/singin/singin.component';
 import { StudentSidebarComponent } from './student-sidebar/student-sidebar.component';
 import { StudentDashboardComponent } from './student-dashboard/student-dashboard.component';
 import { ClassStudentsComponent } from './Admin/Views/class-students/class-students.component'
@@ -30,12 +30,14 @@ import { FichePaieComponent } from './Admin/Views/fiche-paie/fiche-paie.componen
 import { StudentNoteComponent } from './Admin/Views/student-note/student-note.component';
 import { AllNotesSemestreComponent } from './Admin/Views/all-notes-semestre/all-notes-semestre.component';
 import { EtudiantsDeLaClasseComponent } from './Admin/Views/etudiants-de-la-classe/etudiants-de-la-classe.component';
-import { StudentEditComponent } from './Admin/Views/student-edit/student-edit.component';
-import { StudentViewComponent } from './Admin/Views/student-view/student-view.component';
+import { StudentEditComponent } from './Admin/Component/student-edit/student-edit.component';
+import { StudentViewComponent } from './Admin/Component/student-view/student-view.component';
 import { SemestreComponent } from './Widget/semestre/semestre.component';
 import { ClasseRomComponent } from './Widget/classe-rom/classe-rom.component';
 import { MatieresComponent } from './Widget/matieres/matieres.component';
 import { EmploisWidgetComponent } from './Widget/emplois-widget/emplois-widget.component';
+import { TeachersSinginComponent } from './Admin/Component/teachers-singin/teachers-singin.component';
+import { TeachersEditComponent } from './Admin/Component/teachers-edit/teachers-edit.component';
 
 registerLocaleData(localeFr);
 @NgModule({
@@ -65,7 +67,9 @@ registerLocaleData(localeFr);
     SemestreComponent,
     ClasseRomComponent,
     MatieresComponent,
-    EmploisWidgetComponent
+    EmploisWidgetComponent,
+    TeachersSinginComponent,
+    TeachersEditComponent
   ],
   imports: [
     BrowserModule,

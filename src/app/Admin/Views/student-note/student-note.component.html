@@ -24,6 +24,7 @@
             </tr>
           </thead>
           <tbody>
+            <ng-container *ngIf="filteredStudents().length; else noResults">
             <ng-container *ngFor="let studens of filteredStudents()">
                 <tr >
                 <td>{{studens.idEtudiant}}</td>
@@ -46,6 +47,7 @@
                     </td>
                 
                 </tr>
+               
                 <!-- -----------------------modal add----------------- -->
                 <div class="modal fade" [id]="'modal-' + studens.idEtudiant"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <!-- <ng-container *ngIf="modules.length > 0"> -->
@@ -264,6 +266,12 @@
                 </div> 
             </div> 
         </ng-container>
+    </ng-container>
+        <ng-template #noResults>
+            <tr>
+                <td colspan="9" class="text-center">Aucun résultat trouvé</td>
+            </tr>
+        </ng-template>
         </tbody>
     </table>
 </main>

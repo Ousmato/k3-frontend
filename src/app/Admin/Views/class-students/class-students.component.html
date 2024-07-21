@@ -53,41 +53,34 @@
 </ng-template>
 
 <ng-container *ngIf="isShow_update_emplois">
-   <app-emplois-widget [idClasse]="classeSelect.id" (closeUpdateModal)="onCloseUpdateModal()"></app-emplois-widget>
+   <app-emplois-widget [idClasse]="classeSelect.id" (closeUpdateModal)="onCloseUpdateModal(classeSelect.id)"></app-emplois-widget>
 </ng-container>
 
 <ng-container *ngIf="isShow_add_module">
     <div class="views-add-ues" *ngIf="ueList.length > 0">
         <div class="nom-class"> <h5 >Choisir une ou plusieurs unite d'enseignement</h5></div>
-        <form class="formModuleMatiere" [formGroup]="addModules" (ngSubmit)="createClassModule(classeSelect)"> 
+        <form class="formModuleMatiere" [formGroup]="addModules"> 
            <div class="select-all">
                 <span>Tout</span>
-                    <input type="checkbox" class="float-end" (change)="selectAll($event)" [checked]="areAllChecked()">
+                    <input type="checkbox" class="custom-checked" (change)="selectAll($event)" [checked]="areAllChecked()" >
                 </div>
             <div class="form form-group">
                 
-                <ng-container *ngFor="let ue of ueList" >
+                <ng-container *ngFor="let ue of ueList">
                     <div class="input">
-                        <label >{{ue.nomUE}}</label>
-                        <input type="checkbox"  (change)="ue_check(ue.id, $event)" [checked]="is_checked(ue.id)" >
+                        <label >{{ue.nomUE.toLowerCase()}}</label>
+                        <input type="checkbox"  (change)="ue_check(ue.id, $event)" [checked]="is_checked(ue.id)" [ngClass]="{ 'custom-checked': is_checked(ue.id) }">
                     </div>
                 </ng-container>
             </div>
             <div class="button-cash">
                 <a (click)="exit()"   ><span>Annuler</span></a>
-                <button class="submit" type="submit" ><span>Enregistrer</span></button>
+                <button class="submit" (click)="createClassModule(classeSelect)" ><span>Enregistrer</span></button>
               </div>
         </form> 
         </div>
  </ng-container>
- <!-- <ng-template #notFundModule>
-    <div class="views-add-ues" *ngIf="notFund_modal">
-        <p>Aucun Unité d'enseignemants trouver veillez vous rendre dans le Paramètre pour ajouter </p>
-        <div class="button-cash">
-            <a (click)="exit_modal()"   ><span>Annuler</span></a>
-          </div>
-    </div>
- </ng-template> -->
+
 
 </div>
 <div class="overlay" *ngIf="isShow_add_module" (click)="preventClick($event)"></div>

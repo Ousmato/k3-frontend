@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Student } from '../Admin/Models/Students';
+import { Student } from '../../Models/Students';
 import { Observable } from 'rxjs';
-import { ClassRoom } from '../Admin/Models/Classe';
-import { Response_String } from '../Admin/Models/Response_String';
+import { ClassRoom } from '../../Models/Classe';
+import { Response_String } from '../../Models/Response_String';
 
 @Injectable({
   providedIn: 'root'

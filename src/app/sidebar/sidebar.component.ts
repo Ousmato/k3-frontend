@@ -18,6 +18,8 @@ export class SidebarComponent implements OnInit {
   isSidebarCollapsed = false;
   isSubmenuCollapsed = false;
 
+  searchTerm: string = '';
+
   school?: SchoolInfo;
   dataAdmin!: Admin
 
@@ -54,7 +56,7 @@ toggleSubMenuArchive(){
     }
   }
  
-  constructor(private pageTitle: PageTitleService, private schoolService: SchoolService,
+  constructor(private pageTitle: PageTitleService, private schoolService: SchoolService, private sidebarService: SideBarService,
      private settingService: SetService, public icons: IconsService){}
 
   
@@ -88,5 +90,9 @@ load_admin(){
     this.dataAdmin.urlPhoto = "http://localhost/StudentImg/"+this.dataAdmin.urlPhoto
   }
 }
+// --------------------------------shearch 
+  onSearchChange() {
+    this.sidebarService.changeSearchTerm(this.searchTerm);
+  }
 }
 

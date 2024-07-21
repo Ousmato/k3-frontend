@@ -1,0 +1,106 @@
+<main>
+    <div (click)="goBack()" class="back-button">
+        <fa-icon  [icon]="icons.back"></fa-icon>
+    </div>
+    <form  [formGroup]="teacher_form" (ngSubmit)="update_enseignant()" >
+        <div class="form-add">
+            <div class="column-f">
+                <div class="input">
+                    <label for="validationDefault01" class="label form-label">Nom :</label>
+                    <input type="text" class="input-with form-control" formControlName="nom" id="nom" [class.is-invalid]="teacher_form.get('nom')!.invalid && teacher_form.get('nom')!.touched"  placeholder="Nom....">
+                    <span *ngIf="teacher_form.controls['nom'].invalid && teacher_form.controls['nom'].touched" [ngStyle]="{color: 'red'}">
+                    Champ obligatoire*
+                    </span>
+                </div>
+        
+                <div class="input">
+                    <label for="validationDefault02" class="label form-label">Prenom :</label>
+                    <input type="text" formControlName="prenom" class="input-with form-control" id="prenom" [class.is-invalid]="teacher_form.get('prenom')!.invalid && teacher_form.get('prenom')!.touched"   placeholder="Prenom....">
+                    <span *ngIf="teacher_form.controls['prenom'].invalid && teacher_form.controls['prenom'].touched" [ngStyle]="{color: 'red'}">
+                    Champ  obligatoire*
+                    </span>
+                </div>
+        
+                <div class="input">
+                    <label  class="label form-label">Email :</label>
+                    <input type="email" formControlName="email" class=" input-with form-control" [class.is-invalid]="teacher_form.get('email')!.invalid && teacher_form.get('email')!.touched" placeholder="Email...">
+                    <span *ngIf="teacher_form.controls['email'].invalid && teacher_form.controls['email'].touched" [ngStyle]="{color: 'red'}">
+                    Champ bligatoire*
+                    </span>
+                    
+                </div>
+        
+                <div class="input">
+                    <label for="validationDefault02" class="label form-label">Mot de Passe :</label>
+                    <div class="pass-chec position-relative">
+                        <input type="{{ passwordVisible ? 'text' : 'password' }}" class="form-control" formControlName="password" [class.is-invalid]="teacher_form.get('password')!.invalid && teacher_form.get('password')!.touched" id="password" placeholder="Mot de passe....">
+                        <span *ngIf="teacher_form.controls['password'].invalid && teacher_form.controls['password'].touched" [ngStyle]="{color: 'red'}">
+                            Champ obligatoire*
+                        </span>
+                        <fa-icon [icon]="passwordVisible ? icons.eyeSlash : icons.eye" class="toggle-password position-absolute" id="togglePassword" [ngStyle]="{cursor: 'pointer', right: '10px', top: '50%', transform: 'translateY(-50%)'}" (click)="togglePasswordVisibility()"></fa-icon>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="column-f">
+                
+                <div class="input">
+                    <label for="telephone" class="label form-label">Téléphone :</label>
+                    <input type="text" formControlName="telephone" class="form-control" [class.is-invalid]="teacher_form.get('telephone')!.invalid && teacher_form.get('telephone')!.touched" pattern="[0-9]{1,8}" placeholder="Numero de telephone....">
+                    <span *ngIf="teacher_form.controls['telephone'].hasError('required') && teacher_form.controls['telephone'].touched"
+                        [ngStyle]="{color: 'red'}">
+                        Champ obligatoire*
+                    </span>
+                    <span *ngIf="teacher_form.controls['telephone'].hasError('pattern') && !teacher_form.controls['telephone'].hasError('required')"
+                        [ngStyle]="{color: 'red'}">
+                        Maximum 8 chiffres autorisés*
+                    </span>
+                </div>
+
+                <!-- button radio sexe start -->
+                
+
+                <div class="form form-group">
+                <label>Status</label> 
+                    <select class="form-select" formControlName="status"  id="enseignant" placeholder="Status"   [class.is-invalid]="teacher_form.get('status')!.invalid && teacher_form.get('status')!.touched">
+                    <option  selected disabled value="">Choisir Le status</option>
+                    <option *ngFor="let status of teacherStatusOptions" [value]="status" >{{status}}</option>
+                    </select> 
+                    <span *ngIf="teacher_form.controls['status'].invalid && teacher_form.controls['status'].touched" [ngStyle]="{color: 'red'}">
+                        Champ obligatoire*
+                    </span>
+                </div>
+
+                <div class="input">
+                    <label for="validationDefault05" class="label form-label">Photo :</label>
+                    <input type="file" formControlName="urlPhoto" accept="image/*" class="input-with form-control"  id="inputPhoto" (change)="onFileSelected($event)"  required>
+                    <!-- <span *ngIf="teacher_form.controls['urlPhoto'].invalid && teacher_form.controls['urlPhoto'].touched" [ngStyle]="{color: 'red'}">
+                    Champ obligatoire*
+                    </span> -->
+                </div>
+
+                <div class="radio">
+                    <label for="">Choisir le sexe :</label>
+                    <div class="radio-content">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio1" value="Homme" required>
+                            <label class="form-check-label" for="inlineRadio1">Homme</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio2" value="Femme" required>
+                            <label class="form-check-label" for="inlineRadio2">Femme</label>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+                
+            </div>
+
+        </div>
+        <div class="col-12">
+          <button   type="submit">Modifier</button>
+        </div>
+    </form>
+</main>

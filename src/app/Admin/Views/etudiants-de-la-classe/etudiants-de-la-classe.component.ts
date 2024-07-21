@@ -37,21 +37,8 @@ export class EtudiantsDeLaClasseComponent implements OnInit{
       }); 
       this.students = data;
       //  this.initializeDataTable();
-      this.dtOptions = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      columnDefs: [
-        { orderable: false, targets: '_all' }
-      ],
-      language: {
-        info: 'Affichage de _START_ à _END_ sur _TOTAL_ entrées',
-        infoEmpty: 'Affichage de 0 à 0 sur 0 entrée',
-        infoFiltered: '(filtré à partir de _MAX_ entrées au total)',
-        lengthMenu: '_MENU_ Entrées par page',
-      }
-    };
+     
     })
-    // Configuration de la datatable
    
   }
 
@@ -71,5 +58,8 @@ export class EtudiantsDeLaClasseComponent implements OnInit{
       // student.telephone.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
-  
+  // ------------------------go back to previous page
+  goBack() {
+    window.history.back();
+  }
 }

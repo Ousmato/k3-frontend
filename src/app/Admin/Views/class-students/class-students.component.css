@@ -324,3 +324,6 @@
   border-bottom: var(--tertiary) 1px solid;
   padding: 8px;
 }
+.custom-checked{
+  accent-color: var(--primary);
+}
