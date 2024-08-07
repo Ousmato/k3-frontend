@@ -17,8 +17,8 @@ export class SeancService {
   }
   
   // ------------------------------add seance
-  create(seance: Seances): Observable<any>{
-    return this.http.post<any>(this.baseUrl + 'add', seance);
+  create(seance: Seances[]): Observable<Response_String>{
+    return this.http.post<Response_String>(this.baseUrl + 'add', seance);
   }
   // ---------------------------------------delete seance 
   delete(id: number): Observable<Response_String>{
@@ -27,6 +27,10 @@ export class SeancService {
   // --------------------------------update seance method 
   update(seance: Seances) : Observable<Response_String>{
     return this.http.put<Response_String>(this.baseUrl+"update", seance);
+  }
+
+  getSeance_byId(idSeance: number) : Observable<any>{
+    return this.http.get<any>(this.baseUrl+ "get-by-id/" +idSeance);
   }
   
 }

@@ -1,0 +1,48 @@
+
+.button-cash{
+    display: flex;
+    gap: 20px;
+    justify-content: end;
+    
+   
+}
+
+.button-cash button{
+    border: none;
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 5px;
+    border-radius: 5px;
+    /* background-color: var(--primary); */
+    color: var(--secondary);
+    cursor: pointer;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+   
+}
+
+
+.button-cash a{
+   text-decoration: none;
+    border: none;
+    margin-top: 8px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: var(--secondary);
+    cursor: pointer;
+    &:hover{
+        
+    background-color: red;
+        color: var(--primary);
+    }
+    
+}
+
+input:focus, select:focus{
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 5px var(--primary);
+}

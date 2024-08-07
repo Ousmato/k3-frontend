@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Output, input } from '@angular/core';
 import { Teacher_presence } from '../../Models/objectPresence';
 import { Teacher } from '../../Models/Teachers';
-import { ServiceService } from '../emplois-du-temps/service.service';
+import { ServiceService } from '../../../DER/emplois-du-temps/service.service';
 import { IconsService } from '../../../Services/icons.service';
 import { DatePipe } from '@angular/common';
 import { Emplois } from '../../Models/Emplois';
@@ -13,6 +13,7 @@ import { Emplois_Classe } from '../../Models/Emplois-classe';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Presence } from '../../Models/Teacher-presence';
 import { data } from 'jquery';
+import { PageTitleService } from '../../../Services/page-title.service';
 
 @Component({
   selector: 'app-enseignant-pr-details',
@@ -28,15 +29,19 @@ export class EnseignantPrDetailsComponent implements OnInit {
   seances: Seances[] =[]
   hoursList: any[] =[]
   dates_emplois: { day: string, date: string }[] = [];
+  datesWithDaysTest: { day: string, dates: string[] }[] = [];
   
  detaille!: any;
  isPresent: boolean = false;
  empois_class: Emplois_Classe[] =[];
  status!: Presence;
  presen_form!: FormGroup
+ day_of_head : string[] = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi']
+  
 
 
-  constructor(private teacherService : EnseiService, private  emploisService: ServiceService, private fb: FormBuilder,
+  constructor(private teacherService : EnseiService, private pageTitle: PageTitleService,
+    private  emploisService: ServiceService, private fb: FormBuilder,
     public icons: IconsService, private router: ActivatedRoute, private datePipe: DatePipe){
    
   }
@@ -51,7 +56,6 @@ export class EnseignantPrDetailsComponent implements OnInit {
   }
 // -------------------------------load detail
     loadDetail(){
-      let days : string;
       this.router.queryParams.subscribe(params => {
         const idUrl = params['id'];
         
@@ -60,36 +64,32 @@ export class EnseignantPrDetailsComponent implements OnInit {
         this.teacher = this.detail_teacher.teacher;
           this.classes = this.detail_teacher.classRoom;
           this.seances = this.detail_teacher.seances;
-          console.log(this.seances[0].observation+"----------------------------------")
+
+         
+          console.log(this.seances, "seances")
           
-        // }))
-       
         this.detail_teacher.emplois.forEach((em)=>{
           if(!this.emplois.includes(em)){
             const dateDebut = em.dateDebut;
             const dateFin = em.dateFin;
             // console.log(this.emplois, "emplois trouver");
-            this.dates_emplois = this.emploisService.getDaysBetweenDates(dateDebut, dateFin)
             
-            this.dates_emplois.forEach(da_em =>{
-              
-              days = da_em.day.toUpperCase();              
-            })
+            this.datesWithDaysTest = this.emploisService.getDaysBetweenDatesTest(dateDebut, dateFin);
+            console.log(this.datesWithDaysTest, "date- tes")
            
-             this.emplois.push(em);
           }
           
         })
         
         this.detail_teacher.seances.forEach((snce) =>{
+          console.log(snce.observation , "observation")
           let seanceIdEmplois: number;
           snce.heureDebut = snce.heureDebut.slice(0, 5);
           snce.heureFin = snce.heureFin.slice(0, 5); 
-          snce.date = new Date(snce.date); 
+          snce.date = new Date(snce.date!); 
           seanceIdEmplois = snce.idEmplois.id!;
 
           const formattedDate = this.datePipe.transform(snce.date, 'dd, MMMM yyyy', 'fr-FR');
-          // console.log(formattedDate, 'formatted date');
           snce.date_string = formattedDate!;
           const day = this.datePipe.transform(snce.date, 'EEEE', 'fr-FR')?.toUpperCase();
           
@@ -119,9 +119,11 @@ export class EnseignantPrDetailsComponent implements OnInit {
           this.status = data?.find(dp => dp.idSeance.id == seance.id)!;
           if (this.status?.observation == true) {
            seance.observation = true;
+           console.log(seance.observation, "true")
           
           }else {
            seance.observation = false;
+           console.log(seance.observation, "false")
          
           }
         } catch (error) {
@@ -139,40 +141,26 @@ export class EnseignantPrDetailsComponent implements OnInit {
       
       return day_correspond;
     }
-    // -----------------------------------method add or update observation
-    present(seanceId: number) {
-      const seance = this.seances.find(s => s.id === seanceId);
-      const present_seance : Presence ={
-        idSeance: seance!
-
-      }
-      this.teacherService.addPresence(present_seance).subscribe(data =>{
-       
-        alert("La presence ajouter avec success!!");
-        window.location.reload();
-        console.log(data, "data added");
-        
-      })
-    }
-  
   
   // ----------------------------------method abscenter un teacher
-    abscent(seanceId: number) {
+    change_observation(seanceId: number) {
       const seance = this.seances.find(s => s.id === seanceId);
-      // console.log(seance, "seabbb")
       const present_seance : Presence ={
         idSeance: seance!
 
       }
-      this.teacherService.abscenter(present_seance!).subscribe(data =>{
-        // console.log(data, "data")
-        if(data === true){
-         
-          alert("L'absence ajouter avec success!!");
-          window.location.reload();
-           present_seance.idSeance.observation = false;
+      this.teacherService.chage_observation(present_seance!).subscribe({
+        next: (response) =>{
+          this.pageTitle.showSuccessToast(response.message);
+          this.loadDetail();
+        },
+        error: (erreur) =>{
+          this.pageTitle.showErrorToast(erreur.error.message);
         }
       })
     }
-    
+    // ---------------------------------go back button
+    goBack(){
+      window.history.back();
+    }
 }

@@ -1,4 +1,5 @@
 export interface Teacher {
+    numero?: number;
     idEnseignant?: number;
     nom: string;
     prenom: string;
@@ -12,6 +13,6 @@ export interface Teacher {
 }
 
 export enum TeachersStatus {
-    PEMANENT = 'Permanent',
-    PRINCIPAL = 'Principale'
+    PEMANENT = 'Vacataire',
+    PRINCIPAL = 'Permanent'
 }

@@ -1,0 +1,38 @@
+<div class="setting" >
+
+    <div class="first-section">
+        <div class="image-content">
+            <h4></h4>
+            <img src="{{admin.urlPhoto}}" alt="photo">
+            
+        </div>
+        <div class="icon">
+            <fa-icon [icon]="icons.edit"></fa-icon>
+        </div>
+    </div>
+    <div class="info">
+        <p>{{admin.nom}} {{admin.prenom}}</p>
+        <p>{{admin.email}}</p>
+    </div>
+    
+    <div class="second-section">
+        <div class="contenair-flex" *ngIf="desable_add_button">
+            <p>Autre Admin</p>
+            <fa-icon [icon]="icons.setting"></fa-icon>
+        </div>
+        <div class="invite-contenair" (click)="toggle_toAdd_admin()"  *ngIf="desable_add_button; else logOut">
+           <span><fa-icon [icon]="icons.plus" ></fa-icon> Ajouter</span> 
+        </div>
+
+        <div class="profil-autre-admin">
+            <img src="" alt="">
+        </div>
+        <ng-template #logOut>
+            <div class="contenair-flex">
+                <p>Déconnexion</p>
+                <fa-icon [icon]="icons.aout"></fa-icon>
+            </div>
+        </ng-template>
+    </div>
+
+</div>

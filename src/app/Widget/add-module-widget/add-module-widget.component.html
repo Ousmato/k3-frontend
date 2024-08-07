@@ -1,0 +1,58 @@
+<main>
+    <ng-container *ngIf="isshow_add_module"  >
+        <div class="div-parent"> 
+           
+            <div class="views">
+            <form [formGroup]="addModule" (ngSubmit)="creatModule()" > 
+                <h3 id="error">Ajouter module</h3>
+                <div class="views-container">
+                    <div class="form form-group"> 
+                        <label for="nom">Nom module:</label> 
+                        <input type="text" formControlName="nomModule" class="form-control" id="nom" placeholder="Nom du module" 
+                               [class.is-invalid]="addModule.get('nomModule')!.invalid && addModule.get('nomModule')!.touched"> 
+                        <div *ngIf="addModule.get('nomModule')!.invalid && addModule.get('nomModule')!.touched" class="invalid-feedback">
+                            <div *ngIf="addModule.get('nomModule')!.errors?.['required']">
+                                <span class="label-error">Le nom du module est requis.</span>
+                            </div>
+                            <div *ngIf="addModule.get('nomModule')!.errors?.['maxlength']">
+                                <span class="label-error">Le nom du module ne doit pas dépasser 30 caractères.</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form form-group"> 
+                        <label for="coefficient">Coefficient:</label> 
+                        <input type="number" formControlName="coefficient" class="form-control" id="coefficient" placeholder="Coefficient" 
+                               [class.is-invalid]="addModule.get('coefficient')!.invalid && addModule.get('coefficient')!.touched"> 
+                        <div *ngIf="addModule.get('coefficient')!.invalid && addModule.get('coefficient')!.touched" class="invalid-feedback">
+                            <div *ngIf="addModule.get('coefficient')!.errors?.['required']">
+                                <span class="label-error">Le coefficient est requis.</span>
+                            </div>
+                            <div *ngIf="addModule.get('coefficient')!.errors?.['min'] || addModule.get('coefficient')!.errors?.['max']">
+                                <span class="label-error">Le coefficient doit être compris entre 1 et 6.</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form form-group">
+                        <label for="select-modules-multiple" class="label form-label">UE :</label>
+                        <select class="form-select" formControlName="idUe" id="select-modules-multiple" placeholder="Choisir une unite d'enseignament" [class.is-invalid]="addModule.get('idUe')!.invalid && addModule.get('idUe')!.touched">
+                          <option selected disabled value="">Choisir une unite d'enseignament</option>
+                          <option *ngFor="let ue of ueListe" [value]="ue.id">{{ue.nomUE}}</option>
+                        </select>
+                        <div *ngIf="addModule.get('idUe')!.invalid && addModule.get('idUe')!.touched" class="invalid-feedback">
+                            <span class="label-error">Champ obligatoire</span>
+                         </div>                      
+                    </div>
+                    <div class="button-cash">
+                        <a (click)="annuler()" class="submit" ><span>Annuler</span></a>
+                        <button class="submit" type="submit" ><span>Enregistrer</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                    </div>
+                </div>
+            </form> 
+        </div>
+        </div>
+        
+    </ng-container>
+    <div class="overlay" *ngIf="isshow_add_module"></div>
+</main>

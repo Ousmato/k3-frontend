@@ -1,0 +1,42 @@
+<main>
+    <div class="views"> 
+        <h4>Ajouter salle de classe</h4>
+        <form [formGroup]="add_form" (ngSubmit)="add_salle()">
+           
+            <div class="chil">
+                <div class="input">
+                    <label for="validationDefault01" class="label form-label">Nom :</label>
+                    <input type="text" class="input-with form-control" formControlName="nom" id="nom" [class.is-invalid]="add_form.get('nom')!.invalid && add_form.get('nom')!.touched"  placeholder="Nom de la salle....">
+                    <div *ngIf="add_form.get('nom')!.invalid && add_form.get('nom')!.touched" class="invalid-feedback">
+                        <div *ngIf="add_form.get('nom')!.errors?.['required']">
+                            <span class="label-error">Champ obligatoire*</span>
+                        </div>
+                        <div *ngIf="add_form.get('nom')!.errors?.['maxlength']">
+                            <span class="label-error">Le nom ne doit pas dépasser 40 caractères.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input">
+                    <label for="validationDefault02" class="label form-label">Nombres des places :</label>
+                    <input type="45" formControlName="nombrePlace" class="input-with form-control"  [class.is-invalid]="add_form.get('nombrePlace')!.invalid && add_form.get('nombrePlace')!.touched"   placeholder="Nombres de places....">
+                    <div *ngIf="add_form.get('nombrePlace')!.invalid && add_form.get('nombrePlace')!.touched" class="invalid-feedback">
+                        <div *ngIf="add_form.get('nombrePlace')!.errors?.['required']">
+                            <span class="label-error">Champ obligatoire*</span>
+                        </div>
+                        <div *ngIf="add_form.get('nombrePlace')!.errors?.['max']">
+                            <span class="label-error">Nombres de places trops élevé</span>
+                        </div>
+                    </div>
+                </div>
+
+                
+            </div>
+            <div class="button-cash">
+                <a (click)="close_modal()" class="submit"  ><span>Annuler</span></a>
+                <button class="submit" type="submit" ><span>Enregistrer</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+            </div>
+        </form>
+    </div>
+    
+</main>

@@ -1,25 +1,27 @@
 
-body{
+/* body{
     background-color: rgba(230, 230, 230, 0.836);
-}
-
-/* .container{
-    
 } */
-.btn-login{
+
+.btn-container{
     padding: 10px;
     width: 100%;
+    display: flex;
+    justify-content: end;
+}
+.btn-login{
+    width: 160px;
+    padding: 5px;
     background-color: var(--primary);
     color: var(--secondary);
-    border: 1px solid var(--primary);
-    border-radius: 5px;
+    border-radius: 4px;
     font-weight: bold;
+    text-align: center;
     cursor: pointer;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     &:hover{
-        background-color: var(--primary-light);
+        background-color: var(--secondary);
         color: var(--primary);
-        border: 1px solid var(--primary-light);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     }
 }
@@ -41,13 +43,21 @@ span{
     height: 15px;
     width: 15px;
 }
-.card h1{
+h2{
+    margin: 10px;
     background-color: var(--primary);
-    height: 70px;
+    height: 60px;
+    text-align: center;
     color: var(--secondary);
-    margin: 0;
     /* width: 100%; */
 
+}
+.card-body{
+    padding: 0;
+}
+.card{
+    border: none;
+    padding: 0;
 }
 .position-relative {
     position: relative;
@@ -55,4 +65,45 @@ span{
 
 .position-absolute {
     position: absolute;
+}
+input:focus{
+    border-color: 1px solid var(--primary);
+    outline: none;
+    box-shadow: 0 0 5px var(--primary);
+}
+
+input{
+    border-color: var(--primary);
+    border-radius: 4px;
+    height: 40px;
+}
+main {
+    position: relative;
+    height: 100vh;
+    /* width: 1; */
+    padding: 50px;
+}
+
+.logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background-color: rgba(230, 230, 230, 0.836); */
+    background-image: url('/assets/logounivsegou.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 708px;
+    opacity: 0.2; 
+    pointer-events: none; 
+    z-index: 100; 
+}
+.login-card{
+    width: 400px;
+    margin-left: 100px;
+    margin-top: 10%;
+}
+label{
+    font-weight: bold;
 }

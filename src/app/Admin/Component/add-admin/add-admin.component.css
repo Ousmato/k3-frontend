@@ -1,0 +1,51 @@
+main{
+    width: 100%;
+}
+
+form{
+    width: 100%;
+    padding: 10px 20px;
+}
+.form-add{
+    display: flex;
+    gap: 30px;
+}
+.column-f{
+    width: 50%;
+}
+.radio{
+    margin-top: 10px;
+}
+.radio .radio-content{
+
+    height: 50px;
+    display: flex;
+    width: 100%;
+    padding-left: 8px;
+    border-radius: 5px;
+    border: 1px solid var(--tertiary);
+    align-items: center;
+}
+button{
+    margin-top: 10px;
+    background-color: var(--primary);
+    color: var(--secondary);
+    border: var(--primary);
+    padding: 8px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+       
+    }
+}
+input:focus, select:focus{
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 5px var(--primary);
+}
+.input{
+    margin-top: 10px;
+}

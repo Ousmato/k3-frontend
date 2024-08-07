@@ -5,7 +5,7 @@ import { Student } from '../../Models/Students';
 import { Notes } from '../../Models/Notes';
 import { Module } from '../../Models/Module';
 import { Response_String } from '../../Models/Response_String';
-import { StudentPages } from '../../Models/TeachesPage';
+import { NotesPages, StudentPages } from '../../Models/Pagination-module';
 
 @Injectable({
   providedIn: 'root'
@@ -14,19 +14,24 @@ export class EtudeService {
 
   constructor(private http: HttpClient) { }
 
-  private getUrl = 'http://localhost:8080/api-student/list'
   private baseUrl = 'http://localhost:8080/api-student/'
   private baseUrl_note = 'http://localhost:8080/api-note/'
-  getAll() : Observable<any>{
-    return this.http.get<Student>(this.getUrl);
+  getAll() : Observable<Student[]>{
+    return this.http.get<Student[]>(this.baseUrl+"find-all");
   }
   // ----------------------get all student by idclasse
+  
   getStudentByIdClasse(idClasse: number) : Observable<Student[]>{
     return this.http.get<Student[]>(this.baseUrl + "list-student-by-classe/" + idClasse);
   }
+
+  getStudent_ByIdClasse(page: number, size: number, idClasse: number): Observable<StudentPages> {
+    return this.http.get<StudentPages>(`${this.baseUrl}list-student-by-classe/${idClasse}?page=${page}&size=${size}`);
+  }
+  
   // ------------------------add note
-  add_note(note: Notes) : Observable<any>{
-    return this.http.post<any>(this.baseUrl_note+"add-note", note);
+  add_note(note: Notes) : Observable<Response_String>{
+    return this.http.post<Response_String>(this.baseUrl_note+"add-note", note);
   }
 
    // -----------------------------------get all module filter
@@ -40,9 +45,9 @@ export class EtudeService {
    
   }
   // ----------------------------------get all note of classe
-  getAllNoteByClasse(idClasse: number): Observable<Notes[]> {
-    return this.http.get<Notes[]>(this.baseUrl_note + "read-all-of-semestre/" +idClasse);
-   
+  // read-all-of-semestre/
+  getAllNoteByClasse(page: number, size: number, idClasse: number): Observable<NotesPages> {
+    return this.http.get<NotesPages>(`${this.baseUrl_note}read-all-of-semestre/${idClasse}?page=${page}&size=${size}`);
   }
   // -----------------------------------------desactive student by id
   desactiveStudent(id: number): Observable<Response_String>{
@@ -67,5 +72,9 @@ export class EtudeService {
   // ----------------------------------lad teacher by pagination
   getSudents(page: number, size: number): Observable<StudentPages> {
     return this.http.get<StudentPages>(`${this.baseUrl}list?page=${page}&size=${size}`);
+  }
+  // ----------------------------------update note
+  update_note(note: Notes) : Observable<Response_String>{
+    return this.http.put<Response_String>(this.baseUrl_note+"update-note", note);
   }
 }

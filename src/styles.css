@@ -4,6 +4,7 @@
     --primary: #312D7C;
     --primary-dark: #212463;
     --primary-light: #7167D6;
+    --primo-light: #F9F9F9;
     --secondary: #EF9408;
     --secondary-dark: #E28504;
     --secondary-light: #F5B800;
@@ -11,3 +12,16 @@
     --tertiary-dark: #bbb;
     --tertiary-light: #ddd;
 }
+/* :root{
+    --primary: #312D7C;
+    --primary-dark: #212463;
+    --primary-light: #7167D6;
+    --secondary: #EF9408;
+    --secondary-dark: #E28504;
+    --secondary-light: #F5B800;
+    
+    --tertiary: #ccc;
+    --tertiary-dark: #bbb;
+    --tertiary-light: #ddd;
+} */
+

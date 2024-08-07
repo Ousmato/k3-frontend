@@ -1,9 +1,20 @@
-table{
-    margin-top: 20px;
-}
+
 main{width: 100%;
 
     padding-top: 20px;
+}
+.table-container{
+    height: 400px;
+    position: relative;
+    overflow-y: auto;
+}
+.table thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+.table-container::-webkit-scrollbar{
+    display: none;
 }
 a button{
     margin-bottom: 30px;
@@ -11,7 +22,7 @@ a button{
 
 /* Styler l'en-tête du tableau */
 th {
-    background-color: #84a2cf49;
+    background-color: var(--primary-light);
 }
 
 tr td{
@@ -24,7 +35,7 @@ tr td{
 }
 span{
     font-size: 10px;
-    color: blue;
+    color: var(--primary);
 }
 .class-name{
     cursor: pointer;
@@ -38,3 +49,49 @@ img{
     height: 50px;
     width: auto;
 }
+/* ----------------------------------pagination  buttons style */
+.pagination {
+    display: flex;
+    justify-content: end;
+    margin-top: 10px;
+  }
+  
+  .pagination button {
+    margin: 0 5px;
+    font-size: 10px;
+    padding: 2px 5px;
+    /* background-color: #007bff; */
+    color: var(--secondary);
+    cursor: pointer;
+    border: none;
+    border-radius: 20px;
+  }
+  
+  .pagination button.disabled, .pagination button[disabled] {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .pagination button.active {
+    background-color: var(--primary);
+  }
+  
+  .pagination button:hover:not(.disabled):not(.active) {
+    background-color: var(--secondary);
+    color: var(--primary);
+    border: none;
+  }
+  .goto-next{
+    margin: 0;
+    font-size: 14px;
+    padding: 3px;
+    background-color: var(--primary);
+    color: var(--secondary);
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+  }

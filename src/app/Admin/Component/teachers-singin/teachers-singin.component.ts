@@ -68,8 +68,10 @@ export class TeachersSinginComponent implements OnInit {
       this.enseignantService.create(teacher, this.fileName!).subscribe({
         next: (data) => {
           // this.current_enseignat_create = data
-          this.teacher_form.reset();
+          
           this.pageTitle.showSuccessToast(data.message);
+          this.teacher_form.reset();
+          this.loa_teacher_form();
         },
         error: (erreur) => {
           this.pageTitle.showErrorToast(erreur.error.message);

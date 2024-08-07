@@ -17,11 +17,7 @@ export class SinginServiceService {
     formData.append('student', JSON.stringify(student));
    
     formData.append('file', photoFile);
-    // formData.append("idClasse", JSON.stringify(classe))
-    // formData.append('idClasse', JSON.stringify(idClasse));
      console.log(formData.get('student'), formData.get('file'));
-
-    // Send the POST request with formData
     return this.http.post<Response_String>(this.baseUrl, formData);
 }
 

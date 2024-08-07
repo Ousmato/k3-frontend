@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EtudeService } from './etude.service';
-import { ClassStudentService } from '../class-students/class-student.service';
+import { ClassStudentService } from '../../../DGA/class-students/class-student.service';
 import { Student } from '../../Models/Students';
 import { data } from 'jquery';
 import { IconsService } from '../../../Services/icons.service';
@@ -8,7 +8,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { dom } from '@fortawesome/fontawesome-svg-core';
 import { ActivatedRoute, NavigationExtras, Route, Router } from '@angular/router';
 import { PageTitleService } from '../../../Services/page-title.service';
-import { StudentPages, TeacherPages } from '../../Models/TeachesPage';
+import { StudentPages, TeacherPages } from '../../Models/Pagination-module';
 import { SideBarService } from '../../../sidebar/side-bar.service';
 
 @Component({
@@ -20,7 +20,7 @@ export class EtudiantsComponent implements OnInit {
   searchTerm: string = '';
   students: Student[] = [];
 
-  studentspage!: StudentPages;
+  studentspage?: StudentPages;
   page = 0;
   size = 10;
   filteredItems : Student[] = []
@@ -53,20 +53,12 @@ export class EtudiantsComponent implements OnInit {
     return  this.filteredItems = this.students.filter(student =>
         student.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         student.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        student.email.toLowerCase().includes(this.searchTerm.toLowerCase())
+        student.email.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        student.idClasse.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     }
   }
   // ----------------------load students
-  // load_students(){
-  //   this.service.getAll().subscribe(data =>{
-  //     data.forEach((item: any) => {
-  //       item.urlPhoto = `http://localhost/StudentImg/${item.urlPhoto}`;
-  //       // this.student = item
-  //     });
-  //     this.students = data;
-  //   })
-  // }
   loadStudents(): void {
     this.service.getSudents(this.page, this.size).subscribe(data => {
       this.students = data.content;
@@ -75,21 +67,21 @@ export class EtudiantsComponent implements OnInit {
       })
       this.studentspage = data;
       this.filteredItems = this.students;
-      this.pages = Array.from({ length: data.totalPages }, (_, i) => i);
+      this.pages = Array.from({ length: data.totalPages! }, (_, i) => i);
 
       console.log(this.students, "pagenation teachers")
     });
   }
   // ------------------------------next page
   setPage(page: number): void {
-    if (page >= 0 && page < this.studentspage.totalPages) {
+    if (page >= 0 && page < this.studentspage!.totalPages!) {
       this.page = page;
       this.loadStudents();
     }
   }
 
   nextPage(): void {
-    if (this.page < this.studentspage.totalPages - 1) {
+    if (this.page < this.studentspage!.totalPages! - 1) {
       this.setPage(this.page + 1);
     }
   }

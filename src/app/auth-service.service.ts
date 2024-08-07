@@ -40,7 +40,7 @@ export class AuthServiceService {
       .pipe(
         map(() => {
           // Suppression du jeton d'authentification du localStorage lors de la déconnexion
-          localStorage.removeItem('token');
+          sessionStorage.removeItem('token');
           return true; // Vous pouvez retourner toute autre donnée pertinente de la réponse si nécessaire
         })
       );
@@ -50,6 +50,6 @@ export class AuthServiceService {
   isLoggedIn(): boolean {
     // Logique pour vérifier si l'utilisateur a un jeton d'authentification valide
     // Retourne true si l'utilisateur est authentifié, sinon false
-    return localStorage.getItem('token') !== null; // Exemple : vérifie si un jeton est présent dans le stockage local
+    return sessionStorage.getItem('admin') != null; // Exemple : vérifie si un jeton est présent dans le stockage local
   }
 }

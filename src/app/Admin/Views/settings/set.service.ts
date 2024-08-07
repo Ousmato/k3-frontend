@@ -37,8 +37,8 @@ export class SetService {
     createFiliere(filiere: Filiere): Observable<Filiere>{
       return this.http.post<Filiere>(this.postUrl, filiere);
     }
-    addClass(classe: ClassRoom) : Observable<any>{
-      return this.http.post<any>(this.baseUrl+"api-class/add", classe);
+    addClass(classe: ClassRoom) : Observable<Response_String>{
+      return this.http.post<Response_String>(this.baseUrl+"api-class/add", classe);
     }
 
     addFiliere(filiereData: any): Observable<Response_String> {
@@ -47,8 +47,8 @@ export class SetService {
 
 
   // -----------------------------------------create ue 
-  createUe(ue: Ue) : Observable<any>{
-    return this.http.post<any>(this.baseUrl+"api-class/add-ue", ue);
+  createUe(ue: Ue) : Observable<Response_String>{
+    return this.http.post<Response_String>(this.baseUrl+"api-class/add-ue", ue);
   }
   // -----------------------------------------get all ue by class id
   getAll_ue_not_associate_class(idClasse: number): Observable<Ue[]> {
@@ -71,16 +71,16 @@ export class SetService {
     return this.http.get<Ue[]>(`${this.baseUrl}api-class/all-ues-without-modules-and-classe`);
   }
   // -----------------------------update ue
-  updateUe(ue: Ue): Observable<any>{
-    return this.http.put<any>(this.baseUrl+"api-class/update-ue", ue);
+  updateUe(ue: Ue): Observable<Response_String>{
+    return this.http.put<Response_String>(this.baseUrl+"api-class/update-ue", ue);
   }
   // -----------------------------update module
-  updateModule(module: Module): Observable<any>{
-    return this.http.put<any>(this.baseUrl+"api-class/update-module", module);
+  updateModule(module: Module): Observable<Response_String>{
+    return this.http.put<Response_String>(this.baseUrl+"api-class/update-module", module);
   }
   // -----------------------------delete module
-  deleteModule(id: number): Observable<any>{
-    return this.http.delete<any>(`${this.baseUrl}api-class/delete-module-by-id/${id}`);
+  deleteModule(id: number): Observable<Response_String>{
+    return this.http.delete<Response_String>(`${this.baseUrl}api-class/delete-module-by-id/${id}`);
   }
   // -----------------------------delete ue
   deleteUe(id: number): Observable<Response_String>{
@@ -98,6 +98,9 @@ export class SetService {
   getAll_module_without_note(): Observable<Module[]>{
     return this.http.get<Module[]>(this.baseUrl+"api-class/all-module-without-note_all");
   }
-
+// --------------------------------add semestre
+createSemestre(semestre: Semestres) : Observable<Response_String>{
+  return this.http.post<Response_String>(this.baseUrl+"api-semestre/add-semestre", semestre);
+}
  
 }

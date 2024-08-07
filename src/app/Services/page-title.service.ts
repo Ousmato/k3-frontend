@@ -13,6 +13,10 @@ export class PageTitleService {
   private titleSubject = new BehaviorSubject<string>('');
   public title$ = this.titleSubject.asObservable();
 
+  setTitle(title: string) {
+    this.titleSubject.next(title);
+  }
+  
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private toastr: ToastrService) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),

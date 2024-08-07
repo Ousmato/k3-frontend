@@ -5,7 +5,7 @@ import { EnseiService } from './ensei.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { TeacherPages } from '../../Models/TeachesPage';
+import { TeacherPages } from '../../Models/Pagination-module';
 import { SideBarService } from '../../../sidebar/side-bar.service';
 
 @Component({
@@ -54,7 +54,7 @@ export class EnseignantComponent implements OnInit {
  
   // ----------------------toggle to singin page
   toggle_toSingin(){
-    this.root.navigate(['/sidebar/t-singin'])
+    this.root.navigate(['/der/t-singin'])
   }
 
   // ---------------------------toggle to edit page
@@ -62,32 +62,33 @@ export class EnseignantComponent implements OnInit {
     const navigationExtras: NavigationExtras = {
       queryParams: { id: idEnseignant }
     };
-    this.root.navigate(['/sidebar/t-edit'], navigationExtras)
+    this.root.navigate(['/der/t-edit'], navigationExtras)
   }
   // -----------------------------load teacher by pages
   loadTeachers(): void {
     this.enseignantService.getTeachers(this.page, this.size).subscribe(data => {
       this.enseignants = data.content;
-      this.enseignants.forEach((item : Teacher) => {
+      this.enseignants.forEach((item, index) => {
+        item.numero = index + 1;
         item.urlPhoto = `http://localhost/StudentImg/${item.urlPhoto}`;
       })
       this.teachers = data;
       this.filteredItems = this.enseignants;
-      this.pages = Array.from({ length: data.totalPages }, (_, i) => i);
+      this.pages = Array.from({ length: data.totalPages! }, (_, i) => i);
 
       console.log(this.teachers, "pagenation teachers")
     });
   }
   // ------------------------------next page
   setPage(page: number): void {
-    if (page >= 0 && page < this.teachers.totalPages) {
+    if (page >= 0 && page < this.teachers.totalPages!) {
       this.page = page;
       this.loadTeachers();
     }
   }
 
   nextPage(): void {
-    if (this.page < this.teachers.totalPages - 1) {
+    if (this.page < this.teachers.totalPages! - 1) {
       this.setPage(this.page + 1);
     }
   }

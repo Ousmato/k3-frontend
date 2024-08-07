@@ -1,0 +1,96 @@
+.button-cash{
+    display: flex;
+    gap: 20px;
+    justify-content: end;
+    
+   
+}
+.file{
+    margin-top: 16px;
+}
+.img-container img{
+    /* position: relative; */
+    margin-top: 8px;
+    height: 150px;
+    width: auto;
+    border: #ccc 1px solid;
+    border-radius: 0;
+}
+
+.input-content{
+    width: 100%;
+}
+.form-group{
+    width: 100%;
+    margin-top: 8px ;
+}
+.first-contenair{
+    display: flex;
+    gap: 20px;
+    
+}
+
+.button-cash button{
+    border: none;
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 5px;
+    border-radius: 5px;
+    /* background-color: var(--primary); */
+    color: var(--secondary);
+    cursor: pointer;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+   
+}
+
+
+.button-cash a{
+   text-decoration: none;
+    border: none;
+    margin-top: 8px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: var(--secondary);
+    cursor: pointer;
+    &:hover{
+        
+    background-color: red;
+        color: var(--primary);
+    }
+    
+}
+
+
+  .views{
+    background-color: white;
+    padding: 0px 40px;
+    
+   
+    }
+    input:focus, select:focus{
+        outline: none;
+        border: 1px solid var(--primary);
+        box-shadow: 0 0 5px var(--primary);
+    }
+    /* ------------------------ue to delete------------------ */
+   
+    .back-button{
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        padding: 8px;
+        font-size: 20px;
+        margin: 10px 0;
+        &:hover{
+            background-color: var(--tertiary);
+            color: var(--primary);
+            border: none;
+            border-radius: 50%;
+        }
+    
+    }

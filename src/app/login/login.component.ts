@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthServiceService } from '../auth-service.service';
 import { User } from '../Admin/Models/Auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Admin } from '../Admin/Models/Admin';
+import { Admin, Admin_role } from '../Admin/Models/Admin';
 import { Teacher } from '../Admin/Models/Teachers';
 import { Router } from '@angular/router';
 import { IconsService } from '../Services/icons.service';
@@ -40,35 +40,59 @@ export class LoginComponent implements OnInit {
    var password = this.userForm.value.password
     // return;
     if (this.userForm.valid) { 
+      // console.log('ici')
       this.authService.login(email, password).subscribe({
         next: (data) =>{
-          if (data.idAdministra) {
+          console.log(data.role, "data connect")
+          if (data.role == Admin_role.super_admin.toLocaleLowerCase()) {
 
             const adminDataString = JSON.stringify(data);
-            localStorage.setItem("admin", adminDataString);
-            this.toastr.success('Connexion avec succé!!', 'Success',{timeOut: 3000})
+            sessionStorage.setItem("admin", adminDataString);
+            this.toastr.success('Connexion avec succès!!', 'Succès',{timeOut: 3000})
+            console.log('Je suis admin', data.role);
+            this.route.navigate(["/sidebar"])
             
-            this.route.navigate(["sidebar"])
-            // console.log('Je suis admin');
             
             
   
-          } else if (data.idEnseignant) {
-            console.log('Je suis teacher');
+          } else if (data.role == Admin_role.dga.toLocaleLowerCase()) {
+            
+            const adminDataString = JSON.stringify(data);
+            // console.log(adminDataString, "string data");
+            sessionStorage.setItem("dga", adminDataString);
+            this.toastr.success('Connexion avec succès!!', 'Succès',{timeOut: 3000})
+            console.log('Je suis dga');
+            this.route.navigate(['dga'])
+
+          }else if(data.role == Admin_role.finance.toLocaleLowerCase()){
+            const adminDataString = JSON.stringify(data);
+            // console.log(adminDataString, "string data");
+            sessionStorage.setItem("finance", adminDataString);
+            this.toastr.success('Connexion avec succès!!', 'Succès',{timeOut: 3000})
+            this.route.navigate(['/finance']);
   
-          } else if (data.idEtudiant) {
-            console.log('Je suis étudiant');
+          } else if (data.role == Admin_role.der.toLocaleLowerCase()) {
+            const adminDataString = JSON.stringify(data);
+            sessionStorage.setItem("der", adminDataString);
+            this.route.navigate(['der']);
   
           } else {
             console.log('Utilisateur inconnu');
           }
         },
         error: (erreur) =>{
+          if(erreur.status == 0){
+            this.toastr.error("Verifier la connexion a votre base de données", "Erreur");
+          }
         this.message = erreur.error.message;
         this.invalid =! this.invalid;
           // this.pageTitle.showErrorToast(erreur.error.message)
-        }
+        },
+        
       })
+    }else{
+      this.userForm.markAllAsTouched();
+      console.log("invalid", this.userForm.value)
     }
   }
   // --------------------------------method password visible

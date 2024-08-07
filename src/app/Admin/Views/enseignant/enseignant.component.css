@@ -1,9 +1,20 @@
-table{
-    margin-top: 20px;
-}
-main{width: 100%;
 
+main{
+    width: 100%;
     padding-top: 20px;
+}
+.table-container{
+    height: 400px;
+    position: relative;
+    overflow-y: auto;
+}
+.table thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+.table-container::-webkit-scrollbar{
+    display: none;
 }
 /* ----------------------------------pagination  buttons style */
 .pagination {
@@ -90,6 +101,7 @@ li span{
     font-weight: 800;
 }
 .btn-add{
+    margin-bottom: 10px;
     padding: 8px;
     background-color: var(--primary);
     color: var(--secondary);

@@ -3,19 +3,19 @@ import { Notes } from '../../Models/Notes';
 import { Student } from '../../Models/Students';
 import { IconsService } from '../../../Services/icons.service';
 import { EtudeService } from '../etudiants/etude.service';
-import { ActivatedRoute } from '@angular/router';
-import { data } from 'jquery';
+import { ActivatedRoute, NavigationExtras, NavigationStart, Router } from '@angular/router';
 import { SemestreService } from '../../../Services/semestre.service';
 import { Semestres } from '../../Models/Semestre';
-import { ClassStudentService } from '../class-students/class-student.service';
 import { Module } from '../../Models/Module';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Students_Module } from '../../Models/studends_modules';
 import { StudenModules_classe } from '../../Classes/Module_classe';
 import { SchoolService } from '../../../Services/school.service';
 import { SchoolInfo } from '../../Models/School-info';
-import { empty } from 'rxjs';
 import { Location } from '@angular/common';
+import { NotesPages, StudentPages } from '../../Models/Pagination-module';
+import { SideBarService } from '../../../sidebar/side-bar.service';
+import { PageTitleService } from '../../../Services/page-title.service';
 
 @Component({
   selector: 'app-student-note',
@@ -25,191 +25,118 @@ import { Location } from '@angular/common';
 export class StudentNoteComponent implements OnInit {
   searchTerm: string = '';
   students: Student [] = [];
+  studentSelect!: Student
   notes: Notes[] = [];
-  dtOptions: any = {};
   idUrl! : number;
   moduleSelect!: any
 
-  semestres: Semestres[] = [];
+  semestres!: Semestres;
   modules: Module[] = [];
 
   moduleForm!: FormGroup;
   update_note_form!: FormGroup;
   student!: Student;
-  showFormId: number | null = null;
+  // showFormId: number | null = null;
   schoolInfo!: SchoolInfo
   modules_of_student: Students_Module[] = [];
-  isShow_button: boolean = false
-  moyenneGenerale: number = 0
-  mention: string = "";
+  isShow_modal: boolean = true
   
+  
+  studentPages?: StudentPages;
+  page = 0;
+  size = 10;
+  filteredItems : Student[] = []
+  pages: number[] = []
+
    ClassModule_classe = new StudenModules_classe()
+  show_widget_add_note: boolean = false;
+  idSudent_select!: number; 
   
 
-  constructor(public icons: IconsService, private fb: FormBuilder,
-    private studentService: EtudeService, private schoolService: SchoolService,
+  constructor(public icons: IconsService, private fb: FormBuilder, private root: Router, private pageTitle: PageTitleService,
+    private studentService: EtudeService, private schoolService: SchoolService, private sideBarService: SideBarService,
     private route: ActivatedRoute, private semestreService: SemestreService, private location: Location) {}
   ngOnInit(): void {
     this.getSchoolInfo();
-    this.loadStudent();
-    this.loadSemestre();
+    this.loadStudents();
+    // this.loadSemestre();
     this.load_update_form();
-   // Initialisation du formulaire
-   this.moduleForm = this.fb.group({
-    // idStudents: [this.student.idEtudiant, Validators.required],
-      classeNote: [''],
-      examNote: [''],
-      idModule: ['', Validators.required],
-      idSemestre: ['', Validators.required]
-    });
-   
+  
+  //  --------------------------------filter methode
+  this.sideBarService.currentSearchTerm.subscribe(term => {
+    this.searchTerm = term;
+    this.filterStudents();
+  
+  });
   }
 
   goBack(){
     this.location.back();
   }
   // ----------------------------------get all semestre 
-  loadSemestre(){
-    this.semestreService.getAllSemestre().subscribe(data =>{
-      this.semestres = data;
-    })
-  }
+  // loadSemestre(){
+  //   this.semestreService.get_by_classe(this.idUrl).subscribe(data =>{
+  //     this.semestres = data;
+  //     console.log(this.semestres, "semestre")
+  //   })
+  // }
   // ---------------------------------get all module without notes
  
-  loadStudent(){
+  loadStudents(){
 
     this.route.queryParams.subscribe(data =>{
      this.idUrl = data['id'];
+     this.studentService.getStudent_ByIdClasse(this.page, this.size, this.idUrl).subscribe(data => {
+      this.students = data.content;
+      this.students.forEach((item : Student) => {
+        item.urlPhoto = `http://localhost/StudentImg/${item.urlPhoto}`;
+      })
+      this.studentPages = data;
+      this.filteredItems = this.students;
+      this.pages = Array.from({ length: data.totalPages! }, (_, i) => i);
 
-     
-     this.studentService.getStudentByIdClasse(this.idUrl).subscribe(data =>{
-       data.forEach((item: Student) => {
-         item.urlPhoto = `http://localhost/StudentImg/${item.urlPhoto}`;
-         this.student = item;
-        //  stud = item;
-        //  this.modules_of_student.push(item);
-         
-       });
-      //  this.load_student_module(stud, this.modules);
-       this.students = data;
-     })
+      console.log(this.students, "pagenation teachers")
+    });
     
    })
   
 }
- 
-  // ----------------------------
-
-  onSubmit(student: Student, module: Module) {
-    // Ajouter une nouvelle note pour le module et l'étudiant
-        const formData = this.moduleForm.value;
-        
-      const semestre =   this.semestres.find(s => s.id === +formData.idSemestre)
-      // console.log(semestre, "s")
-        const note : Notes = {
-          idStudents: student,
-          classeNote: this.moduleForm.value.classeNote,
-          examNote: this.moduleForm.value.examNote,
-          idModule: module,
-          idSemestre: semestre!
-        }
-        
-        this.studentService.add_note(note).subscribe(data =>{
-          alert("Ajout effectuee avec success");
-          this.moduleForm.reset();
-         
-          window.location.reload();
-        })
-      
-      }
-        
-    
-// -----------------------------------show form
-    show_form(id: number) {
-      if (this.showFormId === id) {
-        this.showFormId = null; // Cliquez à nouveau sur le même label pour fermer le formulaire
-      } else {
-        this.showFormId = id; // Afficher le formulaire pour le module avec l'ID spécifié
-      }
-    }
-
     // ---------------------------------get module without not of student
-    load_module_without_note(idStudent: number){
-      this.studentService.getAllModulesWithoutNoteFilter(idStudent,this.idUrl).subscribe({
-        next : (module: Module[]) =>{
-          this.modules = module;
-        },
-        error : (erreur) => console.error('Erreur lors de la récupération des modules sans notes :', erreur.error.message)
-        // this.modules = module;
-       
-          //  
-        } )
+    load_module_without_note(student: Student){
+      this.show_widget_add_note = ! this.show_widget_add_note
+      this.studentSelect = student!
+     
     }
-    // ---------------------------desable or aviable button
-     desable_button(modules: Module[]){
-       console.log(modules, "module isb")
-       if(this.modules.length < 0){
-       
-         this.isShow_button = false;
-       }else{
-         this.isShow_button = true;
-       }
-     }
-
+    // ----------------------close widget add note modal
+    close_widget(){
+      this.load_module_without_note(this.studentSelect)
+      this.loadStudents();
+      // this.loadSemestre();
+    }
     //  -------------------------------load bulletin
     load_bulletin(idStudent: number){
-       this.semestreService.getCurentSemestre().subscribe(semestre =>{
-        const idSemestre = semestre
-        this.studentService.getAllNoteByIdStudent(idStudent, idSemestre.id!).subscribe(note =>{
-          
-          console.log(note, "note-------")
-          // ---------------------------calculate moyen ponderer
-          let totalCoefficient = 0;
-          let totalPonderedScore = 0;
-          let noteCoef = 0
-      
-          // Parcourir chaque note pour calculer les sommes
-          note.forEach(n => {
-              const coefficient = n.idModule.coefficient;
-              
-              noteCoef = ((n.classeNote + n.examNote)/2) * coefficient
-              totalCoefficient += coefficient;
-              totalPonderedScore += noteCoef; 
-          });
-      
-          const average = totalPonderedScore / totalCoefficient;
-          // Calculer la moyenne générale en divisant la somme des notes pondérées par la somme des coefficients
-          
-         this.moyenneGenerale = +average.toFixed(2);
-          if (this.moyenneGenerale < 10) {
-            this.mention = 'Insuffisant';
-          } else if (this.moyenneGenerale >= 10 && this.moyenneGenerale < 12) {
-            this.mention = 'Passable';
-          } else if (this.moyenneGenerale >= 12 && this.moyenneGenerale < 14) {
-            this.mention = 'Assez bien';
-          } else if (this.moyenneGenerale >= 14 && this.moyenneGenerale < 16) {
-            this.mention = 'Bien';
-          } else {
-            this.mention = 'Très bien';
-          }
-          
-          this.notes = note;
-        });
-        
-      })
+      const navigationExtrat: NavigationExtras = {
+        queryParams: {
+          id: idStudent
+        }
+
+      }
+
+      this.root.navigate(['/sidebar/student-bulletin'], navigationExtrat);
+   
     }
 // --------------------------------------------------------------------------method filter
-  filteredStudents() {
-    if (!this.searchTerm) {
-      return this.students;
-    }
-    return this.students.filter(student =>
+filterStudents() {
+  if (!this.searchTerm) {
+   return this.filteredItems = this.students;
+  } else {
+  return  this.filteredItems = this.students.filter(student =>
       student.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
       student.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      student.idClasse.idFiliere?.idFiliere?.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase())
-      // student.telephone.toLowerCase().includes(this.searchTerm.toLowerCase())
+      student.email.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
+}
   // ----------------------------------------------------methode get school informations
   getSchoolInfo() {
     this.schoolService.getSchools().subscribe(data => {
@@ -218,6 +145,7 @@ export class StudentNoteComponent implements OnInit {
   }
   // ---------------------update note
   load_update(student: Student){
+    this.isShow_modal = true
     this.semestreService.getCurentSemestre().subscribe(semestre =>{
       const idSemestre = semestre
       this.studentService.getAllNoteByIdStudent(student.idEtudiant!, idSemestre.id!).subscribe(note =>{
@@ -229,7 +157,7 @@ export class StudentNoteComponent implements OnInit {
           
         });
         this.notes = note
-       
+        
       })
     })
   }
@@ -239,7 +167,7 @@ export class StudentNoteComponent implements OnInit {
       examNote: ['', [Validators.required, Validators.min(0), Validators.max(20)]],
       classeNote: ['', [Validators.required, Validators.min(0), Validators.max(20)]],
       idModule: ['', Validators.required],
-      idSemestre: ['', Validators.required]
+      // idSemestre: ['']
     })
   }
   // --------------------------------------------method update
@@ -253,7 +181,24 @@ export class StudentNoteComponent implements OnInit {
       classeNote: formData.classeNote,
       examNote: formData.examNote
     }
-// console.log(note, "note-up")
+    if(this.update_note_form.valid){
+      this.studentService.update_note(note).subscribe({
+        next: (response) =>{
+          this.pageTitle.showSuccessToast(response.message);
+          // // this.loadStudents();
+          // this.load_update(student);
+        },
+        error: (erreur) => {
+          this.pageTitle.showErrorToast(erreur.error.message);
+        }
+      })
+      console.log(note, "note-up")
+    }else{
+      this.update_note_form.markAllAsTouched();
+      console.log("invalid", this.update_note_form.value)
+    }
+
+
   }
   // -------------------------------
   onSelecteModule(event: any){
@@ -277,13 +222,26 @@ export class StudentNoteComponent implements OnInit {
   }
   // ------------------------------------exit button
   exit(){
-  //  this.moduleSelect =  null
-//  notes.forEach(note =>{
-//   if(note == this.moduleSelect){
-// if()
     this.moduleSelect = null
-//   }
-//  })
-    console.log(this.moduleSelect, "exit module")
+    this.loadStudents();
+  }
+  // -----------------------button pagination
+  setPage(page: number): void {
+    if (page >= 0 && page < this.studentPages!.totalPages!) {
+      this.page = page;
+      this.loadStudents();
+    }
+  }
+
+  nextPage(): void {
+    if (this.page < this.studentPages!.totalPages! - 1) {
+      this.setPage(this.page + 1);
+    }
+  }
+
+  previousPage(): void {
+    if (this.page > 0) {
+      this.setPage(this.page - 1);
+    }
   }
 }

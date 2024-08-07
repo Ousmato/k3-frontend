@@ -1,0 +1,104 @@
+
+<main>
+    <div (click)="goBack()" class="back-button">
+        <fa-icon [icon]="icons.back"></fa-icon>
+    </div>
+    <div class="views">
+       
+        <form [formGroup]="update_school_form" (ngSubmit)="update_school()">
+            <!-- <span>Modifier les informations</span> -->
+            <div class="contente">
+                <div class="first-contente">
+                    <div class="first-contenair">
+                        <div class="img-container">
+                            <img src="{{school?.urlPhoto}}" alt="Image">
+                            <input   id="urlPhoto" class="form-control file" type="file" formControlName="urlPhoto" accept="image/*" (change)="onFileSelected($event)">
+                   
+                        </div>
+                        
+
+                        <div class="input-content">
+                            <div class="form-group">
+                                <label for="">Nom de l'établissement :</label>
+                                <input type="text" class="form-control" formControlName="nomSchool" [class.is-invalid]="update_school_form.get('nomSchool')!.invalid && update_school_form.get('nomSchool')!.touched">
+                                <div *ngIf="update_school_form.get('nomSchool')!.invalid && update_school_form.get('nomSchool')!.touched" class="invalid-feedback">
+                                    <div *ngIf="update_school_form.get('nomSchool')!.errors?.['required']">
+                                        <span class="label-error">Champ obligatoire*</span>
+                                    </div>
+                                    <div *ngIf="update_school_form.get('nomSchool')!.errors?.['maxlength']">
+                                        <span class="label-error">Le nom de l'école ne doit pas dépasser 50 caractères.</span>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <div class="form-group">
+                                <label for="">Email :</label>
+                                <input type="email" class="form-control" formControlName="email" [class.is-invalid]="update_school_form.get('email')!.invalid && update_school_form.get('email')!.touched">
+                                <div *ngIf="update_school_form.get('email')!.invalid && update_school_form.get('email')!.touched" class="invalid-feedback">
+                                    <div *ngIf="update_school_form.get('email')!.errors?.['required']">
+                                        <span class="label-error">Champ obligatoire*</span>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">téléphone :</label>
+                                <input type="text" class="form-control" formControlName="telephone" [class.is-invalid]="update_school_form.get('telephone')!.invalid && update_school_form.get('telephone')!.touched"  pattern="[0-9]{1,8}">
+                                    <span *ngIf="update_school_form.controls['telephone'].hasError('required') && update_school_form.controls['telephone'].touched"
+                                        [ngStyle]="{color: 'red'}">
+                                        Champ obligatoire*
+                                    </span>
+                            <span *ngIf="update_school_form.controls['telephone'].hasError('pattern') && !update_school_form.controls['telephone'].hasError('required')"
+                                [ngStyle]="{color: 'red'}">
+                                Maximum 12 chiffres autorisés*
+                            </span>
+                            </div>
+                        </div>
+                    
+                    </div>
+                    
+                    <div class="column">
+                      
+                        <div class="form-group">
+                            <label for="">Fin d'année :</label>
+                            <input type="date" class="form-control" formControlName="finAnnee" [class.is-invalid]="update_school_form.get('finAnnee')!.invalid && update_school_form.get('finAnnee')!.touched">
+                            <span *ngIf="update_school_form.controls['finAnnee'].hasError('required') && update_school_form.controls['finAnnee'].touched"
+                                [ngStyle]="{color: 'red'}">
+                                Champ obligatoire*
+                            </span>
+                        </div>
+    
+                        <div class="form-group">
+                            <label for="">Début d'année :</label>
+                            <input type="date" class="form-control" formControlName="debutAnnee" [class.is-invalid]="update_school_form.get('debutAnnee')!.invalid && update_school_form.get('debutAnnee')!.touched">
+                            <span *ngIf="update_school_form.controls['debutAnnee'].hasError('required') && update_school_form.controls['debutAnnee'].touched"
+                            [ngStyle]="{color: 'red'}">
+                            Champ obligatoire*
+                        </span>
+                        </div>
+    
+                        <div class="form-group">
+                            <label for="">Addresse :</label>
+                            <input type="text" class="form-control" formControlName="localite" [class.is-invalid]="update_school_form.get('localite')!.invalid && update_school_form.get('localite')!.touched">
+                            <span *ngIf="update_school_form.controls['localite'].hasError('required') && update_school_form.controls['localite'].touched"
+                            [ngStyle]="{color: 'red'}">
+                            Champ obligatoire*
+                        </span>
+                        </div>
+                        
+                        <input type="text" class="form-control" formControlName="id" *ngIf="false">
+                    </div>
+                </div>
+               
+            
+            </div>
+            
+            <div class="button-cash">
+                <!-- <a (click)="close_modal()" class="submit"  ><span>Annuler</span></a> -->
+                <button class="submit" type="submit" ><span>Enregistrer</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+            </div>
+        
+        </form>
+    </div>
+</main>

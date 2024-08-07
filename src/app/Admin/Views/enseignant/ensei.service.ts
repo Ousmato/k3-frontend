@@ -7,7 +7,7 @@ import { Seances } from '../../Models/Seances';
 import { Presence } from '../../Models/Teacher-presence';
 import { Paie } from '../../Models/paie';
 import { Response_String } from '../../Models/Response_String';
-import { TeacherPages } from '../../Models/TeachesPage';
+import { Paie_Pages, Presence_pages, Teacher_presence_pages, TeacherPages } from '../../Models/Pagination-module';
 
 @Injectable({
   providedIn: 'root'
@@ -19,12 +19,16 @@ export class EnseiService {
 
   // -----------------------------get all enseignants
   getAll() : Observable<Teacher[]>{
-    return this.http.get<Teacher[]>(this.baseUrl + 'list');
+    return this.http.get<Teacher[]>(this.baseUrl + 'list-all');
   }
   // --------------------get all enseignants have emplois active
   getAllHaveEmplois() : Observable<Teacher_presence[]>{
     return this.http.get<Teacher_presence[]>(this.baseUrl + 'all_teacher_seance_actif');
   }
+  getPage_teacher_HaveEmplois(page: number, size: number): Observable<Teacher_presence_pages> {
+    return this.http.get<Teacher_presence_pages>(`${this.baseUrl}get-page-teacher-seance-actif?page=${page}&size=${size}`);
+  }
+
   // -----------------------------add enseignant
   create(teacher: Teacher, photo: File): Observable<Response_String>{
     const formData = new FormData();
@@ -37,13 +41,13 @@ export class EnseiService {
     return this.http.get<Teacher_presence>(this.baseUrl + 'detaille/' + id);
   }
   // -------------------------------method to add presence
-  addPresence(idSeance: Presence) : Observable<any>{
-    return this.http.post<any>(this.baseUrl+ "add-presence", idSeance);
+  addPresence(idSeance: Presence) : Observable<Response_String>{
+    return this.http.post<Response_String>(this.baseUrl+ "add-presence", idSeance);
   }
   // ------------------------------method pour absenter un teacher
-  abscenter(idSeance : Presence) : Observable<any>{
+  chage_observation(idSeance : Presence) : Observable<Response_String>{
     console.log(idSeance, "service")
-    return this.http.post<any>(this.baseUrl+ "abscent", idSeance);
+    return this.http.post<Response_String>(this.baseUrl+ "change-observation", idSeance);
   }
   // ------------get status
   getStatus(idTeacher : number) : Observable<Presence[]>{
@@ -54,12 +58,16 @@ export class EnseiService {
     return this.http.get<Presence[]>(this.baseUrl + 'list-presence');
   }
   // --------------------------------add paie
-  addPaie(paie: Paie) : Observable<any>{
-    return this.http.post<any>(this.baseUrl+"add-paie", paie);
+  addPaie(paie: Paie) : Observable<Response_String>{
+    return this.http.post<Response_String>(this.baseUrl+"add-paie", paie);
   }
   // -----------------------------------get all paie
-  getAllPaie() : Observable<Paie[]>{
-    return this.http.get<Paie[]>(this.baseUrl + 'list-paie');
+  getAllPaie(page: number, size: number) : Observable<Paie_Pages>{
+    return this.http.get<Paie_Pages>(`${this.baseUrl}list-paie?page=${page}&size=${size}`);
+  }
+  // ----------------------get all hours paie of teacher
+  getPaieBy_Enseignant_id(idEnseignant : number) : Observable<Paie[]>{
+    return this.http.get<Paie[]>(this.baseUrl+"all-hours-paie-of-teacher/" + idEnseignant)
   }
   // -------------------------------------------update teacher
   updateTeacher(teacher: Teacher, photo: File): Observable<Response_String>{
@@ -75,5 +83,13 @@ export class EnseiService {
   // ----------------------------------lad teacher by pagination
   getTeachers(page: number, size: number): Observable<TeacherPages> {
     return this.http.get<TeacherPages>(`${this.baseUrl}list?page=${page}&size=${size}`);
+  }
+  // -----------------------------------method pour appeller tous les presence du mois
+  getAll_presence_ofMonth(page: number, size: number): Observable<Presence_pages> {
+    return this.http.get<Presence_pages>(`${this.baseUrl}list-presence?page=${page}&size=${size}`);
+  }
+  // ------------------------get presence by id seance
+  getPresence_by_seance(idSeance: number) : Observable<Presence>{
+    return this.http.get<Presence>(this.baseUrl+"presence-by-idseance/"+idSeance)
   }
 }

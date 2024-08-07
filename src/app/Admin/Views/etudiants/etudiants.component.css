@@ -1,6 +1,4 @@
-table{
-    margin-top: 20px;
-}
+
 main{width: 100%;
 
     padding-top: 20px;
@@ -12,6 +10,20 @@ a button{
 /* Styler l'en-tête du tableau */
 th {
     background-color: var(--primary-light);
+}
+
+.table-container{
+    height: 400px;
+    position: relative;
+    overflow-y: auto;
+}
+.table thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+.table-container::-webkit-scrollbar{
+    display: none;
 }
 
 tr td{

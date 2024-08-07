@@ -2,11 +2,10 @@ import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SidebarComponent } from './sidebar.component';
 import { DasboardComponent } from '../Admin/Views/dasboard/dasboard.component';
-import { ClassStudentsComponent } from '../Admin/Views/class-students/class-students.component';
+import { ClassStudentsComponent } from '../DGA/class-students/class-students.component';
 import { SettingsComponent } from '../Admin/Views/settings/settings.component';
 import { EtudiantsComponent } from '../Admin/Views/etudiants/etudiants.component';
 import { SinginComponent } from '../Admin/Component/singin/singin.component';
-import { EmploisDuTempsComponent } from '../Admin/Views/emplois-du-temps/emplois-du-temps.component';
 import { EmploisSeanceComponent } from '../Admin/Views/emplois-seance/emplois-seance.component';
 import { EnseignantComponent } from '../Admin/Views/enseignant/enseignant.component';
 import { TeachersPresenceComponent } from '../Admin/Views/teachers-presence/teachers-presence.component';
@@ -20,28 +19,38 @@ import { StudentEditComponent } from '../Admin/Component/student-edit/student-ed
 import { StudentViewComponent } from '../Admin/Component/student-view/student-view.component';
 import { TeachersSinginComponent } from '../Admin/Component/teachers-singin/teachers-singin.component';
 import { TeachersEditComponent } from '../Admin/Component/teachers-edit/teachers-edit.component';
+import { StudentBulletinComponent } from '../Admin/Component/student-bulletin/student-bulletin.component';
+import { FicheDePaieComponent } from '../Admin/Component/fiche-de-paie/fiche-de-paie.component';
+import { EnseignantFichePaieComponent } from '../Admin/Component/enseignant-fiche-paie/enseignant-fiche-paie.component';
+import { SchoolEditWidgetComponent } from '../Widget/school-edit-widget/school-edit-widget.component';
+import { AddAdminComponent } from '../Admin/Component/add-admin/add-admin.component';
 
 const routes: Routes = [{path: "", component: SidebarComponent,
     children: [
-      { path: '', component: DasboardComponent },
-      { path: 'classe', component: ClassStudentsComponent },
+      { path: '', component: DasboardComponent, data:{title: "Accueil"} },
+      { path: 'classe', component: ClassStudentsComponent, data:{title: "Les Classes de Formation"} },
       {path: 'etudiant', component: EtudiantsComponent},
-      {path: 'enseignants', component: EnseignantComponent},
+      // {path: 'enseignants', component: EnseignantComponent},
       {path: 'list-presence', component: TeachersPresenceComponent},
       {path: 'archive', component: ArchivesComponent},
       {path: 'fiche-paie', component: FichePaieComponent},
       {path: 'student-notes', component: StudentNoteComponent},
       {path: 'etudiant-de-la-classe', component : EtudiantsDeLaClasseComponent},
       {path: 'setting', component: SettingsComponent},
-      {path: 'parametre', component: SettingsComponent},
-      {path: 't-singin', component: TeachersSinginComponent},
-      {path: 't-edit', component: TeachersEditComponent},
+      {path: 'parametre', component: SettingsComponent, data:{title: "Paramettre et Confidentialité"}},
+      // {path: 't-singin', component: TeachersSinginComponent},
+      // {path: 't-edit', component: TeachersEditComponent},
+      {path: 'student-bulletin', component: StudentBulletinComponent},
+      {path: 'fiche-de-paie-component', component: FicheDePaieComponent},
+      {path: 'fiche-enseignant', component: EnseignantFichePaieComponent},
+      {path: 'add-admin', component: AddAdminComponent},
+      {path: 'update-school', component: SchoolEditWidgetComponent, data:{title: "Information de l'Etablissement"}},
 
-      {path: 'inscription', component: SinginComponent, data:{title: "Formulaire d'inscription"}},
-      {path: 'emplois', component: EmploisDuTempsComponent, data:{title: "Creation d'emploi du temps"}},
+      {path: 'inscription', component: SinginComponent, data:{title: "Formulaire d'Inscription"}},
+      // {path: 'emplois', component: EmploisDuTempsComponent, data:{title: "Création d'Emploi du Temps"}},
       {path: 'seance', component: EmploisSeanceComponent, data:{title: "Ajout des seances"}},
       {path: 'enseignant-pre-detail', component: EnseignantPrDetailsComponent},
-      {path: 'all-notes', component: AllNotesSemestreComponent},
+      {path: 'all-notes', component: AllNotesSemestreComponent, data:{title: "Notes du Semestre"}},
       {path: 'student-edit', component: StudentEditComponent, data:{title: "Formulaire de Modification"}},
       {path: 'student-view', component: StudentViewComponent, data:{title: "Information de l'etudiant"}},
       

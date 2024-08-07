@@ -7,8 +7,13 @@
   }
   
   .sidebar-header img{
-    width: 90px;
+    width: 180px;
     height: auto;
+  }
+
+  strong{
+    margin-top: 8px;
+    font-weight: bold;
   }
   /* Sidebar styling */
   #sidebar {
@@ -19,13 +24,16 @@
     max-width: 250px;
     padding: 10px;
     height: 100vh;
-    background: var(--primary);
-    color: #fff;
+    background: var(--tertiary);
+    /* color: var(--primary); */
     transition: all 0.3s;
     z-index: 1000; 
+    
     display: flex;
+    box-shadow: 0 4px 8px  rgb(0, 0, 0,0.15);
     flex-direction: column;
     justify-content: flex-start;
+    border-right: 1px solid var(--tertiary);
   }
   
   #sidebar.active {
@@ -33,15 +41,16 @@
   }
   .menu-link{
     cursor: pointer;
-    color: #fff;
+    /* color: #fff; */
   }
-  .menu-link:hover{
-    border: 1px solid var(--secondary);
-    border-radius: 5px;
-   }
+  
 
    span{
-    color: #fff;
+    font-size: 16px;
+    color: var(--primary);
+    &:hover{
+      color: var(--secondary);
+    }
    }
 
    #navbarDropdown img{
@@ -53,22 +62,24 @@
   a fa-icon{
     margin-right: 15px;
   }
-  .sub-menu li a{
-    color: #47748b;
+  .sub-menu li{
+    text-decoration: none;
   }
   #sidebar .sidebar-header {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px;
-    background: var(--primary-light);
+    /* margin: -10px; */
+    padding: 10px;
+    /* background: white; */
+    color: white;
     text-align: center;
   }
   
   #sidebar ul.components {
     padding: 0;
-    border-bottom: 1px solid #47748b;
+    border-bottom: 1px solid white;
   }
   
   #sidebar ul li a {
@@ -76,17 +87,18 @@
     padding: 10px;
     font-size: 1.1em;
     display: block;
-    color: #6d7fcc;
+    color: white;
   }
   
   #sidebar ul li a:hover {
-    color: #fff;
+    color: var(--secondary);
   }
-  
-  #sidebar ul li.active > a,
-  a[aria-expanded="true"] {
-    color: #fff;
-    background: #6d7fcc;
+
+  .active {
+    /* border-bottom: 1px solid var(--secondary); */
+    border: 1px solid var(--secondary);
+    border-radius: 5px;
+    color: var(--secondary) !important;
   }
   
   /* Content styling */
@@ -142,12 +154,12 @@
   }
   
   .btn-info {
-    background: #7386D5;
+    background: var(--primary-light);
     border: none;
   }
   
   .btn-info:hover {
-    background: #6d7fcc;
+    background: var(--secondary);
   }
   
   #navbarSupportedContent{
@@ -159,28 +171,7 @@
     width: 100% !important;
   }
   
-  /* Mobile adjustments */
-  @media (max-width: 768px) {
-    #sidebar {
-      margin-left: -250px;
-    }
-    
-    #sidebar.active {
-      margin-left: 0;
-    }
-    
-    #content {
-      margin-left: 0;
-    }
-    
-    .navbar {
-      left: 0;
-    }
-    
-    #sidebarCollapse span {
-      display: none;
-    }
-  }
+ 
   /* -------------------------------input shearche */
   .input-search {
     position: relative;
@@ -210,7 +201,6 @@
     flex-direction: column;
     justify-content: space-between;
     overflow-y: auto;
-    /* height: calc(100vh - 60px); Adjust height considering header height */
   }
 
   .side-child::-webkit-scrollbar {
@@ -263,7 +253,7 @@
   }
   
   #sidebar .nav-links li .sub-menu a {
-    color: #fff;
+    /* color: #fff; */
     font-size: 15px;
     padding: 5px 0;
     white-space: nowrap;
@@ -323,7 +313,7 @@
     min-width: 78px;
     text-align: center;
     line-height: 50px;
-    color: #fff;
+    /* color: #fff; */
     font-size: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -341,4 +331,28 @@
     margin-right: 15px;
   }
 
+ .dropdawn-setting{
+  /* padding: 10px 30px; */
+  position: absolute;
+  text-decoration: none;
+  background-color: #fff;
+  
+  box-shadow: 0 4px 8px  rgb(0, 0, 0,0.15);
+  right: 0;
+  width: 260px;
+  z-index: 1001;
+  border-radius: 4px;
+ }
+
+ .form_add_admin{
+  position: absolute;
+  text-decoration: none;
+  background-color: #fff;
+  
+  box-shadow: 0 4px 8px  rgb(0, 0, 0,0.15);
+  right: 20%;
+  width: 50%;
+  z-index: 1001;
+  border-radius: 4px;
+ }
  

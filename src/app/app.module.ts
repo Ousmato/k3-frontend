@@ -12,10 +12,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SinginComponent } from './Admin/Component/singin/singin.component';
 import { StudentSidebarComponent } from './student-sidebar/student-sidebar.component';
 import { StudentDashboardComponent } from './student-dashboard/student-dashboard.component';
-import { ClassStudentsComponent } from './Admin/Views/class-students/class-students.component'
+import { ClassStudentsComponent } from './DGA/class-students/class-students.component'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SettingsComponent } from './Admin/Views/settings/settings.component';
-import { EmploisDuTempsComponent } from './Admin/Views/emplois-du-temps/emplois-du-temps.component';
+import { EmploisDuTempsComponent } from './DER/emplois-du-temps/emplois-du-temps.component';
 import { EmploisSeanceComponent } from './Admin/Views/emplois-seance/emplois-seance.component';
 import { EnseignantComponent } from './Admin/Views/enseignant/enseignant.component';
 import { DatePipe, registerLocaleData } from '@angular/common';
@@ -33,11 +33,37 @@ import { EtudiantsDeLaClasseComponent } from './Admin/Views/etudiants-de-la-clas
 import { StudentEditComponent } from './Admin/Component/student-edit/student-edit.component';
 import { StudentViewComponent } from './Admin/Component/student-view/student-view.component';
 import { SemestreComponent } from './Widget/semestre/semestre.component';
-import { ClasseRomComponent } from './Widget/classe-rom/classe-rom.component';
 import { MatieresComponent } from './Widget/matieres/matieres.component';
 import { EmploisWidgetComponent } from './Widget/emplois-widget/emplois-widget.component';
 import { TeachersSinginComponent } from './Admin/Component/teachers-singin/teachers-singin.component';
 import { TeachersEditComponent } from './Admin/Component/teachers-edit/teachers-edit.component';
+import { AddNoteWidgetComponent } from './Widget/add-note-widget/add-note-widget.component';
+import { StudentBulletinComponent } from './Admin/Component/student-bulletin/student-bulletin.component';
+import { AddModuleWidgetComponent } from './Widget/add-module-widget/add-module-widget.component';
+import { FicheDePaieComponent } from './Admin/Component/fiche-de-paie/fiche-de-paie.component';
+import { EnseignantFichePaieComponent } from './Admin/Component/enseignant-fiche-paie/enseignant-fiche-paie.component';
+import { UpdateModuleWifgetComponent } from './Widget/update-module-wifget/update-module-wifget.component';
+import { ClassRoomWidgetComponent } from './DGA/Widget/class-room-widget/class-room-widget.component';
+import { ClassRoomEditWidgetComponent } from './Widget/class-room-edit-widget/class-room-edit-widget.component';
+import { AddFiliereWidgetComponent } from './Widget/add-filiere-widget/add-filiere-widget.component';
+import { FiliereEditWidgetComponent } from './Widget/filiere-edit-widget/filiere-edit-widget.component';
+import { SchoolEditWidgetComponent } from './Widget/school-edit-widget/school-edit-widget.component';
+import { SemestreEditWidgetComponent } from './Widget/semestre-edit-widget/semestre-edit-widget.component';
+import { AdminSettingWidgetComponent } from './Widget/admin-setting-widget/admin-setting-widget.component';
+import { AddAdminComponent } from './Admin/Component/add-admin/add-admin.component';
+import { DashboardComponent } from './DR/dashboard/dashboard.component';
+import { DrSidebarComponent } from './DR/dr-sidebar/dr-sidebar.component';
+import { DerSidebarComponent } from './DER/der-sidebar/der-sidebar.component';
+import { DerHomeComponent } from './DER/der-home/der-home.component';
+import { DerSallesComponent } from './DER/der-salles/der-salles.component';
+import { DerSallesAddComponent } from './DER/Widget/der-salles-add/der-salles-add.component';
+import { DgaSidebarComponent } from './DGA/dga-sidebar/dga-sidebar.component';
+import { DerSeancesComponent } from './DER/der-seances/der-seances.component';
+import { DerEmploiDuTempsComponent } from './DER/der-emploi-du-temps-list/der-emploi-du-temps.component';
+import { DgaMentionListComponent } from './DGA/dga-mention-list/dga-mention-list.component';
+import { DgaHomeComponent } from './DGA/dga-home/dga-home.component';
+import { DgaSettingComponent } from './DGA/dga-setting/dga-setting.component';
+import { DerEditSeanceComponent } from './DER/Widget/der-edit-seance/der-edit-seance.component';
 
 registerLocaleData(localeFr);
 @NgModule({
@@ -65,11 +91,37 @@ registerLocaleData(localeFr);
     StudentEditComponent,
     StudentViewComponent,
     SemestreComponent,
-    ClasseRomComponent,
     MatieresComponent,
     EmploisWidgetComponent,
     TeachersSinginComponent,
-    TeachersEditComponent
+    TeachersEditComponent,
+    AddNoteWidgetComponent,
+    StudentBulletinComponent,
+    AddModuleWidgetComponent,
+    FicheDePaieComponent,
+    EnseignantFichePaieComponent,
+    UpdateModuleWifgetComponent,
+    ClassRoomWidgetComponent,
+    ClassRoomEditWidgetComponent,
+    AddFiliereWidgetComponent,
+    FiliereEditWidgetComponent,
+    SchoolEditWidgetComponent,
+    SemestreEditWidgetComponent,
+    AdminSettingWidgetComponent,
+    AddAdminComponent,
+    DashboardComponent,
+    DrSidebarComponent,
+    DerSidebarComponent,
+    DerHomeComponent,
+    DerSallesComponent,
+    DerSallesAddComponent,
+    DgaSidebarComponent,
+    DerSeancesComponent,
+    DerEmploiDuTempsComponent,
+    DgaMentionListComponent,
+    DgaHomeComponent,
+    DgaSettingComponent,
+    DerEditSeanceComponent,
   ],
   imports: [
     BrowserModule,
@@ -86,7 +138,7 @@ registerLocaleData(localeFr);
    
     provideToastr(
       {
-        timeOut: 6000,
+        timeOut: 3000,
         progressBar: true,
         progressAnimation: "decreasing",
         positionClass: "toast-top-right",

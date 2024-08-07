@@ -18,4 +18,10 @@ export class SemestreService {
   getAllSemestre() : Observable<Semestres[]>{
     return this.http.get<any>(this.baseUrl + 'list');
   }
+
+  // ---------------------------get semestre by id classe
+
+  get_by_classe(idClasse: number) : Observable<Semestres>{
+   return this.http.get<Semestres>(this.baseUrl+"semestre-by-classe-id/"+ idClasse)
+  }
 }

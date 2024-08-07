@@ -1,0 +1,47 @@
+<form  [formGroup]="update_semestre_form" (ngSubmit)="send_semestre()">
+    <!-- <span id="error">Modifier </span> -->
+     <input type="number" formControlName="id" *ngIf="false">
+
+     <select  class="form-select" formControlName="id" placeholder="Choisir la clase" (change)="onSemestreChange($event)">
+        <option  selected disabled value="">Choisir Le Semestre...</option>
+        
+        <option  *ngFor="let s of semestres" [value]="s.id">{{s.nomSemetre}}</option>
+    </select>
+    <div class="form-group">
+        <label for=""> Nom du semestre</label>
+        <input type="text"  class=" form-control" formControlName="nomSemetre"  placeholder="Le nom du semestre..." [class.is-invalid]="update_semestre_form.get('nomSemetre')!.invalid && update_semestre_form.get('nomSemetre')!.touched">
+        <div *ngIf="update_semestre_form.get('nomSemetre')?.invalid && update_semestre_form.get('nomSemetre')?.touched" class="invalid-feedback">
+            <div *ngIf="update_semestre_form.get('nomSemetre')!.errors?.['required']">
+                <span class="label-error">Champ obligatoire.</span>
+            </div>
+            <div *ngIf="update_semestre_form.get('nomSemetre')!.errors?.['maxlength']">
+                <span class="label-error">Le nom de la filière ne doit pas dépasser 40 caractères.</span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for=""> Date de début :</label>
+        <input type="date"  class=" form-control" formControlName="dateDebut"  [class.is-invalid]="update_semestre_form.get('dateDebut')!.invalid && update_semestre_form.get('dateDebut')!.touched">
+        <div *ngIf="update_semestre_form.get('dateDebut')?.invalid && update_semestre_form.get('dateDebut')?.touched" class="invalid-feedback">
+            <div *ngIf="update_semestre_form.get('dateDebut')!.errors?.['required']">
+                <span class="label-error">Champ obligatoire.</span>
+            </div>
+            
+        </div>
+    </div>
+    <div class="form-group">
+        <label for=""> Date de fin :</label>
+        <input type="date"  class=" form-control" formControlName="datFin"  [class.is-invalid]="update_semestre_form.get('datFin')!.invalid && update_semestre_form.get('datFin')!.touched">
+        <div *ngIf="update_semestre_form.get('datFin')?.invalid && update_semestre_form.get('datFin')?.touched" class="invalid-feedback">
+            <div *ngIf="update_semestre_form.get('datFin')!.errors?.['required']">
+                <span class="label-error">Champ obligatoire.</span>
+            </div>
+            
+        </div>
+    </div>
+    
+    <div class="button-cash">
+        <a (click)="close_modal()" class="submit"  ><span>Annuler</span></a>
+        <button class="submit" type="submit" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+    </div>
+</form>

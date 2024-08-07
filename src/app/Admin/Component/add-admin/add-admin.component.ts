@@ -1,0 +1,88 @@
+import { Component, OnInit } from '@angular/core';
+import { Admin, Admin_role } from '../../Models/Admin';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IconsService } from '../../../Services/icons.service';
+import { AdminService } from '../../../Services/admin.service';
+import { PageTitleService } from '../../../Services/page-title.service';
+import { error } from 'jquery';
+
+@Component({
+  selector: 'app-add-admin',
+  templateUrl: './add-admin.component.html',
+  styleUrl: './add-admin.component.css'
+})
+export class AddAdminComponent implements OnInit{
+
+  
+  passwordVisible: boolean = false
+  // show_add_form: boolean = true
+  add_admin_form!: FormGroup
+  fileName!: File
+  // @Output() closeModal = new EventEmitter<any>();
+
+  teacherStatusOptions!: string[];
+
+  constructor(public icons: IconsService, private fb: FormBuilder, private pageTitle: PageTitleService,
+    private adminService: AdminService){}
+
+  ngOnInit(): void {
+      this.load_add_form();
+  }
+
+  // ------------------load form
+  load_add_form(){
+    this.add_admin_form = this.fb.group({
+      // idEnseignant: ['', Validators.required],
+      nom: ['', Validators.required],
+      prenom: ['', Validators.required],
+      email: ['', Validators.required],
+      sexe: ['', Validators.required],
+      password: ['', Validators.required],
+      telephone: ['', Validators.required],
+      // urlPhoto: [''],
+      // isDeleted: [enseignant.isDeleted],
+      role: ['', Validators.required]
+    })
+    // console.log("add-admin-form")
+    this.teacherStatusOptions = Object.values(Admin_role);
+   
+  }
+
+    togglePasswordVisibility(): void {
+      this.passwordVisible = !this.passwordVisible;
+  }
+
+  onFileSelected(event: any)  {
+    this.fileName = event.target.files[0];
+  }
+
+  // ------------------------------add admin
+  add_admin(){
+    const formData = this.add_admin_form.value;
+    if(this.add_admin_form.valid){
+      const admin: Admin ={
+        nom: formData.nom,
+        prenom: formData.prenom,
+        email: formData.email,
+        password: formData.password,
+        telephone: formData.telephone,
+        sexe: formData.sexe,
+        role: formData.role
+      }
+      console.log(admin, "admin")
+      this.adminService.add_admin(admin, this.fileName).subscribe({
+        next: (response)=>{
+          this.pageTitle.showSuccessToast(response.message);
+          this.add_admin_form.reset();
+        },
+        error: (erreur) =>{
+          this.pageTitle.showErrorToast(erreur.error.message);
+        }
+      })
+    }else{
+      this.add_admin_form.markAllAsTouched();
+    }
+    // this.closeModal.emit();
+  }
+
+}

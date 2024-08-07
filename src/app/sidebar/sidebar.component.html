@@ -1,7 +1,7 @@
 <div class="wrapper">
     <!-- Sidebar -->
     <nav id="sidebar">
-      <div class="sidebar-header">
+      <div class="sidebar-header ">
         <img  [src]="school?.urlPhoto" alt="">
         <!-- <h1>UAM</h1> -->
         <strong>{{school?.nomSchool}}</strong>
@@ -22,9 +22,11 @@
               </a>
             </div>
             <ul class="sub-menu" *ngIf="isSubMenuOpen.enseignants">
-              <li><a routerLink="/sidebar/list-presence">Liste de Presence</a></li>
-              <li><a routerLink="/sidebar/enseignants">Liste des Enseignants</a></li>
-              <li><a routerLink="/sidebar/fiche-paie"> Fiche de Paie</a></li>
+              <li><a routerLink="/sidebar/enseignants" routerLinkActive="active">La liste</a></li>
+              <li><a routerLink="/sidebar/list-presence" routerLinkActive="active">Les emplois du temps</a></li>
+              <li><a routerLink="/sidebar/archive" routerLinkActive="active">Les présences du mois</a></li>
+              <li><a routerLink="/sidebar/fiche-paie" routerLinkActive="active">Les fiches de paie</a></li>
+            
             </ul>
           </li>
           <li class="menu-link">
@@ -33,8 +35,8 @@
               </a>
             </div>
             <ul class="sub-menu" *ngIf="isSubMenuOpen.etudiants">
-              <li><a routerLink="/sidebar/etudiant">Liste des Etudiants</a></li>
-              <li><a routerLink="/sidebar/inscription">Fiche d'inscription</a></li>
+              <li><a routerLink="/sidebar/etudiant" routerLinkActive="active">Liste des Etudiants</a></li>
+              <li><a routerLink="/sidebar/inscription" routerLinkActive="active">Fiche d'inscription</a></li>
             </ul>
           </li>
           <li class="menu-link">
@@ -44,7 +46,8 @@
           </li>
           <li class="menu-link" >
             <a routerLink="#">
-              <span><img src="assets/book-shop-icon.svg" alt="">Bibliotheque</span>
+              <!-- <img src="assets/book-shop-icon.svg" alt=""> -->
+              <span ><fa-icon [icon]="icons.book"></fa-icon> Bibliotheque</span>
             </a>
           <!-- <li class="menu-link">
             <div (click)="toggleSubMenuArchive()">
@@ -84,23 +87,25 @@
                     </button>
                     
                 </div>
-                <div class="input-search">
+                <div class="input-search" *ngIf="showSearchInput">
                     <input type="text" [(ngModel)]="searchTerm" (input)="onSearchChange()" placeholder="Recherche..."  class="search-input">
                  </div>
-                <!-- <div class="title-page">
-                  <h5>{{title}}</h5></div> -->
+                <div class="title-page" *ngIf="showTitle">
+                  <h5>{{title}}</h5></div>
                   
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                   <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" (click)="show_adminSetting()">
                       <fa-icon  class="my-custom-style"></fa-icon><img src="{{dataAdmin.urlPhoto}}" alt="">
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                      <li><a class="dropdown-item" href="#!">Settings</a></li>
-                      <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-                      <li><hr class="dropdown-divider" /></li>
-                      <li><a class="dropdown-item" href="#!">Logout</a></li>
+                    <ul class="" *ngIf="show_admin">
+                     
+                      <div class="dropdawn-setting" > 
+                        <app-admin-setting-widget [admin]="dataAdmin" (closeModal)="close()"  ></app-admin-setting-widget>
+                         
+                      </div>
+                     
                     </ul>
                   </li>
                 </ul>
@@ -111,6 +116,7 @@
       <div id="layoutSidenav_content">
         <main>
           <div class="container-fluid px-1">
+           
             <!--  -->
             <router-outlet />
           </div>

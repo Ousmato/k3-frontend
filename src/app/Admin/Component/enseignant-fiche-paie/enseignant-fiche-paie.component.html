@@ -1,0 +1,58 @@
+
+<div (click)="goBack()" class="back-button">
+    <fa-icon [icon]="icons.back"></fa-icon>
+</div>
+
+<main id="main-content">
+    <section class="contenaire-head">
+        <div class="first-child">
+            <h4>Employeur</h4>
+            <p>Nom : {{schoolInfo?.nomSchool}}</p>
+            <p>Sise :{{schoolInfo?.localite}}</p>
+            <p>Tel : +223 {{schoolInfo?.telephone}}</p>
+            <p>Email : {{schoolInfo?.email}}</p>
+
+        </div>
+        <div class="second-child">
+            <h4>Employer</h4>
+            <p>Nom : {{enseignant.nom}}</p>
+            <p>Prenom : {{enseignant.prenom}}</p>
+            <p>Tel : {{enseignant.telephone}}</p>
+            <p>Email : {{enseignant.email}}</p>
+        </div>
+        <div class="image-content">
+            <img src="{{schoolInfo?.urlPhoto}}" alt="">
+        </div>
+    </section>
+
+        <table class="table table-bordered">
+            <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Nom des classes</th>
+                        <th>Nombre d'heures effctuee</th>
+                        <th>Cout Unitaire d'heure</th>
+                        <th>Montant</th>
+                    </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let pai of paie">
+                    <tr>
+                        <td>{{pai.date}}</td>
+                        <td>{{pai.idPresenceTeachers.idSeance.idEmplois.idClasse.idFiliere?.idNiveau?.nom}} ({{pai.idPresenceTeachers.idSeance.idEmplois.idClasse.idFiliere?.idFiliere?.nomFiliere}})</td>
+                        <td class="heure-content">
+                            <div >{{pai.nbreHeures}} heures</div>
+                            <span>{{moment}}</span>
+                        </td>
+                        <td>{{pai.coutHeure}} FCFA</td>
+                        <td>{{pai.montant}} FCFA</td>
+                    </tr>
+                </ng-container>
+                
+            </tbody>
+        </table>
+        <div class="btn-content">
+            <button (click)="imprimer(enseignant.nom)" id="button" type="button" >Telecharger en PDF</button>
+    
+        </div>
+</main>

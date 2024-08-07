@@ -1,0 +1,31 @@
+<main>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Date de début</th>
+                <th>Date de fin</th>
+                <th>Semestre</th>
+                <th>Mensions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngIf="emplois.length; else notFund">
+                <ng-container  *ngFor="let eploi of emplois" >
+                    <tr (click)="toggle_toSeance(eploi.idClasse.id!)">
+                        <td>{{eploi.dateDebut}}</td>
+                        <td>{{eploi.dateFin}}</td>
+                        <td>{{eploi.idSemestre.nomSemetre}}</td>
+                        <td>{{eploi.idClasse.idFiliere?.idNiveau?.nom}} {{eploi.idClasse.idFiliere?.idFiliere?.nomFiliere}}</td>
+                    </tr>
+                </ng-container>
+                
+            </ng-container>
+            <ng-template #notFund>
+                <tr>
+                    <td colspan="9" class="text-center">Aucun résultat trouvé</td>
+                </tr>
+            </ng-template>
+            
+        </tbody>
+    </table>
+</main>

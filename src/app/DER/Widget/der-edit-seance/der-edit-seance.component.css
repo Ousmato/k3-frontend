@@ -1,0 +1,63 @@
+main{
+    padding: 10px 20px;
+}
+.div-content{
+    display: flex;
+   
+   flex-direction: column;
+}
+.first-content{
+    display: flex;
+    gap: 30px;
+}
+.input-content{
+    width: 50%;
+    
+}
+
+.form-group{
+    margin-top: 15px;
+}
+label{
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+.button-cash button{
+    border: none;
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: var(--primary);
+    color: var(--secondary);
+    cursor: pointer;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+   
+}
+
+input:focus, select:focus{
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 5px var(--primary);
+}
+/* ----------------------back button style */
+.back-button{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    font-size: 20px;
+    margin: 10px 0;
+    &:hover{
+        background-color: var(--tertiary);
+        color: var(--primary);
+        border: none;
+        border-radius: 50%;
+    }
+
+}

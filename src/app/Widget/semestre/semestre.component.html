@@ -1,0 +1,40 @@
+<form  [formGroup]="add_semestre" (ngSubmit)="send_semestre()">
+    <h4 id="error">Ajouter semestre</h4>
+    <div class="form-group">
+        <label for=""> Nom du semestre :</label>
+        <input type="text"  class=" form-control" formControlName="nomSemetre"  placeholder="Le nom du semestre..." [class.is-invalid]="add_semestre.get('nomSemetre')!.invalid && add_semestre.get('nomSemetre')!.touched">
+        <div *ngIf="add_semestre.get('nomSemetre')?.invalid && add_semestre.get('nomSemetre')?.touched" class="invalid-feedback">
+            <div *ngIf="add_semestre.get('nomSemetre')!.errors?.['required']">
+                <span class="label-error">Champ obligatoire.</span>
+            </div>
+            <div *ngIf="add_semestre.get('nomSemetre')!.errors?.['maxlength']">
+                <span class="label-error">Le nom de la filière ne doit pas dépasser 40 caractères.</span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for=""> Date de début :</label>
+        <input type="date"  class=" form-control" formControlName="dateDebut"  [class.is-invalid]="add_semestre.get('dateDebut')!.invalid && add_semestre.get('dateDebut')!.touched">
+        <div *ngIf="add_semestre.get('dateDebut')?.invalid && add_semestre.get('dateDebut')?.touched" class="invalid-feedback">
+            <div *ngIf="add_semestre.get('dateDebut')!.errors?.['required']">
+                <span class="label-error">Champ obligatoire.</span>
+            </div>
+            
+        </div>
+    </div>
+    <div class="form-group">
+        <label for=""> Date de fin :</label>
+        <input type="date"  class=" form-control" formControlName="datFin"  [class.is-invalid]="add_semestre.get('datFin')!.invalid && add_semestre.get('datFin')!.touched">
+        <div *ngIf="add_semestre.get('datFin')?.invalid && add_semestre.get('datFin')?.touched" class="invalid-feedback">
+            <div *ngIf="add_semestre.get('datFin')!.errors?.['required']">
+                <span class="label-error">Champ obligatoire.</span>
+            </div>
+            
+        </div>
+    </div>
+    
+    <div class="button-cash">
+        <a (click)="close_modal()" class="submit"  ><span>Annuler</span></a>
+        <button class="submit" type="submit" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+    </div>
+</form>

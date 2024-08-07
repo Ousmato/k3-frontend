@@ -1,0 +1,36 @@
+<form  [formGroup]="update_filiere_form" (ngSubmit)="update_filiere(selectedFiliereId)">
+    <h4>Modifier Filière</h4>
+    <div class="form form-group">
+        <select  class="form-select" formControlName="id" placeholder="Choisir la clase" (change)="onFiliereChange($event)">
+        <option  selected disabled value="">Choisir Le niveau...</option>
+        
+        <option  *ngFor="let nv of objectNivFil" [value]="nv.id">{{nv.idNiveau.nom}} {{nv.idFiliere.nomFiliere}}</option>
+        </select>
+    </div>
+    
+    
+    <div class="form form-group">
+        <label for="label">filière :</label>
+        <input type="text"  class=" form-control" formControlName="idFiliere" *ngIf="update_filiere_form.get('idFiliere')!.value || update_filiere_form.get('idFiliere')!.value == ''"  [class.is-invalid]="update_filiere_form.get('idFiliere')!.invalid && update_filiere_form.get('idFiliere')!.touched">
+        <div *ngIf="update_filiere_form.get('idFiliere')!.invalid && update_filiere_form.get('idFiliere')!.touched" class="invalid-feedback">
+            <div *ngIf="update_filiere_form.get('idFiliere')!.errors?.['required']">
+                <span class="label-error">La filière est requise.</span>
+            </div>
+            <div *ngIf="update_filiere_form.get('idFiliere')!.errors?.['maxlength']">
+                <span class="label-error">Le nom de la filière ne doit pas dépasser 40 caractères.</span>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="form form-group">
+        <label for="">Niveau :</label>
+         <input type="text"  class=" form-control" formControlName="idNiveau" *ngIf="update_filiere_form.get('idNiveau')!.value || update_filiere_form.get('idNiveau')!.value == ''" readonly>
+        
+    </div>
+   
+    <div class="button-cash">
+        <a (click)="close_modal()" class="submit" ><span>Annuler</span></a>
+        <button class="submit" type="submit" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+    </div>
+</form>

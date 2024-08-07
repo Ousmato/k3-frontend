@@ -1,12 +1,14 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SinginServiceService } from './singin-service.service';
-import { ClassStudentService } from '../../Views/class-students/class-student.service';
+import { ClassStudentService } from '../../../DGA/class-students/class-student.service';
 import { ClassRoom } from '../../Models/Classe';
 import { Student } from '../../Models/Students';
 import { Admin } from '../../Models/Admin';
 import { IconsService } from '../../../Services/icons.service';
 import { PageTitleService } from '../../../Services/page-title.service';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter, map } from 'rxjs';
 
 @Component({
   selector: 'app-singin',
@@ -16,7 +18,7 @@ import { PageTitleService } from '../../../Services/page-title.service';
 export class SinginComponent implements OnInit {
 // adminConnect: 
 
-title = '';
+// title = 'Formulaire ';
 
 @Output() titleEvent = new EventEmitter<string>();
   studentForm!: FormGroup;
@@ -27,7 +29,7 @@ title = '';
   passwordVisible : boolean = false
 
   constructor(private formBuilder: FormBuilder, private pageTitle: PageTitleService,
-    private service: SinginServiceService, public icons: IconsService,
+    private service: SinginServiceService, public icons: IconsService, private activatedRoute: ActivatedRoute, private router: Router,
     private classeService: ClassStudentService){}
   ngOnInit(): void {
     this.studentForm = this.formBuilder.group({
@@ -52,14 +54,15 @@ title = '';
       console.log(this.classRoom);
     });
 
-    this.sendTitle();
+    // this.sendTitle();
+    // this.loa_titre();
   }
   // -------------------------------------------
  
 
-  sendTitle() {
-    this.titleEvent.emit(this.title);
-  }
+  // sendTitle() {
+  //   this.titleEvent.emit(this.title);
+  // }
    // Méthode pour basculer l'état du mot de passe
    togglePasswordVisibility(): void {
     this.passwordVisible = !this.passwordVisible;
@@ -124,8 +127,6 @@ title = '';
   goBack(){
     window.history.back();
   }
- 
-}
-  
-    
-      
+   
+ }
+

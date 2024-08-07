@@ -7,115 +7,118 @@
       <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..."  class="search-input">
   <fa-icon [icon]="icons.recherche" class="search-icon"></fa-icon>
   </div> -->
+  <div class="table-container">
     <table class="table table-striped table-hover">
-        <thead>
-            <tr>
-              <th>ID</th>
-              <th>Photo</th>
-              <th>Nom</th>
-              <th>Prenom</th>
-              <th>Email</th>
-              <th>Classe</th>
-              <th>Filiere</th>
+      <thead>
+          <tr>
+            <th>ID</th>
+            <th>Photo</th>
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th>Email</th>
+            <th>Classe</th>
+            <th>Filiere</th>
 
-              <th>Telephone</th>
-              <th>Action <span class="refresh" (click)="refresh()"><fa-icon [icon]="icons.actualise"></fa-icon> Actualiser</span></th>
+            <th>Telephone</th>
+            <th>Action <span class="refresh" (click)="refresh()"><fa-icon [icon]="icons.actualise"></fa-icon> Actualiser</span></th>
 
-            </tr>
-          </thead>
-          <tbody>
-            <ng-container *ngIf="filterStudents().length ; else noResults">
-            <tr *ngFor="let studens of students">
-              <td>{{studens.idEtudiant}}</td>
-              <td><img src="{{studens.urlPhoto}}" alt=""></td>
-              <td>{{studens.nom}}</td>
-              <td >{{studens.prenom}}</td>
-              <td>{{studens.email}}</td>
-              <td class="class-name"  title="{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}">{{studens.idClasse.idFiliere?.idNiveau?.nom}}</td>
-              <td class="class-name"  title="{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}">{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}</td>
-              
-              <td>{{studens.telephone}}</td>
-                <td>
-                    <div class="btn-contenaire">
-                        <a (click)="getStudentView(studens)" ><fa-icon [icon]="icons.eye"></fa-icon><span>Details</span></a>
-                        <a (click)="getStudent(studens)"><fa-icon [icon]="icons.edit"></fa-icon><span>Modifier</span></a>
-                        <a data-bs-toggle="modal" [attr.data-bs-target]="'#studentDelete_' +studens.idEtudiant">
-                          <fa-icon [icon]="studens.active ? icons.active : icons.desactive " [ngStyle]="{ color: studens.active ? 'green' : 'red' }"></fa-icon><span >{{ studens.active ? 'Active' : 'Inactive' }}</span></a>
-                    
-                    </div>
-                </td>
-             <!-- -------------------------------------detail etudiants----------------------------------------- -->
-             <div class="modal fade"  [id]="'studentDetail_' + studens.idEtudiant"  data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">Detail de l'Etudiants</h1>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-
-                    <div class="modal-body">
-                      <div class="img-contenaire">
-                          <img id="img-info"  src="{{studens.urlPhoto}}" alt="Image">
-                          <div class="classe">
-                            <h4> Niveaux d'etude : {{studens.idClasse.idFiliere?.idNiveau?.nom}}</h4>
-                            <h4> Filiere : {{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}</h4>
-                          </div>
-                        </div>
-                      
-                    <!-- <ul class="list-group list-group-flush">  -->
-                      <li><span>Numero d'Enregistrement : </span>{{studens.idEtudiant}}</li>
-                      <li><span>Nom de l'apprenant : </span>{{studens.nom}}</li>
-                      <li><span>Prenom de l'apprenant : </span>{{studens.prenom}} </li>
-                      <li><span>Email : </span>{{studens.email}}</li>
-                      <li><span>Telephone : </span>{{studens.telephone}}</li>
-                      <li><span>Date de Naissance :</span> {{studens.dateNaissance}}</li>
-                      <li><span>Sexe : </span>{{studens.sexe}}</li>
-                      <li><span>Region de naissance : </span>{{studens.lieuNaissance}}</li>
-                      <li><span>Scolarite payee : </span>{{studens.scolarite}}</li>
-                    <!-- </ul -->
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- ------------------------------------------------update etudiants------------- -->
-
-              <!-- ------------------------------------------delete etudians-------------------- -->
-              <div class="modal fade"  [id]="'studentDelete_' +studens.idEtudiant" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                          
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation de Suppression</h1>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      Atteintion vous ete sur le point de supprimer les informations de l'etudiants
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Non</button>
-                      <a  name="btn-delete" (click)="deleted_student(studens.idEtudiant!)" class="btn btn-primary">Oui</a>
-                      <!-- <button type="button" class="btn btn-primary">Oui</button> -->
-                    </div>
-                  </div>
-                </div>
-              </div>
-            <!---------------------------------------------modaledit student----------------------------------------------------  -->
-            
           </tr>
-        </ng-container>
-          <ng-template #noResults>
-            <tr>
-                <td colspan="9" class="text-center">Aucun résultat trouvé</td>
-            </tr>
-        </ng-template>
+        </thead>
+        <tbody>
+          <ng-container *ngIf="filterStudents().length ; else noResults">
+          <tr *ngFor="let studens of filterStudents()">
+            <td>{{studens.idEtudiant}}</td>
+            <td><img src="{{studens.urlPhoto}}" alt=""></td>
+            <td>{{studens.nom}}</td>
+            <td >{{studens.prenom}}</td>
+            <td>{{studens.email}}</td>
+            <td class="class-name"  title="{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}">{{studens.idClasse.idFiliere?.idNiveau?.nom}}</td>
+            <td class="class-name"  title="{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}">{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}</td>
             
-          </tbody>
-    </table>
+            <td>{{studens.telephone}}</td>
+              <td>
+                  <div class="btn-contenaire">
+                      <a (click)="getStudentView(studens)" ><fa-icon [icon]="icons.eye"></fa-icon><span>Details</span></a>
+                      <a (click)="getStudent(studens)"><fa-icon [icon]="icons.edit"></fa-icon><span>Modifier</span></a>
+                      <a data-bs-toggle="modal" [attr.data-bs-target]="'#studentDelete_' +studens.idEtudiant">
+                        <fa-icon [icon]="studens.active ? icons.active : icons.desactive " [ngStyle]="{ color: studens.active ? 'green' : 'red' }"></fa-icon><span >{{ studens.active ? 'Active' : 'Inactive' }}</span></a>
+                  
+                  </div>
+              </td>
+           <!-- -------------------------------------detail etudiants----------------------------------------- -->
+           <div class="modal fade"  [id]="'studentDetail_' + studens.idEtudiant"  data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Detail de l'Etudiants</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+
+                  <div class="modal-body">
+                    <div class="img-contenaire">
+                        <img id="img-info"  src="{{studens.urlPhoto}}" alt="Image">
+                        <div class="classe">
+                          <h4> Niveaux d'etude : {{studens.idClasse.idFiliere?.idNiveau?.nom}}</h4>
+                          <h4> Filiere : {{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}</h4>
+                        </div>
+                      </div>
+                    
+                  <!-- <ul class="list-group list-group-flush">  -->
+                    <li><span>Numero d'Enregistrement : </span>{{studens.idEtudiant}}</li>
+                    <li><span>Nom de l'apprenant : </span>{{studens.nom}}</li>
+                    <li><span>Prenom de l'apprenant : </span>{{studens.prenom}} </li>
+                    <li><span>Email : </span>{{studens.email}}</li>
+                    <li><span>Telephone : </span>{{studens.telephone}}</li>
+                    <li><span>Date de Naissance :</span> {{studens.dateNaissance}}</li>
+                    <li><span>Sexe : </span>{{studens.sexe}}</li>
+                    <li><span>Region de naissance : </span>{{studens.lieuNaissance}}</li>
+                    <li><span>Scolarite payee : </span>{{studens.scolarite}}</li>
+                  <!-- </ul -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- ------------------------------------------------update etudiants------------- -->
+
+            <!-- ------------------------------------------delete etudians-------------------- -->
+            <div class="modal fade"  [id]="'studentDelete_' +studens.idEtudiant" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation de Suppression</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    Atteintion vous ete sur le point de supprimer les informations de l'etudiants
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Non</button>
+                    <a  name="btn-delete" (click)="deleted_student(studens.idEtudiant!)" class="btn btn-primary">Oui</a>
+                    <!-- <button type="button" class="btn btn-primary">Oui</button> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          <!---------------------------------------------modaledit student----------------------------------------------------  -->
+          
+        </tr>
+      </ng-container>
+        <ng-template #noResults>
+          <tr>
+              <td colspan="9" class="text-center">Aucun résultat trouvé</td>
+          </tr>
+      </ng-template>
+          
+        </tbody>
+  </table>
+  </div>
+    
     <div class="pagination">
       <button (click)="previousPage()" [disabled]="page === 0"><fa-icon [icon]="icons.previous"></fa-icon></button>
       <button *ngFor="let p of pages" (click)="setPage(p)" [class.active]="p === page">
         {{ p + 1 }}
       </button>
-      <button (click)="nextPage()" [disabled]="page === studentspage.totalPages - 1"><fa-icon [icon]="icons.nexte"></fa-icon></button>
+      <button (click)="nextPage()" [disabled]="page === studentspage!.totalPages! - 1"><fa-icon [icon]="icons.nexte"></fa-icon></button>
     </div>
   </main>

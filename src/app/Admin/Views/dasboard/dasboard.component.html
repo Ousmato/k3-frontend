@@ -6,7 +6,7 @@
                     <div class="card-img">
                         <img src="assets/study-group-icon.svg" alt="Logo">
                     </div>
-                    <div class="card-text">
+                    <div class="card-text" (click)="toggle_toEtudiant()">
                         <p>Nombres d'Etudiants</p>
                         <h1>{{studentsCount}}</h1>
                     </div>
@@ -14,7 +14,7 @@
                 </div>
                 
             </div>
-            <div class="child-card">
+            <div class="child-card" (click)="toggle_toEnseignant()">
                 <div class="child-card-content">
                     <div class="card-img">
                         <img  src="assets/group-icon.svg" alt="Logo">
@@ -28,12 +28,12 @@
                 
                 
             </div>
-            <div class="child-card">
+            <div class="child-card" (click)="toggle_toClasse()">
                 <div class="child-card-content">
                     <div class="card-img">
                         <img src="assets/school-admission-icon.svg" alt="Logo">
                     </div>
-                    <div class="card-text">
+                    <div class="card-text" >
                         <p>Nombres de Classes</p>
                         <h1>{{classesCount}}</h1>
                     </div>
@@ -52,7 +52,7 @@
                         <img id="calendar" src="assets/booking-confirmed-icon.svg" alt="Logo">
                     </div>
                     <div id="cart-text" class="card-text">
-                        <h5>Nombres d'Emplois Actifs</h5>
+                        <h5>Emplois Actifs</h5>
                         <h1>{{emploisCount}}</h1>
                     <!-- </div> -->
                     
@@ -77,7 +77,7 @@
     <div class="second-container">
        
         <section class="section-scrolable"> 
-            <h4>Notifications</h4>
+            <h4>Evenement</h4>
             <ng-container *ngFor="let notific of notifs">
                  <div class="div-notification">
                  

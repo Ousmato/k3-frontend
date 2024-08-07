@@ -6,4 +6,5 @@ export interface Presence{
     observation?: boolean;
     heure?: number;
     munite?: number;
+    date?: Date;
 }

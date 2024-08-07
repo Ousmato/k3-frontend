@@ -101,3 +101,9 @@ label span{
     }
 
 }
+
+input:focus, select:focus{
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 5px var(--primary);
+}

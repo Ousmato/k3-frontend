@@ -23,6 +23,11 @@ main{
 img{
     height: 30px;
     width:auto;
+    &:hover{
+        border: 1px solid var(--primary);
+        border-radius: 4px;
+        padding: 5px;
+    }
 }
 span{
     font-size: 12px;
@@ -116,3 +121,20 @@ p{
     font-size: 12px;
     font-weight: normal;
   }
+
+  .back-button{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    font-size: 20px;
+    margin: 10px 0;
+    &:hover{
+        background-color: var(--tertiary);
+        color: var(--primary);
+        border: none;
+        border-radius: 50%;
+    }
+
+}

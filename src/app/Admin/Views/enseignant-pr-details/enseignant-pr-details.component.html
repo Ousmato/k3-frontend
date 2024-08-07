@@ -1,4 +1,7 @@
 <main>
+  <div (click)="goBack()" class="back-button">
+    <fa-icon [icon]="icons.back"></fa-icon>
+  </div>
     <section class="content">
        
          <div id="idTable" class="section-table">
@@ -6,19 +9,17 @@
                 <thead>
                   <tr>
                     <th class="horaire">Horaires</th>
-                    <ng-container *ngFor="let dateInfo of dates_emplois">
-                      <td scope="col">{{ dateInfo.day.toUpperCase() }}</td>
+                    <ng-container *ngFor="let dateInfo of day_of_head">
+                      <td scope="col">{{ dateInfo.toUpperCase() }}</td>
                     </ng-container>
                   </tr>
                 </thead>
                 <tbody>
-                  <!-- <ng-container *ngFor="let heure of hoursList"> -->
                     <tr>
-                      <!-- <th scope="row" class="text-left">{{ heure }}</th> -->
-                      <ng-container *ngFor="let dateInfo of dates_emplois">
+                      <ng-container *ngFor="let dateInfo of datesWithDaysTest">
                         <td scope="col td-classe" >
                           <ng-container *ngFor="let seance of seances">
-                            <ng-container *ngIf="dateInfo.day.toUpperCase() === seance.jour">
+                            <ng-container *ngIf="dateInfo.day.toUpperCase() == seance.jour">
                             <div class="seance-content">
                                
                               <div class="childre-1">
@@ -30,14 +31,12 @@
                                 <span id="date"> {{seance.date_string}}</span>
                                  
                                   <div class="chil">
-                                    <ng-container *ngIf="currentDay(dateInfo.day)">
-                                      <!-- <form [formGroup]="presen_form" (ngSubmit)="presence_add(seance)"> -->
-
-                                        <!-- <input type="hidden" formControlName="idEnseignant"> -->
-                                      
-                                        <button *ngIf="!seance.observation" class="btn" type="submit"   (click)="present(seance.id!)" >Abscent<img src="assets/remove-cancel-user-icon.svg" alt=""></button>
-                                        <button *ngIf="seance.observation" class="btn" type="submit" (click)="abscent(seance.id!)"  >Present<img src="assets/attendance-icon.svg" alt="photo"></button>
-                                      <!-- </form> -->
+                                    <ng-container>
+                                      <button class="btn" type="submit" (click)="change_observation(seance.id!)">
+                                          {{ seance.observation ? 'Present' : 'Absent' }}
+                                          <img [src]="seance.observation ? 'assets/attendance-icon.svg' : 'assets/remove-cancel-user-icon.svg'">
+                                        </button>
+                                        
                                     </ng-container>
                                      
                                   </div>
@@ -56,7 +55,6 @@
                         </td>
                       </ng-container>
                     </tr>
-                  <!-- </ng-container> -->
                 </tbody>
               </table>
               

@@ -1,0 +1,95 @@
+<main>
+    <div class="main-content">
+        <div (click)="goBack()" class="back-button">
+            <fa-icon [icon]="icons.back"></fa-icon>
+        </div>
+        <div id="bulletin" class="all-section">
+            <section class="first-column">
+                <div class="header-bulletin">
+                    <div class="img-contenaire">
+                        <img src="{{students.urlPhoto}}" alt="photo">
+                    </div>
+                    <div class="school-contenaire">
+                        <h4>{{schoolInfo?.nomSchool}}</h4>
+                        <p> Email : {{schoolInfo?.email}}</p>
+                        <p>Tel : {{schoolInfo?.telephone}}</p>
+                        <p>Adresse : {{schoolInfo?.localite}}</p>
+                    </div>
+                    <div class="image-school">
+                        <img src="{{schoolInfo?.urlPhoto}}" alt="">
+                    </div>
+                </div>
+            </section>
+            <section class="second-column">
+                <div class="row">
+                    <div class="child">
+                        <div class="child-item">
+                            <h4>Nom et Prénom: {{students.nom}} {{students.prenom}}</h4>
+                        </div>
+                        <div class="child-item">
+                            <h4>Date de naissance: {{students.dateNaissance}}</h4>
+                        </div>
+                        <div class="child-item">
+                            <h4>Classe: {{students.idClasse.idFiliere?.idNiveau?.nom}}</h4>
+                        </div>
+                    </div>
+                    <div class="child">
+                        <div class="child-item">
+                            <h4>Filière: {{students.idClasse.idFiliere?.idFiliere?.nomFiliere}}</h4>
+                        </div>
+                        <div class="child-item">
+                            <h4>Semestre: {{semestre?.nomSemetre}}</h4>
+                        </div>
+                        <div class="child-item">
+                            <h4>Année scolaire: 2023-2024</h4>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- <h2>Modules de Formation</h2> -->
+            <div class="tab-container">
+                <table  class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Modules</th>
+                            <th>Coefficient</th>
+                            <th>Note Exam</th>
+                            <th>Note de Classe</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let note of notes">
+                            <tr>
+                            <td>{{note.idModule.nomModule}}</td>
+                            <td>{{note.idModule.coefficient}}</td>
+                            <td>{{note.examNote}}</td>
+                            <td>{{note.classeNote}}</td>
+                        </tr>
+                        </ng-container>
+                        
+                        
+                    </tbody>
+                </table>
+                
+                
+            </div>
+            <section class="fourth-column">
+                <div class="moyennes">
+                    <div class="m-child1">
+                        <p>Moyenne: {{moyenneGenerale}}</p>
+                    </div>
+                    <div class="m-child2">
+                        <p>Rang: <span> 6ème / <span>45</span></span></p>
+                    </div>
+                </div>
+            </section>
+            <h2>Mentions</h2>
+            <section class="fifth-column">
+                <div class="mention"><h5>{{mention}}</h5></div>
+            </section>
+            <div class="btn-container">
+                <button id="print" (click)="imprimer()" type="button" class="print-button">Télécharger en PDF</button>
+            </div>
+        </div>
+    </div>
+</main>

@@ -1,19 +1,21 @@
 <main>
+
   <div (click)="goBack()" class="back-button">
     <fa-icon [icon]="icons.back"></fa-icon>
   </div>
     <section class="section-head">
         <div class="month-contenaire">
             <p>{{formattedDate}}</p>
-            <div class="refresh" (click)="refreshPage()"><fa-icon  [icon]="icons.actualise" class="icon-actualise"></fa-icon><span>Actualiser</span></div>
-                   
-            </div>
+            <p> Emploi du temps du {{emplois.dateDebut}} au {{emplois.dateFin}}</p>
+            <p>{{emplois.idClasse.idFiliere?.idNiveau?.nom}} ( {{emplois.idClasse.idFiliere?.idFiliere?.nomFiliere}} )</p></div>
+              
+            
         <div class="btn-contenaire">
             <div class="child-1">
               <button (click)="validate_emplois()" class="btn btn-valid-emplois" type="button"><fa-icon [icon]="icons.cl_check"></fa-icon> Valider l'Emplois</button>
        
-                <button *ngIf="!isCreating" class="btn btn-show-form" type="button" (click)="show_form()"><fa-icon [icon]="icons.plus"></fa-icon> Créer une séance</button>
-                <button *ngIf="isCreating" class="btn btn-danger" type="button" (click)="annuller()">Annuler</button>
+                <!-- <button *ngIf="!isCreating" class="btn btn-show-form" type="button" (click)="show_form()"><fa-icon [icon]="icons.plus"></fa-icon> Créer une séance</button> -->
+                
               </div>
             <div class="child-2">
                 <!-- <button class="btn btn-primary" type="submit" (click)="add_seance()">Enregistrer</button> -->
@@ -32,30 +34,47 @@
                 <ng-container *ngFor="let dateInfo of day_of_head">
                   <td scope="col">{{ dateInfo }}</td>
                 </ng-container>
+                
               </tr>
             </thead>
             <tbody>
-              <!-- <ng-container *ngFor="let heure of hoursList"> -->
+              <ng-container *ngIf="seances.length; else notFund">
                 <tr>
                   <!-- <th scope="row" class="text-left">{{ heure }}</th> -->
                   
                   <ng-container *ngFor="let dateInfo of datesWithDaysTest; ">
                     <td scope="col">
                       <ng-container *ngFor="let seance of seances">
-                        <ng-container *ngIf="dateInfo.dates.includes(seance.date.toString())">
+                        <ng-container *ngIf="dateInfo.dates.includes(seance.date!.toString())">
 
                         <div class="seance-content">
-                            <div class="childre-1">
+                            <div class="childre-1" *ngIf="dateInfo.day != 'Samedi'; else exam_template">
                                 <strong> {{ seance.idTeacher.nom.charAt(0).toUpperCase() }}.  {{seance.idTeacher.prenom.toUpperCase()}}</strong><br>
                                 {{ seance.heureDebut }} - {{ seance.heureFin }} <br>
                                 {{seance.idModule.nomModule}} <br>
                                 
                             </div>
-                            <div class="childre-2">
-                              <span>{{seance.date.toString()}}</span>
-                              <div class="btn-cont">
+
+                            <ng-template #exam_template>
+                              <div class="childre-1">
+                                <!-- <strong></strong> -->
+                                {{ seance.heureDebut }} - {{ seance.heureFin }} <br>
+                                {{seance.idModule.nomModule}} <br>
+                              </div>
+                              <div class="childre-2">
+                                <span>{{seance.date?.toString()}}</span>
+                                <div class="btn-cont">
+                                  <strong>Examen</strong>
+                                </div>
+                               
+                              </div>
+                              
+                            </ng-template>
+                            <div class="childre-2" *ngIf="dateInfo.day != 'Samedi'">
+                              <span>{{seance.date?.toString()}}</span>
+                              <div class="btn-cont" >
                                 <button (click)="show_comfirme_delete(seance.heureDebut, seance.heureFin)" type="button" ><fa-icon [icon]="icons.delete" [ngStyle]="{color: 'red'}" class="icon"></fa-icon></button>
-                                <button (click)="show_update_seance(seance.heureFin, seance)"  ><fa-icon [icon]="icons.edit" class="icon"></fa-icon></button>
+                                <button (click)="show_update_seance(seance.id!)"  ><fa-icon [icon]="icons.edit" class="icon"></fa-icon></button>
                             
                               </div>
                             </div>
@@ -66,9 +85,17 @@
                     </td>
                   </ng-container>
                 </tr>
-              <!-- </ng-container> -->
+              </ng-container>
+              <ng-template #notFund>
+                <tr>
+                    <td colspan="9" class="text-center">Aucun résultat trouvé</td>
+                </tr>
+            </ng-template>
             </tbody>
           </table>
+          <div class="refresh">
+            <span (click)="refreshPage()">Imprimer en pdf</span>
+          </div>
               
               <div class="views" *ngIf="selected_seance_heure_fin">
                 <h4>Modifier la séance</h4>
@@ -118,68 +145,14 @@
               </div>
          
         </div>
-        <div id="idForm" class="section-form" >
-            <form class="form-add" [formGroup]="form_seance" (ngSubmit)="create_seance()" *ngIf="isCreating">
-                  <div class="form form-group">
-                    <label>Enseignants</label> 
-                    <select class="form-select" formControlName="idTeacher"  id="enseignant" placeholder="Enseignants" [class.is-invalid]="form_seance.get('idTeacher')!.invalid && form_seance.get('idTeacher')!.touched" required>
-                      <option  selected disabled value="">Choisir L'Enseignant</option>
-                      <option *ngFor="let enseignant of enseignants" [value]="enseignant.idEnseignant">{{enseignant.nom}}</option>
-                    </select> 
-                    <span *ngIf="form_seance.controls['idTeacher'].invalid && form_seance.controls['idTeacher'].touched" [ngStyle]="{color: 'red'}">
-                      Ce champ est obligatoire
-                    </span>
-                  </div>
-                    <div class="form form-group">
-                      <label>Modules</label> 
-                      <select class="form-select" formControlName="idModule"  id="idModule" placeholder="Modules"  [class.is-invalid]="form_seance.get('idModule')!.invalid && form_seance.get('idModule')!.touched"  required>
-                        <option  selected disabled value="">Choisir Le Module</option>
-                        <option *ngFor="let module of modules" value="{{module.id}}">{{module.nomModule}}</option>
-                      </select> 
-                      <span *ngIf="form_seance.controls['idModule'].invalid && form_seance.controls['idModule'].touched" [ngStyle]="{color: 'red'}">
-                        Ce champ est obligatoire
-                      </span>
-                    </div>
-                    <div class="form form-group"> 
-                        <label>Jours </label> 
-                        <select class="form-select" formControlName="jour"  [class.is-invalid]="form_seance.get('jour')!.invalid && form_seance.get('jour')!.touched " required>
-                          <option selected disabled value="">Choisir Le Jour</option>
-                          <option *ngFor="let dateInfo of datesWithDays" [value]="dateInfo.date">{{dateInfo.day}} - {{dateInfo.date}}</option>
-                        </select> 
-                        <span *ngIf="form_seance.controls['jour'].invalid && form_seance.controls['jour']!.touched" [ngStyle]="{color:'red'}">
-                          Ce champ est obligatoire
-                        </span>
-                      </div>
-
-                
-                    <div class="input-time">
-                        <div class="form form-group">
-                             <label>Heure de début </label>
-                            <input type="time" class="form-control" id="heureDebut" formControlName="heureDebut" [class.is-invalid]="form_seance.get('heureDebut')!.invalid && form_seance.get('heureDebut')!.touched" required>
-                            <!-- <span *ngIf="form_seance.controls['heureDebut'].invalid && form_seance.controls['heureDebut']!.touched" [ngStyle]="{color:'red'}">
-                              Ce champ est obligatoire
-                            </span> -->
-                        
-                        </div>
-                       <div class="form form-group">
-                            <label>Heure de Fin </label>
-                            <input type="time" class="form-control" id="heureFin" formControlName="heureFin" [class.is-invalid]="form_seance.get('heureFin')!.invalid && form_seance.get('heureFin')!.touched" required>
-                        
-                        </div>
-                                    
-                    </div>
-                    <div class="form form-group"> 
-                        <label for="date">Date </label> 
-                        <input id="date" type="date" class="form-control" formControlName="date" [value]="selectedDate" readonly>
-                      </div>
-                  <button id="btn-submit" class="btn btn-primary" type="submit">Enregistrer</button>
-            </form>
-           
-        </div>
+        
     </section>
+    
     <!-- --------------------------------------- -->
 
     <div class="overlay" *ngIf="selected_seance_heure_fin" (click)="preventClick($event)"></div>
+    <div class="overlay" *ngIf="isCreating" (click)="preventClick($event)"></div>
+    <div class="overlay" *ngIf="deleted_modal" (click)="preventClick($event)"></div>
 
     <div class="views delete-modal" *ngIf="deleted_modal">
       <h4>Confirmation de suppression</h4>

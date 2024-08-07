@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { IconsService } from '../../../Services/icons.service';
 import { EtudeService } from '../etudiants/etude.service';
-import { ClassStudentService } from '../class-students/class-student.service';
+import { ClassStudentService } from '../../../DGA/class-students/class-student.service';
 import { EnseiService } from '../enseignant/ensei.service';
-import { ServiceService } from '../emplois-du-temps/service.service';
+import { ServiceService } from '../../../DER/emplois-du-temps/service.service';
 import { ClassRoom } from '../../Models/Classe';
 import { Emplois } from '../../Models/Emplois';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NotificationService } from '../../../Services/notification.service';
 import { Admin } from '../../Models/Admin';
 import { Notifications_gestion } from '../../Models/Notifications-gestion';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dasboard',
@@ -29,7 +30,8 @@ export class DasboardComponent  implements OnInit{
   books : any[] = []
   noti_form!: FormGroup
 
-  constructor(private teacherService: EnseiService, private notifiService: NotificationService, private emploisService: ServiceService, private fb: FormBuilder,
+  constructor(private teacherService: EnseiService, private ruter: Router,
+    private notifiService: NotificationService, private emploisService: ServiceService, private fb: FormBuilder,
     public icons: IconsService, private etudiantService: EtudeService, private classeService: ClassStudentService) { }
   ngOnInit(): void {
 
@@ -112,33 +114,15 @@ export class DasboardComponent  implements OnInit{
     })
   }
   // ------------------------------get book 
-  // getBook(){
-  //     const url = "https://openlibrary.org/search.json?q=henry";
-  // const headers = new Headers({
-  //     "User-Agent": "Gestion-scolaire/1.0 (ousmatotoure98@gmail.com)"
-  // });
-  // const options = {
-  //     method: 'GET',
-  //     headers: headers
-  // };
-  // fetch(url, options)
-  //     .then(response => response.json())
-  //     .then(data => console.log(data, "data"))
-  //     .catch(error => console.error('Error:', error));
-  //   // this.notifiService.getBooks("Harry Potter").subscribe(response =>{
-  //   //   this.books = response
-  //   //   console.log("book :", response);
-  //   // })
-  // }
-  // searchBooks(query: string): void {
-  //   this.notifiService.getBooksss(query).subscribe(
-  //     (data: any) => {
-  //       this.books = data.docs; // Assuming 'docs' contains the array of books
-  //       console.log('Books:', this.books);
-  //     },
-  //     (error: any) => {
-  //       console.error('Error fetching books:', error);
-  //     }
-  //   );
-  // }
+  toggle_toClasse(){
+    this.ruter.navigate(['/sidebar/classe'])
+  }
+
+  toggle_toEnseignant(){
+    this.ruter.navigate(['/sidebar/enseignants'])
+  }
+
+  toggle_toEtudiant(){
+    this.ruter.navigate(['/sidebar/etudiant'])
+  }
 }

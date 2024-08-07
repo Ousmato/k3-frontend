@@ -8,6 +8,9 @@ import { DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Seances } from '../../Models/Seances';
 import { Paie } from '../../Models/paie';
+import { Presence_pages } from '../../Models/Pagination-module';
+import { SideBarService } from '../../../sidebar/side-bar.service';
+import { NavigationExtras, Router } from '@angular/router';
 
 @Component({
   selector: 'app-archives',
@@ -16,11 +19,20 @@ import { Paie } from '../../Models/paie';
 })
 export class ArchivesComponent  implements OnInit{
   form_paie!: FormGroup;
-  Enseignants: Presence [] =[]
+  enseignants: Presence [] =[]
   diff_heure: number = 0;
 
-  constructor (private teacherService: EnseiService, public icons: IconsService, private fb: FormBuilder, 
-    private datePipe: DatePipe){}
+  searchTerm : string = "";
+
+  teachers_presence_pqge!: Presence_pages;
+  page = 0;
+  size = 10;
+  filteredItems : Presence[] = []
+  pages: number[] = []
+
+  constructor (private teacherService: EnseiService, private root: Router,
+    public icons: IconsService, private fb: FormBuilder, 
+    private sideBareService: SideBarService){}
 
   ngOnInit(): void {
     this.form_paie = this.fb.group({
@@ -31,24 +43,46 @@ export class ArchivesComponent  implements OnInit{
     })
 
     this.getAll();
+
+    this.sideBareService.currentSearchTerm.subscribe(term => {
+      this.searchTerm = term;
+      this.filterTeachers();
+    
+    });
     
       
   }
+  // -----------------------filter methode
+  filterTeachers() {
+    if (!this.searchTerm) {
+     return this.filteredItems = this.enseignants;
+    } else {
+    return  this.filteredItems = this.enseignants.filter(enseignant =>
+        enseignant.idSeance.idTeacher.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        enseignant.idSeance.idTeacher.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        enseignant.idSeance.idTeacher.email.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    }
+  }
 // --------------------------------load teacher presence
   getAll(){
-    this.teacherService.getAllPresence().subscribe((data =>{
-      data.forEach((item: any) => {
+
+    this.teacherService.getAll_presence_ofMonth(this.page, this.size).subscribe(data =>{
+      this.teachers_presence_pqge = data;
+      this.enseignants = data.content;
+      this.filteredItems = this.enseignants;
+
+     this.pages = Array.from({length: data.totalPages!}, (_, i)=> i);
+      this.enseignants.forEach(item => {
         item.idSeance.idTeacher.urlPhoto = `http://localhost/StudentImg/${item.idSeance.idTeacher.urlPhoto}`;
       });
-      this.Enseignants = data;
-      console.log(this.Enseignants, "---enseignant------")
-      this.load_diff(this.Enseignants);
-    }))
-   
-
+      this.load_diff(this.enseignants)
+    })
+    
   }
   // -----------------------------------get difference of time
   load_diff(enseignant: Presence[]){
+    console.log(enseignant, "heure diff")
     enseignant.forEach(item =>{
      
       // Convertir les heures de début et de fin en objets Date
@@ -96,5 +130,30 @@ export class ArchivesComponent  implements OnInit{
       
     })
   }
-  // 
+  //
+  toggle_toPaie(idSeance: number){
+    const navigationExtras : NavigationExtras ={
+      queryParams: {id: idSeance}
+    }
+    this.root.navigate(['/sidebar/fiche-de-paie-component'], navigationExtras)
+  } 
+  // ------------------------------next page
+  setPage(page: number): void {
+    if (page >= 0 && page < this.teachers_presence_pqge.totalPages!) {
+      this.page = page;
+      this.getAll();
+    }
+  }
+
+  nextPage(): void {
+    if (this.page < this.teachers_presence_pqge.totalPages! - 1) {
+      this.setPage(this.page + 1);
+    }
+  }
+
+  previousPage(): void {
+    if (this.page > 0) {
+      this.setPage(this.page - 1);
+    }
+  }
 }

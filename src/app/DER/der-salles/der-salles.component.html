@@ -1,0 +1,31 @@
+<main>
+    <div class="col-12">
+        <button (click)="toggle_form_add()" class="btn">Ajouter une salle</button>
+    </div>
+
+    <div class="grid-container">
+        <div class="grid-item" *ngFor="let salle of salles">
+            <div class="section-folder">
+                <div class="class-folder" [ngClass]="isSalleOccupee(salle.id!) ? 'contour-o' : 'contour-d'">
+                    <div class="icon-folder">
+                        <fa-icon [icon]="icons.folder" class="icons-style"></fa-icon>
+                    </div>
+                    <div class="info-folder">
+                        <h2 class="title">Nom : {{salle.nom}}</h2>
+                        <p class="title">Place : {{salle.nombrePlace}}</p>
+                        <span [ngClass]="isSalleOccupee(salle.id!) ? 'occupe' : 'disponible'">
+                            {{isSalleOccupee(salle.id!) ? 'Occupé' : 'Disponible'}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <ng-container *ngIf="show_add_form">
+        <app-der-salles-add (closeModal)="toggle_form_add()"> </app-der-salles-add>
+    </ng-container>
+
+    
+<div class="overlay" *ngIf="overlay"></div>
+</main>

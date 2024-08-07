@@ -1,0 +1,79 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.5);
+}
+table{
+    font-size: 14px;
+}
+.label-error{
+    color: red;
+}
+span{
+    font-size: 12px;
+}
+.contente {
+    width: 90%;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15);
+    z-index: 1001;
+    position: absolute;
+    top: 15%;
+    left: 0;
+    background-color: #fff; 
+}
+
+.cont-head{
+    height: 40px;
+    background-color: var(--primary);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+form{
+    padding: 20px;
+}
+.button-cash{
+    display: flex;
+    gap: 20px;
+    justify-content: end;
+    
+   
+}
+
+.button-cash button{
+    border: none;
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 5px;
+    border-radius: 5px;
+    /* background-color: var(--primary); */
+    color: var(--secondary);
+    cursor: pointer;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+   
+}
+
+
+.button-cash a{
+   text-decoration: none;
+    border: none;
+    margin-top: 8px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: var(--secondary);
+    cursor: pointer;
+    &:hover{
+        
+    background-color: var(--primary);
+        color: var(--secondary);
+    }
+    
+}
