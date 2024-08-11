@@ -135,7 +135,7 @@ export class EtudiantsComponent implements OnInit {
     const navigationExtras: NavigationExtras = {
       queryParams: { id: student?.idEtudiant }
     };
-    this.root.navigate(['/sidebar/student-edit'], navigationExtras)
+    this.root.navigate(['/r-scolarite/student-edit'], navigationExtras)
   }
 
   // ------------------------------------------------------------
@@ -144,7 +144,7 @@ export class EtudiantsComponent implements OnInit {
     const navigationExtras: NavigationExtras = {
       queryParams: { id: student?.idEtudiant }
     };
-    this.root.navigate(['/sidebar/student-view'], navigationExtras)
+    this.root.navigate(['/r-scolarite/student-view'], navigationExtras)
   }
   // ----------------------------------------------------------
   deleted_student(id: number) {

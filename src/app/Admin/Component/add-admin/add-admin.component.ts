@@ -20,7 +20,7 @@ export class AddAdminComponent implements OnInit{
   fileName!: File
   // @Output() closeModal = new EventEmitter<any>();
 
-  teacherStatusOptions!: string[];
+  adminStatusOptions:{ key: string, value: string }[] = [];
 
   constructor(public icons: IconsService, private fb: FormBuilder, private pageTitle: PageTitleService,
     private adminService: AdminService){}
@@ -39,12 +39,10 @@ export class AddAdminComponent implements OnInit{
       sexe: ['', Validators.required],
       password: ['', Validators.required],
       telephone: ['', Validators.required],
-      // urlPhoto: [''],
-      // isDeleted: [enseignant.isDeleted],
       role: ['', Validators.required]
     })
     // console.log("add-admin-form")
-    this.teacherStatusOptions = Object.values(Admin_role);
+    this.adminStatusOptions = this.getStatusOptions();
    
   }
 
@@ -56,6 +54,13 @@ export class AddAdminComponent implements OnInit{
     this.fileName = event.target.files[0];
   }
 
+  
+  getStatusOptions(): { key: string, value: string }[] {
+    return Object.keys(Admin_role).map(key => ({
+      key: key,
+      value: Admin_role[key as keyof typeof Admin_role] 
+    }));
+  }
   // ------------------------------add admin
   add_admin(){
     const formData = this.add_admin_form.value;

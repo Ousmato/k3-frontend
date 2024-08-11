@@ -56,13 +56,21 @@
                     <input type="text" value="{{student?.telephone}}"  class="form-control" readonly>
                     
                 </div>
+                <div class="input">
+                    <label  class="label form-label">Statut :</label>
+                    <input type="text" value="{{student?.status}}"  class="form-control" readonly>
+                    
+                </div>
             </div>
             <!-- ------------------------------------third column------------ -->
             <div class="chil">
                
                 <div class="input">
-                    <label for="validationDefault03" class="label form-label">Scolarité : <span>(Montant en FCFA)</span> </label>
-                    <input type="text" value="{{student?.scolarite}} FCFA"  class="input-with form-control" readonly>
+                    <div class="is-scolarite">
+                        <label for="validationDefault03" class="label form-label">{{getLabel()}} : <span>(Montant en FCFA)</span> </label>
+                        <input type="text" value="{{student?.scolarite}} FCFA"  class="input-with form-control" readonly>
+                    
+                    </div>
                     
                 </div>
             
@@ -84,11 +92,12 @@
                 
             </div>
         </div>
-        <div class="footer">
+        <div class="footer" *ngIf="getPermission()">
             
-            <div><ng-container *ngIf="montantRestant <= 0">
-                <p>La totalité a été payée</p>
-              </ng-container>
+            <div>
+                <ng-container *ngIf="montantRestant <= 0">
+                    <p>La totalité a été payée</p>
+                </ng-container>
               <ng-container *ngIf="montantRestant > 0">
                 <p>Le montant restant à payer est <span>{{ montantRestant }} FCFA</span></p>
               </ng-container>

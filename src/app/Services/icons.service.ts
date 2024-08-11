@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { faUsers, faGear, faTable, faChartArea, faHome, faBars, faGraduationCap, faSchool, faUser, faCog, faAngleDown, faSearch, faBookOpen, faAngleUp, faEye, faTrashCan, faEdit, faPenToSquare, faArrowRight, faClock, faPlus, faCalendarCheck, faTrash, faHandHoldingDollar, faPaperPlane, faCircleChevronRight, faPlusCircle, faSquarePlus, faFolderOpen, faSquareCheck, faSquareXmark, faArrowsLeftRight, faArrowRightArrowLeft, faFolder, faBan, faXmark, faRotate, faRotateRight, faEyeSlash, faArrowLeft, faAngleRight, faAngleLeft, faSignOut } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faGear, faTable, faChartArea, faHome, faBars, faGraduationCap, faSchool, faUser, faCog, faAngleDown, faSearch, faBookOpen, faAngleUp, faEye, faTrashCan, faEdit, faPenToSquare, faArrowRight, faClock, faPlus, faCalendarCheck, faTrash, faHandHoldingDollar, faPaperPlane, faCircleChevronRight, faPlusCircle, faSquarePlus, faFolderOpen, faSquareCheck, faSquareXmark, faArrowsLeftRight, faArrowRightArrowLeft, faFolder, faBan, faXmark, faRotate, faRotateRight, faEyeSlash, faArrowLeft, faAngleRight, faAngleLeft, faSignOut, faList, faCableCar, faCalendarDay, faCalendarPlus } from '@fortawesome/free-solid-svg-icons';
 
 @Injectable({
   providedIn: 'root'
@@ -42,5 +42,8 @@ export class IconsService {
   back = faArrowLeft
   book = faBookOpen
   aout =faSignOut
+  list = faList
+  calandarday = faCalendarDay
+  calandarPlus = faCalendarPlus
   constructor() { }
 }

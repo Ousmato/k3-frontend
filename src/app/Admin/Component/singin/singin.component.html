@@ -100,7 +100,12 @@
                 </div>
 
                 <div class="input">
-                    <label for="validationDefault03" class="label form-label">Scolarité : <span>(Montant en FCFA)</span> </label>
+                    <label>Status : </label> 
+                    <select class="form-select" formControlName="status" [class.is-invalid]="studentForm.get('status')!.invalid && studentForm.get('status')!.touched">
+                        <option  selected disabled value="">Choisir Le status</option>
+                        <option *ngFor="let status of studentStatusOptions" [value]="status.value" >{{status.key}}</option>
+                    </select> 
+                    <!-- <label for="validationDefault03" class="label form-label">Scolarité : <span>(Montant en FCFA)</span> </label>
                     <input type="text" formControlName="scolarite" class="input-with form-control" placeholder="La scolarite...."   [class.is-invalid]="studentForm.get('scolarite')!.invalid && studentForm.get('scolarite')!.touched" pattern="[0-9]{1,7}">
                     <span *ngIf="studentForm.controls['scolarite'].invalid && studentForm.controls['scolarite'].touched" [ngStyle]="{color: 'red'}">
                     Champ obligatoire*
@@ -108,7 +113,7 @@
                     <span *ngIf="studentForm.controls['scolarite'].hasError('pattern') && !studentForm.controls['scolarite'].hasError('required')"
                     [ngStyle]="{color: 'red'}">
                     Maximum 7 chiffres autorisés*
-                </span>
+                </span> -->
                 </div>
             
             

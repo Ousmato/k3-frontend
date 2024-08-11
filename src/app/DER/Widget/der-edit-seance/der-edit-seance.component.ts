@@ -133,7 +133,7 @@ export class DerEditSeanceComponent implements OnInit{
         idModule: idModule,
         idTeacher: idTeacher,
         idSalle: idSalle,
-        idClasse: idEmploi.idClasse
+        // idClasse: idEmploi.idClasse
         
       }
       // console.log(seance, "seance")

@@ -10,19 +10,15 @@
         <ul class="list-unstyled components">
          <div>
           <li class="menu-link">
-            <a routerLink="/der">
+            <a routerLink="/r-scolarite">
               <span><fa-icon [icon]="icons.home"></fa-icon>Acceuil</span>
             </a>
           </li>
          </div>
          <!-- ---------------- -->
-         <li class="menu-link">
-            <a routerLink="/der/salles" routerLinkActive="active">
-              <span><fa-icon [icon]="icons.scool"></fa-icon>Salles</span>
-            </a>
-          </li>
+         
           <!-- ------------------------------- -->
-           <li class="menu-link">
+           <!-- <li class="menu-link">
             <div (click)="toggleSubMenuEnseignant()">
               <a><span><fa-icon [icon]="icons.users"></fa-icon>Enseignants<fa-icon [icon]="isSubMenuOpen.enseignants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
                     
@@ -30,40 +26,39 @@
             </div>
             <ul class="sub-menu" *ngIf="isSubMenuOpen.enseignants">
               <li><a routerLink="/der/enseignants" routerLinkActive="active">Liste des enseignant</a></li>
-              <li><a routerLink="/der/t-singin" routerLinkActive="active">Inscription</a></li>
-              
+              <li><a routerLink="/der/ajouter-emplois" routerLinkActive="active">Programmer EDT</a></li>
+              <li><a routerLink="/der/ajouter-seance" routerLinkActive="active">Programmer seances</a></li>
+              <li><a routerLink="/der/emplois-du-temps" routerLinkActive="active">Les emplois du temps</a></li>
+             
+            </ul>
+          </li> -->
+          
+          <li class="menu-link">
+            <div (click)="toggleSubMenuStudent()">
+              <a> <span><fa-icon [icon]="icons.grade"></fa-icon>Etudiants<fa-icon [icon]="isSubMenuOpen.etudiants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
+              </a>
+            </div>
+            <ul class="sub-menu" *ngIf="isSubMenuOpen.etudiants">
+              <li><a routerLink="/r-scolarite/etudiant" routerLinkActive="active">Liste des Etudiants</a></li>
+              <li><a routerLink="/r-scolarite/inscription" routerLinkActive="active">Fiche d'inscription</a></li>
             </ul>
           </li>
-          
-         
-          <li class="menu-link" >
-            <a routerLink="/der/ajouter-emplois" routerLinkActive="active">
-              <span ><fa-icon [icon]="icons.calandarPlus"></fa-icon> Programmer EDT</span>
-            </a>
-          </li>
-
-          <li class="menu-link" >
-            <a routerLink="/der/ajouter-seance" routerLinkActive="active">
-              <span ><fa-icon [icon]="icons.calandarday"></fa-icon> Programmer seances</span>
-            </a>
-          </li>
-
-          <li class="menu-link" >
-            <a routerLink="/der/emplois-du-temps" routerLinkActive="active">
-              <span ><fa-icon [icon]="icons.cl_check"></fa-icon> Les emplois du temps</span>
-            </a>
-          </li>
          
           <li class="menu-link">
-            <a routerLink="/der">
-              <span><fa-icon [icon]="icons.grade"></fa-icon>Programmer soutenance</span>
+            <a routerLink="/r-scolarite/import">
+              <span><fa-icon [icon]="icons.chartArea"></fa-icon>Importer</span>
             </a>
           </li>
-          <li class="menu-link">
-            <a routerLink="/der/#">
-              <span><fa-icon [icon]="icons.archive"></fa-icon>Rapport et Memoire</span>
+          <!-- <li class="menu-link" >
+            <a routerLink="#">
+              <span ><fa-icon [icon]="icons.book"></fa-icon> Bibliotheque</span>
+            </a> -->
+         
+          <!-- <li class="menu-link">
+            <a routerLink="/r-scolarite/">
+              <span><fa-icon [icon]="icons.setting"></fa-icon>Paramettre</span>
             </a>
-          </li>
+          </li> -->
           <!-- ---------------- -->
           <!-- <li class="menu-link">
             <div (click)="toggleSubMenuArchive()">

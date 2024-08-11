@@ -9,7 +9,6 @@ import { Semestres } from '../../Models/Semestre';
 import { Module } from '../../Models/Module';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Students_Module } from '../../Models/studends_modules';
-import { StudenModules_classe } from '../../Classes/Module_classe';
 import { SchoolService } from '../../../Services/school.service';
 import { SchoolInfo } from '../../Models/School-info';
 import { Location } from '@angular/common';
@@ -48,7 +47,6 @@ export class StudentNoteComponent implements OnInit {
   filteredItems : Student[] = []
   pages: number[] = []
 
-   ClassModule_classe = new StudenModules_classe()
   show_widget_add_note: boolean = false;
   idSudent_select!: number; 
   
@@ -73,13 +71,7 @@ export class StudentNoteComponent implements OnInit {
   goBack(){
     this.location.back();
   }
-  // ----------------------------------get all semestre 
-  // loadSemestre(){
-  //   this.semestreService.get_by_classe(this.idUrl).subscribe(data =>{
-  //     this.semestres = data;
-  //     console.log(this.semestres, "semestre")
-  //   })
-  // }
+ 
   // ---------------------------------get all module without notes
  
   loadStudents(){

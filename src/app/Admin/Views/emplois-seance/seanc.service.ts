@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Seances } from '../../Models/Seances';
 import { Response_String } from '../../Models/Response_String';
+import { Configure_seance } from '../../Models/Configure_seance';
+import { Emplois } from '../../Models/Emplois';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +33,13 @@ export class SeancService {
 
   getSeance_byId(idSeance: number) : Observable<any>{
     return this.http.get<any>(this.baseUrl+ "get-by-id/" +idSeance);
+  }
+  // ------------------------------add config seance
+  addConfigureSeance(config : Configure_seance[]) : Observable<Response_String>{
+    return this.http.post<Response_String>(this.baseUrl+"add-config", config)
+  }
+  get_all_configSeance(idEmploi : number) : Observable<Configure_seance[]>{
+    return this.http.get<Configure_seance[]>(this.baseUrl+"all-config-by-id-emploi/" + idEmploi)
   }
   
 }

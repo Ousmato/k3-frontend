@@ -85,9 +85,11 @@
   #sidebar ul li a {
     text-decoration: none;
     padding: 10px;
-    font-size: 1.1em;
+    font-size: 14px;
     display: block;
-    color: white;
+    color: var(--primary);
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
   
   #sidebar ul li a:hover {

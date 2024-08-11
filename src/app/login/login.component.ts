@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
       this.authService.login(email, password).subscribe({
         next: (data) =>{
           console.log(data.role, "data connect")
-          if (data.role == Admin_role.super_admin.toLocaleLowerCase()) {
+          if (data.role === Admin_role.ADMINISTRATEUR.toLocaleLowerCase()) {
 
             const adminDataString = JSON.stringify(data);
             sessionStorage.setItem("admin", adminDataString);
@@ -55,29 +55,39 @@ export class LoginComponent implements OnInit {
             
             
   
-          } else if (data.role == Admin_role.dga.toLocaleLowerCase()) {
+          } else if (data.role === Admin_role.DGA.toLocaleLowerCase()) {
             
             const adminDataString = JSON.stringify(data);
             // console.log(adminDataString, "string data");
             sessionStorage.setItem("dga", adminDataString);
             this.toastr.success('Connexion avec succès!!', 'Succès',{timeOut: 3000})
             console.log('Je suis dga');
-            this.route.navigate(['dga'])
+            this.route.navigate(['/dga'])
 
-          }else if(data.role == Admin_role.finance.toLocaleLowerCase()){
+          }else if(data.role === Admin_role.SCOLARITE.toLocaleLowerCase()){
             const adminDataString = JSON.stringify(data);
             // console.log(adminDataString, "string data");
-            sessionStorage.setItem("finance", adminDataString);
+            sessionStorage.setItem("scolarite", adminDataString);
             this.toastr.success('Connexion avec succès!!', 'Succès',{timeOut: 3000})
-            this.route.navigate(['/finance']);
+            this.route.navigate(['/r-scolarite']);
   
-          } else if (data.role == Admin_role.der.toLocaleLowerCase()) {
+          } else if (data.role === Admin_role.DER.toLocaleLowerCase()) {
             const adminDataString = JSON.stringify(data);
             sessionStorage.setItem("der", adminDataString);
-            this.route.navigate(['der']);
+            this.route.navigate(['/der']);
   
-          } else {
-            console.log('Utilisateur inconnu');
+          } else if (data.role === Admin_role.COMPTABLE.toLocaleLowerCase()) {
+            const adminDataString = JSON.stringify(data);
+            sessionStorage.setItem("comptable", adminDataString);
+            this.route.navigate(['/comptable']);
+            
+            } else if (data.role === Admin_role.DG.toLocaleLowerCase()) {
+              const adminDataString = JSON.stringify(data);
+              sessionStorage.setItem("dg", adminDataString);
+              this.route.navigate(['/dg']);
+
+          }else{
+            this.toastr.error('Identifiant ou mot de passe incorrect', 'Erreur',)
           }
         },
         error: (erreur) =>{

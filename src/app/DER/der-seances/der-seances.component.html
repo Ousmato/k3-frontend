@@ -53,7 +53,7 @@
                                    <div class="select-al input">
                                         <span>Sélectionner tout</span>
                                             <input type="checkbox" class="custom-checked" (change)="selectAll($event)" [checked]="areAllChecked()" >
-                                        </div>
+                                    </div>
                                     <div class="form form-group">
                                         
                                         <ng-container *ngFor="let dateInfo of datesWithDays">
@@ -70,14 +70,7 @@
                                 </div> 
                                 </div>
                          
-                            
-                        <!-- <select class="form-select jours" formControlName="jour"  [class.is-invalid]="form_seance.get('jour')!.invalid && form_seance.get('jour')!.touched ">
-                          <option selected disabled value="">Choisir Le Jour</option>
-                          <option *ngFor="let dateInfo of datesWithDays" [value]="dateInfo.date">{{dateInfo.day}}</option>
-                        </select> 
-                        <span *ngIf="form_seance.controls['jour'].invalid && form_seance.controls['jour']!.touched" [ngStyle]="{color:'red'}">
-                          Champ obligatoire*
-                        </span> -->
+                     
                     </div>
                 </ng-container>
                     <div class="form form-group">

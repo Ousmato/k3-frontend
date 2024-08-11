@@ -51,9 +51,7 @@ const routes: Routes = [{path: "", component: SidebarComponent,
       {path: 'seance', component: EmploisSeanceComponent, data:{title: "Ajout des seances"}},
       {path: 'enseignant-pre-detail', component: EnseignantPrDetailsComponent},
       {path: 'all-notes', component: AllNotesSemestreComponent, data:{title: "Notes du Semestre"}},
-      {path: 'student-edit', component: StudentEditComponent, data:{title: "Formulaire de Modification"}},
-      {path: 'student-view', component: StudentViewComponent, data:{title: "Information de l'etudiant"}},
-      
+     
      
     ]
 

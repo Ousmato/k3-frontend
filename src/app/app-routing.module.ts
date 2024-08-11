@@ -11,11 +11,10 @@ const routes: Routes = [
     loadChildren: () => import('./sidebar/sidebar.module').then(m =>m.SidebarModule),
     canActivate: [authGuard]
   },
-
-  // {path : "finance",
-  //   loadChildren: () =>import('./student-dashboard/student-dashboard.module').then(m =>m.StudentDashboardModule),
-  //   canActivate: [authGuard]
-  // },
+  {path: "r-scolarite",
+    loadChildren: ()=> import('./R-SCOLARITE/r-s-sidebar/r-s-sidebar.module').then(m =>m.RSSidebarModule),
+    canActivate: [authGuard]
+  },
 
   {path: "der",
     loadChildren : () => import('./DER/der-sidebar/der-sidebar.module').then(m =>m.DerSidebarModule),
@@ -25,10 +24,11 @@ const routes: Routes = [
   {path: 'dga',
     loadChildren: () => import('./DGA/dga-sidebar/dga-sidebar.module').then(m => m.DgaSidebarModule),
     canActivate: [authGuard]
+  },
+  {path: 'comptable',
+    loadChildren: () =>import('./COMPTABLE/compte-sidebar/compte-sidebar.module').then(m=>m.CompteSidebarModule),
   }
-  // {path: "dashbord",
-  //   loadChildren: () => import('./Admin/Views/dasboard/dasboard.module').then(m =>m.DasboardModule)
-  // },
+  
 ];
 
 @NgModule({

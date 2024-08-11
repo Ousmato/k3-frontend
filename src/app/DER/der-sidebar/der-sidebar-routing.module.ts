@@ -11,6 +11,7 @@ import { DerEmploiDuTempsComponent } from '../der-emploi-du-temps-list/der-emplo
 import { EmploisDuTempsComponent } from '../emplois-du-temps/emplois-du-temps.component';
 import { EmploisSeanceComponent } from '../../Admin/Views/emplois-seance/emplois-seance.component';
 import { DerEditSeanceComponent } from '../Widget/der-edit-seance/der-edit-seance.component';
+import { AddGroupStudentComponent } from '../Widget/add-group-student/add-group-student.component';
 
 const routes: Routes = [{path: '', component: DerSidebarComponent,
   children: [
@@ -23,6 +24,7 @@ const routes: Routes = [{path: '', component: DerSidebarComponent,
     {path: 'emplois-du-temps', component: DerEmploiDuTempsComponent},
     {path: 'emplois-seances', component: EmploisSeanceComponent},
     {path: 'edit-seance', component: DerEditSeanceComponent},
+    {path: 'group-student', component: AddGroupStudentComponent},
 
     
     // { path: 'classe-student', component: ClassStudentsComponent, data:{title: "Les Classes de Formation"} },

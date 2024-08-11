@@ -51,11 +51,6 @@ export class EnseignantComponent implements OnInit {
       );
     }
   }
- 
-  // ----------------------toggle to singin page
-  toggle_toSingin(){
-    this.root.navigate(['/der/t-singin'])
-  }
 
   // ---------------------------toggle to edit page
   toggle_toEdit(idEnseignant: number){

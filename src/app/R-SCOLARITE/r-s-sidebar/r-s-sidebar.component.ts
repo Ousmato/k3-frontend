@@ -1,23 +1,21 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { PageTitleService } from '../Services/page-title.service';
-import { IconsService } from '../Services/icons.service';
+import { Admin, Admin_role } from '../../Admin/Models/Admin';
+import { PageTitleService } from '../../Services/page-title.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { SchoolService } from '../Services/school.service';
-import { SideBarService } from '../sidebar/side-bar.service';
-import { SchoolInfo } from '../Admin/Models/School-info';
-import { Admin, Admin_role } from '../Admin/Models/Admin';
+import { IconsService } from '../../Services/icons.service';
+import { SchoolService } from '../../Services/school.service';
+import { SideBarService } from '../../sidebar/side-bar.service';
 import { Subscription } from 'rxjs';
-// import { faBars, faHome, faUser, faCog, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-
-
+import { SchoolInfo } from '../../Admin/Models/School-info';
 
 @Component({
-  selector: 'app-student-dashboard',
-  templateUrl: './student-dashboard.component.html',
-  styleUrl: './student-dashboard.component.css'
+  selector: 'app-r-s-sidebar',
+  templateUrl: './r-s-sidebar.component.html',
+  styleUrl: './r-s-sidebar.component.css'
 })
-export class StudentDashboardComponent implements OnInit, OnDestroy {
+export class RSSidebarComponent implements OnInit, OnDestroy {
 
+  
   title!: string;
   isSidebarCollapsed = false;
   isSubmenuCollapsed = false;
@@ -85,7 +83,7 @@ ngOnInit(): void {
       const childRoute = this.route.firstChild;
       if (childRoute) {
         const componentName: any = childRoute.snapshot.component?.name; 
-        console.log(componentName, "nam componenrt")
+        // console.log(componentName, "nam componenrt")
         this.showSearchInput = false; // Par défaut, masquer la barre de recherche
         for (let cn of this.component_Name) {
           if (cn === componentName) {
@@ -124,12 +122,12 @@ loa_page_title(){
 }
 // ------------------------------------------load current admin
 load_admin(){
-  const admin = sessionStorage.getItem('finance');
+  const admin = sessionStorage.getItem('scolarite');
  
   if(admin){
     
     this.dataAdmin = JSON.parse(admin);
-     if(this.dataAdmin.role != Admin_role.super_admin){
+     if(this.dataAdmin.role != Admin_role.ADMINISTRATEUR){
       this.desable_add_button  = false
     console.log("ne pas admin");
   }
@@ -155,5 +153,6 @@ load_admin(){
       this.routerEventsSubscription.unsubscribe();
     }
   }
- 
+
+
 }

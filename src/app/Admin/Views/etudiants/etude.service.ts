@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Student } from '../../Models/Students';
+import { Participant, Student, Student_group } from '../../Models/Students';
 import { Notes } from '../../Models/Notes';
 import { Module } from '../../Models/Module';
 import { Response_String } from '../../Models/Response_String';
@@ -22,7 +22,7 @@ export class EtudeService {
   // ----------------------get all student by idclasse
   
   getStudentByIdClasse(idClasse: number) : Observable<Student[]>{
-    return this.http.get<Student[]>(this.baseUrl + "list-student-by-classe/" + idClasse);
+    return this.http.get<Student[]>(this.baseUrl + "student-by-classe-id/" + idClasse);
   }
 
   getStudent_ByIdClasse(page: number, size: number, idClasse: number): Observable<StudentPages> {
@@ -76,5 +76,22 @@ export class EtudeService {
   // ----------------------------------update note
   update_note(note: Notes) : Observable<Response_String>{
     return this.http.put<Response_String>(this.baseUrl_note+"update-note", note);
+  }
+  // ---------------------------------add groupe 
+  addGroup(group: Student_group) : Observable<Response_String>{
+    return this.http.post<Response_String>(this.baseUrl+"add-group", group);
+  }
+  // -------------------------get all group
+  getAllGroup() : Observable<Student_group[]>{
+    return this.http.get<Student_group[]>(this.baseUrl+"find-all-groupe");
+  }
+  // ----------------add participant
+  addParticipant(participants: Participant[]) : Observable<Response_String>{
+    return this.http.post<Response_String>(this.baseUrl+"add-more-participant", participants);
+  }
+
+  // ---------------------get all participants by emploi id
+  getParticipantsByEmploiId(idEmploi: number) : Observable<Participant[]>{
+    return this.http.get<Participant[]>(this.baseUrl+"list-participant-by-emploi-id/"+idEmploi);
   }
 }

@@ -12,11 +12,11 @@ export interface Admin{
 }
 
 export enum Admin_role{
-    super_admin = 'admin',
-    finance = 'finance',
-    secretaire = 'secretaire',
-    dg = "dg",
-    dga ="dga",
-    der = "der",
-    scolarite = "scolarite"
+    ADMINISTRATEUR = 'admin',
+    COMPTABLE = 'comptable',
+    SECRETAIRE = 'secretaire',
+    DG = "dg",
+    DGA ="dga",
+    DER = "der",
+    SCOLARITE = "scolarite"
 }

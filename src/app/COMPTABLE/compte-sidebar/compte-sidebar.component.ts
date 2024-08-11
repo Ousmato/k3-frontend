@@ -9,11 +9,11 @@ import { SchoolInfo } from '../../Admin/Models/School-info';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-der-sidebar',
-  templateUrl: './der-sidebar.component.html',
-  styleUrl: './der-sidebar.component.css'
+  selector: 'app-compte-sidebar',
+  templateUrl: './compte-sidebar.component.html',
+  styleUrl: './compte-sidebar.component.css'
 })
-export class DerSidebarComponent implements OnInit, OnDestroy {
+export class CompteSidebarComponent implements OnInit, OnDestroy{
 
   
   title!: string;
@@ -83,7 +83,7 @@ ngOnInit(): void {
       const childRoute = this.route.firstChild;
       if (childRoute) {
         const componentName: any = childRoute.snapshot.component?.name; 
-        console.log(componentName, "nam componenrt")
+        // console.log(componentName, "nam componenrt")
         this.showSearchInput = false; // Par défaut, masquer la barre de recherche
         for (let cn of this.component_Name) {
           if (cn === componentName) {
@@ -122,7 +122,7 @@ loa_page_title(){
 }
 // ------------------------------------------load current admin
 load_admin(){
-  const admin = sessionStorage.getItem('der');
+  const admin = sessionStorage.getItem('comptable');
  
   if(admin){
     
@@ -153,5 +153,6 @@ load_admin(){
       this.routerEventsSubscription.unsubscribe();
     }
   }
+
 
 }

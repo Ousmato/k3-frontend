@@ -7,11 +7,20 @@ main{
     /* display: flex; */
     /* gap: 20px; */
 }
+.position-realive{
+    position: relative;
+}
 
 span{
     font-size: 12px;
-    /* color: blue; */
-    /* font-weight: 300; */
+}
+.configure-form p{
+    color: var(--secondary);
+    cursor: pointer;
+    &:hover{
+        color: var(--primary);
+    }
+
 }
 /* --------------------------------------- */
 .month-contenaire{
@@ -23,15 +32,19 @@ span{
 .month-contenaire p{
     color: var(--secondary);
     margin: 0;
-    font-size: 16px;
+    font-size: 14px;
 }
+
 table td{
     font-size: 14px;
 }
 .refresh{
+   
+    margin-top: 15px; 
+}
+.refresh span{
     font-size: 16px;
-    width: 100px;
-    padding: 5px;
+    padding: 8px;
     cursor: pointer;
     background-color: var(--primary);
     color: var(--secondary);
@@ -41,6 +54,7 @@ table td{
         background-color: var(--secondary);
     }
 }
+
 .childre-1{
     padding: 8px;
     text-align: left;
@@ -48,8 +62,10 @@ table td{
 .seance-content{
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid var(--tertiary);
+    align-items: center;
+    /* border-bottom: 1px solid var(--tertiary); */
     padding-bottom: 20px;
+    height: 140px;
     
     
 }
@@ -64,9 +80,9 @@ table td{
 .childre-2 span{
     color: var(--secondary);
 }
-.text-left{
+/* .text-left{
     display: none;
-}
+} */
 .horaire{
     display: none;
 }
@@ -107,24 +123,7 @@ p{
     
  }
  /* ----------------------form style */
-#idForm .form-add{
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    justify-content: space-between;
-    width: 50%;
-    top: 0;
-    left: 15%;
-    background-color: white;
-    border: #ccc;
-    border-radius: 8px;
-    /* padding: 20px; */
-    margin-top: 20px;
-    margin-left: 20px 0 20px 0;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1001;
-    position: absolute;
-}
+
 .input-time{
     display: flex;
     justify-content: space-between;
@@ -319,4 +318,9 @@ p{
 .div-content{
     padding: 15px;
     gap: 10px;
+}
+.text-right{
+    width: 100%;
+    display: flex;
+    justify-content: end;
 }

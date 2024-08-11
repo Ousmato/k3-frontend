@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Student } from '../../Models/Students';
+import { Student, Type_status } from '../../Models/Students';
 import { ClassStudentService } from '../../../DGA/class-students/class-student.service';
 import { EtudeService } from '../../Views/etudiants/etude.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,6 +16,7 @@ import { Location } from '@angular/common';
 export class StudentViewComponent implements OnInit {
   student?: Student;
   idStudent!: number
+  type_status!: Type_status[]
   montantRestant!: number
   update_paie_student_form!: FormGroup
   isShow: boolean = false
@@ -29,13 +30,29 @@ export class StudentViewComponent implements OnInit {
   goBack(){
     this.location.back();
   }
-
+  // ------------------label to specifie type student status
+  getLabel(): string {
+    if (this.student?.status === Type_status.REG) {
+      return 'Frais';
+    } else {
+      return 'Scolarité';
+    }
+  }
+  // --------------------permission to pay
+  getPermission(): boolean {
+    const autorize = sessionStorage.getItem('comptable');
+    if(autorize){
+      return true;
+    }
+    return false
+  }
 // -----------------------------load student
   loadStudent() {
     this.router.queryParams.subscribe(params => {
       this.idStudent = +params['id'];
       this.studentService.getStudent_by_id(this.idStudent).subscribe(data =>{
         this.student = data;
+       console.log( this.student.status , "status")
         this.student.urlPhoto = 'http://localhost/StudentImg/'+this.student.urlPhoto
       
       
@@ -43,7 +60,7 @@ export class StudentViewComponent implements OnInit {
       console.log(montant_payer, "payer")
       const school_scolarite = this.student?.idClasse.scolarite;
       console.log(school_scolarite, "scolarite")
-      this.montantRestant = +school_scolarite! - +montant_payer
+      this.montantRestant = +school_scolarite! - +montant_payer!
 
       this.update_paie_student_form.get('idEtudiant')?.setValue(this.student.idEtudiant)
       });

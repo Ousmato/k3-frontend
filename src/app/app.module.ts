@@ -11,7 +11,6 @@ import {  provideHttpClient } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SinginComponent } from './Admin/Component/singin/singin.component';
 import { StudentSidebarComponent } from './student-sidebar/student-sidebar.component';
-import { StudentDashboardComponent } from './student-dashboard/student-dashboard.component';
 import { ClassStudentsComponent } from './DGA/class-students/class-students.component'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SettingsComponent } from './Admin/Views/settings/settings.component';
@@ -64,6 +63,11 @@ import { DgaMentionListComponent } from './DGA/dga-mention-list/dga-mention-list
 import { DgaHomeComponent } from './DGA/dga-home/dga-home.component';
 import { DgaSettingComponent } from './DGA/dga-setting/dga-setting.component';
 import { DerEditSeanceComponent } from './DER/Widget/der-edit-seance/der-edit-seance.component';
+import { ConfigureSeanceComponent } from './DER/Widget/configure-seance/configure-seance.component';
+import { AddGroupStudentComponent } from './DER/Widget/add-group-student/add-group-student.component';
+import { RSSidebarComponent } from './R-SCOLARITE/r-s-sidebar/r-s-sidebar.component';
+import { RSHomeComponent } from './R-SCOLARITE/r-s-home/r-s-home.component';
+import { CompteSidebarComponent } from './COMPTABLE/compte-sidebar/compte-sidebar.component';
 
 registerLocaleData(localeFr);
 @NgModule({
@@ -75,7 +79,6 @@ registerLocaleData(localeFr);
     LoginComponent,
     SinginComponent,
     StudentSidebarComponent,
-    StudentDashboardComponent,
     ClassStudentsComponent,
     SettingsComponent,
     EmploisDuTempsComponent,
@@ -122,6 +125,11 @@ registerLocaleData(localeFr);
     DgaHomeComponent,
     DgaSettingComponent,
     DerEditSeanceComponent,
+    ConfigureSeanceComponent,
+    AddGroupStudentComponent,
+    RSSidebarComponent,
+    RSHomeComponent,
+    CompteSidebarComponent,
   ],
   imports: [
     BrowserModule,
