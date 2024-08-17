@@ -53,5 +53,10 @@ export class ClassStudentService {
   update_classe(classe: ClassRoom): Observable<Response_String> {
     return this.http.put<Response_String>(this.baseUrl + 'update-class', classe);
   }
+
+  // ----------------count class number
+  countClassNumber(): Observable<number> {
+    return this.http.get<number>(this.baseUrl + 'count-class');
+  }
   
 }

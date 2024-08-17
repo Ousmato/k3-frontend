@@ -1,5 +1,6 @@
 <form  [formGroup]="update_filiere_form" (ngSubmit)="update_filiere(selectedFiliereId)">
     <h4>Modifier Filière</h4>
+   <div class="form-content">
     <div class="form form-group">
         <select  class="form-select" formControlName="id" placeholder="Choisir la clase" (change)="onFiliereChange($event)">
         <option  selected disabled value="">Choisir Le niveau...</option>
@@ -33,4 +34,6 @@
         <a (click)="close_modal()" class="submit" ><span>Annuler</span></a>
         <button class="submit" type="submit" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
     </div>
+   </div>
+    
 </form>

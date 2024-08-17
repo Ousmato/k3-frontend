@@ -33,6 +33,7 @@ tr td{
 .btn-contenaire{
     display: flex;
     justify-content: space-between;
+    gap: 20px;
 }
 .btn-contenaire a{
     cursor: pointer;
@@ -54,18 +55,7 @@ img{
     height: 50px;
     width: auto;
 }
-.search-icon {
-    position: absolute;
-    transform: translateY(50%);
-    color: var(--secondary);
-    pointer-events: none;
-    right: 544px;
-    background-color: var(--primary-light);
-    bottom: 25px;
-    border-radius: 3px;
-    padding: 8px;
-    font-size: 1.2rem;
-}
+
 span{
     margin-left: 5px;
     font-size: 10px;

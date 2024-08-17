@@ -26,12 +26,12 @@
             </div>
             <ng-container *ngIf=" classRom === classeSelect">
                 <div class="views" *ngIf="isShow_link_modal">
-                    <li> <a (click)="toggle_to_emplois(classeSelect)" > {{ isDesabled ? 'Consulter l\'emploi' : 'Créer un emploi' }}</a></li>
-                    <li><a (click)="getAll_ues(classeSelect.id!)" >Ajouter des modules</a></li>
-                    <li><a (click)="toggle_to_notes(classeSelect.id!)" >Ajouter des notes</a></li>
+                    <!-- <li *ngIf="getPermission()"> <a (click)="toggle_to_emplois(classeSelect)" > Consulter l'emploi du temps</a></li> -->
+                    <li *ngIf="permission"><a (click)="getAll_ues(classeSelect.id!)" >Ajouter des modules</a></li>
+                    <li *ngIf="permission" ><a (click)="toggle_to_notes(classeSelect.id!)" >Ajouter des notes</a></li>
                     <li><a (click)="toggle_to_presence(classeSelect.id!)" >Liste des étudiants</a></li>
                     <li><a (click)="toggle_to_noteSemestre(classeSelect.id!)" >Notes du semestre</a></li>
-                    <li><a (click)="toggle_to_update_emplois (classeSelect.id!)" >Modifier l'emploi du temps</a></li>
+                    <!-- <li><a (click)="toggle_to_update_emplois (classeSelect.id!)" >Modifier l'emploi du temps</a></li> -->
                     <li><a >Archives</a></li>
                 </div>
             </ng-container>
@@ -43,12 +43,12 @@
 </ng-container>
 <ng-template #notFundTemplate>
     <div class="not-found">
-         <!-- <div class="img">
+         <div class="img">
             <img src="assets/error-404-monochrome.svg" alt="">
-        </div> -->
+        </div>
         
-        <p>Aucune mention trouvée, veillez vous rendre dans le parametre pour en ajouter</p>
-        <a (click)="goToParamettre()">Cliquer ici <fa-icon [icon]="icons.next"></fa-icon></a>
+        <p>Aucune mention trouvée, <span *ngIf="!permission">veillez vous rendre dans le parametre pour en ajouter</span></p>
+        <a (click)="goToParamettre()" *ngIf="!permission">Cliquer ici <fa-icon [icon]="icons.next"></fa-icon></a>
       
     </div>
 </ng-template>

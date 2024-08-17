@@ -10,6 +10,7 @@ import { ActivatedRoute, NavigationExtras, Route, Router } from '@angular/router
 import { PageTitleService } from '../../../Services/page-title.service';
 import { StudentPages, TeacherPages } from '../../Models/Pagination-module';
 import { SideBarService } from '../../../sidebar/side-bar.service';
+import { Admin } from '../../Models/Admin';
 
 @Component({
   selector: 'app-etudiants',
@@ -17,6 +18,7 @@ import { SideBarService } from '../../../sidebar/side-bar.service';
   styleUrl: './etudiants.component.css'
 })
 export class EtudiantsComponent implements OnInit {
+  
   searchTerm: string = '';
   students: Student[] = [];
 
@@ -26,6 +28,8 @@ export class EtudiantsComponent implements OnInit {
   filteredItems : Student[] = []
   pages: number[] = []
   
+  admin!: Admin
+  permission: boolean = false
   update_student_form!: FormGroup
   student!: Student;
   fileName!: File
@@ -44,6 +48,15 @@ export class EtudiantsComponent implements OnInit {
       this.filterStudents();
     
     });
+  }
+// ----------------------------------get permission
+  getPermission(): boolean {
+    const autorize = sessionStorage.getItem('scolarite');
+    if(autorize){
+     this.permission = true
+      return true;
+    }
+    return false
   }
   // ------------------------------filter students
   filterStudents() {
@@ -69,7 +82,8 @@ export class EtudiantsComponent implements OnInit {
       this.filteredItems = this.students;
       this.pages = Array.from({ length: data.totalPages! }, (_, i) => i);
 
-      console.log(this.students, "pagenation teachers")
+      this.extractUniqueStudents(this.students)
+      // console.log(this.students, "pagenation teachers")
     });
   }
   // ------------------------------next page
@@ -135,7 +149,14 @@ export class EtudiantsComponent implements OnInit {
     const navigationExtras: NavigationExtras = {
       queryParams: { id: student?.idEtudiant }
     };
-    this.root.navigate(['/r-scolarite/student-edit'], navigationExtras)
+    const comptable = sessionStorage.getItem('comptable')
+    // const scolarite = sessionStorage.getItem('scolarite')
+    if(comptable){
+      this.root.navigate(['/comptable/student-edit'], navigationExtras)
+    }else{
+      this.root.navigate(['/r-scolarite/student-edit'], navigationExtras)
+    }
+    // this.root.navigate(['/r-scolarite/student-edit'], navigationExtras)
   }
 
   // ------------------------------------------------------------
@@ -144,7 +165,17 @@ export class EtudiantsComponent implements OnInit {
     const navigationExtras: NavigationExtras = {
       queryParams: { id: student?.idEtudiant }
     };
-    this.root.navigate(['/r-scolarite/student-view'], navigationExtras)
+    const comptable = sessionStorage.getItem('comptable')
+    const secretaire = sessionStorage.getItem('secretaire')
+    if(comptable){
+      this.root.navigate(['/comptable/student-view'], navigationExtras)
+
+    }else if(secretaire){
+      this.root.navigate(['/secretaire/student-view'], navigationExtras)
+    }else{
+      this.root.navigate(['/r-scolarite/student-view'], navigationExtras)
+    }
+    // this.root.navigate(['/r-scolarite/student-view'], navigationExtras)
   }
   // ----------------------------------------------------------
   deleted_student(id: number) {
@@ -159,16 +190,22 @@ export class EtudiantsComponent implements OnInit {
       }
     )
   }
-  // ------------------------------filter methode
-  //  filteredStudents() {
-  //   if (!this.searchTerm) {
-  //     return this.students;
-  //   }
-  //   return this.students.filter(student =>
-  //     student.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-  //     student.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-  //     student.idClasse.idFiliere?.idFiliere?.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase())
-  //     // student.telephone.toLowerCase().includes(this.searchTerm.toLowerCase())
-  //   );
-  // }
+ 
+  // ----------------------------------extration 
+  private extractUniqueStudents(notes: Student[]): Student[] {
+    const uniqueStudents = new Set<number>(); // Utilise un Set pour stocker les idEtudiant uniques
+    const result: Student[] = [];
+    
+    notes.forEach(item => {
+      if (!uniqueStudents.has(item.idEtudiant!)) { // Vérifie si l'idEtudiant n'est pas déjà dans le Set
+        uniqueStudents.add(item.idEtudiant!); 
+        result.push(item); // Ajoute l'étudiant au tableau résultant des étudiants uniques
+      }
+    });
+    result.forEach((student, index) => {
+      student.numero = index + 1; // Ajoute 1 pour commencer à partir de 1 (si nécessaire)
+    });
+
+    return result;
+  }
 }

@@ -1,15 +1,12 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { SideBarService } from './side-bar.service';
 import { IconsService } from '../Services/icons.service';
-import { SetService } from '../Admin/Views/settings/set.service';
 import { SchoolService } from '../Services/school.service';
 import { SchoolInfo } from '../Admin/Models/School-info';
 import { Admin } from '../Admin/Models/Admin';
 import { PageTitleService } from '../Services/page-title.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { FichePaieComponent } from '../Admin/Views/fiche-paie/fiche-paie.component';
-import { ArchivesComponent } from '../Admin/Views/archives/archives.component';
 
 
 @Component({

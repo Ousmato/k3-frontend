@@ -86,7 +86,7 @@ export class FichePaieComponent  implements OnInit{
     const navigationExtrat : NavigationExtras ={
       queryParams: {id: idEnseignant}
     }
-    this.router.navigate(['/sidebar/fiche-enseignant'], navigationExtrat);
+    this.router.navigate(['/secretaire/fiche-enseignant'], navigationExtrat);
   }
   // -------------------------------------method to imprime
    

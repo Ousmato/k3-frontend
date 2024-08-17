@@ -4,7 +4,7 @@ import { EnseiService } from '../../Views/enseignant/ensei.service';
 import { SchoolService } from '../../../Services/school.service';
 import { ActivatedRoute } from '@angular/router';
 
-import jspdf from 'jspdf';  
+import jspdf, { jsPDF } from 'jspdf';  
 import html2canvas from 'html2canvas';
 import { SchoolInfo } from '../../Models/School-info';
 import { Teacher } from '../../Models/Teachers';
@@ -20,6 +20,9 @@ export class EnseignantFichePaieComponent implements OnInit{
   schoolInfo?: SchoolInfo;
   enseignant!: Teacher;
   moment!: string;
+  sum_montant: string = ""
+  montant_total: number = 0
+
 
   paie: Paie[] =[]
   constructor(private enseignantService: EnseiService, public icons: IconsService,
@@ -36,8 +39,18 @@ export class EnseignantFichePaieComponent implements OnInit{
       })
       this.enseignantService.getPaieBy_Enseignant_id(this.idEnseignant).subscribe(data =>{
         this.paie = data;
+
         this.paie.forEach(p =>{
           p.montant = p.coutHeure * p.nbreHeures;
+
+          const formatter = new Intl.NumberFormat('fr-FR', {
+            style: 'currency',
+            currency: 'XOF', 
+        });
+          p.coutHeureFormatter = formatter.format(p.coutHeure)
+          p.montantFormatter = formatter.format(p.montant)
+          this.sum_montant = formatter.format(this.paie.reduce((a, p) => a + p.montant!, 0));
+
           this.enseignant = p.idPresenceTeachers.idSeance.idTeacher
 
           const heureFin = p.idPresenceTeachers.idSeance.heureFin;
@@ -52,13 +65,16 @@ export class EnseignantFichePaieComponent implements OnInit{
           // Convertir les heures en millisecondes pour les comparer
           const h_m = new Date(date.setHours(12, 0, 0, 0)).getTime(); 
 
-          if(heureFinDate.getHours() < h_m ){
-            this.moment = "Matin"
+          if(heureFinDate.getHours() <= h_m){
+            this.moment = "Matin/Soir"
+          }else if(heureFinDate.getHours() < h_m){
+            this.moment = 'Matin'
             }else{
               this.moment = "Soir"
           }
        
         })
+       
         
       })
   }
@@ -94,4 +110,7 @@ export class EnseignantFichePaieComponent implements OnInit{
       button.style.display = "block"
     });  
   } 
+  
+  
+  
 }

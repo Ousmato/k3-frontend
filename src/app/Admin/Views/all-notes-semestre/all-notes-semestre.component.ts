@@ -144,8 +144,8 @@ export class AllNotesSemestreComponent  implements OnInit{
     this.schollService.getSchools().subscribe(data => {
       this.school = data;
       this.school.urlPhoto = `http://localhost/StudentImg/${this.school.urlPhoto}`;
-      const dte = new Date(this.school.debutAnnee);
-      const dtf = new Date(this.school.finAnnee);
+      const dte = new Date(this.school.anneeScolaire.debutAnnee);
+      const dtf = new Date(this.school.anneeScolaire.finAnnee);
       const yearDte = dte.getFullYear();
       const yearDtf = dtf.getFullYear();
       this.school.annee = yearDte + '-' + yearDtf;

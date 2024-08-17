@@ -45,6 +45,21 @@
                     </span>
                     
                 </div>
+                <!-- button radio sexe start -->
+                 <div class="input">
+                    <label  class="label form-label">Sexe :</label>
+                    <div class="radio-button">
+                        <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio1" value="Homme"  required>
+                        <label class="form-check-label" for="inlineRadio1">Homme</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio2" value="Femme" required>
+                        <label class="form-check-label" for="inlineRadio2">Femme</label>
+                        </div>
+                    </div>
+                 </div>
             </div>
         <!-- ----------------------secon column----------- -->
             <div class="chil">
@@ -128,25 +143,16 @@
                     Champ obligatoire*
                     </span>                    
                 </div>
-
-                <!-- button radio sexe start -->
-                 <div class="input">
-                    <label  class="label form-label">Sexe :</label>
-                    <div class="radio-button">
-                        <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio1" value="Homme"  required>
-                        <label class="form-check-label" for="inlineRadio1">Homme</label>
-                        </div>
-
-                        <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio2" value="Femme" required>
-                        <label class="form-check-label" for="inlineRadio2">Femme</label>
-                        </div>
-                    </div>
-                 </div>
-             
-
-                
+                <div class="input">
+                    <label for="validationDefault03" class="label form-label">Année scolaire :</label>
+                    <select class="form-select" formControlName="idAnneeScolaire"  [class.is-invalid]="studentForm.get('idAnneeScolaire')!.invalid && studentForm.get('idAnneeScolaire')!.touched">
+                        <option  selected disabled value="">Choisir l'année scolaire </option>
+                        <option *ngFor="let annee of anneeScolaire" [value]="annee.id">Promotion {{annee.ans}}</option>
+                    </select>
+                    <span *ngIf="studentForm.controls['idAnneeScolaire'].invalid && studentForm.controls['idAnneeScolaire'].touched" [ngStyle]="{color: 'red'}">
+                    Champ obligatoire*
+                    </span>            
+                </div>
             </div>
         </div>
         <div class="col-12">

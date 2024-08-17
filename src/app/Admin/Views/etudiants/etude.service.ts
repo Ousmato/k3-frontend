@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Participant, Student, Student_group } from '../../Models/Students';
+import { Participant, Student, Student_count, Student_group } from '../../Models/Students';
 import { Notes } from '../../Models/Notes';
 import { Module } from '../../Models/Module';
 import { Response_String } from '../../Models/Response_String';
 import { NotesPages, StudentPages } from '../../Models/Pagination-module';
+import { get } from 'jquery';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,11 @@ export class EtudeService {
   getAll() : Observable<Student[]>{
     return this.http.get<Student[]>(this.baseUrl+"find-all");
   }
+
+  // -------------------------get all student by annee scolaire
+  // (idAnneeScolaire: number) : Observable<Student[]>{
+  //   return this.http.get<Student[]>(this.baseUrl+"get-by-idAnnee/" + idAnneeScolaire);
+  // }
   // ----------------------get all student by idclasse
   
   getStudentByIdClasse(idClasse: number) : Observable<Student[]>{
@@ -64,6 +70,10 @@ export class EtudeService {
     formData.append('file', file!);
     return this.http.put<Response_String>(this.baseUrl + 'update', formData);
   }
+  reInscriptionStudent(student: Student): Observable<Response_String> {
+    
+    return this.http.post<Response_String>(this.baseUrl + 're-inscription', student);
+  }
   // -----------------------update scolarite
   update_student_scolarite(idEtudiant: number, scolarite: number): Observable<Response_String> {
     const url = `${this.baseUrl}update-scolarite/${idEtudiant}`;
@@ -72,6 +82,11 @@ export class EtudeService {
   // ----------------------------------lad teacher by pagination
   getSudents(page: number, size: number): Observable<StudentPages> {
     return this.http.get<StudentPages>(`${this.baseUrl}list?page=${page}&size=${size}`);
+  }
+  // -----------------------get all student by id annee scolaire
+
+  getAll_by_idAnnee(idAnnee: number, page: number, size: number): Observable<StudentPages> {
+    return this.http.get<StudentPages>(`${this.baseUrl}student-by-anneScolaire-id/${idAnnee}?page=${page}&size=${size}`);
   }
   // ----------------------------------update note
   update_note(note: Notes) : Observable<Response_String>{
@@ -85,6 +100,13 @@ export class EtudeService {
   getAllGroup() : Observable<Student_group[]>{
     return this.http.get<Student_group[]>(this.baseUrl+"find-all-groupe");
   }
+
+  getListGroupByIdEmploi(idEmploi: number) : Observable<Student_group[]>{
+    return this.http.get<Student_group[]>(this.baseUrl+"list-group-by-idEmploi/"+idEmploi)
+  }
+  getListStudentsByIdGroup(idGroup: number) : Observable<Student[]>{
+    return this.http.get<Student[]>(this.baseUrl+"list-students-by-group-id/"+idGroup)
+  }
   // ----------------add participant
   addParticipant(participants: Participant[]) : Observable<Response_String>{
     return this.http.post<Response_String>(this.baseUrl+"add-more-participant", participants);
@@ -93,5 +115,17 @@ export class EtudeService {
   // ---------------------get all participants by emploi id
   getParticipantsByEmploiId(idEmploi: number) : Observable<Participant[]>{
     return this.http.get<Participant[]>(this.baseUrl+"list-participant-by-emploi-id/"+idEmploi);
+  }
+  // -----------------get sum scolarite of current year
+  getScolarite_annee_courante() : Observable<number>{
+    return this.http.get<number>(this.baseUrl+"sum-scolarite");
+  }
+  // ------------------get sum of reliquat of current year
+  getReliquat_annee_courante() : Observable<number>{
+    return this.http.get<number>(this.baseUrl+"sum-reliquat");
+  }
+  // ----------------get student number inscrit and non inscrit
+  getStudentNumber() : Observable<Student_count>{
+    return this.http.get<Student_count>(this.baseUrl+"student-count");
   }
 }

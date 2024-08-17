@@ -1,0 +1,161 @@
+main{
+    padding: 10px 20px;
+}
+.div-content{
+    display: flex;
+   
+   flex-direction: column;
+}
+.first-content{
+    display: flex;
+    gap: 30px;
+}
+.input-content{
+    width: 50%;
+    
+}
+.input-time{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.input-time .form-group{
+    width: 45%;
+}
+
+.form-group{
+    margin-top: 15px;
+}
+label{
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+.check-val{
+    display: flex;
+    justify-content: end;
+    gap: 20px;
+}
+.button-cash button{
+    border: none;
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 5px 20px;
+    border-radius: 5px;
+    background-color: var(--primary);
+    color: var(--secondary);
+    cursor: pointer;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+   
+}
+.check-val a{
+    border: none;
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 3px 20px;
+    border-radius: 5px;
+    background-color: var(--primary);
+    color: var(--secondary);
+    cursor: pointer;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+   
+}
+
+.check-val .isCheck-valid{
+    border: none;
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
+    padding: 3px 20px;
+    border-radius: 5px;
+    background-color: var(--primary);
+    color: var(--secondary);
+    cursor: pointer;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+   
+}
+
+input:focus, select:focus{
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 5px var(--primary);
+}
+
+.input-click{
+    cursor: pointer;
+}
+
+/* -----------------select jours select */
+
+  .views-add-ues{
+    width: 500px;
+    background-color: #fff;
+    position: absolute;
+    top: 20%;
+    left: 2%;
+    right: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+    z-index: 10001;
+   
+    }
+  .nom-class{
+    width: 100%;
+    height: 40px;
+    padding: 10px;
+    background-color: var(--primary);
+    color: var(--secondary);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+  }
+  .formModuleMatiere{
+    padding: 20px;
+  }
+
+  .input-disabled {
+    pointer-events: none; /* Désactive les événements de souris */
+    background-color: #e9ecef; /* Optionnel : ajoute une couleur de fond grisée */
+    cursor: not-allowed; /* Optionnel : change le curseur pour indiquer que l'élément est désactivé */
+}
+
+.input{
+    display: flex;
+    justify-content: space-between;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent; 
+    z-index: 1000; /* Assurez-vous que l'overlay est au-dessus de tout */
+  }
+
+  .back-button{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    font-size: 20px;
+    margin: 10px 0;
+    &:hover{
+        background-color: var(--tertiary);
+        color: var(--primary);
+        border: none;
+        border-radius: 50%;
+    }
+
+}

@@ -1,5 +1,6 @@
 import { ClassModules } from "./ClassModule";
 import { ClassRoom } from "./Classe";
+import { Seances } from "./Seances";
 import { Semestres } from "./Semestre";
 
 export interface Emplois{
@@ -8,4 +9,5 @@ export interface Emplois{
     dateFin: Date;
     idClasse: ClassRoom;
     idSemestre: Semestres;
+    seances?: Seances[]
 }

@@ -1,7 +1,7 @@
 <main>
     <div class="contente" *ngIf="show_modal">
         <div class="cont-head"></div>
-        <form [formGroup]="form_paie" (ngSubmit)="add_paie(presence)">
+        <form [formGroup]="form_paie" (ngSubmit)="add_paie(presence!)">
             
             
             <table class="table table-bordered">
@@ -16,16 +16,16 @@
                 </thead>
                 <tbody>
                         <tr>
-                            <td>{{presence.date}}</td>
+                            <td>{{presence?.date}}</td>
                             <td>
-                                {{presence.idSeance.idEmplois.idClasse.idFiliere?.idNiveau?.nom}} ({{presence.idSeance.idEmplois.idClasse.idFiliere?.idFiliere?.nomFiliere}})
+                                {{presence?.idSeance?.idEmplois?.idClasse?.idFiliere?.idNiveau?.nom}} ({{presence?.idSeance?.idEmplois?.idClasse?.idFiliere?.idFiliere?.nomFiliere}})
                             </td>
-                            <td>{{presence.heure}} Heure(s)</td>
+                            <td>{{presence?.heure}} Heure(s)</td>
                             
                                 <td>
                                     <input type="number"  formControlName="nbreHeures" *ngIf="false">
                                     <input type="number" formControlName="idPresenceTeachers" *ngIf="false">
-                                    <input  type="number"class="form-control" formControlName="coutHeure" placeholder="Cout unitaire..." [class.is-invalid]="form_paie.get('coutHeure')!.invalid && form_paie.get('coutHeure')!.touched" (input)="loadInputValue($event, presence)">
+                                    <input  type="number"class="form-control" formControlName="coutHeure" placeholder="Cout unitaire..." [class.is-invalid]="form_paie.get('coutHeure')!.invalid && form_paie.get('coutHeure')!.touched" (input)="loadInputValue($event, presence!)">
                                     <div *ngIf="form_paie.get('coutHeure')!.invalid && form_paie.get('coutHeure')!.touched" class="invalid-feedback">
                                         <span class="label-error">Le montant doit être supérieur ou égal à 1000 FCFA.</span> 
                                      </div>

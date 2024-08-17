@@ -1,34 +1,38 @@
-<form [formGroup]="addClass" (ngSubmit)="createClassroom()"  *ngIf="iSshow"> 
-    <h4 id="error">Ajouter classe</h4>
-    
-    <div class="form form-group"> 
-        <label >Scolarité :</label> 
-        <input type="text" formControlName="scolarite" class="form-control" id="nom" placeholder="La scolarite" [class.is-invalid]="addClass.get('scolarite')!.invalid && addClass.get('scolarite')!.touched"> 
-        <div *ngIf="addClass.get('scolarite')!.invalid && addClass.get('scolarite')!.touched" class="invalid-feedback">
-            <div *ngIf="addClass.get('scolarite')!.errors?.['required']">
-                <span class="label-error">La scolarite est requise.</span>
+<main>
+    <form [formGroup]="addClass" (ngSubmit)="createClassroom()"  *ngIf="iSshow"> 
+        <h4 id="error">Ajouter classe</h4>
+        <div class="form-content">
+            <div class="form form-group"> 
+                <label >Scolarité :</label> 
+                <input type="text" formControlName="scolarite" class="form-control" id="nom" placeholder="La scolarite" [class.is-invalid]="addClass.get('scolarite')!.invalid && addClass.get('scolarite')!.touched"> 
+                <div *ngIf="addClass.get('scolarite')!.invalid && addClass.get('scolarite')!.touched" class="invalid-feedback">
+                    <div *ngIf="addClass.get('scolarite')!.errors?.['required']">
+                        <span class="label-error">La scolarite est requise.</span>
+                    </div>
+                    <div *ngIf="addClass.get('scolarite')!.errors?.['min'] || addClass.get('scolarite')!.errors?.['max']">
+                        <span class="label-error">La scolarite  doit être egale ou supperieure a 100000 FCFA</span>
+                    </div>
+                </div>
+            </div> 
+            <div class="form form-group">
+                <label for="select-modules-multiple" class="label form-label">Filiere :</label>
+                <select class="form-select" formControlName="idNiveau" id="select-modules-multiple" placeholder="La filiere" [class.is-invalid]="addClass.get('idNiveau')!.invalid && addClass.get('idNiveau')!.touched">
+                  <option selected disabled value="">Choisir la filiere</option>
+                  <option *ngFor="let filiere of objectNivFil" [value]="filiere.id">{{filiere.idNiveau.nom}} {{filiere.idFiliere.nomFiliere}}</option>
+                </select> 
+                <div *ngIf="addClass.get('idNiveau')!.invalid && addClass.get('idNiveau')!.touched" class="invalid-feedback">
+                    <div *ngIf="addClass.get('idNiveau')!.errors?.['required']">
+                        <span class="label-error">La filiere est requise.</span>
+                    </div>
+                   
+                </div>                   
             </div>
-            <div *ngIf="addClass.get('scolarite')!.errors?.['min'] || addClass.get('scolarite')!.errors?.['max']">
-                <span class="label-error">La scolarite  doit être egale ou supperieure a 100000 FCFA</span>
+            
+            <div class="button-cash">
+                <a (click)="close_modal()" class="submit"  ><span>Annuler</span></a>
+                <button class="submit" type="submit" ><span>Enregistrer</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
             </div>
         </div>
-    </div> 
-    <div class="form form-group">
-        <label for="select-modules-multiple" class="label form-label">Filiere :</label>
-        <select class="form-select" formControlName="idNiveau" id="select-modules-multiple" placeholder="La filiere" [class.is-invalid]="addClass.get('idNiveau')!.invalid && addClass.get('idNiveau')!.touched">
-          <option selected disabled value="">Choisir la filiere</option>
-          <option *ngFor="let filiere of objectNivFil" [value]="filiere.id">{{filiere.idNiveau.nom}} {{filiere.idFiliere.nomFiliere}}</option>
-        </select> 
-        <div *ngIf="addClass.get('idNiveau')!.invalid && addClass.get('idNiveau')!.touched" class="invalid-feedback">
-            <div *ngIf="addClass.get('idNiveau')!.errors?.['required']">
-                <span class="label-error">La filiere est requise.</span>
-            </div>
-           
-        </div>                   
-    </div>
-    
-    <div class="button-cash">
-        <a (click)="close_modal()" class="submit"  ><span>Annuler</span></a>
-        <button class="submit" type="submit" ><span>Enregistrer</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
-    </div>
-</form> 
+        
+    </form> 
+</main>

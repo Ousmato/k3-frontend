@@ -1,4 +1,7 @@
 <main>
+    <div (click)="goBack()" class="back-button" *ngIf="!permission">
+        <fa-icon [icon]="icons.back"></fa-icon>
+    </div>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -15,7 +18,7 @@
                         <td>{{eploi.dateDebut}}</td>
                         <td>{{eploi.dateFin}}</td>
                         <td>{{eploi.idSemestre.nomSemetre}}</td>
-                        <td>{{eploi.idClasse.idFiliere?.idNiveau?.nom}} {{eploi.idClasse.idFiliere?.idFiliere?.nomFiliere}}</td>
+                        <td class="next-col">{{eploi.idClasse.idFiliere?.idNiveau?.nom}} {{eploi.idClasse.idFiliere?.idFiliere?.nomFiliere}} <fa-icon [icon]="icons.next"></fa-icon></td>
                     </tr>
                 </ng-container>
                 

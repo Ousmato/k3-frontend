@@ -15,11 +15,11 @@
             <p>{{emplois.idClasse.idFiliere?.idNiveau?.nom}} ( {{emplois.idClasse.idFiliere?.idFiliere?.nomFiliere}} )</p></div>
               
             
-        <div class="btn-contenaire">
+        <div class="btn-contenaire" *ngIf="permission">
             <div class="child-1">
               <button (click)="to_show_button()" class="btn btn-valid-emplois" type="button"><fa-icon [icon]="icons.edit"></fa-icon> Editer</button>
        
-              <button  class="btn btn-show-form" type="button" (click)="to_groupe(emplois.idClasse.id!)"><fa-icon [icon]="icons.user"></fa-icon> Groupe</button>
+              <button  class="btn btn-show-form" type="button" (click)="to_groupe(emplois.idClasse.id!, emplois.id!)"><fa-icon [icon]="icons.user"></fa-icon> Groupe</button>
               <button  class="btn btn-show-form" type="button" (click)="to_configure()"><fa-icon [icon]="icons.list"></fa-icon> Autres</button>
             </div>
            
@@ -60,9 +60,9 @@
                               <strong>{{ seance.idTeacher.nom.charAt(0).toUpperCase() }}. {{ seance.idTeacher.prenom.toUpperCase() }}</strong><br>
                               {{ seance.idModule.nomModule }} <br>
                               <ng-container *ngFor="let item of configSeance">
-                                <p *ngIf="dateInfo.toLocaleLowerCase() == getDayFromDateConfig(item.idSeance.date?.toString()!) && timeSlot == item.plageHoraire && !is_show_button"  >
-                                  {{ item.idParticipant.idStudentGroup.nom}} <br>
-                                   <span>{{item.seanceType}}</span>
+                                <p *ngIf="dateInfo.toLocaleLowerCase() == getDayFromDateConfig(item.idSeance!.date?.toString()!) && timeSlot == item.plageHoraire && !is_show_button"  >
+                                  {{ item.idParticipant!.idStudentGroup.nom}} <br>
+                                   <span>{{item.seanceType.toLocaleUpperCase()}}</span>
                                    
                                 </p>
                               </ng-container>

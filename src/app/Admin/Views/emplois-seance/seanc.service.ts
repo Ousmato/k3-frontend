@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Seances } from '../../Models/Seances';
+import { Seances, Surveillance } from '../../Models/Seances';
 import { Response_String } from '../../Models/Response_String';
 import { Configure_seance } from '../../Models/Configure_seance';
 import { Emplois } from '../../Models/Emplois';
@@ -22,6 +22,7 @@ export class SeancService {
   create(seance: Seances[]): Observable<Response_String>{
     return this.http.post<Response_String>(this.baseUrl + 'add', seance);
   }
+ 
   // ---------------------------------------delete seance 
   delete(id: number): Observable<Response_String>{
     return this.http.delete<Response_String>(this.baseUrl + 'delete/' + id);
@@ -40,6 +41,16 @@ export class SeancService {
   }
   get_all_configSeance(idEmploi : number) : Observable<Configure_seance[]>{
     return this.http.get<Configure_seance[]>(this.baseUrl+"all-config-by-id-emploi/" + idEmploi)
+  }
+
+  // -----------------------------get_config ByExam Or Session
+  get_configByExamOrSession() : Observable<Configure_seance[]>{
+    return this.http.get<Configure_seance[]>(this.baseUrl+"all-secance-config-exam-or-session")
+  }
+  // ----------------------------add surveillance
+
+  addSurveillance(surveillance: Surveillance) : Observable<Response_String>{
+    return this.http.post<Response_String>(this.baseUrl+"add-surveillance", surveillance);
   }
   
 }

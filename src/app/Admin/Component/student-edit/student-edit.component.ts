@@ -8,6 +8,8 @@ import { ClassStudentService } from '../../../DGA/class-students/class-student.s
 import { Student } from '../../Models/Students';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { Location } from '@angular/common';
+import { SchoolService } from '../../../Services/school.service';
+import { AnneeScolaire } from '../../Models/School-info';
 
 @Component({
   selector: 'app-student-edit',
@@ -24,19 +26,28 @@ export class StudentEditComponent implements OnInit{
   idStudent!: number
   student?: Student
   urlImage! : string | ArrayBuffer
+  anneeScolaire: AnneeScolaire [] = []
 
 
-  constructor( private formBuilder: FormBuilder, private studentService: EtudeService, private classeService: ClassStudentService,
+  constructor( private formBuilder: FormBuilder, private infoSchool: SchoolService,
+    private studentService: EtudeService, private classeService: ClassStudentService,
     private router: ActivatedRoute, private root: Router, public icons: IconsService, private pageTitle: PageTitleService, private location: Location){}
 
   ngOnInit(): void {
       this.load_class_rooms();
       this.load_form();
       this.load_student();
+      this.load_all_annee()
       
   }
 goBack(){
   this.location.back();
+}
+// --------------get all annee
+load_all_annee(){
+  this.infoSchool.getAll_annee().subscribe(data=>{
+    this.anneeScolaire = data;
+  })
 }
   togglePasswordVisibility(){
     this.passwordVisible =! this.passwordVisible
@@ -51,7 +62,7 @@ goBack(){
       email: ['', [Validators.required, Validators.email]],
       telephone: ['', Validators.required],
       password: ['', Validators.required],
-      // urlPhoto: ['',Validators.required],
+      idAnneeScolaire: ['',Validators.required],
       matricule: ['', Validators.required],
       scolarite: ['',Validators.required],
       idClasse: ['', Validators.required],

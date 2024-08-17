@@ -55,6 +55,10 @@ tr td{
 .form{
     padding: 10px;
 }
+.red-border{
+    /* border: 1px solid red; */
+   background-color: #f33b3b41;
+}
 .custom-select option:hover {
     background-color: var(--primary);
     color: var(--secondary);

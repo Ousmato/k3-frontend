@@ -47,7 +47,9 @@ teacher!: Teacher
   // -----------------------------------method filter
   filterTeachers() {
     if (!this.searchTerm) {
+      // console.log(this.enseignants, "fil")
      return this.filteredItems = this.enseignants;
+     
     } else {
     return  this.filteredItems = this.enseignants.filter(enseignant =>
         enseignant.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
@@ -74,13 +76,14 @@ teacher!: Teacher
       // console.log(this.enseignants, "ebbbbbbbbbbbbb")
     })
   }
+  
   // --------------------------------------------------method go to detail teacher presence
   selectedTeacher(teachId: number): void {
      // this.detaille.push(teacherDetail)
      const navigationExtras: NavigationExtras = {
       queryParams: { id: teachId }
     };
-      this.route.navigate(['/sidebar/enseignant-pre-detail'], navigationExtras);
+      this.route.navigate(['/secretaire/archive'], navigationExtras);
     
   }
   // ---------------------go back button

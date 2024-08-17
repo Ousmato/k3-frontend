@@ -8,6 +8,8 @@ import { Admin } from '../../Models/Admin';
 import { IconsService } from '../../../Services/icons.service';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { AnneeScolaire } from '../../Models/School-info';
+import { SchoolService } from '../../../Services/school.service';
 
 
 @Component({
@@ -25,11 +27,12 @@ studentStatusOptions: { key: string, value: string }[] = [];
   classRoom: ClassRoom [] = [];
   fileName!: File;
   admin!: Admin;
-
+  anneeScolaire: AnneeScolaire[]=[]
+  promotion!: number
   passwordVisible : boolean = false
 
   constructor(private formBuilder: FormBuilder, private pageTitle: PageTitleService,
-    private service: SinginServiceService, public icons: IconsService, private activatedRoute: ActivatedRoute, private router: Router,
+    private service: SinginServiceService, public icons: IconsService, private infoSchool: SchoolService,
     private classeService: ClassStudentService){}
   ngOnInit(): void {
     this.studentStatusOptions = this.getStatusOptions();
@@ -47,7 +50,7 @@ studentStatusOptions: { key: string, value: string }[] = [];
       idClasse: ['', Validators.required],
       lieuNaissance: ['',Validators.required],
       dateNaissance: ['',Validators.required],
-      // admin: [''] 
+      idAnneeScolaire: ['', Validators.required] 
     });
     // ----------------------------------------------------------------------
     
@@ -55,6 +58,8 @@ studentStatusOptions: { key: string, value: string }[] = [];
       this.classRoom = data;
       console.log(this.classRoom);
     });
+
+    this.load_all_annee();
   }
   
    // Méthode pour basculer l'état du mot de passe
@@ -62,6 +67,19 @@ studentStatusOptions: { key: string, value: string }[] = [];
     this.passwordVisible = !this.passwordVisible;
 }
 
+// --------------get all annee
+load_all_annee(){
+  this.infoSchool.getAll_annee().subscribe(data=>{
+    this.anneeScolaire = data;
+    this.anneeScolaire.forEach(ans=>{
+    
+
+      const annee = new Date(ans.debutAnnee)
+      const debutAnnee = annee.getFullYear()
+      ans.ans = debutAnnee
+    })
+  })
+}
   
  onFileSelected(event: any)  {
     this.fileName = event.target.files[0];
@@ -88,6 +106,10 @@ studentStatusOptions: { key: string, value: string }[] = [];
       }
       // console.log(this.classRoom.find(c => c.id === formData.idClasse));
       const classe: ClassRoom = this.classRoom.find(c => c.id === +formData.idClasse)!;
+      const annee = this.anneeScolaire.find(ans=>ans.id == +formData.idAnneeScolaire);
+      if (annee) {
+        const { ans, ...anneeSansAns } = annee;
+      
       const student: Student = {
         nom: formData.nom,
         prenom: formData.prenom,
@@ -96,7 +118,7 @@ studentStatusOptions: { key: string, value: string }[] = [];
         status: formData.status,
         telephone: formData.telephone,
         password: formData.password,
-        // urlPhoto: formData.urlPhoto,
+        idAnneeScolaire: anneeSansAns!,
         matricule: formData.matricule,
         // date: formData.date,
         lieuNaissance: formData.lieuNaissance,
@@ -104,6 +126,7 @@ studentStatusOptions: { key: string, value: string }[] = [];
         idClasse: classe, // Utilisation de this.classe au lieu de classe
         idAdmin: this.admin // Vous devez probablement remplir cette valeur avec l'administrateur approprié
       };
+    
       console.log(student,"student");
       // return;
       if (this.studentForm.valid) {
@@ -123,6 +146,7 @@ studentStatusOptions: { key: string, value: string }[] = [];
       this.studentForm.markAllAsTouched();
       console.log("Veuillez remplir tous les champs correctement!");
     }
+  }
   }
   // --------------------------back button
   goBack(){

@@ -1,0 +1,28 @@
+<main>
+    <form >
+        <h4>Ajouter un niveau supérieure</h4>
+        <div class="form-content">
+            <div class="form-group">
+                <label for="validationDefault03" class="label form-label">Classe :</label>
+                <select class="form-select" placeholder="Choisir une classe...."  id="select-modules-multiple"  (change)="onSelect($event)">
+                    <option  selected disabled value="">{{student.idClasse.idFiliere!.idNiveau.nom}} {{student.idClasse.idFiliere!.idFiliere.nomFiliere}}</option>
+                    <option *ngFor="let classe of classRoom" [value]="classe.id">{{classe.idFiliere?.idNiveau?.nom}} {{classe.idFiliere?.idFiliere?.nomFiliere}}</option>
+                </select>
+               
+            </div>
+            <div class="form-group">
+                <label for="validationDefault03" class="label form-label">Classe :</label>
+                <select class="form-select"   id="select-modules-multiple"  (change)="onSelectAnnee($event)">
+                    <option  selected disabled value="">Choisir l'année scolaire</option>
+                    <option *ngFor="let annee of all_annee" [value]="annee.id">Du {{annee.debutAnnee}} au {{annee.finAnnee}}</option>
+                </select>
+               
+            </div>
+            <div class="button-cash">
+                <a (click)="close()" class="submit" ><span>Annuler</span></a>
+                <button class="submit" (click)="send()" ><span>Enregistre</span></button>
+            </div>
+        </div>
+        
+    </form>
+</main>

@@ -1,0 +1,21 @@
+<main>
+    
+    <div class="grid-container">
+        <div class="grid-item" *ngFor="let annee of annees">
+            <div class="section-folder">
+                <div class="class-folder" (click)="onSelect(annee.id!)">
+                    <div class="icon-folder">
+                        <fa-icon [icon]="icons.folder" class="icons-style"></fa-icon>
+                    </div>
+                    <div class="info-folder">
+                        <p class="title">Promotion : {{annee.ans}}</p>
+                        <p class="nom">Les inscrits</p>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+   
+</main>

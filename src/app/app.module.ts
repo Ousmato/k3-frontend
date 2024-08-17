@@ -20,6 +20,7 @@ import { EnseignantComponent } from './Admin/Views/enseignant/enseignant.compone
 import { DatePipe, registerLocaleData } from '@angular/common';
 import { ToastrModule, provideToastr } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// import { }
 
 import localeFr from '@angular/common/locales/fr';
 import { TeachersPresenceComponent } from './Admin/Views/teachers-presence/teachers-presence.component';
@@ -68,6 +69,15 @@ import { AddGroupStudentComponent } from './DER/Widget/add-group-student/add-gro
 import { RSSidebarComponent } from './R-SCOLARITE/r-s-sidebar/r-s-sidebar.component';
 import { RSHomeComponent } from './R-SCOLARITE/r-s-home/r-s-home.component';
 import { CompteSidebarComponent } from './COMPTABLE/compte-sidebar/compte-sidebar.component';
+import { CompteHomeComponent } from './COMPTABLE/compte-home/compte-home.component';
+import { SecSidebarComponent } from './SECRETAIRE/sec-sidebar/sec-sidebar.component';
+import { SecHomeComponent } from './SECRETAIRE/sec-home/sec-home.component';
+import { StudentReInscriptionComponent } from './R-SCOLARITE/student-re-inscription/student-re-inscription.component';
+import { RSReinscriptionComponent } from './R-SCOLARITE/r-s-reinscription/r-s-reinscription.component';
+import { ReInscriptionWidgetComponent } from './R-SCOLARITE/Widget/re-inscription-widget/re-inscription-widget.component';
+import { DgaArchivesComponent } from './DGA/dga-archives/dga-archives.component';
+import { SecSurveillanceComponent } from './SECRETAIRE/sec-surveillance/sec-surveillance.component';
+import { SecAddSurveillanceComponent } from './SECRETAIRE/sec-add-surveillance/sec-add-surveillance.component';
 
 registerLocaleData(localeFr);
 @NgModule({
@@ -130,6 +140,15 @@ registerLocaleData(localeFr);
     RSSidebarComponent,
     RSHomeComponent,
     CompteSidebarComponent,
+    CompteHomeComponent,
+    SecSidebarComponent,
+    SecHomeComponent,
+    StudentReInscriptionComponent,
+    RSReinscriptionComponent,
+    ReInscriptionWidgetComponent,
+    DgaArchivesComponent,
+    SecSurveillanceComponent,
+    SecAddSurveillanceComponent,
   ],
   imports: [
     BrowserModule,

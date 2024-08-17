@@ -13,3 +13,24 @@ tr{
         background-color: #e6e4e4;
     }
 }
+
+.back-button{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    font-size: 20px;
+    margin: 10px 0;
+    &:hover{
+        background-color: var(--tertiary);
+        color: var(--primary);
+        border: none;
+        border-radius: 50%;
+    }
+
+}
+.next-col{
+    display: flex;
+    justify-content: space-between;
+}

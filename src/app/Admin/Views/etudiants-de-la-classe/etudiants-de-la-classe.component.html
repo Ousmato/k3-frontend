@@ -11,25 +11,25 @@
         <table  class="table table-striped table-hover">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Photo</th>
+                    <th>N°D'ordre</th>
+                    <!-- <th>Photo</th> -->
                     <th>Nom</th>
                     <th>Prenom</th>
-                    <th>Email</th>
                     <th>Classe</th>
                     <th>Filiere</th>
                     <th>Telephone</th>
+                    <th>Status</th>
+                    <th>Etat</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 <ng-container *ngIf="filterStudents().length; else noResults">
                     <tr *ngFor="let student of filterStudents()">
-                        <td>{{ student.idEtudiant }}</td>
-                        <td><img src="{{ student.urlPhoto }}" alt=""></td>
+                        <td>{{ student.numero }}</td>
+                        <!-- <td><img src="{{ student.urlPhoto }}" alt=""></td> -->
                         <td>{{ student.nom }}</td>
                         <td>{{ student.prenom }}</td>
-                        <td>{{ student.email }}</td>
                         <td class="class-name" title="{{ student.idClasse.idFiliere?.idFiliere?.nomFiliere }}">
                             {{ student.idClasse.idFiliere?.idNiveau?.nom }}
                         </td>
@@ -37,12 +37,18 @@
                             {{ student.idClasse.idFiliere?.idFiliere?.nomFiliere }}
                         </td>
                         <td>{{ student.telephone }}</td>
+                        <td>{{ student.status }}</td>
+                        <td>
+                            <a>
+                                <fa-icon [icon]="student.payer ? icons.active : icons.desactive" [ngStyle]="{ color: student.payer ? 'green' : 'red' }"></fa-icon>
+                                <span>{{ student.payer ? 'inscrit(e)' : 'Non Inscrit(e)' }}</span>
+                            </a>
+                        </td>
                         <td>
                             <div class="btn-contenaire">
-                                <a>
-                                    <fa-icon [icon]="student.active ? icons.active : icons.desactive" [ngStyle]="{ color: student.active ? 'green' : 'red' }"></fa-icon>
-                                    <span>{{ student.active ? 'Present(e)' : 'Absent(e)' }}</span>
-                                </a>
+                                <a (click)="load_bulletin(student.idEtudiant!)" ><fa-icon  [icon]="icons.eye" class="icons"></fa-icon><span>bulletin</span></a>
+                           
+                                
                             </div>
                         </td>
                     </tr>

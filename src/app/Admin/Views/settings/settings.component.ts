@@ -277,7 +277,7 @@ export class SettingsComponent implements OnInit {
   }
   // ----------------------------------------------------------
   toggle_to_update_school(){
-    this.router.navigate(['/sidebar/update-school']);
+    this.router.navigate(['/dga/update-school']);
   }
   // --------------------------------------------------
   show_add_form_filiere(){

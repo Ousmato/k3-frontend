@@ -1,0 +1,231 @@
+
+main{width: 100%;
+
+    padding-top: 20px;
+}
+a button{
+    margin-bottom: 30px;
+}
+
+/* Styler l'en-tête du tableau */
+th {
+    background-color: var(--primary-light);
+}
+
+.table-container{
+    height: 400px;
+    position: relative;
+    overflow-y: auto;
+}
+.table thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+.table-container::-webkit-scrollbar{
+    display: none;
+}
+
+tr td{
+    font-size: 16px;
+    text-overflow: ellipsis;
+}
+.btn-contenaire{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+.btn-contenaire a{
+    cursor: pointer;
+    &:hover{
+        color: var(--secondary);
+    }
+}
+span{
+    margin-left: 5px;
+    font-size: 10px;
+    color: var(--primary);
+}
+.class-name{
+    cursor: pointer;
+}
+img{
+    border-radius: 100%;
+    border: 1px solid #ccc;
+    height: 50px;
+    width: auto;
+}
+
+span{
+    margin-left: 5px;
+    font-size: 10px;
+    color: var(--primary);
+}
+.class-name{
+    cursor: pointer;
+}
+img{
+    border-radius: 100%;
+    border: 1px solid #ccc;
+    height: 50px;
+    width: auto;
+}
+.input-search {
+    position: relative;
+    width: 100%;
+    display: flex;
+    /* justify-content: center; */
+    /* margin: 20px 0; */
+}
+
+.search-input {
+    width: 50%;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.search-input:focus {
+    border-color: var(--primary-light);
+    /* box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3); */
+    outline: none;
+}
+/* ----------------------------------pagination  buttons style */
+.pagination {
+    display: flex;
+    justify-content: end;
+    margin-top: 10px;
+  }
+  
+  .pagination button {
+    margin: 0 5px;
+    font-size: 10px;
+    padding: 2px 5px;
+    /* background-color: #007bff; */
+    color: var(--secondary);
+    cursor: pointer;
+    border: none;
+    border-radius: 20px;
+  }
+  
+  .pagination button.disabled, .pagination button[disabled] {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .pagination button.active {
+    background-color: var(--primary);
+  }
+  
+  .pagination button:hover:not(.disabled):not(.active) {
+    background-color: var(--secondary);
+    color: var(--primary);
+    border: none;
+  }
+
+/* ------------------------------------------ */
+li{
+    list-style-type: none;
+    padding: 8px;
+    border: #ccc 1px solid;
+    margin-top: 8px;
+
+}
+li span{
+    font-size: 16px;
+    color: var(--primary);
+}
+.img-contenaire img{
+    height: 100px;
+    width: auto;
+    border: #ccc 1px solid;
+    border-radius: 0;
+}
+.img-contenaire{
+    display: flex;
+    gap: 10px;
+    align-items: end;
+}
+.classe h4{
+    font-size: 16px;
+    font-weight: 800;
+}
+.btn-primary{
+    background-color: var(--primary);
+    border-color: var(--primary);
+    &:hover{
+        color: var(--secondary);
+    }
+}
+
+.pop-img{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.pop-img img{
+    height: 100px;
+    width: auto;
+    border: #ccc 1px solid;
+    border-radius: 0;
+}
+.pop-img .icons .arrow{
+    font-size: 4rem;
+}
+.refresh{
+    padding: 8px;
+    font-size: 14px;
+    background-color: var(--primary-light);
+    border-radius: 5px;
+    color: var(--secondary);
+    cursor: pointer;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+}
+
+main{
+    position: relative;
+}
+
+.views{
+    width: 400px;
+    background-color: white;
+    position: absolute;
+    border-radius: 4px;
+    z-index: 10001;
+    left: 50%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15);
+   
+    }
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: transparent;
+        width: 100%;
+        height: 100%;
+        z-index: 1000; 
+      }
+
+      .back-button{
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        padding: 8px;
+        font-size: 20px;
+        margin: 10px 0;
+        &:hover{
+            background-color: var(--tertiary);
+            color: var(--primary);
+            border: none;
+            border-radius: 50%;
+        }
+    
+    }

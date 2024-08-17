@@ -86,10 +86,14 @@ img{
     }
 
 }
+.btn-contenaire{
+    cursor: pointer;
+}
 .table-container{
     height: 400px;
     position: relative;
     overflow-y: auto;
+    width: 100%;
 }
 .table thead {
     position: sticky;

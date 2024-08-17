@@ -1,0 +1,138 @@
+<div class="wrapper">
+    <!-- Sidebar -->
+    <nav id="sidebar">
+      <div class="sidebar-header ">
+        <img  [src]="school?.urlPhoto" alt="">
+        <!-- <h1>UAM</h1> -->
+        <strong>{{school?.nomSchool}}</strong>
+      </div>
+      <div class="side-child">
+        <ul class="list-unstyled components">
+         <div>
+          <li class="menu-link">
+            <a routerLink="/secretaire">
+              <span><fa-icon [icon]="icons.home"></fa-icon>Acceuil</span>
+            </a>
+          </li>
+         </div>
+         <!-- ---------------- -->
+         <li class="menu-link">
+            <a routerLink="/secretaire/etudiant" routerLinkActive="active">
+              <span><fa-icon [icon]="icons.grade"></fa-icon>Liste Etudiants</span>
+            </a>
+          </li>
+         <li class="menu-link">
+            <a routerLink="/secretaire/surveillance" routerLinkActive="active">
+              <span><fa-icon [icon]="icons.user_surveillance"></fa-icon>Surveillence</span>
+            </a>
+          </li>
+          <!-- ------------------------------- -->
+           <!-- <li class="menu-link">
+            <div (click)="toggleSubMenuEnseignant()">
+              <a><span><fa-icon [icon]="icons.users"></fa-icon>Enseignants<fa-icon [icon]="isSubMenuOpen.enseignants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
+                    
+              </a>
+            </div>
+            <ul class="sub-menu" *ngIf="isSubMenuOpen.enseignants">
+              <li><a routerLink="/der/enseignants" routerLinkActive="active">Liste des enseignant</a></li>
+              <li><a routerLink="/der/ajouter-emplois" routerLinkActive="active">Programmer EDT</a></li>
+              <li><a routerLink="/der/ajouter-seance" routerLinkActive="active">Programmer seances</a></li>
+              <li><a routerLink="/der/emplois-du-temps" routerLinkActive="active">Les emplois du temps</a></li>
+             
+            </ul>
+          </li> -->
+          <!-- 
+          <li class="menu-link">
+            <div (click)="toggleSubMenuStudent()">
+              <a> <span><fa-icon [icon]="icons.grade"></fa-icon>Etudiants<fa-icon [icon]="isSubMenuOpen.etudiants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
+              </a>
+            </div>
+            <ul class="sub-menu" *ngIf="isSubMenuOpen.etudiants">
+              <li><a routerLink="/sidebar/etudiant" routerLinkActive="active">Liste des Etudiants</a></li>
+              <li><a routerLink="/sidebar/inscription" routerLinkActive="active">Fiche d'inscription</a></li>
+            </ul>
+          </li> -->
+         
+          <li class="menu-link" >
+            <a routerLink="/secretaire/list-presence" routerLinkActive="active">
+              <span ><fa-icon [icon]="icons.users"></fa-icon>Présences Enseignants</span>
+            </a>
+          </li>
+         
+          <li class="menu-link">
+            <a routerLink="/secretaire/fiche-paie" routerLinkActive="active">
+              <span><fa-icon [icon]="icons.credit_card"></fa-icon>Enseignants payé</span>
+            </a>
+          </li>
+          <!-- ---------------- -->
+          <!-- <li class="menu-link">
+            <div (click)="toggleSubMenuArchive()">
+                <a routerLink="#">
+                  <span><fa-icon [icon]="icons.archive" ></fa-icon>Rapport et Memoire 
+                    <fa-icon [icon]="isSubMenuOpen.etudiants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
+                </a>
+            </div>
+            <ul class="sub-menu" *ngIf="isSubMenuOpen.archive">
+              <li><a routerLink="">2019 - 2020</a></li>
+              <li><a href="#">2021 - 2022</a></li>
+              <li><a href="#">2022 - 2023</a></li>
+            </ul>
+            
+          </li> -->
+        </ul>
+      </div>
+    </nav>
+  
+    <!-- Page Content -->
+    <div id="content">
+      <div class="navDiv">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid nav-element">
+                <div class="btn-contenair">
+                    <button type="button" id="sidebarCollapse" class="btn btn-info" (click)="toggleSidebar()">
+                    <fa-icon [icon]="icons.menu"></fa-icon>
+                    
+                    </button>
+                     <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <fa-icon [icon]="icons.menu"></fa-icon>
+                    </button>
+                    
+                </div>
+                <div class="input-search" *ngIf="showSearchInput">
+                    <input type="text" [(ngModel)]="searchTerm" (input)="onSearchChange()" placeholder="Recherche..."  class="search-input">
+                 </div>
+                <div class="title-page" *ngIf="showTitle">
+                  <h5>{{title}}</h5></div>
+                  
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" (click)="show_adminSetting()">
+                      <fa-icon  class="my-custom-style"></fa-icon><img src="{{dataAdmin.urlPhoto}}" alt="">
+                    </a>
+                    <ul class="" *ngIf="show_admin">
+                     
+                      <div class="dropdawn-setting" > 
+                        <app-admin-setting-widget [admin]="dataAdmin" (closeModal)="close()"  ></app-admin-setting-widget>
+                         
+                      </div>
+                     
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+      </div>
+      <div id="layoutSidenav_content">
+        <main>
+          <div class="container-fluid px-1">
+           
+            <!--  -->
+            <router-outlet />
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+  

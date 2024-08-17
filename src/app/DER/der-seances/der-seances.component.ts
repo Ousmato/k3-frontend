@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SeancService } from '../../Admin/Views/emplois-seance/seanc.service';
 import { Module } from '../../Admin/Models/Module';
 import { Teacher } from '../../Admin/Models/Teachers';
-import { Seances } from '../../Admin/Models/Seances';
+import { Seances, Surveillance, type_seance } from '../../Admin/Models/Seances';
 import { IconsService } from '../../Services/icons.service';
 import { ServiceService } from '../emplois-du-temps/service.service';
 import { EnseiService } from '../../Admin/Views/enseignant/ensei.service';
@@ -15,6 +15,7 @@ import { SalleService } from '../../Services/salle.service';
 import { Salles } from '../../Admin/Models/Salles';
 import { PageTitleService } from '../../Services/page-title.service';
 import { formatDate } from '@angular/common';
+import { Configure_seance } from '../../Admin/Models/Configure_seance';
 
 @Component({
   selector: 'app-der-seances',
@@ -32,6 +33,9 @@ export class DerSeancesComponent implements OnInit {
   idUrl!: number;
   dates_check: any[] = [];
   isShow_add_jour: boolean = false;
+  // permission: boolean = false;
+  
+seanceTypeOptions: { key: string, value: string }[] = [];
   
   datesWithDays: { day: string, date: string }[] = [];
   datesWithDaysTest: { day: string, dates: string[] }[] = [];
@@ -44,16 +48,17 @@ export class DerSeancesComponent implements OnInit {
 
   ngOnInit(): void {
       this.load_form();
-      // this.loadEmploisByClass();
+      this.getStatusOptions();
       this.load_enseignants();
       this.load_classe();
       this.load_salles();
-      // this.getSeance_date();
+      this.getPermission();
       
   }
   // ------------------------load form
 
   load_form(){
+    // this.seanceTypeOptions = this.getStatusOptions();
     this.form_seance = this.fb.group({
       heureDebut: ['',Validators.required],
       heureFin: ['',Validators.required],
@@ -63,7 +68,8 @@ export class DerSeancesComponent implements OnInit {
       date: [""],
       idModule: ['', Validators.required],
       jour: [""],
-      idClasse: ['', Validators.required]
+      idClasse: ['', Validators.required],
+      seanceType: ['', Validators.required]
     });
   }
 
@@ -89,15 +95,30 @@ export class DerSeancesComponent implements OnInit {
       // console.log(this.salles, "sales")
     })
   }
+  
+  // ---------------------get permission
+  getPermission(){
+    const autorize = sessionStorage.getItem('der');
+    if(autorize){
+      // this.permission = true
+      return true;
+    }
+    return false;
+  }
 
   // --------------------------------------form to create seance
+ 
   create_seance() {
-    let list_seances: Seances[] = []; // Initialisez la liste
+
+    let list_seances: Seances[] = []; 
+    let lis_config: Configure_seance [] =[]
 
     const formData = this.form_seance.value;
     const idModule: Module = this.modules.find(mod => mod.id === +formData.idModule)!;
     const idTeacher: Teacher = this.enseignants.find(t => t.idEnseignant === +formData.idTeacher)!;
     const idSalle: Salles = this.salles.find(s => s.id == +formData.idSalle)!;
+
+   
 
     // Vérifiez si dates_check contient des dates
     if (this.dates_check && this.dates_check.length > 0) {
@@ -114,14 +135,22 @@ export class DerSeancesComponent implements OnInit {
                 idSalle: idSalle,
             };
             list_seances.push(seance);
+
+             // config seance to surveillance
+            const config : Configure_seance ={
+              idParticipant: null!,
+              heureDebut: formData.heureDebut,
+              heureFin: formData.heureFin,
+              seanceType: formData.seanceType,
+              
+            }
+            lis_config.push(config);
         });
     }
 
-    console.log(list_seances, "seance");
-    // return
-    // Vérification de la validité du formulaire
     if (this.form_seance.valid) {
-      this.seanceService.create(list_seances).subscribe({
+      if(this.getPermission()){
+        this.seanceService.create(list_seances).subscribe({
         next: (response) => {
           this.pageTitle.showSuccessToast(response.message)
           this.form_seance.reset();
@@ -135,12 +164,39 @@ export class DerSeancesComponent implements OnInit {
           this.pageTitle.showErrorToast(erreur.error.message)
         }
       });
+      }else{
+        // console.log(list_seances, "seance");
+        // console.log(config, "config");
+        const surveillance : Surveillance ={
+          seancesList: list_seances,
+          configList: lis_config
+        }
+        this.seanceService.addSurveillance(surveillance).subscribe({
+          next: (response) => {
+            this.pageTitle.showSuccessToast(response.message)
+            this.form_seance.reset();
+            this.load_classe();
+            this.load_classe();
+            this.load_salles();
+            this.load_enseignants();
+            this.load_form();
+          },
+          error: (erreur) => {
+            this.pageTitle.showErrorToast(erreur.error.message)
+          }
+
+        })
+      }
+      
     } else {
       // Marquer tous les champs comme touchés pour afficher les messages d'erreur
       this.form_seance.markAllAsTouched();
       console.log("Le formulaire n'est pas valide", this.form_seance.value);
     }
   }
+
+  // ------------------------------load emplois with seance
+  
   
   // --------------------------on mention select
   onSelect(event : any){
@@ -229,5 +285,19 @@ selectAll(event : any){
 
   areAllChecked(): boolean {
     return this.list_checked.length === this.datesWithDays.length;
+  }
+
+  getStatusOptions() {
+    let isValid: type_seance[] =[]
+    const objet = Object.keys(type_seance).map(key => ({
+      
+      key: key,
+      value: type_seance[key as keyof typeof type_seance] 
+    }));
+    objet.forEach(o => {
+      if(o.value == type_seance.SESSION || o.value == type_seance.Examen ){
+        this.seanceTypeOptions.push(o)
+      }
+    })
   }
 }

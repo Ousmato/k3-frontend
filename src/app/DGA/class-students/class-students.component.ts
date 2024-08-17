@@ -47,6 +47,7 @@ export class ClassStudentsComponent implements OnInit {
   isShow_link_modal : boolean = true
   isShow_update_emplois: boolean = false
   addModules!: FormGroup;
+  permission: boolean = false
 
   constructor(private service : ClassStudentService, private emploisService: ServiceService, private toastr: ToastrService,
     private setSevice: SetService, private fb: FormBuilder, private router: Router, public icons: IconsService){
@@ -70,7 +71,8 @@ export class ClassStudentsComponent implements OnInit {
     event.stopPropagation(); // Empêche la propagation de l'événement de clic
   }
   ngOnInit() {
-   this.loadClasses();
+    this.getPermission();
+    this.loadClasses();
     const formGroupControls: any = {};
     this.ueList.forEach(ue => {
       formGroupControls[ue.id] = new FormControl(false); // Initialisation avec false (non coché)
@@ -97,12 +99,10 @@ export class ClassStudentsComponent implements OnInit {
     }
     this.service.createClassModule(ues).subscribe({
       next: (response) =>{
-       
-          
           this.isShow_add_module = false
           this.isShow_link_modal = true
           this.list_checked = [];
-        this.toastr.success(response.message, "Succès");
+          this.toastr.success(response.message, "Succès");
       },
       error: (erreur) => {
         this.toastr.error(erreur.error.message, "Erreur");
@@ -188,7 +188,16 @@ exit(){
    
    this.isShow_link_modal = true
 }
-
+// ---------------------get permission to access
+getPermission(): boolean {
+  const autorize = sessionStorage.getItem('scolarite');
+  if(autorize){
+    this.permission = true
+    console.log(autorize,"autorize")
+    return true;
+  }
+  return false
+}
 exit_modal(){
   this.notFund_modal = !this.notFund_modal
 }
@@ -202,7 +211,7 @@ toggle_to_emplois(classRom: ClassRoom): void {
         const navigationExtras: NavigationExtras = {
           queryParams: { id: classRom.id }
         };
-
+        
         this.router.navigate(['/dga/emplois'], navigationExtras);
       } else {
        
@@ -222,21 +231,40 @@ toggle_to_emplois(classRom: ClassRoom): void {
     const navigationExtras: NavigationExtras = {
       queryParams: { id: idClasse }
     };
-    this.router.navigate(['/dga/student-notes'], navigationExtras);
+    if(this.getPermission()){
+      console.log("scolarite")
+      this.router.navigate(['/r-scolarite/student-notes'], navigationExtras);
+    }else{
+      console.log("dga")
+      this.router.navigate(['/dga/student-notes'], navigationExtras);
+      
+    }
+    
   }
   //  -------------------------hover bottom button 
   toggle_to_noteSemestre(idClasse: number){
     const navigationExtras: NavigationExtras = {
       queryParams: { id: idClasse }
     };
-    this.router.navigate(['/dga/all-notes'], navigationExtras);
+    if(this.getPermission()){
+      this.router.navigate(['/r-scolarite/all-notes'], navigationExtras);
+      
+    }else{
+      this.router.navigate(['/dga/all-notes'], navigationExtras);
+    }
+    
   }
   // ------------------------------link go to list students by class
   toggle_to_presence(idClasse: number){
     const navigationExtras: NavigationExtras = {
       queryParams: { id: idClasse }
     };
+    if(this.getPermission()){
+    this.router.navigate(['/r-scolarite/etudiant-de-la-classe'], navigationExtras);
+    }else{
     this.router.navigate(['/dga/etudiant-de-la-classe'], navigationExtras);
+      
+    }
   }
   // ----------------------------------------lint to go to the param
   goToParamettre(){
@@ -269,7 +297,7 @@ toggle_to_emplois(classRom: ClassRoom): void {
   onCloseUpdateModal(idClasse: number){
     this.isShow_update_emplois = false;
      const clfind = this.classRoms.find(cl => cl.id == idClasse);
-     console.log(clfind,  "event class")
+    //  console.log(clfind,  "event class")
     this.isShow_link_modal = true;
     this.loadClasses();
     if(this.classeSelect == clfind){

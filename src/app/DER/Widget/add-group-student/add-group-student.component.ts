@@ -20,13 +20,17 @@ export class AddGroupStudentComponent implements OnInit {
   list_checked: Student[] = [];
   students: Student[] = [];
   idClasse!: number
-  idEmploi!: Emplois
+  idEmploi!: number
   emploi!: Emplois;
-  group_fund!: Student_group;
+
+  student_group: Student[]=[]
+  group_fund?: Participant | null;
   is_Show_addGroup: boolean = false
   groupes: Student_group[] = [];
-
+  participants: Participant[] = [];
+  is_show_groupInput: boolean = false
   form_add!: FormGroup;
+  show_confirm: boolean = false
   form_participants!:FormGroup
   
   constructor(private service: EtudeService,private fb: FormBuilder,private root: ActivatedRoute,
@@ -45,16 +49,18 @@ export class AddGroupStudentComponent implements OnInit {
         this.idClasse = +param['id'];
         this.emploisService.getEmploisByClasse2(this.idClasse).subscribe(data=>{
           this.emploi = data;
-          // console.log(this.emploi, "emploi trouver");
+          console.log(this.emploi, "emploi trouver");
         })
         this.service.getStudentByIdClasse(this.idClasse).subscribe(data => {
           this.students = data
          
-          // console.log(this.students, "pagenation teachers")
+          console.log(this.students, "pagenation teachers")
         });
       })
       
     }
+    // -----------------------load group of this emplois
+   
     to_createGroup(){
       this.is_Show_addGroup =! this.is_Show_addGroup
     }
@@ -89,11 +95,28 @@ export class AddGroupStudentComponent implements OnInit {
     }
     // --------------load group
     getAll_group(){
-      this.service.getAllGroup().subscribe(data => {
+      this.root.queryParams.subscribe(param=>{
+        this.idEmploi = +param['idEmploi'];
+      })
+      this.service.getListGroupByIdEmploi(this.idEmploi).subscribe(data => {
         this.groupes = data
         // console.log(this.groupes, "groupes")
       })
+      this.load_participation_by_emploi(this.idEmploi);
     }
+    // laod all particpation by emplois id
+       // -------------------------------load all participation by idEmploi
+   load_participation_by_emploi(idEmploi: number){
+    this.service.getParticipantsByEmploiId(idEmploi).subscribe((data) => {
+      data.forEach(part =>{
+        if(!this.participants.some(d=>d.idStudentGroup.id == part.idStudentGroup.id)){
+        this.participants.push(part)
+      }
+      })
+      
+      console.log(this.participants, "participations");
+    })
+  }
     // --------------load form
     load_form(){
       this.form_add = this.fb.group({
@@ -138,6 +161,10 @@ export class AddGroupStudentComponent implements OnInit {
     goBack(){
       window.history.back();
     }
+    // ------------------show input group
+    show_groupInput(){
+      this.is_show_groupInput =! this.is_show_groupInput;
+    }
     // -------------participants----------------------------------
     load_participant_form(){
       this.form_participants = this.fb.group({
@@ -164,11 +191,12 @@ export class AddGroupStudentComponent implements OnInit {
       if(this.form_participants.valid){
         this.service.addParticipant(list_student).subscribe({
           next: (res) =>{
-            this.pageTitle.showSuccessToast(res.message);
-            this.form_participants.reset();
-            this.load_participant_form();
-            this.loadStudents();
-            this.getAll_group();
+              this.pageTitle.showSuccessToast(res.message);
+              this.form_participants.reset();
+              this.load_participant_form();
+              this.loadStudents();
+              this.getAll_group();
+
           },
           error: (erreur) =>{
             this.pageTitle.showErrorToast(erreur.error.message);
@@ -180,9 +208,26 @@ export class AddGroupStudentComponent implements OnInit {
     }
     
     // ------------------------------groupe select
-    onSelect(event : any){
-      const g_selectId = event.target.value;
-      this.group_fund = this.groupes.find(g =>g.id == + g_selectId)!;
+    onSelect(event: any) {
+      const idStudentGroup = event.target.value;
+      this.service.getListStudentsByIdGroup(+idStudentGroup).subscribe(result=>{
+      this.student_group = result;
+      console.log(this.student_group, "student_group")
+      console.log(this.students, "student")
 
+       
+     })
+     
     }
+
+    check(id : number){
+      let index = this.student_group.findIndex(e => e.idEtudiant == id);
+      if(index!= -1){
+        return true;
+      }else{
+        return false;
+      }
+     
+    }
+    
 }

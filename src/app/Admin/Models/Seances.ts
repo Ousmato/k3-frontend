@@ -1,5 +1,6 @@
 
 import { ClassRoom } from "./Classe";
+import { Configure_seance } from "./Configure_seance";
 import { Emplois } from "./Emplois";
 import { Module } from "./Module";
 import { Salles } from "./Salles";
@@ -23,8 +24,15 @@ export interface Seances{
 }
 
 export enum type_seance{
-    CM = 'CM',
-    TD = 'TD',
-    TP = 'TP',
-    Examen ='Examen'
+    CM = 'cm',
+    TD = 'td',
+    TP = 'tp',
+    Examen ='examen',
+    SESSION = "session"
+}
+
+export interface Surveillance {
+    seancesList: Seances[];
+    configList: Configure_seance[]
+    
 }

@@ -3,23 +3,25 @@
         <fa-icon [icon]="icons.back"></fa-icon>
       </div>
         <form [formGroup]="form_participants" (ngSubmit)="create_participant(list_checked)">
-            <div class="input-count">
+            <div class="input-count" >
+                
                 <div class="form-group">
                     <label>Groupe :</label> 
                     <select class="form-select" formControlName="idStudentGroup"  [class.is-invalid]="form_participants.get('idStudentGroup')!.invalid && form_participants.get('idStudentGroup')!.touched" (change)="onSelect($event)">
                         <option  selected disabled value="">Choisir Le groupe</option>
                         <option *ngFor="let group of groupes" value="{{group.id}}">{{group.nom}}</option>
                     </select> 
-                    <span *ngIf="form_participants.controls['idStudentGroup'].invalid && form_participants.controls['idStudentGroup'].touched" [ngStyle]="{color: 'red'}">
+                    <!-- <span *ngIf="form_participants.controls['idStudentGroup'].invalid && form_participants.controls['idStudentGroup'].touched" [ngStyle]="{color: 'red'}">
                         Champ obligatoire*
-                    </span>
+                    </span> -->
                 </div>
                 <div class="button-cash">
-                    <button type="submit">Ajouter participants</button>
+                     <button type="submit">Ajouter participants</button>
                     <button (click)="to_createGroup()">Créer</button>
-                </div>
+            </div>
                 
             </div>
+           
         </form>
             
             <div class="table-container">
@@ -61,19 +63,32 @@
                 </thead>
                 <tbody>
                     <ng-container *ngIf="students.length ; else noResults">
-                    <tr *ngFor="let studens of students">
-                    <td>
-                        <input type="checkbox"  (change)="student_check(studens.idEtudiant!, $event)" [checked]="is_checked(studens.idEtudiant!)" [ngClass]="{ 'custom-checked': is_checked(studens.idEtudiant!) }">
-                                                
-                    </td>
-                    <td>{{studens.nom}}</td>
-                    <td >{{studens.prenom}}</td>
-                    <td class="class-name"  title="{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}">{{studens.idClasse.idFiliere?.idNiveau?.nom}}</td>
-                    <td class="class-name"  title="{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}">{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}</td>
+                        <ng-container *ngFor="let studens of students">
+                            <!-- @if (check(studens.idEtudiant!)) { -->
+                                <tr  [ngClass]="{ 'red-border': check(studens.idEtudiant!)}">
+                                <td>
+                                    
+                                    <input type="checkbox"  (change)="student_check(studens.idEtudiant!, $event)" 
+                                    [checked]="is_checked(studens.idEtudiant!)" 
+                                    [ngClass]="{ 'custom-checked': is_checked(studens.idEtudiant!)}"
+                                    [disabled]="check(studens.idEtudiant!)">
+                                                            
+                                </td>
+                                <td>{{studens.nom}}</td>
+                                <td >{{studens.prenom}}</td>
+                                <td class="class-name"  title="{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}">{{studens.idClasse.idFiliere?.idNiveau?.nom}}</td>
+                                <td class="class-name"  title="{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}">{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}</td>
+                                
+                                <td>{{studens.telephone}}</td>
+                            </tr>
+                            <!-- }@else {
+                                <tr>ooooooooo</tr>
+                            } -->
+                            
+                        </ng-container>
                     
-                    <td>{{studens.telephone}}</td>
-                </tr>
                 </ng-container>
+               
                 <ng-template #noResults>
                     <tr>
                         <td colspan="9" class="text-center">Aucun résultat trouvé</td>

@@ -16,7 +16,7 @@ export class FicheDePaieComponent implements OnInit {
 
   form_paie!: FormGroup;
   idSeance!: number;
-  presence!: Presence;
+  presence?: Presence;
   show_modal : boolean = true
   
   diff_heure: number = 0;

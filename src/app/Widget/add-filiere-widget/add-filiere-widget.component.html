@@ -1,5 +1,6 @@
 <form [formGroup]="addFiliere" (ngSubmit)="send()" > 
     <h4 id="error">Ajouter Filière</h4>
+   <div class="form-content">
     <div class="form form-group"> 
         <label for="email">Nom</label> 
         <input type="text" formControlName="nomFiliere" class="form-control" id="nom" placeholder="nom de la filiere"  [class.is-invalid]="addFiliere.get('nomFiliere')!.invalid && addFiliere.get('nomFiliere')!.touched"> 
@@ -29,4 +30,6 @@
         <a (click)="close_modal()" class="submit" ><span>Annuler</span></a>
         <button class="submit" type="submit" ><span>Enregistre</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
     </div>
+   </div>
+    
 </form> 

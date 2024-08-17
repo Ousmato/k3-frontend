@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IconsService } from '../../Services/icons.service';
 import { SetService } from '../../Admin/Views/settings/set.service';
-import { SchoolInfo } from '../../Admin/Models/School-info';
+import { AnneeScolaire, SchoolInfo } from '../../Admin/Models/School-info';
 import { SchoolService } from '../../Services/school.service';
 import { PageTitleService } from '../../Services/page-title.service';
 
@@ -15,6 +15,7 @@ export class SchoolEditWidgetComponent implements OnInit{
   school?: SchoolInfo
   fileName!: File;
   isshow_overlay: boolean = true
+  anneeScolaire: AnneeScolaire [] =[]
 
   update_school_form!: FormGroup
   constructor(public icons: IconsService, private fb: FormBuilder,
@@ -24,6 +25,7 @@ export class SchoolEditWidgetComponent implements OnInit{
   ngOnInit(): void {
     this.load_school_form();
     this.getSchoolInfo();
+    this.get_all_annee()
       
   }
 
@@ -35,16 +37,23 @@ export class SchoolEditWidgetComponent implements OnInit{
         localite: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         telephone: ['', [Validators.required, Validators.maxLength(12)]],
-        debutAnnee: ['', Validators.required],
-        finAnnee: ['', Validators.required],
+        anneeScolaire: ['', Validators.required],
+        // finAnnee: ['', Validators.required],
         // urlPhoto: ['']
         
       });
     } 
+    get_all_annee(){
+      this.schoolService.getAll_annee().subscribe(data => {
+        this.anneeScolaire = data;
+        console.log(this.anneeScolaire, "anneeScolaire")
+      })
+    }
    // --------------------------------------------------------
    update_school(){
     const fomData = this.update_school_form.value;
     console.log(fomData, "fomdata")
+    const annee = this.anneeScolaire.find(ans=> ans.id == +fomData.anneeScolaire)
   
     const school : SchoolInfo ={
       id: fomData.id,
@@ -52,8 +61,7 @@ export class SchoolEditWidgetComponent implements OnInit{
       localite: fomData.localite,
       email: fomData.email,
       telephone: fomData.telephone,
-      debutAnnee: fomData.debutAnnee,
-      finAnnee: fomData.finAnnee,
+      anneeScolaire: annee!
       // urlPhoto: this.fileName.name
     }
     if(this.update_school_form.valid){
@@ -89,8 +97,6 @@ export class SchoolEditWidgetComponent implements OnInit{
     this.update_school_form.get('nomSchool')?.setValue(school?.nomSchool);
     this.update_school_form.get('email')?.setValue(school?.email);
     this.update_school_form.get('telephone')?.setValue(school?.telephone);
-    this.update_school_form.get('debutAnnee')?.setValue(school?.debutAnnee);
-    this.update_school_form.get('finAnnee')?.setValue(school?.finAnnee);
     this.update_school_form.get('localite')?.setValue(school?.localite);
     this.update_school_form.get('id')?.setValue(school?.id);
     // this.update_school_form.get('urlPhoto')?.setValue(school?.urlPhoto.);

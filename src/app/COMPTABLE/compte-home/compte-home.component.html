@@ -1,0 +1,89 @@
+<main>
+    <div class="first-container">
+        <div class="head-card-content">
+            <div class="child-card" (click)="toggle_student()">
+                <div class="child-card-content">
+                    <div class="card-img">
+                        <img src="assets/study-group-icon.svg" alt="Logo">
+                    </div>
+                    <div class="card-text" >
+                        <p>Les Etudiants Inscrit</p>
+                        <h1>{{studentNumber_inscrit}}</h1>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            <div class="child-card" (click)="toggle_student()">
+                <div class="child-card-content">
+                    <div class="card-img">
+                        <img  src="assets/study-group-icon.svg" alt="Logo">
+                    </div>
+                    <div class="card-text">
+                        <p>Les Etudiants non Inscrit</p>
+                        <h1>{{studentNumber_noInscrit}}</h1>
+                    </div>
+                    
+                </div>
+                
+                
+            </div>
+            <div class="child-card" >
+                <div class="child-card-content">
+                    <div class="card-img">
+                        <img src="assets/money-icon.svg" alt="Logo">
+                    </div>
+                    <div class="card-text" >
+                        <p>Scolarité annuelle versé</p>
+                        <h5 class="sc-annuel">{{sum_scolarite}}</h5>
+                    </div>
+                    
+                </div>
+                
+                
+            </div>
+
+            <div class="child-card" >
+                <div class="child-card-content">
+                    <div class="card-img">
+                        <img src="assets/money-icon.svg" alt="Logo">
+                    </div>
+                    <div class="card-text" >
+                        <p>Réliquat annuel</p>
+                        <h5 class="sc-annuel">{{reliquat}}</h5>
+                    </div>
+                    
+                </div>
+                
+                
+            </div>
+           
+        </div>
+        <!-- -------------------------------------------------------------- -->
+        <!-- <div class="body-content">
+            <div class="child-cards">
+                    <div  id="card-img">
+                        <img id="calendar" src="assets/booking-confirmed-icon.svg" alt="Logo">
+                    </div>
+                    <div id="cart-text" class="card-text">
+                        <h5>Emplois Actifs</h5>
+                        <h1></h1>
+                    </div>
+            </div> -->
+                <!-- <div class="class-scrol">
+                    <ng-container *ngFor="let classe of emplois">
+                        <div class="calendar-classes-content">
+                        <p>{{classe.idClasse.idFiliere?.idNiveau?.nom}} ({{classe.idClasse.idFiliere?.idFiliere?.nomFiliere}})</p>
+                        <div class="date-content">
+                            <p> Debuté le : {{classe.dateDebut}}</p>
+                            <p> Prend fin le : <span id="span">{{classe.dateFin}}</span></p>
+                        </div>
+                    </div>
+                    </ng-container>
+                </div> -->
+            
+            <!-- <h2>Body Content</h2>
+            <p>Here you can add more detailed information, graphs, tables, etc.</p> -->
+        <!-- </div> -->
+    </div>
+</main>

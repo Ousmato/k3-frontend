@@ -1,0 +1,42 @@
+<main>
+    <div class="button-container">
+        <button (click)="toggle_toListEmplois()">Ajouter surveillance</button>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Dates</th>
+                <th>Heures/Sv</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Mentions</th>
+                <th>Type</th>
+                <th>Module</th>
+                <th>Emergement</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngIf="surveillance.length; else notFund">
+                <ng-container  *ngFor="let surv of surveillance" >
+                    <tr>
+                        <td>{{surv.idSeance?.date}}</td>
+                        <td>{{diff_heure}}</td>
+                        <td>{{surv.idSeance?.idTeacher?.nom}}</td>
+                        <td>{{surv.idSeance?.idTeacher?.prenom}}</td>
+                        <td>{{surv.idSeance?.idEmplois?.idClasse?.idFiliere?.idNiveau?.nom}} {{surv.idSeance?.idEmplois?.idClasse?.idFiliere?.idFiliere?.nomFiliere}}</td>
+                        <td>{{surv.seanceType.toLocaleUpperCase()}}</td>
+                        <td>{{surv.idSeance?.idModule?.nomModule}}</td>
+                        <td></td>
+                    </tr>
+                </ng-container>
+                
+            </ng-container>
+            <ng-template #notFund>
+                <tr>
+                    <td colspan="9" class="text-center">Aucun résultat trouvé</td>
+                </tr>
+            </ng-template>
+            
+        </tbody>
+    </table>
+</main>

@@ -52,6 +52,7 @@ export class EmploisSeanceComponent  implements OnInit{
     deleted_modal: boolean = false;
     pause_matin: string [] = [];
     pause_midi: string [] = [];
+    permission: boolean = false
     is_show_button : boolean = false
     is_show_configure: boolean = false;
     correspondance: string = '';
@@ -69,6 +70,7 @@ export class EmploisSeanceComponent  implements OnInit{
       this.getMonth();
       this.load_enseignants();
       this.load_update_form();
+      this.getPermission();
       
 
     }
@@ -80,8 +82,16 @@ export class EmploisSeanceComponent  implements OnInit{
       this.toastr.error("Erreur : "+ erreur)
     }
 
-    // ---------------------------------------button to refresh page
-    
+    // ---------------------------------get permission
+    getPermission(): boolean {
+      const autorize = sessionStorage.getItem('der');
+      if(autorize){
+        this.permission = true
+        // console.log(autorize,"autorize")
+        return true;
+      }
+      return false
+    }
     // ---------------------------go back button 
     goBack(){
       this.location.back();
@@ -115,7 +125,7 @@ export class EmploisSeanceComponent  implements OnInit{
       this.seanceService.get_all_configSeance(idEmploi).subscribe(data =>{
         data.forEach(dat => {
           const seance = dat.idSeance
-           if(!this.configSeance.some(cf =>cf.plageHoraire == dat.plageHoraire && seance.id == cf.idSeance.id) ){
+           if(!this.configSeance.some(cf =>cf.plageHoraire == dat.plageHoraire && seance!.id == cf.idSeance!.id) ){
             this.configSeance.push(dat)
            }
         })
@@ -300,9 +310,12 @@ export class EmploisSeanceComponent  implements OnInit{
     })
   }
   // ------------------------------------------
-  to_groupe(idClasse: number){
+  to_groupe(idClasse: number, idEmploi: number){
     const navigationExtras : NavigationExtras ={
-      queryParams: {id : idClasse}
+      queryParams: {
+        id : idClasse, 
+        idEmploi:  idEmploi
+      }
     }
     this.router.navigate(['/der/group-student'], navigationExtras)
   }

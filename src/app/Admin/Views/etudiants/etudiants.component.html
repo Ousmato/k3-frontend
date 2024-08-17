@@ -5,38 +5,43 @@
     <table class="table table-striped table-hover">
       <thead>
           <tr>
-            <th>ID</th>
-            <th>Photo</th>
+            <th>N° D'ordre</th>
+            <!-- <th>Photo</th> -->
             <th>Nom</th>
             <th>Prenom</th>
-            <th>Email</th>
-            <th>Classe</th>
+            
+            <th>Niveau</th>
             <th>Filiere</th>
 
             <th>Telephone</th>
-            <th>Action <span class="refresh" (click)="refresh()"><fa-icon [icon]="icons.actualise"></fa-icon> Actualiser</span></th>
+            <th>Status</th>
+            <th>Etat</th>
+            <th>Action</th>
 
           </tr>
         </thead>
         <tbody>
           <ng-container *ngIf="filterStudents().length ; else noResults">
           <tr *ngFor="let studens of filterStudents()">
-            <td>{{studens.idEtudiant}}</td>
-            <td><img src="{{studens.urlPhoto}}" alt=""></td>
+            <td>{{studens.numero}}</td>
+            <!-- <td><img src="{{studens.urlPhoto}}" alt=""></td> -->
             <td>{{studens.nom}}</td>
             <td >{{studens.prenom}}</td>
-            <td>{{studens.email}}</td>
+            
             <td class="class-name"  title="{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}">{{studens.idClasse.idFiliere?.idNiveau?.nom}}</td>
             <td class="class-name"  title="{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}">{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}</td>
             
             <td>{{studens.telephone}}</td>
+            <td>{{studens.status}}</td>
+            <td><a >
+              <fa-icon [icon]="studens.payer ? icons.active : icons.desactive " [ngStyle]="{ color: studens.payer ? 'green' : 'red' }"></fa-icon><span >{{ studens.payer ? 'Inscrit' : 'Non inscrit' }}</span></a>
+            </td>
               <td>
                   <div class="btn-contenaire">
+                    
                       <a (click)="getStudentView(studens)" ><fa-icon [icon]="icons.eye"></fa-icon><span>Details</span></a>
-                      <a (click)="getStudent(studens)"><fa-icon [icon]="icons.edit"></fa-icon><span>Modifier</span></a>
-                      <a data-bs-toggle="modal" [attr.data-bs-target]="'#studentDelete_' +studens.idEtudiant">
-                        <fa-icon [icon]="studens.active ? icons.active : icons.desactive " [ngStyle]="{ color: studens.active ? 'green' : 'red' }"></fa-icon><span >{{ studens.active ? 'Active' : 'Inactive' }}</span></a>
-                  
+                      <a *ngIf="permission" (click)="getStudent(studens)"><fa-icon [icon]="icons.edit"></fa-icon><span>Modifier</span></a>
+                      
                   </div>
               </td>
            <!-- -------------------------------------detail etudiants----------------------------------------- -->

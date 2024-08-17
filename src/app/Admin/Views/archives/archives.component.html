@@ -1,16 +1,20 @@
 
 <main>
-   
+  <div (click)="goBack()" class="back-button">
+    <fa-icon [icon]="icons.back"></fa-icon>
+  </div>  
+
    <div class="table-container">
     <table  class="table table-striped table-hover">
       <thead>
           <tr>
             <th>Date</th>
-            <th>Photo</th>
+            <!-- <th>Photo</th> -->
             <th>Nom</th>
             <th>Prenom</th>
             <th>Email</th>
             <th>Telephone</th>
+            <th>Status</th>
             <th>Actions</th>
 
           </tr>
@@ -22,12 +26,13 @@
 
                 <td>{{enseign.date}}</td>
                 <!-- <td><div class="img" style="background-image: url({{enseign.idSeance.idTeacher.urlPhoto}})"></div></td> -->
-                <td><img class="image" [src]="enseign.idSeance.idTeacher.urlPhoto" alt=""></td>
+                <!-- <td><img class="image" [src]="enseign.idSeance.idTeacher.urlPhoto" alt=""></td> -->
                 <td>{{enseign.idSeance.idTeacher.nom}}</td>
                 <td >{{enseign.idSeance.idTeacher.prenom}}</td>
                 <td>{{enseign.idSeance.idTeacher.email}}</td>
                 
                 <td>{{enseign.idSeance.idTeacher.telephone}}</td>
+                <td>{{enseign.idSeance.idTeacher.status}}</td>
                 <td><div (click)="toggle_toPaie(enseign.idSeance.id!)" class="goto-next"  >Payer</div></td>
               </tr>
 

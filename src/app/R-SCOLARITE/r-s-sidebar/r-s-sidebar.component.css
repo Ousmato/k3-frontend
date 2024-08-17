@@ -47,7 +47,6 @@
 
    span{
     font-size: 16px;
-    color: var(--primary);
     &:hover{
       color: var(--secondary);
     }
@@ -97,9 +96,6 @@
   }
 
   .active {
-    /* border-bottom: 1px solid var(--secondary); */
-    border: 1px solid var(--secondary);
-    border-radius: 5px;
     color: var(--secondary) !important;
   }
   

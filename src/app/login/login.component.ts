@@ -52,8 +52,6 @@ export class LoginComponent implements OnInit {
             console.log('Je suis admin', data.role);
             this.route.navigate(["/sidebar"])
             
-            
-            
   
           } else if (data.role === Admin_role.DGA.toLocaleLowerCase()) {
             
@@ -85,6 +83,11 @@ export class LoginComponent implements OnInit {
               const adminDataString = JSON.stringify(data);
               sessionStorage.setItem("dg", adminDataString);
               this.route.navigate(['/dg']);
+            
+            }else if (data.role === Admin_role.SECRETAIRE.toLocaleLowerCase()) {
+              const adminDataString = JSON.stringify(data);
+              sessionStorage.setItem("secretaire", adminDataString);
+              this.route.navigate(['/secretaire']);
 
           }else{
             this.toastr.error('Identifiant ou mot de passe incorrect', 'Erreur',)

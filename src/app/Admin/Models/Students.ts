@@ -2,6 +2,7 @@ import { Admin } from "./Admin";
 import { ClassRoom } from "./Classe";
 import { Emplois } from "./Emplois";
 import { Module } from "./Module";
+import { AnneeScolaire } from "./School-info";
 
 export interface Student {
     numero?: number;
@@ -11,13 +12,14 @@ export interface Student {
     sexe: string;
     email: string;
     scolarite?: number;
-    frais?: number;
+    payer?: boolean;
     telephone: number;
     password: string;
     active?: boolean;
     urlPhoto?: string;
     matricule: string;
     date?: string; 
+    idAnneeScolaire: AnneeScolaire;
     lieuNaissance: string;
     dateNaissance: string; 
     idClasse : ClassRoom;
@@ -43,4 +45,9 @@ export interface Participant{
     idStudentGroup: Student_group;
     idStudent: Student
 
+}
+
+export interface Student_count{
+    inscrit: number;
+    non_inscrit: number;
 }

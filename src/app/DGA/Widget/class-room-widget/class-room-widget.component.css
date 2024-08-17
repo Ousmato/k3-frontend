@@ -1,4 +1,7 @@
 
+.form-content{
+    padding: 10px;
+}
 .button-cash{
     display: flex;
     gap: 20px;

@@ -96,6 +96,9 @@ export class ServiceService {
   getAllEmploisActifs(): Observable<Emplois[]>{
     return this.http.get<Emplois[]>(`${this.baseUrl}all-actifs-emplois`);
   }
+  getAllEmploisActifs_with_seances(): Observable<Emplois[]>{
+    return this.http.get<Emplois[]>(`${this.baseUrl}all-actifs-emplois-with-seances`);
+  }
   // ------------------------update emplois without seance
   updateEmplois(emplois: Emplois): Observable<Response_String>{
     return this.http.put<Response_String>(`${this.baseUrl}update`, emplois);

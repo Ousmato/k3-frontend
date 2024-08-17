@@ -44,10 +44,13 @@
                             <div >{{pai.nbreHeures}} heures</div>
                             <span>{{moment}}</span>
                         </td>
-                        <td>{{pai.coutHeure}} FCFA</td>
-                        <td>{{pai.montant}} FCFA</td>
+                        <td>{{pai.coutHeureFormatter}}</td>
+                        <td>{{pai.montantFormatter}}</td>
                     </tr>
                 </ng-container>
+                <tr>
+                    <td colspan="9" class="text-center">Montant total est : <b>{{sum_montant}}</b></td>
+                </tr>
                 
             </tbody>
         </table>

@@ -6,7 +6,7 @@ import { SeancService } from '../../../Admin/Views/emplois-seance/seanc.service'
 import { Emplois } from '../../../Admin/Models/Emplois';
 import { Configure_seance } from '../../../Admin/Models/Configure_seance';
 import { PageTitleService } from '../../../Services/page-title.service';
-import { Participant } from '../../../Admin/Models/Students';
+import { Participant, Student_group } from '../../../Admin/Models/Students';
 import { EtudeService } from '../../../Admin/Views/etudiants/etude.service';
 
 @Component({
@@ -20,6 +20,7 @@ export class ConfigureSeanceComponent implements OnInit {
   @Input() configSeance: Configure_seance [] =[]
   @Output() closeModal = new EventEmitter<any>();
 
+  groupes: Student_group [] = [];
   seances: Seances [] = [];
   seance_type: string[] = [];
   emplois!: Emplois;
@@ -53,6 +54,7 @@ export class ConfigureSeanceComponent implements OnInit {
       seanceType: ['', Validators.required] 
     });
   }
+
 
   add_configure(){
     const formData = this.form_configure.value
@@ -167,7 +169,7 @@ export class ConfigureSeanceComponent implements OnInit {
         // Crée une copie de la liste des plages horaires de la séance
         let updatedPlageHoraire = [...seance.plageHoraire!];
         this.configSeance.forEach(cf => {
-            if (cf.idSeance.id == seance.id) {
+            if (cf.idSeance!.id == seance.id) {
                 // Filtre les plages horaires de la séance pour enlever celles qui correspondent
                 updatedPlageHoraire = updatedPlageHoraire.filter(plage => plage !== cf.plageHoraire);
             }

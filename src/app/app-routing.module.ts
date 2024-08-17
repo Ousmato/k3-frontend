@@ -27,6 +27,10 @@ const routes: Routes = [
   },
   {path: 'comptable',
     loadChildren: () =>import('./COMPTABLE/compte-sidebar/compte-sidebar.module').then(m=>m.CompteSidebarModule),
+  },
+  {path: 'secretaire', 
+    loadChildren: () => import('./SECRETAIRE/sec-sidebar/sec-sidebar.module').then(m=>m.SecSidebarModule),
+    canActivate: [authGuard]
   }
   
 ];

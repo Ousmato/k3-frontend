@@ -11,6 +11,7 @@ import { Paie } from '../../Models/paie';
 import { Presence_pages } from '../../Models/Pagination-module';
 import { SideBarService } from '../../../sidebar/side-bar.service';
 import { NavigationExtras, Router } from '@angular/router';
+import { PageTitleService } from '../../../Services/page-title.service';
 
 @Component({
   selector: 'app-archives',
@@ -32,25 +33,22 @@ export class ArchivesComponent  implements OnInit{
 
   constructor (private teacherService: EnseiService, private root: Router,
     public icons: IconsService, private fb: FormBuilder, 
-    private sideBareService: SideBarService){}
+    private sideBareService: SideBarService, private pageTitle: PageTitleService){}
 
   ngOnInit(): void {
-    this.form_paie = this.fb.group({
-      coutHeure:[''],
-      nbreHeures: [''],
-      montant: [''],
-      idPresenceTeachers: ['']
-    })
-
+   
     this.getAll();
+    this.load_strim_search();
+      
+  }
 
+  // -------------------load seaech strim
+  load_strim_search(){
     this.sideBareService.currentSearchTerm.subscribe(term => {
       this.searchTerm = term;
       this.filterTeachers();
     
     });
-    
-      
   }
   // -----------------------filter methode
   filterTeachers() {
@@ -76,66 +74,22 @@ export class ArchivesComponent  implements OnInit{
       this.enseignants.forEach(item => {
         item.idSeance.idTeacher.urlPhoto = `http://localhost/StudentImg/${item.idSeance.idTeacher.urlPhoto}`;
       });
-      this.load_diff(this.enseignants)
+      // this.load_diff(this.enseignants)
     })
     
   }
   // -----------------------------------get difference of time
-  load_diff(enseignant: Presence[]){
-    console.log(enseignant, "heure diff")
-    enseignant.forEach(item =>{
-     
-      // Convertir les heures de début et de fin en objets Date
-      let heure_Debut = new Date('1970-01-01T' + item.idSeance.heureDebut);
-      let heure_Fin = new Date('1970-01-01T' + item.idSeance.heureFin );
-
-      // Calculer la différence en millisecondes
-      let differenceMs = heure_Fin.getTime() - heure_Debut.getTime();
-
-      // Convertir la différence de millisecondes en heures et minutes
-      let differenceMinutes = Math.floor(differenceMs / (1000 * 60));
-      let differenceHours = Math.floor(differenceMinutes / 60);
-      let remainderMinutes = differenceMinutes % 60;
-
-      item.heure = differenceHours;
-      item.munite = remainderMinutes;
-      this.diff_heure  = item.heure;
-
-    })
-  }
-  // --------------------------------load input value automataclly
-  loadInputValue(event: any, presnce: Presence){
-
-    let valeurCoutHeure = this.form_paie.get('coutHeure')!.value;
-    let heure = presnce.heure;
-    const montant = +valeurCoutHeure * +heure!;
-    this.form_paie.get('montant')?.setValue(montant +" FCFA");
-    // var valeur = inputElement.value
-  }
-  // ------------------------------- 
  
-  // -------------------------------------------------add paie
-
-    add_paie(presence: Presence){
-        const formData = this.form_paie.value;
-        const paie: Paie = {
-        coutHeure: +formData.coutHeure,
-        nbreHeures: presence.heure!,
-        
-        idPresenceTeachers: presence
-    }
-    this.teacherService.addPaie(paie).subscribe((data) => {
-      alert("Paiement effectuee avec succes!!");
-      window.location.reload();
-      
-    })
+  // --------------------back button
+  goBack(){
+    window.history.back();
   }
   //
   toggle_toPaie(idSeance: number){
     const navigationExtras : NavigationExtras ={
       queryParams: {id: idSeance}
     }
-    this.root.navigate(['/sidebar/fiche-de-paie-component'], navigationExtras)
+    this.root.navigate(['/secretaire/fiche-de-paie-component'], navigationExtras)
   } 
   // ------------------------------next page
   setPage(page: number): void {

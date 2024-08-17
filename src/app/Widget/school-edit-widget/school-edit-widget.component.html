@@ -59,23 +59,19 @@
                     </div>
                     
                     <div class="column">
-                      
-                        <div class="form-group">
-                            <label for="">Fin d'année :</label>
-                            <input type="date" class="form-control" formControlName="finAnnee" [class.is-invalid]="update_school_form.get('finAnnee')!.invalid && update_school_form.get('finAnnee')!.touched">
-                            <span *ngIf="update_school_form.controls['finAnnee'].hasError('required') && update_school_form.controls['finAnnee'].touched"
-                                [ngStyle]="{color: 'red'}">
-                                Champ obligatoire*
-                            </span>
-                        </div>
+                     
     
                         <div class="form-group">
-                            <label for="">Début d'année :</label>
-                            <input type="date" class="form-control" formControlName="debutAnnee" [class.is-invalid]="update_school_form.get('debutAnnee')!.invalid && update_school_form.get('debutAnnee')!.touched">
-                            <span *ngIf="update_school_form.controls['debutAnnee'].hasError('required') && update_school_form.controls['debutAnnee'].touched"
+                            <label for="">Année scolaire :</label>
+                            <select  class="form-select" formControlName="anneeScolaire" [class.is-invalid]="update_school_form.get('anneeScolaire')!.invalid && update_school_form.get('anneeScolaire')!.touched">
+                                <option disabled value="">Choisir l'année scolaire</option>
+                                <option *ngFor="let annee of anneeScolaire" value="{{annee.id}}">Du {{annee.debutAnnee}} au {{annee.finAnnee}}</option>
+                            </select>
+
+                            <span *ngIf="update_school_form.controls['anneeScolaire'].hasError('required') && update_school_form.controls['anneeScolaire'].touched"
                             [ngStyle]="{color: 'red'}">
                             Champ obligatoire*
-                        </span>
+                            </span>
                         </div>
     
                         <div class="form-group">

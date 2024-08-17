@@ -13,6 +13,7 @@ main{
   span{
     color: var(--primary);
     font-size: 12px;
+    
   }
   .back-button{
     width: 30px;

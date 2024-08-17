@@ -4,9 +4,14 @@ export interface SchoolInfo{
     localite: string;
     email: string;
     telephone: number;
-    debutAnnee : Date;
-    finAnnee: Date;
+    anneeScolaire: AnneeScolaire
     urlPhoto?: string;
     annee ?: string; 
 
+}
+export interface AnneeScolaire{
+    id?: number;
+    debutAnnee: Date
+    finAnnee: Date;
+    ans?: number
 }
