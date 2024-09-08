@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { EtudeService } from './etude.service';
-import { ClassStudentService } from '../../../DGA/class-students/class-student.service';
 import { Student } from '../../Models/Students';
-import { data } from 'jquery';
 import { IconsService } from '../../../Services/icons.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { dom } from '@fortawesome/fontawesome-svg-core';
 import { ActivatedRoute, NavigationExtras, Route, Router } from '@angular/router';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { StudentPages, TeacherPages } from '../../Models/Pagination-module';

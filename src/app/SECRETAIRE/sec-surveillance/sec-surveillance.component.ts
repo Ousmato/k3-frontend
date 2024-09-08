@@ -49,7 +49,6 @@ export class SecSurveillanceComponent implements OnInit{
   }
   // ---------------------calculate diff heure
   load_diff(configList: Configure_seance[]){
-    console.log(configList,"cccccccccccccc")
     configList.forEach(sv => {
       let heure_Debut = new Date('1970-01-01T' + sv.idSeance?.heureDebut);
       let heure_Fin = new Date('1970-01-01T' + sv.idSeance?.heureFin );
@@ -63,7 +62,6 @@ export class SecSurveillanceComponent implements OnInit{
       let remainderMinutes = differenceMinutes % 60;
      
       sv.heure = differenceHours;
-      console.log(sv.heure, "hhhhhhhhhhhhhh")
       sv.munite = remainderMinutes;
       this.diff_heure  = sv.heure;
   

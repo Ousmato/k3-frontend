@@ -1,16 +1,22 @@
 
 <main>
-    
+    <div class="btn-container">
+      <button type="button" (click)="addTeacher()">Ajouter enseignant <fa-icon [icon]="icons.had_point_down"></fa-icon></button>
+      <button type="button" (click)="timeWorks()">Heure éffectuer <fa-icon [icon]="icons.had_point_down"></fa-icon></button>
+    </div>
    <div class="table-container">
+    
     <table class="table table-striped table-hover">
       <thead>
           <tr>
-            <th>ID</th>
-            <th>Photo</th>
+            <th>N° D'ordre</th>
+            <!-- <th>Photo</th> -->
             <th>Nom</th>
             <th>Prenom</th>
             <th>Email</th>
             <th>Telephone</th>
+            <th>Status</th>
+            <th>Spécialité </th>
             <th>Action</th>
 
           </tr>
@@ -19,12 +25,14 @@
           <ng-container *ngIf="filterTeachers().length ; else noResults">
           <tr *ngFor="let enseign of filterTeachers()">
             <td>{{enseign.numero}}</td>
-            <td><img [src]="enseign.urlPhoto || icons.user" alt=""></td>
+            <!-- <td><img [src]="enseign.urlPhoto || icons.user" alt=""></td> -->
             <td>{{enseign.nom}}</td>
             <td >{{enseign.prenom}}</td>
             <td>{{enseign.email}}</td>
             
             <td>{{enseign.telephone}}</td>
+            <td>{{enseign.status}}</td>
+            <td>{{enseign.idUe.nomUE}}</td>
               <td>
                 <div class="btn-contenaire">
                   <a data-bs-toggle="modal" [attr.data-bs-target]="'#enseignantDetail_' + enseign.idEnseignant" ><fa-icon [icon]="icons.eye"></fa-icon><span>Details</span></a>

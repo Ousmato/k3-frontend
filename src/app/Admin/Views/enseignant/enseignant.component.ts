@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Teacher, TeachersStatus } from '../../Models/Teachers';
 import { IconsService } from '../../../Services/icons.service';
 import { EnseiService } from './ensei.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { PageTitleService } from '../../../Services/page-title.service';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { TeacherPages } from '../../Models/Pagination-module';
 import { SideBarService } from '../../../sidebar/side-bar.service';
@@ -92,5 +90,13 @@ export class EnseignantComponent implements OnInit {
     if (this.page > 0) {
       this.setPage(this.page - 1);
     }
+  }
+
+  timeWorks(){
+    this.root.navigate(['/der/paiement']);
+  }
+
+  addTeacher(){
+    this.root.navigate(['/der/t-singin']);
   }
 }

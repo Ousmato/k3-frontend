@@ -122,8 +122,6 @@ seanceTypeOptions: { key: string, value: string }[] = [];
                 date: date.date,
                 idEmplois: this.emplois,
                 idModule: idModule,
-                idTeacher: idTeacher,
-                idSalle: idSalle,
             };
             list_seances.push(seance);
 
@@ -133,6 +131,8 @@ seanceTypeOptions: { key: string, value: string }[] = [];
               heureDebut: formData.heureDebut,
               heureFin: formData.heureFin,
               seanceType: formData.seanceType,
+              idTeacher: idTeacher,
+              idSalle: idSalle
               
             }
             lis_config.push(config);
@@ -175,9 +175,10 @@ seanceTypeOptions: { key: string, value: string }[] = [];
       const dateFin = this.emplois.dateFin;
       console.log(this.emplois, "emplois trouver");
       this.form_seance.get('idEmplois')?.setValue(this.emplois.id);
-      this.datesWithDaysTest = this.emploisService.getDaysBetweenDatesTest(dateDebut, dateFin)
+      // this.datesWithDaysTest = this.emploisService.getDaysBetweenDatesTest(dateDebut, dateFin)
       this.datesWithDays = this.emploisService.getDaysBetweenDates(dateDebut, dateFin)
       this.datesWithDays.sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+      this.sortSeancesByDay()
     
     })
     
@@ -269,7 +270,17 @@ selectAll(event : any){
       }
     })
   }
-
+  sortSeancesByDay() {
+    const daysOfWeek = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+ 
+   // Trier les séances par jour en utilisant l'ordre défini dans daysOfWeek
+   this.datesWithDays.sort((a, b) => {
+     const dayIndexA = daysOfWeek.indexOf(a.day!);
+     const dayIndexB = daysOfWeek.indexOf(b.day!);
+     
+     return dayIndexA - dayIndexB;
+   });
+ }
   goBack(){
     window.history.back();
   }

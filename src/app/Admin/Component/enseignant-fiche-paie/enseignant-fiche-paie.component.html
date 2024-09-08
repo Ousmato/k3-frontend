@@ -39,7 +39,7 @@
                 <ng-container *ngFor="let pai of paie">
                     <tr>
                         <td>{{pai.date}}</td>
-                        <td>{{pai.idPresenceTeachers.idSeance.idEmplois.idClasse.idFiliere?.idNiveau?.nom}} ({{pai.idPresenceTeachers.idSeance.idEmplois.idClasse.idFiliere?.idFiliere?.nomFiliere}})</td>
+                        <td>{{pai.journee.idEmplois.idClasse.idFiliere?.idNiveau?.nom}} ({{pai.journee.idEmplois.idClasse.idFiliere?.idFiliere?.nomFiliere}})</td>
                         <td class="heure-content">
                             <div >{{pai.nbreHeures}} heures</div>
                             <span>{{moment}}</span>

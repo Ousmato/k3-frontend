@@ -28,7 +28,11 @@ export class DerSidebarComponent implements OnInit, OnDestroy {
 
   routerEventsSubscription!: Subscription;
 
-  component_Name: string [] = ['_EnseignantComponent',  '_EtudiantsComponent', '_TeachersPresenceComponent', '_FichePaieComponent', '_ArchivesComponent']
+  component_Name: string [] = ['_EnseignantComponent',  
+    '_EtudiantsComponent', '_TeachersPresenceComponent', 
+    '_FichePaieComponent', '_ArchivesComponent',
+    '_DerPaiListComponent', '_DerSallesComponent'
+  ]
  
 
   searchTerm: string = '';

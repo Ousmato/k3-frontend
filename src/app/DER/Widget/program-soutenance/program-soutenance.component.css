@@ -1,0 +1,132 @@
+main{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.one-column{
+    margin-top: 10px;
+    padding: 10px;
+    width: 80%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+.first-inputs{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.form{
+    width: 100%;
+}
+.submit-button{
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+p{
+    text-align: left;
+    font-size: 18px;
+}
+.input-cont{
+    /* width: 80%; */
+    display: flex;
+    justify-content: space-between;
+}
+span{
+    font-size: 12px;
+}
+.btn-con{
+    margin-top: 40px;
+}
+button{
+    border: none;
+    cursor: pointer;
+    padding: 5px 15px;
+    border-radius: 5px;
+    background-color: var(--primary);
+    color: var(--secondary);
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+    /* margin-top: 20px; */
+}
+.btn-contenair{
+    /* width: 100%; */
+    margin-top: 20px;
+    padding-right: 10px;
+    display: flex;
+    justify-content: end;
+}
+
+  .back-button{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    font-size: 20px;
+    margin: 10px 0;
+    &:hover{
+        background-color: var(--tertiary);
+        color: var(--primary);
+        border: none;
+        border-radius: 50%;
+    }
+
+}
+
+.select-input input:focus, select:focus{
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 5px transparent;
+}
+.form-group-heure{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+.jury-content{
+    margin-top: 10px;
+    width: 100%;
+    border: 1px solid var(--tertiary);
+    border-radius: 5px;
+    padding: 10px;
+}
+.form-group-jury{
+    border-radius: 5px;
+    margin-top: 10px;
+    border: 1px solid var(--primary);
+    display: flex;
+}
+.select-input{
+    border: none;
+}
+.chose-role{
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    color: var(--secondary);
+    background-color: var(--primary);
+    width: 150px;
+}
+
+/* ----------------------back button style */
+.back-button{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    font-size: 20px;
+    margin: 10px 0;
+    &:hover{
+        background-color: var(--tertiary);
+        color: var(--primary);
+        border: none;
+        border-radius: 50%;
+    }
+
+}

@@ -1,0 +1,94 @@
+<main>
+    <div (click)="goBack()" class="back-button">
+        <fa-icon [icon]="icons.back"></fa-icon>
+    </div>
+    <div class="content" id="idTable">
+        <div class="conten-head">
+            <div class="head-left">
+                <p>MINISTERE DE L'ENSEIGNEMENT SUPERIEUR  <br> ET DE LA RECHERCHE SCIENTIFIQUE</p>
+                <span>-----------------------------</span>
+            </div>
+            <div class="head-right">
+                <p>REPUBLIQUE DU MALI <br> UN PEUPLE-UN BUT-UNE FOI</p>
+            </div>
+        </div>
+        <div class="head">
+            <div class="img-content">
+                <!-- <img src="{{school?.urlPhoto}}" alt="alt"> -->
+                <img src="assets/logounivsegou.png" alt="alt">
+            </div>
+            <p>Institut Universitaire de Formation professionel (IUFP)</p>
+            <span> Soutenance : {{date}} </span>
+            
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>N°</th>
+                    <th>Etudiants</th>
+                    <th>Filière</th>
+                    <th>Niveau</th>
+                    <th>Encadrant</th>
+                    <th>Heure</th>
+    
+                </tr>
+            </thead>
+           
+            <tbody>
+                
+                    <ng-container *ngIf="soutenance; else notFund" >
+                         <ng-container  *ngFor="let sout of soutenance">
+                        <tr>
+                            <td>{{sout.id}}</td>
+                            <td>
+                                @for (student of sout.students; track $index) {
+                                    {{student.nom}} {{student.prenom}} <br>
+                                }
+                            </td>
+                            <td>{{sout.filiere}}</td>
+                            <td>{{sout.niveaux}}</td>
+                          
+                            <td>{{sout.idTeacher.nom}} {{sout.idTeacher.prenom}}</td>
+                            <td>{{sout.heureDebut}} - {{sout.heureFin}}</td>
+                        </tr>
+                        
+                    </ng-container>
+                    
+                </ng-container>
+                <ng-template #notFund>
+                    <tr>
+                        <td colspan="9" class="text-center">Aucun résultat trouvé</td>
+                    </tr>
+                </ng-template>
+                
+            </tbody>
+            
+        
+        </table>
+        <span>Salle: {{salle?.nom}}</span>
+        <div class="tab-footer">
+            <div class="footer">
+                
+                @for (item of jurys; track $index) {
+                    <p>M. {{item.idTeacher.nom}} {{item.idTeacher.prenom}} : {{item.role.toUpperCase()}}</p>
+                }
+            </div>
+            <div class="footer-right">
+                <p>Ségou le, {{getCurrentDate()}}<br>
+                    Le chéf de Département
+                </p>
+                  <p>Dr  {{admin!.nom.charAt(0).toLocaleUpperCase()}} {{admin!.prenom.toLocaleUpperCase()}}<br>
+                   <span class="italic"> Maître assistant</span>
+                    
+                  </p>
+            </div>
+        
+        </div>
+        <div class="btn-container" id="button">
+            <button (click)="imprimer()">Imprimer</button>
+        </div>
+        
+        
+    </div>
+    
+</main>

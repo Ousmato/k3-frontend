@@ -1,0 +1,89 @@
+
+main{
+    margin-top: 20px;
+}
+.form-input{
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    gap: 30px;
+    margin-bottom: 10px;
+}
+
+/* -----------------select jours select */
+select{
+    width: 110px;
+    border: none;
+}
+
+.is-invalid {
+    border: 1px solid red;
+}
+
+.col-12{
+    gap: 10px;
+     padding: 0 10px;
+ }
+ 
+ .student-container{
+    display: flex;
+    justify-content: space-between;
+ }
+
+ /* Styler l'en-tête du tableau */
+th {
+    background-color: var(--primary-light);
+}
+
+.table-container{
+    height: 400px;
+    position: relative;
+    overflow-y: auto;
+}
+.table thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+.table-container::-webkit-scrollbar{
+    display: none;
+}
+
+tr td{
+    font-size: 16px;
+    text-overflow: ellipsis;
+}
+
+/* ----------------------back button style */
+.back-button{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    font-size: 20px;
+    margin: 10px 0;
+    &:hover{
+        background-color: var(--tertiary);
+        color: var(--primary);
+        border: none;
+        border-radius: 50%;
+    }
+
+}
+
+button{
+    border: none;
+    /* padding: 5px; */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    background-color: transparent;
+    width: 90px;
+    color: var(--secondary);
+    cursor: pointer;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+
+}

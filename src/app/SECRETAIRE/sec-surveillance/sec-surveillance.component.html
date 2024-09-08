@@ -7,6 +7,7 @@
             <tr>
                 <th>Dates</th>
                 <th>Heures/Sv</th>
+                <th>Montant</th>
                 <th>Nom</th>
                 <th>Prenom</th>
                 <th>Mentions</th>
@@ -21,8 +22,9 @@
                     <tr>
                         <td>{{surv.idSeance?.date}}</td>
                         <td>{{diff_heure}}</td>
-                        <td>{{surv.idSeance?.idTeacher?.nom}}</td>
-                        <td>{{surv.idSeance?.idTeacher?.prenom}}</td>
+                        <td>{{diff_heure}}</td>
+                        <td>{{surv?.idTeacher?.nom}}</td>
+                        <td>{{surv?.idTeacher?.prenom}}</td>
                         <td>{{surv.idSeance?.idEmplois?.idClasse?.idFiliere?.idNiveau?.nom}} {{surv.idSeance?.idEmplois?.idClasse?.idFiliere?.idFiliere?.nomFiliere}}</td>
                         <td>{{surv.seanceType.toLocaleUpperCase()}}</td>
                         <td>{{surv.idSeance?.idModule?.nomModule}}</td>

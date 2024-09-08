@@ -1,0 +1,93 @@
+<main>
+    <form [formGroup]="doc_form" (ngSubmit)="submit()">
+        <div (click)="goBack()" class="back-button">
+            <fa-icon [icon]="icons.back"></fa-icon>
+          </div>
+        <div class="form-input">
+        <button type="submit">Valider <fa-icon [icon]="icons.circle_check"></fa-icon></button>
+            
+            <div class="form form-group">
+                <select  formControlName="docType"  [class.is-invalid]="doc_form.get('docType')!.invalid && doc_form.get('docType')!.touched">
+                    <option disabled value="">Doccument</option>
+                    <option *ngFor="let type of docTypes" value="{{type.value}}">{{type.key}}</option>
+                </select> 
+            </div>
+
+            <div class="form form-group">
+                <select  formControlName="idClasse"   (change)="changeClasse($event)" [class.is-invalid]="doc_form.get('idClasse')!.invalid && doc_form.get('idClasse')!.touched">
+                    <option disabled value="">La classe</option>
+                    <option *ngFor="let cl of classRoom" value="{{cl.id}}">{{cl.idFiliere?.idNiveau?.nom}} {{cl.idFiliere?.idFiliere?.nomFiliere}}</option>
+                </select> 
+            </div>
+           
+        </div>
+       
+        <div class="table-container">
+            <table class="table table-striped table-hover">
+              <thead>
+                  <tr>
+                    <th>Selection</th>
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    
+                    <th>Niveau</th>
+                    <th>Filiere</th>
+        
+                    <th>Telephone</th>
+                    <th>Doccument</th>
+        
+                  </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngIf="students.length ; else noResults">
+                        <tr *ngFor="let studens of students">
+                            <td><input type="checkbox" (change)="student_check(studens.idEtudiant!, $event)" 
+                                [checked]="isChecked(studens.idEtudiant!)" 
+                                [disabled]="disabledStudentIds.includes(studens.idEtudiant!)">
+                          
+
+                            </td>
+                            <td>{{studens.nom}}</td>
+                            <td >{{studens.prenom}}</td>
+                            
+                            <td class="class-name"  title="{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}">{{studens.idClasse.idFiliere?.idNiveau?.nom}}</td>
+                            <td class="class-name"  title="{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}">{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}</td>
+                            
+                            <td>{{studens.telephone}}</td>
+                            <td>
+                                @if(disabledStudentIds.includes(studens.idEtudiant!)){
+                                    <p>Déposer</p>
+                                }@else {
+                                    <p>---</p>
+                                }
+                            </td>
+                        </tr>
+                    </ng-container>
+                    <ng-template #noResults>
+                        <tr>
+                            <td colspan="9" class="text-center">Aucun document trouvé</td>
+                        </tr>
+                    </ng-template>
+                    
+                </tbody>
+            </table>
+        </div>
+
+        <!-- <div class="student-container" >
+            <div class="views-add-ues" *ngIf="students.length > 0">
+                <div class="formModuleMatiere" *ngIf="isShow_add_student"> 
+                    <ng-container *ngFor="let student of students">
+                        <div class="input">
+                            <label >{{student.nom}}  {{student.prenom}}</label>
+                            <input type="checkbox"  (change)="student_check(student.idEtudiant!, $event)" [checked]="isChecked(student.idEtudiant!)">
+                        </div>
+                    </ng-container>
+                    
+                </div> 
+            </div>
+
+            
+        </div> -->
+       
+    </form>
+</main>

@@ -1,78 +1,67 @@
 <main>
-
-    <div (click)="goBack()" class="back-button">
-        <fa-icon [icon]="icon.back"></fa-icon>
-    </div>
-
-    <div class="one-column">
-        <div class="child-1">
-            <h1>Creation de l'emplois du temps</h1>
-        </div>
     
-        <div class="child-2">
-            <form [formGroup]="EmploisAdd" (ngSubmit)="addEmplois()" >
-            
-            <div class="phrase">
-                
-            <p>1. 1.  Choisir le semetre courants , la date du debut et la date de  fin</p>
+    
+        <form  class="one-column" [formGroup]="EmploisAdd" (ngSubmit)="addEmplois()">
+            <div (click)="goBack()" class="back-button">
+                <fa-icon [icon]="icons.back"></fa-icon>
             </div>
             
-            <div class="input-cont">
-                <div class="form form-group">
-                    <label for="password">Semestre :</label> 
-                    <select class="form-select" formControlName="idSemestre"  id="semestre"    [class.is-invalid]="EmploisAdd.get('idSemestre')!.invalid && EmploisAdd.get('idSemestre')!.touched">
-                    <option  selected disabled value="">Choisir Le semestre</option>
-                    <option *ngFor="let seme of semestre" [ngValue]="seme.id">{{seme.nomSemetre}}</option>
-                    </select>         
-                    <span *ngIf="EmploisAdd.controls['idSemestre'].invalid && EmploisAdd.controls['idSemestre'].touched" [ngStyle]="{color: 'red'}">
-                        Champ obligatoire*
-                        </span>              
-                </div>
+            <div class="form form-group">
+                <label for="password">Semestre :</label> 
+                <select class="form-select" formControlName="idSemestre"  id="semestre"    [class.is-invalid]="EmploisAdd.get('idSemestre')!.invalid && EmploisAdd.get('idSemestre')!.touched">
+                <option  selected disabled value="">Choisir Le semestre</option>
+                <option *ngFor="let seme of semestre" [ngValue]="seme.id">{{seme.nomSemetre}}</option>
+                </select>         
+                <span *ngIf="EmploisAdd.controls['idSemestre'].invalid && EmploisAdd.controls['idSemestre'].touched" [ngStyle]="{color: 'red'}">
+                    Champ obligatoire*
+                    </span>              
+            </div>
 
-                <div class="form form-group"> 
+            <div class="input-date">
+                <div class="form form-group date"> 
                     <label for="password">Date du début :</label> 
                     <!-- <input type="date" class="form-control" id="dateDebut" formControlName="dateDebut" placeholder="Date du debut" required> -->
-                    <input type="date" class="form-control" formControlName="dateDebut" [class.is-invalid]="EmploisAdd.get('dateDebut')!.invalid && EmploisAdd.get('dateDebut')!.touched"  >
+                    <input type="date" class="form-control" formControlName="dateDebut" [class.is-invalid]="EmploisAdd.get('dateDebut')!.invalid && EmploisAdd.get('dateDebut')!.touched" (change)="check_date($event)" >
                     <span *ngIf="EmploisAdd.controls['dateDebut'].invalid && EmploisAdd.controls['dateDebut'].touched" [ngStyle]="{color: 'red'}">
                     Champ obligatoire*
                     </span>
                 </div>
-
-                <div class="form form-group"> 
+    
+                <div class="form form-group date" > 
                     <label for="password">Date de fin :</label> 
-                    <input type="date" class="form-control" id="datFin" formControlName="dateFin" placeholder="Date de fin"  readonly>
+                    <input type="date" class="form-control " id="datFin" formControlName="dateFin" placeholder="Date de fin"  readonly>
                 </div>
-
-                <div class="form form-group"> 
-                    <label for="">Mentions :</label> 
-                        <select class="form-select" formControlName="idClasse" [class.is-invalid]="EmploisAdd.get('idClasse')!.invalid && EmploisAdd.get('idClasse')!.touched">
-                            <option  selected disabled value="">Choisir la mention</option>
-                            <option *ngFor="let cl of classRoom" [ngValue]="cl.id">{{cl.idFiliere?.idNiveau?.nom}} {{cl.idFiliere?.idFiliere?.nomFiliere}}</option>
-                        </select>  
-
-                        <span *ngIf="EmploisAdd.controls['idClasse'].invalid && EmploisAdd.controls['idClasse'].touched" [ngStyle]="{color: 'red'}">
-                        Champ obligatoire*
-                        </span>
-                </div> 
-                
             </div>
             
+            <div class="form form-group">
+                <label >Les classes :</label> 
+                <select class="form-select" formControlName="idClasse"      [class.is-invalid]="EmploisAdd.get('idClasse')!.invalid && EmploisAdd.get('idClasse')!.touched" (change)="moduleSelect($event)">
+                    <option  selected disabled value="">Choisir La classe</option>
+                    <option *ngFor="let class of classRoom " [value]="class.id">{{class.idFiliere?.idNiveau?.nom}} {{class.idFiliere?.idFiliere?.nomFiliere}}</option>
+                </select>         
+                <!-- <span *ngIf="EmploisAdd.controls['idClasse'].invalid && EmploisAdd.controls['idClasse'].touched" [ngStyle]="{color: 'red'}">
+                    Champ obligatoire*
+                </span> -->
 
-            <div class="btn-con">
-                <p>2. Ajouter les seances de formation</p>
+            </div>
+
+            <div class="form form-group">
+                <label >Les modules :</label> 
+                <select class="form-select" formControlName="idModule"      [class.is-invalid]="EmploisAdd.get('idModule')!.invalid && EmploisAdd.get('idModule')!.touched">
+                    <option  selected disabled value="">Choisir Le module</option>
+                    <option *ngFor="let mod of modules " [ngValue]="mod.id">{{mod.nomModule}} </option>
+                </select>         
+                <!-- <span *ngIf="EmploisAdd.controls['idModule'].invalid && EmploisAdd.controls['idModule'].touched" [ngStyle]="{color: 'red'}">
+                    Champ obligatoire*
+                </span> -->
+
+            </div>
            
-            <button type="submit" class="btn">Suivant <fa-icon [icon]="icon.next" class="icon"></fa-icon> </button>
-        
-            </div>
-        </form>
-        </div>
+            <div class="submit-button"> 
+                <button type="submit">Enregistrer</button>
+            </div> 
             
-    </div>
-
-    <div class="secon-column">
-            
-        <!-- <div class="hexagone"></div> -->
-        <!-- <div id="bigest" class="hexagone"></div> -->
-    </div>
+        </form> 
+       
 </main>
 

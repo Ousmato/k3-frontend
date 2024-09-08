@@ -52,7 +52,7 @@ seanceTypeOptions: { key: string, value: string }[] = [];
       this.load_enseignants();
       this.load_classe();
       this.load_salles();
-      this.getPermission();
+      // this.getPermission();
       
   }
   // ------------------------load form
@@ -64,12 +64,11 @@ seanceTypeOptions: { key: string, value: string }[] = [];
       heureFin: ['',Validators.required],
       idEmplois: [''],
       idSalle: ['', Validators.required],
-      idTeacher: ['', Validators.required],
       date: [""],
+      // idTeacher: [''],
       idModule: ['', Validators.required],
       jour: [""],
       idClasse: ['', Validators.required],
-      seanceType: ['', Validators.required]
     });
   }
 
@@ -97,14 +96,14 @@ seanceTypeOptions: { key: string, value: string }[] = [];
   }
   
   // ---------------------get permission
-  getPermission(){
-    const autorize = sessionStorage.getItem('der');
-    if(autorize){
-      // this.permission = true
-      return true;
-    }
-    return false;
-  }
+  // getPermission(){
+  //   const autorize = sessionStorage.getItem('der');
+  //   if(autorize){
+  //     // this.permission = true
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   // --------------------------------------form to create seance
  
@@ -131,25 +130,25 @@ seanceTypeOptions: { key: string, value: string }[] = [];
                 date: date.date,
                 idEmplois: this.emplois,
                 idModule: idModule,
-                idTeacher: idTeacher,
-                idSalle: idSalle,
+                // idTeacher: idTeacher,
             };
             list_seances.push(seance);
 
              // config seance to surveillance
-            const config : Configure_seance ={
-              idParticipant: null!,
-              heureDebut: formData.heureDebut,
-              heureFin: formData.heureFin,
-              seanceType: formData.seanceType,
+            // const config : Configure_seance ={
+            //   idParticipant: null!,
+            //   heureDebut: formData.heureDebut,
+            //   heureFin: formData.heureFin,
+            //   seanceType: formData.seanceType,
+            //   idTeacher: idTeacher
               
-            }
-            lis_config.push(config);
+            // }
+            // lis_config.push(config);
         });
     }
 
     if (this.form_seance.valid) {
-      if(this.getPermission()){
+      
         this.seanceService.create(list_seances).subscribe({
         next: (response) => {
           this.pageTitle.showSuccessToast(response.message)
@@ -164,29 +163,6 @@ seanceTypeOptions: { key: string, value: string }[] = [];
           this.pageTitle.showErrorToast(erreur.error.message)
         }
       });
-      }else{
-        // console.log(list_seances, "seance");
-        // console.log(config, "config");
-        const surveillance : Surveillance ={
-          seancesList: list_seances,
-          configList: lis_config
-        }
-        this.seanceService.addSurveillance(surveillance).subscribe({
-          next: (response) => {
-            this.pageTitle.showSuccessToast(response.message)
-            this.form_seance.reset();
-            this.load_classe();
-            this.load_classe();
-            this.load_salles();
-            this.load_enseignants();
-            this.load_form();
-          },
-          error: (erreur) => {
-            this.pageTitle.showErrorToast(erreur.error.message)
-          }
-
-        })
-      }
       
     } else {
       // Marquer tous les champs comme touchés pour afficher les messages d'erreur
@@ -195,23 +171,36 @@ seanceTypeOptions: { key: string, value: string }[] = [];
     }
   }
 
-  // ------------------------------load emplois with seance
-  
+  // ------------------trie les seances par jours
+  sortSeancesByDay() {
+    const daysOfWeek = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+
+  // Trier les séances par jour en utilisant l'ordre défini dans daysOfWeek
+  this.datesWithDays.sort((a, b) => {
+    const dayIndexA = daysOfWeek.indexOf(a.day!);
+    const dayIndexB = daysOfWeek.indexOf(b.day!);
+    
+    return dayIndexA - dayIndexB;
+  });
+  }
   
   // --------------------------on mention select
   onSelect(event : any){
     this.idUrl = event.target.value;
     
-    this.emploisService.getEmploisByClasse2(this.idUrl).subscribe(data  =>{
+    this.emploisService.getEmploisByClasse2(+this.idUrl).subscribe(data  =>{
       this.emplois = data;
       const dateDebut = this.emplois.dateDebut;
       const dateFin = this.emplois.dateFin;
-      // console.log(this.emplois, "emplois trouver");
-      this.datesWithDaysTest = this.emploisService.getDaysBetweenDatesTest(dateDebut, dateFin)
+      console.log(this.emplois, "emplois trouver");
+      // this.datesWithDaysTest = this.emploisService.getDaysBetweenDatesTest(dateDebut, dateFin)
+      console.log("ici c'est bon")
       this.datesWithDays = this.emploisService.getDaysBetweenDates(dateDebut, dateFin)
+      console.log(this.datesWithDays, "dates days component")
       this.datesWithDays.sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-      
+      this.sortSeancesByDay();
       this.loadModulesByClass(this.idUrl)
+      console.log("je suis la avec l'emplis ", this.emplois)
      
     })
     this.datesWithDays = []
@@ -288,7 +277,6 @@ selectAll(event : any){
   }
 
   getStatusOptions() {
-    let isValid: type_seance[] =[]
     const objet = Object.keys(type_seance).map(key => ({
       
       key: key,

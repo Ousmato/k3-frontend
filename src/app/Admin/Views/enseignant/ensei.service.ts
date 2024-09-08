@@ -58,12 +58,15 @@ export class EnseiService {
     return this.http.get<Presence[]>(this.baseUrl + 'list-presence');
   }
   // --------------------------------add paie
-  addPaie(paie: Paie) : Observable<Response_String>{
-    return this.http.post<Response_String>(this.baseUrl+"add-paie", paie);
+  getAll_Teacher_By_IdUe(idUe : number) : Observable<Teacher[]>{
+    return this.http.get<Teacher[]>(this.baseUrl+"list-teacher-by-idUe/"+ idUe);
   }
   // -----------------------------------get all paie
-  getAllPaie(page: number, size: number) : Observable<Paie_Pages>{
-    return this.http.get<Paie_Pages>(`${this.baseUrl}list-paie?page=${page}&size=${size}`);
+  // getAllPaie(page: number, size: number) : Observable<Paie_Pages>{
+  //   return this.http.get<Paie_Pages>(`${this.baseUrl}list-paie?page=${page}&size=${size}`);
+  // }
+  getAllPaie(): Observable<Paie[]>{
+    return this.http.get<Paie[]>(this.baseUrl+"list-paie")
   }
   // ----------------------get all hours paie of teacher
   getPaieBy_Enseignant_id(idEnseignant : number) : Observable<Paie[]>{
@@ -91,5 +94,10 @@ export class EnseiService {
   // ------------------------get presence by id seance
   getPresence_by_seance(idSeance: number) : Observable<Presence>{
     return this.http.get<Presence>(this.baseUrl+"presence-by-idseance/"+idSeance)
+  }
+
+  // ---------------------------get nombre enseignant
+  countTeacherNumber() : Observable<number>{
+    return this.http.get<number>(this.baseUrl+"count-teacher-number")
   }
 }

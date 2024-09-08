@@ -3,8 +3,10 @@ import { EnseiService } from '../../Views/enseignant/ensei.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { IconsService } from '../../../Services/icons.service';
-import { Teacher, TeachersStatus } from '../../Models/Teachers';
+import { Diplomes, Teacher, TeachersStatus } from '../../Models/Teachers';
 import { ActivatedRoute } from '@angular/router';
+import { SetService } from '../../Views/settings/set.service';
+import { Ue } from '../../Models/UE';
 
 @Component({
   selector: 'app-teachers-edit',
@@ -20,17 +22,21 @@ export class TeachersEditComponent implements OnInit {
   teacher_form!: FormGroup
   passwordVisible : boolean = false
   idEnseignant!: number
+  ueList : Ue [] = []
 
   
   teacherStatusOptions!: string[];
+  teacherDiplomOptions: {key: string, value: string}[] = [];
 
   constructor(private enseignantService: EnseiService, private root: ActivatedRoute, private pageTitle: PageTitleService,
-    public icons: IconsService, private fb: FormBuilder) { }
+    public icons: IconsService, private fb: FormBuilder, private setService: SetService) { }
 
 
   ngOnInit(): void {
     this.load_update_form();
     this.getTeacher();
+    this.load_ues();
+    this.getStatusOptions();
       
   }
 
@@ -38,17 +44,40 @@ export class TeachersEditComponent implements OnInit {
   load_update_form(){
     this.teacher_form = this.fb.group({
       idEnseignant: ['', Validators.required],
-      nom: ['', Validators.required],
-      prenom: ['', Validators.required],
-      email: ['', Validators.required],
-      sexe: ['', Validators.required],
-      password: ['', Validators.required],
-      telephone: ['', Validators.required],
-      // urlPhoto: [''],
-      // isDeleted: [enseignant.isDeleted],
-      status: ['', Validators.required]
+      
+        nom: ['',Validators.required],
+        prenom: ['',Validators.required],
+        email: ['', Validators.required],
+        sexe: ["", Validators.required],
+        password: ['', Validators.required],
+        telephone: ['', Validators.required],
+        urlPhoto: [''],
+        idUe: ['', Validators.required],
+        diplome: ['', Validators.required],
+        status: ['',Validators.required]
+  
     })
    
+  }
+   // -----------------------load all ues
+   load_ues(){
+    this.setService.getAll_ue_all().subscribe(response =>{
+      this.ueList = response;
+    
+    })
+  
+  }
+  getStatusOptions() {
+    const objet = Object.keys(Diplomes).map(key => ({
+      
+      key: key,
+      value: Diplomes[key as keyof typeof Diplomes] 
+    }));
+    objet.forEach(o => {
+      if(o.value != Diplomes.L1 && o.value != Diplomes.L2 ){
+        this.teacherDiplomOptions.push(o)
+      }
+    })
   }
   // -----------------------------------------
   getTeacher(){

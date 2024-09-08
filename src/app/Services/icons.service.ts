@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { faUsers, faGear, faTable, faChartArea, faHome, faBars, faGraduationCap, faSchool, faUser, faCog, faAngleDown, faSearch, faBookOpen, faAngleUp, faEye, faTrashCan, faEdit, faPenToSquare, faArrowRight, faClock, faPlus, faCalendarCheck, faTrash, faHandHoldingDollar, faPaperPlane, faCircleChevronRight, faPlusCircle, faSquarePlus, faFolderOpen, faSquareCheck, faSquareXmark, faArrowsLeftRight, faArrowRightArrowLeft, faFolder, faBan, faXmark, faRotate, faRotateRight, faEyeSlash, faArrowLeft, faAngleRight, faAngleLeft, faSignOut, faList, faCableCar, faCalendarDay, faCalendarPlus, faUserPlus, faCloudArrowUp, faCreditCard, faUsersViewfinder } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faGear, faTable, faChartArea, faHome, faBars, faGraduationCap, faSchool, faUser, faCog, faAngleDown, faSearch, faBookOpen, faAngleUp, faEye, faTrashCan, faEdit, faPenToSquare, faArrowRight, faClock, faPlus, faCalendarCheck, faTrash, faHandHoldingDollar, faPaperPlane, faCircleChevronRight, faPlusCircle, faSquarePlus, faFolderOpen, faSquareCheck, faSquareXmark, faArrowsLeftRight, faArrowRightArrowLeft, faFolder, faBan, faXmark, faRotate, faRotateRight, faEyeSlash, faArrowLeft, faAngleRight, faAngleLeft, faSignOut, faList, faCableCar, faCalendarDay, faCalendarPlus, faUserPlus, faCloudArrowUp, faCreditCard, faUsersViewfinder, faFilePdf, faHandPointDown, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +15,7 @@ export class IconsService {
   search = faSearch;
   bookOpen = faBookOpen;
   table = faTable;
+  had_point_down = faHandPointDown
   chartArea = faChartArea;
   angleUp = faAngleUp
   eye = faEye
@@ -49,5 +50,7 @@ export class IconsService {
   upload = faCloudArrowUp
   credit_card = faCreditCard
   user_surveillance = faUsersViewfinder
+  pdf = faFilePdf
+  circle_check = faCircleCheck
   constructor() { }
 }

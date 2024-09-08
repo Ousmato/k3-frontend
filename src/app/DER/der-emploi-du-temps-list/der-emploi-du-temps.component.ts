@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ServiceService } from '../emplois-du-temps/service.service';
 import { Emplois } from '../../Admin/Models/Emplois';
 import { NavigationExtras, Router } from '@angular/router';
@@ -12,6 +12,7 @@ import { IconsService } from '../../Services/icons.service';
 export class DerEmploiDuTempsComponent implements OnInit{
 
   emplois : Emplois[]=[];
+  @Output() refresh = new EventEmitter<any>();
   permission : boolean =false
   constructor(private emploisService: ServiceService, private router: Router, public icons: IconsService){}
 
@@ -66,4 +67,9 @@ export class DerEmploiDuTempsComponent implements OnInit{
   goBack(){
     window.history.back();
   }
+  // ----------------------refresh
+ nouveau(){
+  this.router.navigate(['/der/ajouter-emplois'])
+ }
+
 }

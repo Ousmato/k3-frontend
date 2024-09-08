@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Seances, Surveillance } from '../../Models/Seances';
 import { Response_String } from '../../Models/Response_String';
-import { Configure_seance } from '../../Models/Configure_seance';
+import { Configure_seance, Journee } from '../../Models/Configure_seance';
 import { Emplois } from '../../Models/Emplois';
 
 @Injectable({
@@ -14,8 +14,11 @@ export class SeancService {
   constructor(private http: HttpClient) { }
   private baseUrl = 'http://localhost:8080/api-seance/'
   // -----------------------------get all seances by emplois id
-  getAllByEmploisId(id: number) : Observable<Seances[]>{
-    return this.http.get<Seances[]>(this.baseUrl + 'list/' + id);
+  // getAllByEmploisId(id: number) : Observable<Seances[]>{
+  //   return this.http.get<Seances[]>(this.baseUrl + 'list/' + id);
+  // }
+  getAllByEmploisId(id: number) : Observable<Journee[]>{
+    return this.http.get<Journee[]>(this.baseUrl + 'list/' + id);
   }
   
   // ------------------------------add seance
@@ -23,6 +26,9 @@ export class SeancService {
     return this.http.post<Response_String>(this.baseUrl + 'add', seance);
   }
  
+  add_journee(journee: Journee[]) : Observable<Response_String>{
+    return this.http.post<Response_String>(this.baseUrl+"add-journee", journee)
+  }
   // ---------------------------------------delete seance 
   delete(id: number): Observable<Response_String>{
     return this.http.delete<Response_String>(this.baseUrl + 'delete/' + id);
@@ -53,4 +59,7 @@ export class SeancService {
     return this.http.post<Response_String>(this.baseUrl+"add-surveillance", surveillance);
   }
   
+  get_all_configSeance_by_id(idConfig: number) : Observable<Configure_seance>{
+    return this.http.get<Configure_seance>(this.baseUrl+"config-by-id/"+idConfig);
+  }
 }

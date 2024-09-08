@@ -2,6 +2,13 @@
     <div (click)="goBack()" class="back-button" *ngIf="!permission">
         <fa-icon [icon]="icons.back"></fa-icon>
     </div>
+    
+    <div class="btn-contenair">
+        <div class="tab-head">
+            <p>Les emplois du temps en cours</p>
+        </div>
+        <button type="button"  (click)="nouveau()"> Nouveau</button>
+   </div>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -14,11 +21,11 @@
         <tbody>
             <ng-container *ngIf="emplois.length; else notFund">
                 <ng-container  *ngFor="let eploi of emplois" >
-                    <tr (click)="toggle_toSeance(eploi.idClasse.id!)">
+                    <tr (click)="toggle_toSeance(eploi.id!)">
                         <td>{{eploi.dateDebut}}</td>
                         <td>{{eploi.dateFin}}</td>
                         <td>{{eploi.idSemestre.nomSemetre}}</td>
-                        <td class="next-col">{{eploi.idClasse.idFiliere?.idNiveau?.nom}} {{eploi.idClasse.idFiliere?.idFiliere?.nomFiliere}} <fa-icon [icon]="icons.next"></fa-icon></td>
+                        <td class="next-col">{{eploi.idClasse.idFiliere?.idNiveau?.nom}} {{eploi.idClasse.idFiliere?.idFiliere?.nomFiliere}} <fa-icon  [icon]="icons.next"></fa-icon></td>
                     </tr>
                 </ng-container>
                 

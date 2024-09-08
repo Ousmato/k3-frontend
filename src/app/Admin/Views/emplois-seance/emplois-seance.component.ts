@@ -8,18 +8,20 @@ import { Module } from '../../Models/Module';
 
 import { IconsService } from '../../../Services/icons.service';
 import { Teacher } from '../../Models/Teachers';
-import { Seances } from '../../Models/Seances';
+import { type_seance } from '../../Models/Seances';
 import { EnseiService } from '../enseignant/ensei.service';
 import { SeancService } from './seanc.service';
-import { DatePipe, Location } from '@angular/common';
 import { ClassRoom } from '../../Models/Classe';
 import { ToastrService } from 'ngx-toastr';
 import { EtudeService } from '../etudiants/etude.service';
-import { Participant } from '../../Models/Students';
-import { Configure_seance } from '../../Models/Configure_seance';
+import { Student_group } from '../../Models/Students';
+import { Journee, JourneeDTO } from '../../Models/Configure_seance';
 
 import jspdf, { jsPDF } from 'jspdf';  
 import html2canvas from 'html2canvas';
+import { Salles } from '../../Models/Salles';
+import { PageTitleService } from '../../../Services/page-title.service';
+import { Admin } from '../../Models/Admin';
 
 @Component({
   selector: 'app-emplois-seance',
@@ -29,41 +31,44 @@ import html2canvas from 'html2canvas';
 export class EmploisSeanceComponent  implements OnInit{
     idUrl!: number;
     classId!: ClassRoom
-    emplois!: Emplois;
-    hasDeleted! : Seances
+    emplois?: Emplois;
+    hasDeleted! : Journee
+    admin!: Admin
     idEmplois!: number;
     selected_seance_heure_fin! : any
     form_seance! : FormGroup;
+    typeSeance!: string[]
     update_seance_form!: FormGroup
 
     
     modules: Module[] = [];
-    seances : Seances[] = [];
+    journee : Journee[] = [];
     empModule : Module[] = [];
     enseignants: Teacher[] =[];
-    configSeance: Configure_seance[] = []
-    palageHoraire: string[] =[]
-    participations : Participant[] =[]
-    // palageHoraire: string[] =['08h:00 - 10h:00','10:00 - 10:15', '10h:00 - 12h:00', '12:00 - 14:00', '14h:00 - 16h:00', '16h:00 - 18h:00']
+    
+    seanceTypeOptions: { key: string, value: string }[] = []
+    palageHoraires: string[] =['08H00 - 10H00', '10H00 - 12H00', '12H00 - 14H00', '14H00 - 16H00', '16H00 - 18H00']
 
 
-    datesWithDays: { day: string, date: string }[] = [];
-    datesWithDaysTest: { day: string, dates: string[] }[] = [];
+    datesWithDays: { day: string, date: string ,dateDay?: string}[] = [];
+    teachersProgram: { teacher: Teacher, group: string, typeSeance: type_seance[]}[] = [];
+    listSalle: { salle: Salles, typeSeance: type_seance[],group: Student_group[] }[] = [];
+    sallesListe: { typeSeance: type_seance ,salle: Salles[], group: Student_group[] }[] = [];
+    test : { id: string, seanceType: string, module: string, groupe : string,date: string, heureDebut: string, heureFin: string,plageHoraire : string, nomTeacher: string, prenomTeacher: string }[] = [];
+    journeeDTO : JourneeDTO [] = []
     deleted_modal: boolean = false;
-    pause_matin: string [] = [];
     pause_midi: string [] = [];
     permission: boolean = false
     is_show_button : boolean = false
     is_show_configure: boolean = false;
-    correspondance: string = '';
+    choisir_group: boolean = false;
     formattedDate!: string;
-    day_of_head : string[] = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi']
   
 
 
     constructor(private emploisService: ServiceService, public icons: IconsService, private toastr: ToastrService,
        private enseignantService: EnseiService,private cdr: ChangeDetectorRef, private router: Router, private studentService: EtudeService,
-      private fb: FormBuilder, private location: Location,private route: ActivatedRoute, private classService: ClassStudentService,private seanceService: SeancService ) { }
+      private fb: FormBuilder, private pageTitle: PageTitleService,private route: ActivatedRoute, private classService: ClassStudentService,private seanceService: SeancService ) { }
     ngOnInit(): void {
       // ------------------------------get id in url path
       this.loadEmploisByClass();
@@ -71,20 +76,15 @@ export class EmploisSeanceComponent  implements OnInit{
       this.load_enseignants();
       this.load_update_form();
       this.getPermission();
+      this.getStatusOptions();
       
 
     }
-    showSuccessToast(message: any) {
-      this.toastr.success(message, 'Succès');
-      
-    }
-    showErrorToast(erreur: any) {
-      this.toastr.error("Erreur : "+ erreur)
-    }
-
+   
     // ---------------------------------get permission
     getPermission(): boolean {
       const autorize = sessionStorage.getItem('der');
+      this.admin = JSON.parse(autorize!);
       if(autorize){
         this.permission = true
         // console.log(autorize,"autorize")
@@ -94,7 +94,7 @@ export class EmploisSeanceComponent  implements OnInit{
     }
     // ---------------------------go back button 
     goBack(){
-      this.location.back();
+      window.history.back()
     }
    
 // ----------------------get id in url path
@@ -106,14 +106,16 @@ export class EmploisSeanceComponent  implements OnInit{
 
           this.emploisService.getEmploisByClasse2(this.idUrl).subscribe(data  =>{
             this.emplois = data;
+            console.log(this.emplois,"emplois");
             const dateDebut = this.emplois.dateDebut;
             const dateFin = this.emplois.dateFin;
             // this.datesWithDaysTest = this.emploisService.getDaysBetweenDatesTest(dateDebut, dateFin)
             // this.datesWithDaysTest.pop();
-            this.datesWithDays = this.emploisService.getDaysBetweenDates(dateDebut, dateFin)
+            this.datesWithDays = this.emploisService.getDaysBetweenDatesAndDaysDate(dateDebut, dateFin)
             this.datesWithDays.sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-            
-            this.getAllSeance(this.emplois.id!);
+            this.sortDay();
+            console.log(this.datesWithDays, "yuuuuuuuuuuuuuuuuu")
+            // this.getAllSeance(this.emplois.id!);
             this.load_configure(this.emplois.id!);
             this.loadModulesByClass(this.idUrl);
           })
@@ -122,36 +124,152 @@ export class EmploisSeanceComponent  implements OnInit{
     }
 
     load_configure(idEmploi: number){
-      this.seanceService.get_all_configSeance(idEmploi).subscribe(data =>{
+      this.seanceService.getAllByEmploisId(idEmploi).subscribe(data =>{
         data.forEach(dat => {
-          const seance = dat.idSeance
-           if(!this.configSeance.some(cf =>cf.plageHoraire == dat.plageHoraire && seance!.id == cf.idSeance!.id) ){
-            this.configSeance.push(dat)
-           }
-        })
+          // const seance = dat.idSeance
+        if(!this.journee.some(cf =>cf.plageHoraire == dat.plageHoraire && dat!.id == cf!.id) ){
+            // console.log(dat, "dat")
+           dat.plageHoraire = this.formatTimeString(dat.plageHoraire!)
+          //  console.log(dat.plageHoraire, "journee")
+          if (dat.seanceType.toString() === 'td') {
+            if (!dat.groupe) {
+                dat.groupe = [];
+            }
+            dat.groupe.push(dat.idParticipant!);
+            console.log(dat.groupe, "--------------grp")
+          }
+            this.journee.push(dat)
+
+        }
+           
+           const existingSalle = this.listSalle.find(sl => sl.salle.id ==dat.idSalle.id);
+          //  console.log(existingSalle, "salle exist")
+          if (existingSalle) {
+              // Si la salle existe déjà, ajouter le type de séance s'il n'est pas déjà présent
+            if (!existingSalle.typeSeance.includes(dat.seanceType) && existingSalle.group.includes(dat.idParticipant?.idStudentGroup!)) {
+                existingSalle.group.push(dat.idParticipant?.idStudentGroup!);
+                existingSalle.typeSeance.push(dat.seanceType);
+            }
+          } else {
+              // Si la salle n'existe pas encore dans listSalle, l'ajouter avec le type de séance
+            this.listSalle.push({
+                salle: dat?.idSalle!,
+                typeSeance: [dat.seanceType],
+                group: [dat.idParticipant?.idStudentGroup!]
+            });
+          }
+
+         
+          
+          const typeSeanceExist = this.sallesListe.find(slist => slist.typeSeance == dat.seanceType);
+          // console.log(typeSeanceExist, "type seance exist")
+          if (typeSeanceExist) {
+              // Si le typeSeance existe, vérifier et ajouter la salle si elle n'est pas déjà présente
+              // console.log(typeSeanceExist.group.map(g => g.id), 'Current groups in typeSeanceExist');
+
+              // If the seance type exists, check and add the salle if it's not already present
+              if (!typeSeanceExist.salle.some(s => s.id === dat.idSalle?.id)) {
+                  typeSeanceExist.salle.push(dat.idSalle!);
+              }
       
-        
-        console.log(this.configSeance, "yo config")
+              // Check and add the group if it's not already present
+              if (dat.idParticipant?.idStudentGroup) {
+                  const groupExists = typeSeanceExist.group.some(g => g.id === dat.idParticipant!.idStudentGroup.id);
+                  // console.log(`Checking group: ${dat.idParticipant.idStudentGroup.id}, exists: ${groupExists}`);
+                  
+                  if (!groupExists) {
+                      typeSeanceExist.group.push(dat.idParticipant.idStudentGroup!);
+                      // console.log(`Added group: ${dat.idParticipant.idStudentGroup.id}`);
+                  } 
+              }
+    
+          } else {
+              // Si le typeSeance n'existe pas, l'ajouter à sallesListe
+              this.sallesListe.push({
+                salle: [dat.idSalle!],
+                group: dat.idParticipant?.idStudentGroup ? [dat.idParticipant.idStudentGroup] : [],
+                typeSeance: dat.seanceType
+              });
+              console.log(this.sallesListe, "list salle")
+          }
+          
+        })
+        this.journee.forEach(jrn =>{
+          let index = this.test.findIndex(e => ( e.module == jrn.idEmplois.idModule.nomModule) && 
+          e.date == jrn.date.toString() && e.heureDebut == jrn.heureDebut && e.heureFin == jrn.heureFin
+          && e.seanceType == jrn.seanceType.toString());
+          if(index > -1)
+            this.test[index].groupe = `${this.test[index].groupe} - ${jrn.idParticipant?.idStudentGroup.nom}`;
+            // this.test[index].nomTeacher = `${jrn.idTeacher.nom}`;
+          else
+            this.test.push({
+          id: jrn.id?.toString()!,
+          seanceType: jrn.seanceType.toString(),
+          module: jrn.idEmplois.idModule.nomModule, 
+          groupe: jrn.idParticipant ? jrn.idParticipant!.idStudentGroup.nom : '',
+          date: jrn.date.toString(), 
+          heureDebut: jrn.heureDebut, 
+          prenomTeacher: jrn.idTeacher.prenom,
+          
+          heureFin: jrn.heureFin, plageHoraire: jrn.plageHoraire!,
+        nomTeacher: jrn.idTeacher.nom})
+        })
+
+        this.journee.forEach(jrn =>{
+          const existingteacher = this.teachersProgram.find(sl => sl.teacher.idEnseignant == jrn.idTeacher.idEnseignant);
+          // console.log(existingteacher, "teacher exist")
+        if (existingteacher) {
+            // Si la salle existe déjà, ajouter le type de séance s'il n'est pas déjà présent
+            if (!existingteacher.typeSeance.includes(jrn.seanceType)) {
+                existingteacher.typeSeance.push(jrn.seanceType);
+            }
+        } else {
+            // Si la salle n'existe pas encore dans listSalle, l'ajouter avec le type de séance
+          this.teachersProgram.push({ 
+            teacher: jrn.idTeacher!,
+            group: jrn.idParticipant?.idStudentGroup ? jrn.idParticipant.idStudentGroup.nom : ""!,
+            typeSeance: [jrn.seanceType]
+          });
+          console.log(this.teachersProgram, "teacher -- prog")
+        }
+        })
       })
     }
+
+    formatTimeString(timeString: string | string[]): string {
+      if (Array.isArray(timeString)) {
+        // Si `timeString` est un tableau, traiter chaque élément individuellement
+        return timeString.map(time => this.formatTimeString(time)).join(' - ');
+      }
+    
+      // console.log(timeString.replace(/(\d{2})(:)/g, '$1H'), "plage hhhhhhhhhhhh")
+      // Remplace les ":" par "H" pour le formatage en français
+      return timeString.replace(/(\d{2})(:)/g, '$1H');
+    }
+    
+  // ---------------------get current date
+    getCurrentDate() : string{
+      const date = new Date();
+      const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long',  year: 'numeric'};
+      
+      // console.log(Intl.DateTimeFormat('fr-FR', options).format(date))
+      return new Intl.DateTimeFormat('fr-FR', options).format(date);
+    }
+    // -------------------- get day for date
     getDayFromDate(date: string): string {
       const dateObject = new Date(date);
       
       const options: Intl.DateTimeFormatOptions = { weekday: 'long' };
+      // console.log(Intl.DateTimeFormat('fr-FR', options).format(dateObject))
       return new Intl.DateTimeFormat('fr-FR', options).format(dateObject);
     }
-    getDayFromDateConfig(date: string): string {
-      const dateObject = new Date(date);
-      
-      const options: Intl.DateTimeFormatOptions = { weekday: 'long' };
-      return new Intl.DateTimeFormat('fr-FR', options).format(dateObject);
-    }
+   
     
     // --------------------------------load all modules of class
     loadModulesByClass(idClasse: number) : void{
        this.classService.getAllModules(idClasse).subscribe((data: Module[]) => {
         this.modules = data;
-        })
+      })
        
     }
     // ---------------------get current month
@@ -167,68 +285,6 @@ export class EmploisSeanceComponent  implements OnInit{
       
       return this.formattedDate;
     }
-    // ----------------------get all seance
-    getAllSeance(idEmplois : number){
-      this.seanceService.getAllByEmploisId(idEmplois).subscribe((data: Seances[]) => {
-        this.seances = data;
-        // console.log(this.seances, "seance")
-        this.seances.forEach(seance => {
-          const pause_matin = '10:00 - 10:15';
-          const pause_midi = '12:00 - 14:00';
-
-          // Check if pause_matin and pause_midi are not already in palageHoraire
-          if (pause_matin && !this.palageHoraire.includes(pause_matin)) {
-            this.palageHoraire.push(pause_matin);
-            
-          }
-
-          if (pause_midi && !this.palageHoraire.includes(pause_midi)) {
-            this.palageHoraire.push(pause_midi);
-          }
-
-          // Add seance.plageHoraire to palageHoraire
-          if (seance.plageHoraire) {
-            seance.plageHoraire.forEach(plage => {
-              if (!this.palageHoraire.includes(plage)) {
-                this.palageHoraire.push(plage);
-              }
-            });
-          }
-
-         
-          const date = new Date()
-          const pauseMatin = seance.pause_matin?.toString().slice(0,5);
-          const pauseMidi = seance.pause_midi?.toString().slice(0,5);
-
-          if (pauseMatin) {
-            const [hours, minutes] = pauseMatin.split(':').map(Number);
-              const hpause = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hours, minutes);
-              hpause.setMinutes(hpause.getMinutes() + 15);
-              const pause_matin_fin = hpause.toTimeString().split(' ')[0]; // Format HH:mm:ss
-              const timePair = `${pauseMatin} - ${pause_matin_fin}`;
-              if (!this.pause_matin.includes(timePair)) {
-                this.pause_matin.push(timePair);
-              }
-          }
-
-          if (pauseMidi) {
-            const [hours, minutes] = pauseMidi.split(':').map(Number);
-              const hpause = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hours, minutes);
-              hpause.setHours(hpause.getHours() + 2);
-              const pause_midi_fin = hpause.toTimeString().split(' ')[0]; // Format HH:mm:ss
-              const timePair = `${pauseMidi} - ${pause_midi_fin}`;
-              if (!this.pause_midi.includes(timePair)) {
-                this.pause_midi.push(timePair);
-              }
-          }
-
-         seance.heureDebut = seance.heureDebut.slice(0, 5); // Garder les 5 premiers caractères (HH:mm)
-          seance.heureFin = seance.heureFin.slice(0, 5); 
-        });
-        this.palageHoraire = this.sortTimeSlots(this.palageHoraire);
-        // console.log(this.palageHoraire, "pppppp")
-      })
-    }
     // -----------------------------------load all enseignants
     load_enseignants(){
       this.enseignantService.getAll().subscribe((data: Teacher[]) => {
@@ -243,7 +299,7 @@ export class EmploisSeanceComponent  implements OnInit{
  
   // -------------------------------------------meth
   validate_emplois(){
-    this.emploisService.validateEmplois(this.emplois.id!).subscribe(data =>{
+    this.emploisService.validateEmplois(this.emplois?.id!).subscribe(data =>{
       if(data === true)
         {
           this.toastr.success("Emplois validé avec succes!!!", "Succès");
@@ -259,14 +315,38 @@ export class EmploisSeanceComponent  implements OnInit{
    
   }
   to_configure() : void{
-   this.is_show_configure =! this.is_show_configure
-   this.loadEmploisByClass();
-   
+    const navigationExtras : NavigationExtras ={
+      queryParams: {
+        id : this.idUrl
+      },
+     
+    }
+    this.router.navigate(['/der/affect-t-d'], navigationExtras)
+     
+ 
   }
+  show_configure(){
+    this.is_show_configure = false;
+    this.loadEmploisByClass();
+  }
+
+  getStatusOptions() {
+      const objet = Object.keys(type_seance).map(key => ({
+        
+        key: key,
+        value: type_seance[key as keyof typeof type_seance] 
+      }));
+      objet.forEach(o => {
+        if(o.value != type_seance.SESSION && o.value != type_seance.Examen ){
+          this.seanceTypeOptions.push(o)
+        }
+      })
+    }
+
 // -----------------------------------------update seance
-  show_update_seance(idSeance: number){
+  show_update_seance(idSeance: string){
     const navigationExtras: NavigationExtras = {
-      queryParams: {id : idSeance}
+      queryParams: {id : +idSeance}
     } 
     this.router.navigate(['/der/edit-seance'], navigationExtras)
   }
@@ -278,20 +358,20 @@ export class EmploisSeanceComponent  implements OnInit{
   }
   // -------------------------------------------deleted seance
   show_comfirme_delete(heureDebut: string, heureFin: string){
-    this.hasDeleted =  this.seances.find(s =>s.heureFin == heureFin && s.heureDebut == heureDebut)!;
+    this.hasDeleted =  this.journee.find(s =>s.heureFin == heureFin && s.heureDebut == heureDebut)!;
  
     this.deleted_modal =! this.deleted_modal
   }
-  deleted(seance: Seances){ 
+  deleted(seance: Journee){ 
   this.seanceService.delete(seance.id!).subscribe(
   {
     next : (resp) =>{
       console.log(resp, "data");
-      this.showSuccessToast(resp.message)
+      this.pageTitle.showSuccessToast(resp.message)
       this.deleted_modal = false
     },
     error : (erreur) =>{
-      this.showErrorToast(erreur.error.message);
+      this.pageTitle.showErrorToast(erreur.error.message);
       // console.log(erreur.error.message, "erreur");
     }
   })
@@ -311,6 +391,8 @@ export class EmploisSeanceComponent  implements OnInit{
   }
   // ------------------------------------------
   to_groupe(idClasse: number, idEmploi: number){
+    // 
+    // return
     const navigationExtras : NavigationExtras ={
       queryParams: {
         id : idClasse, 
@@ -320,41 +402,37 @@ export class EmploisSeanceComponent  implements OnInit{
     this.router.navigate(['/der/group-student'], navigationExtras)
   }
  
+    // ------------------trie les seances par jours
+    sortDay() {
+      const daysOfWeek = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
   
+    // Trier les séances par jour en utilisant l'ordre défini dans daysOfWeek
+    this.datesWithDays.sort((a, b) => {
+      const dayIndexA = daysOfWeek.indexOf(a.day!);
+      const dayIndexB = daysOfWeek.indexOf(b.day!);
+      
+      return dayIndexA - dayIndexB;
+    });
+    }
   // ----------------------------------------------exit delete modal
   close_delete_modal(){
     this.deleted_modal = false;
+    this.choisir_group = false
   }
   
 
-  // ------------------------
-   sortTimeSlots(slots: string[]): string[] {
-    return slots.sort((a, b) => {
-      return this.compareTimeSlots(a, b);
-    });
-  }
-
-   compareTimeSlots(a: string, b: string): number {
-    const [startA] = a.split(' - ').map(time => this.timeToDate(time));
-    const [startB] = b.split(' - ').map(time => this.timeToDate(time));
-    
-    return startA.getTime() - startB.getTime();
-  }
-
-   timeToDate(time: string): Date {
-    const [hours, minutes] = time.split(':').map(Number);
-    const date = new Date();
-    date.setHours(hours, minutes, 0, 0);
-    return date;
-  }
 
   // --------------------------------------button to imprime
   imprimer() { 
-  
+    const buttonBack = document.getElementById('back') as HTMLElement;
+    buttonBack.style.display = "none";
+    const buttonContent = document.getElementById('idContent') as HTMLElement;
+    buttonContent.style.display = "none";
     var data = document.getElementById('idTable') as HTMLElement;
     if(data){
       data.style.padding = '10px';   
     }
+    
     
     // Id of the table
     html2canvas(data!, { scale: 2 }).then(canvas => {
@@ -367,7 +445,13 @@ export class EmploisSeanceComponent  implements OnInit{
         let position = 0;
         pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
         pdf.save('emplois-du-temps.pdf');
+        buttonBack.style.display = "block";
+        buttonContent.style.display = "block";
         data.style.padding = '0px'
     });
   } 
+  // ------------------------------get double of each configure seance
+  filteredJournee(jList: Journee[]) : Journee[]{
+    return jList.filter(j => j.seanceType)
+  }
 }

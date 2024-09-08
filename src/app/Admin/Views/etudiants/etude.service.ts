@@ -5,8 +5,8 @@ import { Participant, Student, Student_count, Student_group } from '../../Models
 import { Notes } from '../../Models/Notes';
 import { Module } from '../../Models/Module';
 import { Response_String } from '../../Models/Response_String';
-import { NotesPages, StudentPages } from '../../Models/Pagination-module';
-import { get } from 'jquery';
+import { Doc_Pages, NotesPages, StudentPages } from '../../Models/Pagination-module';
+import { Docum, Soutenance, StudentDoc } from '../../Models/doc';
 
 @Injectable({
   providedIn: 'root'
@@ -21,10 +21,29 @@ export class EtudeService {
     return this.http.get<Student[]>(this.baseUrl+"find-all");
   }
 
-  // -------------------------get all student by annee scolaire
-  // (idAnneeScolaire: number) : Observable<Student[]>{
-  //   return this.http.get<Student[]>(this.baseUrl+"get-by-idAnnee/" + idAnneeScolaire);
-  // }
+  // -----------------------------add doc(memoire/rapport)
+  addDoc(doc: StudentDoc) : Observable<Response_String>{
+    return this.http.post<Response_String>(this.baseUrl+"add-doc" , doc);
+  }
+
+  // ---------------------------get all docs(memoir/rapport)
+  getAllDoc() : Observable<Docum[]>{
+    return this.http.get<Docum[]>(this.baseUrl+"all-doc");
+  }
+
+  // ---------------------------all doc of classe
+  getAllDocByClasse(idClasse: number) : Observable<StudentDoc[]>{
+    return this.http.get<StudentDoc[]>(this.baseUrl+"all-docs-by-idClasse/" + idClasse);
+  }
+  // ----------------------get all docs by idClasse and idAnnee
+  getAnneeByIdClasseAndAnnee(page: number, size: number, idAnnee : number) : Observable<Doc_Pages>{
+    return this.http.get<Doc_Pages>(`${this.baseUrl}all-docs-by-idClass-and-idAnnee/${idAnnee}?page=${page}&${size}`)
+  }
+
+  // --------------------------------get current year docs
+  getCurrentYearDoc(page: number, size: number,) : Observable<Doc_Pages>{
+    return this.http.get<Doc_Pages>(`${this.baseUrl}default-docs-curent-year?page=${page}&size=${size}`)
+  }
   // ----------------------get all student by idclasse
   
   getStudentByIdClasse(idClasse: number) : Observable<Student[]>{
@@ -113,8 +132,8 @@ export class EtudeService {
   }
 
   // ---------------------get all participants by emploi id
-  getParticipantsByEmploiId(idEmploi: number) : Observable<Participant[]>{
-    return this.http.get<Participant[]>(this.baseUrl+"list-participant-by-emploi-id/"+idEmploi);
+  getParticipantsByEmploiId(idClass: number) : Observable<Participant[]>{
+    return this.http.get<Participant[]>(this.baseUrl+"list-participant-by-class-id/"+idClass);
   }
   // -----------------get sum scolarite of current year
   getScolarite_annee_courante() : Observable<number>{
@@ -127,5 +146,22 @@ export class EtudeService {
   // ----------------get student number inscrit and non inscrit
   getStudentNumber() : Observable<Student_count>{
     return this.http.get<Student_count>(this.baseUrl+"student-count");
+  }
+  // --------------programmer soutenance
+  createSoutenance(programmer: Soutenance) : Observable<Response_String>{
+    return this.http.post<Response_String>(this.baseUrl+"add-soutenance", programmer);
+  }
+  // ---------------------get all soutenance actif
+  getAllSoutenanceActif(): Observable<Soutenance[]>{
+    return this.http.get<Soutenance[]>(this.baseUrl +"all-soutenance-actif")
+  }
+
+  // --------------------memoire number
+  getMemoireNumber() : Observable<number>{
+    return this.http.get<number>(this.baseUrl+"memoire-number");
+  }
+  // ----------------------rapport stage number
+  getRapportNumber() : Observable<number>{
+    return this.http.get<number>(this.baseUrl+"rapport-number");
   }
 }

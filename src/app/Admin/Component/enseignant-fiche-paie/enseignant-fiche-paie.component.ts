@@ -51,9 +51,9 @@ export class EnseignantFichePaieComponent implements OnInit{
           p.montantFormatter = formatter.format(p.montant)
           this.sum_montant = formatter.format(this.paie.reduce((a, p) => a + p.montant!, 0));
 
-          this.enseignant = p.idPresenceTeachers.idSeance.idTeacher
+          // this.enseignant = p.seanceConfig.idSeance!.idTeacher
 
-          const heureFin = p.idPresenceTeachers.idSeance.heureFin;
+          const heureFin = p.journee!.heureFin;
           // this.datePipe.transform(heureDebut)
           const date = new Date();
           // Créer une date de référence (aujourd'hui par exemple)

@@ -11,10 +11,9 @@ export interface Seances{
     heureDebut: string;
     heureFin: string;
     date?: Date;
-    idSalle: Salles;
     observation?: boolean;
     idEmplois: Emplois;
-    idTeacher: Teacher;
+    // idTeacher: Teacher;
     idModule: Module;
     plageHoraire?: string[];
     jour?: string;

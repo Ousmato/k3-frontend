@@ -3,8 +3,9 @@
     <div (click)="goBack()" class="back-button">
         <fa-icon [icon]="icons.back"></fa-icon>
     </div>
+
     <form class="form-add" [formGroup]="form_seance" (ngSubmit)="create_seance()" >
-        <!-- <div class="h4">Ajouter Seance</div> -->
+        <div class="head" (click)="onMention_Select()"><span>Choisir le jour  <fa-icon [icon]="icons.angleDown"></fa-icon></span> </div>
         <div class="div-content">
             <!-- ---------------------------- -->
              <div class="first-content">
@@ -66,11 +67,11 @@
                      
                     </div>
                 </ng-container>
-                    <div class="form form-group">
+                    <!-- <div class="form form-group">
                         <label for="">Jours :</label>
                         <input [ngClass]="datesWithDays.length ? 'input-click' : 'input-disabled'" type="text" value="Choisir les jours" class="form-control" readonly
-                        (click)="datesWithDays.length ? onMention_Select() : null">
-                    </div>
+                        (click)="datesWithDays.length ?  : null">
+                    </div> -->
 
                      <div class="form-group" >
                         <label>Type surveillance : </label> 

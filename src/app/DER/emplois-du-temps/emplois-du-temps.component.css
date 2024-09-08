@@ -2,18 +2,26 @@ main{
     width: 100%;
     display: flex;
     flex-direction: column;
+    
+   align-items: center;
    
 }
 
+/*  */
 .one-column{
-    /* margin-top: 100px; */
-    display: flex;
-    flex-direction: column;
-    gap: 50px;
-    padding: 20px;
-    width: 90%;
-    /* border: 1px solid; */
+   width: 70%;
+   display: flex;
+   flex-direction: column;
+   
 }
+.form-group{
+    padding: 10px;
+}
+.submit-button{
+    padding: 10px;
+    width: 100%;
+}
+
 p{
     text-align: left;
     font-size: 18px;
@@ -26,10 +34,14 @@ p{
 .btn-con{
     margin-top: 40px;
 }
+.date{
+    width: 50%;
+}
 button{
-    height: 40px;
-    width: 150px;
-    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    padding: 5px 15px;
+    border-radius: 5px;
     background-color: var(--primary);
     color: var(--secondary);
     &:hover{
@@ -38,7 +50,14 @@ button{
     }
     /* margin-top: 20px; */
 }
-
+.btn-contenair{
+    width: 100%;
+    margin-top: 20px;
+    padding-right: 10px;
+    padding-left: 10px;
+    display: flex;
+    justify-content: space-between;
+}
 
   .back-button{
     width: 30px;
@@ -55,4 +74,32 @@ button{
         border-radius: 50%;
     }
 
+}
+input:focus, select:focus{
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 5px var(--primary);
+}
+
+.input-click{
+    cursor: pointer;
+    text-align: left;
+    &:hover{
+        background-color: var(--tertiary);
+    }
+}
+.tab-head p{
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+}
+.tab-head{
+    width: 57%;
+    display: flex;
+    justify-content: end;
+}
+.input-date{
+    width: 100%;
+    display: flex;
+    gap: 20px;
 }

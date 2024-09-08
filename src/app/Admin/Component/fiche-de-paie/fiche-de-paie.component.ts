@@ -82,33 +82,32 @@ export class FicheDePaieComponent implements OnInit {
     // var valeur = inputElement.value
   }
   // ---------------------------method add paie
-  add_paie(presence: Presence){
-    this.form_paie
-    const formData = this.form_paie.value;
-    const paie: Paie = {
-    coutHeure: +formData.coutHeure,
-    nbreHeures: presence.heure!,
+  // add_paie(presence: Presence){
+  //   this.form_paie
+  //   const formData = this.form_paie.value;
+  //   const paie: Paie = {
+  //   coutHeure: +formData.coutHeure,
+  //   nbreHeures: presence.heure!,
     
-    idPresenceTeachers: presence
-  }
-  console.log(paie, "paie")
-  if(this.form_paie.valid){
-    this.teacherService.addPaie(paie).subscribe( {
-      next: (response) =>{
-        this.pageTitle.showSuccessToast(response.message);
-      window.history.back();
-      },
-      error: (erreur) =>{
-        this.pageTitle.showErrorToast(erreur.error.message);
-      }
+  // }
+  // console.log(paie, "paie")
+  // if(this.form_paie.valid){
+  //   this.teacherService.addPaie(paie).subscribe( {
+  //     next: (response) =>{
+  //       this.pageTitle.showSuccessToast(response.message);
+  //     window.history.back();
+  //     },
+  //     error: (erreur) =>{
+  //       this.pageTitle.showErrorToast(erreur.error.message);
+  //     }
       
-    })
-  }else{
-    this.form_paie.markAllAsTouched();
-    console.log('invalid', this.form_paie.value)
-  }
+  //   })
+  // }else{
+  //   this.form_paie.markAllAsTouched();
+  //   console.log('invalid', this.form_paie.value)
+  // }
     
-  }
+  // }
   // -----------------------------exit button
   close_modal(){
     this.show_modal = false;

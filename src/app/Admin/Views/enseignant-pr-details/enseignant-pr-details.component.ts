@@ -74,7 +74,7 @@ export class EnseignantPrDetailsComponent implements OnInit {
             const dateFin = em.dateFin;
             // console.log(this.emplois, "emplois trouver");
             
-            this.datesWithDaysTest = this.emploisService.getDaysBetweenDatesTest(dateDebut, dateFin);
+            // this.datesWithDaysTest = this.emploisService.getDaysBetweenDatesTest(dateDebut, dateFin);
             console.log(this.datesWithDaysTest, "date- tes")
            
           }
@@ -105,33 +105,33 @@ export class EnseignantPrDetailsComponent implements OnInit {
           this.empois_class.push({emploi: emploi_found!, classe: classe_found!});
         }
         });
-        this.checkIfEmploiExists(data.seances)
+        // this.checkIfEmploiExists(data.seances)
       });
       // this.currentDay(days)
     });
     }
     // -----------------------------------------emplois an classe  is found
-   async checkIfEmploiExists(seances: Seances[]) {
-      // Parcourir chaque seance
-      for (let seance of seances) {
-        try {
-          const data = await this.teacherService.getStatus(seance.idTeacher.idEnseignant!).toPromise();
-          this.status = data?.find(dp => dp.idSeance.id == seance.id)!;
-          if (this.status?.observation == true) {
-           seance.observation = true;
-           console.log(seance.observation, "true")
+  //  async checkIfEmploiExists(seances: Seances[]) {
+  //     // Parcourir chaque seance
+  //     for (let seance of seances) {
+  //       try {
+  //         const data = await this.teacherService.getStatus(seance.idTeacher.idEnseignant!).toPromise();
+  //         this.status = data?.find(dp => dp.idSeance.id == seance.id)!;
+  //         if (this.status?.observation == true) {
+  //          seance.observation = true;
+  //          console.log(seance.observation, "true")
           
-          }else {
-           seance.observation = false;
-           console.log(seance.observation, "false")
+  //         }else {
+  //          seance.observation = false;
+  //          console.log(seance.observation, "false")
          
-          }
-        } catch (error) {
-          console.error("Error fetching status:", error);
-          // Handle error if needed
-        }
-      }
-    }
+  //         }
+  //       } catch (error) {
+  //         console.error("Error fetching status:", error);
+  //         // Handle error if needed
+  //       }
+  //     }
+  //   }
     // -------------------------------get current day
     currentDay( days: string) : boolean{
       days = days.toUpperCase();

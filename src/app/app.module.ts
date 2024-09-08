@@ -10,7 +10,6 @@ import { LoginComponent } from './login/login.component';
 import {  provideHttpClient } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SinginComponent } from './Admin/Component/singin/singin.component';
-import { StudentSidebarComponent } from './student-sidebar/student-sidebar.component';
 import { ClassStudentsComponent } from './DGA/class-students/class-students.component'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SettingsComponent } from './Admin/Views/settings/settings.component';
@@ -23,10 +22,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { }
 
 import localeFr from '@angular/common/locales/fr';
-import { TeachersPresenceComponent } from './Admin/Views/teachers-presence/teachers-presence.component';
 import { EnseignantPrDetailsComponent } from './Admin/Views/enseignant-pr-details/enseignant-pr-details.component';
-import { ArchivesComponent } from './Admin/Views/archives/archives.component';
-import { FichePaieComponent } from './Admin/Views/fiche-paie/fiche-paie.component';
 import { StudentNoteComponent } from './Admin/Views/student-note/student-note.component';
 import { AllNotesSemestreComponent } from './Admin/Views/all-notes-semestre/all-notes-semestre.component';
 import { EtudiantsDeLaClasseComponent } from './Admin/Views/etudiants-de-la-classe/etudiants-de-la-classe.component';
@@ -78,6 +74,13 @@ import { ReInscriptionWidgetComponent } from './R-SCOLARITE/Widget/re-inscriptio
 import { DgaArchivesComponent } from './DGA/dga-archives/dga-archives.component';
 import { SecSurveillanceComponent } from './SECRETAIRE/sec-surveillance/sec-surveillance.component';
 import { SecAddSurveillanceComponent } from './SECRETAIRE/sec-add-surveillance/sec-add-surveillance.component';
+import { DerPaiListComponent } from './DER/der-pai-list/der-pai-list.component';
+import { DerEDTComponent } from './DER/EDT/der-e-d-t/der-e-d-t.component';
+import { DerTDComponentComponent } from './DER/EDT/der-t-d-component/der-t-d-component.component';
+import { DerDocComponent } from './DER/der-doc/der-doc.component';
+import { AddDocComponent } from './DER/Widget/add-doc/add-doc.component';
+import { ProgramSoutenanceComponent } from './DER/Widget/program-soutenance/program-soutenance.component';
+import { ViewSoutenanceComponent } from './DER/Widget/view-soutenance/view-soutenance.component';
 
 registerLocaleData(localeFr);
 @NgModule({
@@ -88,16 +91,12 @@ registerLocaleData(localeFr);
     EtudiantsComponent,
     LoginComponent,
     SinginComponent,
-    StudentSidebarComponent,
     ClassStudentsComponent,
     SettingsComponent,
     EmploisDuTempsComponent,
     EmploisSeanceComponent,
     EnseignantComponent,
-    TeachersPresenceComponent,
     EnseignantPrDetailsComponent,
-    ArchivesComponent,
-    FichePaieComponent,
     StudentNoteComponent,
     AllNotesSemestreComponent,
     EtudiantsDeLaClasseComponent,
@@ -149,6 +148,13 @@ registerLocaleData(localeFr);
     DgaArchivesComponent,
     SecSurveillanceComponent,
     SecAddSurveillanceComponent,
+    DerPaiListComponent,
+    DerEDTComponent,
+    DerTDComponentComponent,
+    DerDocComponent,
+    AddDocComponent,
+    ProgramSoutenanceComponent,
+    ViewSoutenanceComponent,
   ],
   imports: [
     BrowserModule,

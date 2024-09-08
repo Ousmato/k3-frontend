@@ -28,4 +28,13 @@ export class SalleService {
   getSallesOccuper() : Observable<Salles[]>{
     return this.http.get<Salles[]>(this.baseUrl+"all-salles-ocuper");
   } 
+
+  // ------------------------------get nombre de salle non occuper
+  getNombreSalleNonOccupe(): Observable<number>{
+    return this.http.get<number>(this.baseUrl+"number-salle-non-occupe")
+  }
+  // ------------------------------get nombre de salle occuper
+  getNombreSalleOccupe(): Observable<number>{
+    return this.http.get<number>(this.baseUrl+"number-salle-occupe")
+  }
 }

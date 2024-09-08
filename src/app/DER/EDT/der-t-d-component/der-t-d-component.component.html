@@ -1,0 +1,97 @@
+<main>
+    
+    <form [formGroup]="form_config"  (ngSubmit)="onSubmit()">
+    <div class="input-time">
+        <div class="">
+             <label>Heure de début :</label>
+            <input type="time" class="form-control input-width" id="heureDebut" formControlName="heureDebut" [class.is-invalid]="form_config.get('heureDebut')!.invalid && form_config.get('heureDebut')!.touched" required>
+            
+        </div>
+       <div class="">
+            <label>Heure de Fin :</label>
+            <input type="time" class="form-control" id="heureFin" formControlName="heureFin" [class.is-invalid]="form_config.get('heureFin')!.invalid && form_config.get('heureFin')!.touched" required>
+            
+        </div>
+    </div>
+   
+
+    <div class="contenair-teach">
+        
+        <label for="">Les Enseignants</label>
+        <div class="plag plag-enseignat">
+            
+                <div class="plage-container" *ngFor="let item of enseignants">
+                                                        
+                    <div class="heure-content" [ngClass]="{'custom-checked': is_Teacher_checked(item)}">
+                        <input type="checkbox"  (change)="teacher_check(item.idEnseignant!, $event)" [checked]="is_Teacher_checked(item)" [ngClass]="{ 'custom-checked': is_Teacher_checked(item) }">{{item.nom.charAt(0)}}.{{item.prenom.toUpperCase()}}
+                    </div>
+
+                    <div class="plage-days" *ngIf="is_Teacher_checked(item)">
+                        <div class="input-content" *ngFor="let dateInfo of datesWithDays">
+                            <div class="input">
+                                <label >{{dateInfo.day.charAt(0)}}</label>
+                                <input type="checkbox"  (change)="day_check(item.idEnseignant!, dateInfo.date, $event)" 
+                            
+                                [checked]="is_checked(item.idEnseignant!, dateInfo.date)" 
+                                [ngClass]="{ 'custom-checked': is_checked(item.idEnseignant!, dateInfo.date) }">
+                            </div>
+                        </div> 
+                    </div>
+
+                    
+
+                    <div class="plag-enseignat" *ngIf="is_Teacher_checked(item)"> 
+                        <div class="form-check form-check-inline" *ngFor="let participant of participants">
+                            <input
+                                class="form-check-input"
+                                type="radio"
+                                name="groupSelection"
+                                [value]="participant.id"
+                                (change)="group_check(item.idEnseignant!, participant.id!, $event)"
+                                [checked]="isGroupSelected(item.idEnseignant!, participant.id!)"
+                                [disabled]="isGroupAlreadySelected(participant.id!)"
+                                id="inlineRadio{{ participant.id }}"
+                                required
+                            />
+                            <label class="form-check-label" [for]="'inlineRadio' + participant.id">
+                                {{ participant.idStudentGroup.nom }}
+                            </label>
+                        </div>
+
+                        
+                        <!-- <div class="select-al input">
+                            <span>Sélectionner tout</span>
+                            <input type="checkbox" class="custom-checked" (change)="selectAll($event)" [checked]="areAllChecked()" >
+                        </div> -->
+                       
+                        <div class="form form-group" *ngIf="is_Teacher_checked(item)">
+                            <label>Types :</label> 
+                            <select class="form-select"  formControlName="seanceType">
+                                <option  selected disabled value="">Choisir Le type</option>
+                                    <option *ngFor="let s_type of seanceTypeOptions" [value]="s_type.value">{{s_type.key}}</option>
+                                
+                            </select> 
+                            
+                        </div>
+                        <select class="form-select" formControlName="idSalle" 
+                            [class.is-invalid]="form_config.get('idSalle')!.invalid && form_config.get('idSalle')!.touched"
+                            (change)="onRoomChange(item.idEnseignant!, $event)">
+                            <option selected disabled value="">Salles</option>
+                            <option *ngFor="let salle of salles" [value]="salle.id">{{salle.nom}}</option>
+                        </select>
+                        
+                        
+                    </div>
+
+                </div>
+                <div class="button-cash">
+                    <button  class="btn" type="submit">Enregistrer</button>
+                </div>
+            
+            </div>
+
+        
+        </div>
+    </form>
+    
+</main>

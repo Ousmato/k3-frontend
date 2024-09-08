@@ -22,6 +22,15 @@ span{
     }
 
 }
+.entete-content{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+.children h4{
+    font-size: 16px;
+}
 /* --------------------------------------- */
 .month-contenaire{
     display: flex;
@@ -64,8 +73,7 @@ table td{
     justify-content: space-between;
     align-items: center;
     /* border-bottom: 1px solid var(--tertiary); */
-    padding-bottom: 20px;
-    height: 140px;
+    
     
     
 }
@@ -87,15 +95,57 @@ table td{
     display: none;
 }
 .section-head{
-    padding: 7px;
+    padding-bottom: 20px;
     width: 100%;
     display: flex;
     justify-content: space-between;
     height: 50px;
-    background-color: var(--primary);
-    padding-right: 20px;
+    border-bottom: 4px solid;
 
 }
+.pdf-icon{
+    color: red;
+}
+/* ---------------------------footer style */
+.footer-content{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.footer{
+    display: flex;
+    align-items: baseline;
+}
+.salle-row{
+    display: flex;
+
+}
+.type-footer {
+    margin-left: 8px;
+    font-size: 12px
+}
+.salle-row, .group, .salle{
+    margin-left: 5px;
+    font-size: 14px;
+}
+.footer-group{
+    font-size: 12px;
+}
+.f-contenair{
+    display: flex;
+    flex-direction: column;
+ 
+}
+.signature{
+    padding-right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+}
+.signature p{
+    font-size: 14px;
+}
+/* ------------------------------------- */
 p{
     font-size: 16px;
     font-weight: 500;
@@ -162,10 +212,10 @@ p{
    
 }
 .btn-valid-emplois{
-    padding: 8px;
+    padding: 5px 10px;
     color: var(--secondary);
     cursor: pointer;
-    background-color: var(--primary);
+    /* background-color: var(--primary); */
     &:hover{
         background-color: var(--secondary);
         color: var(--primary);
@@ -173,10 +223,10 @@ p{
 }
 
 .btn-show-form{
-    padding: 8px;
+    padding: 5px 10px;
     color: var(--secondary);
     cursor: pointer;
-    background-color: var(--primary);
+    /* background-color: var(--primary); */
     &:hover{
         background-color: var(--secondary);
         color: var(--primary);
@@ -216,6 +266,8 @@ p{
      }
     
   }
+
+  /* -----------------------------views style */
   .views.form-up{
     gap: 14px;
     display: flex;
@@ -231,7 +283,7 @@ p{
     position: absolute;
     top: 10%;
     right: 50%;
-    /* padding: 8px; */
+    width: 310px;
     border-radius: 4px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     z-index: 10001;
@@ -239,14 +291,50 @@ p{
         border: var(--primary);
     }
     }
+    .views .content button{
+        margin: 10px 0;
+        padding: 8px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer; 
+        text-align: center;
+        font-weight: 500;
+        /* background-color: var(--primary); */
+        /* color: var(--primary); */
+        &:hover{
+            background-color: var(--secondary);
+            color: var(--primary);
+            
+           
+        }
+    }
     .views h4{
         width: 100%;
         padding: 8px;
         font-size: 16px;
         font-weight: 500;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
         background-color: var(--primary);
         color: var(--secondary);
     }
+    .views .content{
+        
+        display: flex;
+        flex-direction: column;
+        padding: 10px 10px 0 10px;
+    }
+    .views .button-cash button{
+        margin: 0;
+        width: 150px;
+        background-color: var(--secondary);
+        color: var(--primary);
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
   .overlay {
     position: fixed;
     top: 0;

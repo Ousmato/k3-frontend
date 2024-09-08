@@ -1,1 +1,96 @@
-<p>der-home works!</p>
+<main>
+    <div class="first-container">
+        <div class="head-card-content">
+            <div class="child-card" (click)="toggle_enseignant()">
+                <div class="child-card-content">
+                    <div class="card-img">
+                        <!-- <fa-icon [icon]="icons.users"></fa-icon> -->
+                        <img src="assets/clients-icon.svg" alt="Logo">
+                    </div>
+                    <div class="card-text" >
+                        <p>Nombres d'enseignants</p>
+                        <h1>{{teacherCount}}</h1>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            <div class="child-card" (click)="toggle_doc()">
+                <div class="child-card-content">
+                    <div class="card-img">
+                        <!-- <fa-icon [icon]="icons.folder"></fa-icon> -->
+                        <img  src="assets/open-folder-outline-icon.svg" alt="Logo">
+                    </div>
+                    <div class="card-text">
+                        <p>Rapport et Mémoire</p>
+                        <span>Rapports : {{rapport}}</span> <br>
+                        <span>Mémoire: {{memoire}}</span>
+                        <!-- <h1>{{studentNumber_noInscrit}}</h1> -->
+                    </div>
+                    
+                </div>
+                
+                
+            </div>
+            <div class="child-card" (click)="toggle_class()" >
+                <div class="child-card-content">
+                    <div class="card-img">
+                        <!-- <fa-icon [icon]="icons.scool"></fa-icon> -->
+                        <img src="assets/school-admission-icon.svg" alt="Logo">
+                    </div>
+                    <div class="card-text" >
+                        <p>Salles non occupé</p>
+                        <span>Disponible : {{salle}}</span> <br>
+                        <span>Occupé  : {{salleOccuper}}</span>
+                    </div>
+                    
+                </div>
+                
+                
+            </div>
+            
+
+            <div class="child-card" (click)="toggle_toEmploi()">
+                <div class="child-card-content">
+                    <div class="card-img">
+                        <img src="assets/booking-confirmed-icon.svg" alt="Logo">
+                    </div>
+                    <div class="card-text" >
+                        <p>Emplois du temps actifs</p>
+                        <h1>{{emploiCount}}</h1>
+                    </div>
+                    
+                </div>
+                
+                
+            </div>
+           
+        </div>
+        <!-- -------------------------------------------------------------- -->
+        <!-- <div class="body-content">
+            <div class="child-cards">
+                    <div  id="card-img">
+                        <img id="calendar" src="assets/booking-confirmed-icon.svg" alt="Logo">
+                    </div>
+                    <div id="cart-text" class="card-text">
+                        <h5>Emplois Actifs</h5>
+                        <h1></h1>
+                    </div>
+            </div> -->
+                <!-- <div class="class-scrol">
+                    <ng-container *ngFor="let classe of emplois">
+                        <div class="calendar-classes-content">
+                        <p>{{classe.idClasse.idFiliere?.idNiveau?.nom}} ({{classe.idClasse.idFiliere?.idFiliere?.nomFiliere}})</p>
+                        <div class="date-content">
+                            <p> Debuté le : {{classe.dateDebut}}</p>
+                            <p> Prend fin le : <span id="span">{{classe.dateFin}}</span></p>
+                        </div>
+                    </div>
+                    </ng-container>
+                </div> -->
+            
+            <!-- <h2>Body Content</h2>
+            <p>Here you can add more detailed information, graphs, tables, etc.</p> -->
+        <!-- </div> -->
+    </div>
+</main>

@@ -1,0 +1,9 @@
+<main>
+    <div id="back" (click)="goBack()" class="back-button">
+        <fa-icon [icon]="icons.back"></fa-icon>
+      </div>
+    @if(datesWithDays.length > 0){
+       <!-- <app-der-jour-component [datesWithDays]="datesWithDays" [currentEmploi]="emploi" [currentTypeSeance]="url_typeSeance"></app-der-jour-component> -->
+        <app-der-t-d-component [datesWithDays]="datesWithDays" [currentEmploi]="emploi"></app-der-t-d-component>
+    }
+</main>

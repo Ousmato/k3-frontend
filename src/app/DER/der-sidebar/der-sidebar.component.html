@@ -24,46 +24,29 @@
           <!-- ------------------------------- -->
            <li class="menu-link">
             <div (click)="toggleSubMenuEnseignant()">
-              <a><span><fa-icon [icon]="icons.users"></fa-icon>Enseignants<fa-icon [icon]="isSubMenuOpen.enseignants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
+              <!-- <fa-icon [icon]="isSubMenuOpen.enseignants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon> -->
+              <a routerLink="/der/enseignants" routerLinkActive="active"><span><fa-icon [icon]="icons.users"></fa-icon>Enseignants</span>
                     
               </a>
             </div>
-            <ul class="sub-menu" *ngIf="isSubMenuOpen.enseignants">
-              <li><a routerLink="/der/enseignants" routerLinkActive="active">Liste des enseignant</a></li>
-              <li><a routerLink="/der/t-singin" routerLinkActive="active">Inscription</a></li>
-              
-            </ul>
+           
           </li>
           
          
           <li class="menu-link" >
-            <a routerLink="/der/ajouter-emplois" routerLinkActive="active">
+            <a routerLink="/der/emplois-du-temps" routerLinkActive="active">
               <span ><fa-icon [icon]="icons.calandarPlus"></fa-icon> Programmer EDT</span>
             </a>
           </li>
 
-          <li class="menu-link" >
-            <a routerLink="/der/ajouter-seance" routerLinkActive="active">
-              <span ><fa-icon [icon]="icons.calandarday"></fa-icon> Programmer seances</span>
-            </a>
-          </li>
-
-          <li class="menu-link" >
-            <a routerLink="/der/emplois-du-temps" routerLinkActive="active">
-              <span ><fa-icon [icon]="icons.cl_check"></fa-icon> Les emplois du temps</span>
-            </a>
-          </li>
-         
-          <li class="menu-link">
-            <a routerLink="/der">
-              <span><fa-icon [icon]="icons.grade"></fa-icon>Programmer soutenance</span>
-            </a>
-          </li>
-          <li class="menu-link">
-            <a routerLink="/der/#">
+         <li class="menu-link">
+            <a routerLink="/der/doc" routerLinkActive="active">
               <span><fa-icon [icon]="icons.archive"></fa-icon>Rapport et Memoire</span>
             </a>
           </li>
+         
+         
+          
           <!-- ---------------- -->
           <!-- <li class="menu-link">
             <div (click)="toggleSubMenuArchive()">
@@ -102,7 +85,7 @@
                     <input type="text" [(ngModel)]="searchTerm" (input)="onSearchChange()" placeholder="Recherche..."  class="search-input">
                  </div>
                 <div class="title-page" *ngIf="showTitle">
-                  <h5>{{title}}</h5></div>
+                  <h6>{{title}}</h6></div>
                   
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">

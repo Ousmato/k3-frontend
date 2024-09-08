@@ -1,0 +1,136 @@
+
+.col-12{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+
+button{
+    color: var(--primary);
+    font-size: 14px;
+    margin-right: 10px;
+    border: none;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+}
+/* Styler l'en-tête du tableau */
+th {
+    background-color: var(--primary-light);
+}
+
+.table-container{
+    height: 400px;
+    position: relative;
+    overflow-y: auto;
+}
+.table thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+.table-container::-webkit-scrollbar{
+    display: none;
+}
+
+tr td{
+    font-size: 16px;
+    text-overflow: ellipsis;
+}
+
+td span{
+  font-size: 14px;
+  color: var(--primary);
+  padding: 5px;
+  cursor: pointer;
+  &:hover{
+    background-color: var(--secondary);
+    border-radius: 4px;
+  }
+}
+  /* --------------------table item style------------- */
+  .tablecontent{
+    display: flex;
+    margin: 10px 10px;
+    justify-content: space-between;
+
+  }
+  .raportitem{
+    width: 48%;
+    cursor: pointer;
+  }
+  .memoireitem{
+    width: 48%;
+    cursor: pointer;
+  }
+  h4{
+    margin: 0;
+    font-size: 16px;
+    padding: 10px;
+    font-weight: 600;
+    width: 100%;
+    color: var(--primary);
+    text-align: center;
+    &:hover{
+        background-color: var(--tertiary);
+        color: var(--primary);
+        /* border-radius: 5px; */
+    }
+  }
+ #default{
+    text-align: end;
+ }
+
+ select{
+    border: none;
+ }
+
+ .pagination {
+    display: flex;
+    justify-content: end;
+    margin-top: 10px;
+  }
+  
+  .pagination button {
+    margin: 0 5px;
+    font-size: 10px;
+    padding: 2px 5px;
+    /* background-color: #007bff; */
+    color: var(--secondary);
+    cursor: pointer;
+    border: none;
+    border-radius: 20px;
+  }
+  td p{
+    padding: 5px;
+    color: var(--secondary);
+    margin: 0;
+  }
+  .pagination button.disabled, .pagination button[disabled] {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .pagination button.active {
+    background-color: var(--primary);
+  }
+  
+  .pagination button:hover:not(.disabled):not(.active) {
+    background-color: var(--secondary);
+    color: var(--primary);
+    border: none;
+  }
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    z-index: 999; 
+  }

@@ -4,11 +4,14 @@ main{
     
 }
 .col-12{
+   gap: 10px;
     padding: 0 10px;
 }
 button{
     color: var(--secondary);
-    margin-top: 20px;
+    margin-top:  20px;
+    margin-right: 10px;
+
     background-color: var(--primary);
     border: none;
     &:hover{
@@ -19,7 +22,7 @@ button{
 
 /* ----------------------------- */
 .class-folder{
-    height: 100px;
+    height: 70px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -36,7 +39,8 @@ button{
   
   .icons-style{
     color: rgb(255, 196, 0);
-    font-size: 5.7rem;
+    /* color: var(--primary-light); */
+    font-size: 2.7rem;
   }
   .info-folder p{
     margin: 0;
@@ -71,7 +75,7 @@ button{
     position: relative;
     padding: 10px; 
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-gap: 10px;
   }
     .grid-item {
@@ -95,10 +99,34 @@ button{
         color: var(--secondary);
         /* font-weight: 500; */
       }
-  .contour-o{
-    border: 1px solid red;
+ 
+  h4{
+    font-size: 16px;
+    font-weight: 800;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    align-items: center;
   }
 
-  .contour-d{
-    border: 1px solid var(--primary);
+  h4::before{
+    content: "";
+    display: inline-block;
+    width: 90%;
+    margin:  10px;
+    height: 1px;
+    background-color: var(--tertiary);
+  }
+  h4::after{
+    content: "";
+    display: inline-block;
+    width: 90%;
+    margin:  10px;
+    height: 1px;
+    background-color: var(--tertiary);
+  }
+  h4 p{
+    width: 136px;
   }

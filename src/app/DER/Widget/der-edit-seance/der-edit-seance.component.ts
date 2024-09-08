@@ -88,10 +88,9 @@ export class DerEditSeanceComponent implements OnInit{
       this.form_seance?.get('heureFin')?.setValue(this.seance.heureFin);
       this.form_seance?.get('date')?.setValue(this.seance.date);
 
-      this.enseig = this.seance.idTeacher;
+      // this.enseig = this.seance.idTeacher;
       this.nomMension = this.seance.idEmplois.idClasse.idFiliere!;
       this.nomModule = this.seance.idModule
-      this.salle = this.seance.idSalle;
     
     });
   }
@@ -131,8 +130,7 @@ export class DerEditSeanceComponent implements OnInit{
         date: formData.date,
         idEmplois: idEmploi,
         idModule: idModule,
-        idTeacher: idTeacher,
-        idSalle: idSalle,
+        // idTeacher: idTeacher,
         // idClasse: idEmploi.idClasse
         
       }
@@ -161,7 +159,7 @@ export class DerEditSeanceComponent implements OnInit{
       const dateDebut = this.emplois.dateDebut;
       const dateFin = this.emplois.dateFin;
 
-      this.datesWithDaysTest = this.emploisService.getDaysBetweenDatesTest(dateDebut, dateFin)
+      // this.datesWithDaysTest = this.emploisService.getDaysBetweenDatesTest(dateDebut, dateFin)
       this.datesWithDays = this.emploisService.getDaysBetweenDates(dateDebut, dateFin)
       this.datesWithDays.sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime())
       

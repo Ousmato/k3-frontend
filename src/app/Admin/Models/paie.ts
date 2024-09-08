@@ -1,3 +1,4 @@
+import { Configure_seance, Journee } from "./Configure_seance";
 import { Presence } from "./Teacher-presence";
 
 export interface Paie{
@@ -8,5 +9,5 @@ export interface Paie{
     nbreHeures: number;
     montant?: number;
     montantFormatter?: string;
-    idPresenceTeachers: Presence;
+    journee: Journee;
 }
