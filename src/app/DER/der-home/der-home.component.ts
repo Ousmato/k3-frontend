@@ -53,7 +53,7 @@ export class DerHomeComponent  implements OnInit{
   }
 
   toggle_toEmploi(){
-    this.router.navigate(['/dga/emplois-du-temps'])
+    this.router.navigate(['/der/emplois-du-temps'])
   }
 
   toggle_class(){

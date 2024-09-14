@@ -4,9 +4,9 @@ import { Observable, catchError, throwError } from 'rxjs';
 import { Niveau } from '../../Models/Niveau';
 import { Filiere } from '../../Models/Filieres';
 import { NivFiliere } from '../../Models/NivFiliere';
-import { ClassRoom } from '../../Models/Classe';
+import { ClassRoom, DTONivauFiliereClass } from '../../Models/Classe';
 import { Ue } from '../../Models/UE';
-import { Module } from '../../Models/Module';
+import { Module, moduleDTO } from '../../Models/Module';
 import { Semestres } from '../../Models/Semestre';
 import { error } from 'jquery';
 import { Response_String } from '../../Models/Response_String';
@@ -17,35 +17,35 @@ import { Response_String } from '../../Models/Response_String';
 export class SetService {
 
   constructor(private http: HttpClient) { }
- private getUrl = 'http://localhost:8080/niveau/readAll';
  private baseUrl = 'http://localhost:8080/';
- private postUrl = 'http://localhost:8080/filiere/addFiliere';
  private getNivFiltUrl = 'http://localhost:8080/filiere/liste';
  private postClassUrl = 'http://localhost:8080/class/add';
   
 
     getAll() : Observable<Niveau[]>{
-      return this.http.get<Niveau[]>(this.getUrl);
+      return this.http.get<Niveau[]>(this.baseUrl+"api-niveau/readAll");
     }
   getAll_Niveau_filiere() : Observable<NivFiliere[]>{
-    return this.http.get<NivFiliere[]>(this.getNivFiltUrl);
+    return this.http.get<NivFiliere[]>(this.baseUrl+ "api-filiere/list-mentions");
   }
-  // -------------------------------------------------update niveau filiere
-  updateNiveauFiliere(nivFiliere: NivFiliere) : Observable<any>{
-    return this.http.put<any>(this.baseUrl+"filiere/update-niveau-filiere", nivFiliere);
+  // ----------------------------all filiere
+  getAll_filiere() : Observable<Filiere[]>{
+    return this.http.get<Filiere[]>(this.baseUrl+"api-filiere/readAll");
   }
-    createFiliere(filiere: Filiere): Observable<Filiere>{
-      return this.http.post<Filiere>(this.postUrl, filiere);
+  // // -------------------------------------------------update niveau filiere
+  // updateNiveauFiliere(nivFiliere: NivFiliere) : Observable<any>{
+  //   return this.http.put<any>(this.baseUrl+"filiere/update-niveau-filiere", nivFiliere);
+  // }
+    createFiliere(filiere: Filiere): Observable<Response_String>{
+      return this.http.post<Response_String>(this.baseUrl+ "api-filiere/addFiliere", filiere);
     }
-    addClass(classe: ClassRoom) : Observable<Response_String>{
+    addClass(classe: DTONivauFiliereClass) : Observable<Response_String>{
       return this.http.post<Response_String>(this.baseUrl+"api-class/add", classe);
     }
-
-    addFiliere(filiereData: any): Observable<Response_String> {
-      return this.http.post<Response_String>(this.baseUrl+"filiere/add", filiereData);
+// ----------------------------update filiere
+  updateFiliere(filiere: Filiere) : Observable<Response_String>{
+    return this.http.put<Response_String>(this.baseUrl+"api-filiere/update", filiere);
   }
-
-
   // -----------------------------------------create ue 
   createUe(ue: Ue) : Observable<Response_String>{
     return this.http.post<Response_String>(this.baseUrl+"api-class/add-ue", ue);
@@ -55,7 +55,7 @@ export class SetService {
     return this.http.get<Ue[]>(`${this.baseUrl}api-class/list-ue/${idClasse}`);
   }
   // ----------------------------------------------add module
-  createModule(module: Module): Observable<Response_String>{
+  createModule(module: moduleDTO): Observable<Response_String>{
     return this.http.post<Response_String>(this.baseUrl+"api-class/add-module", module);
   }
   // -----------------------------------get all module
@@ -102,5 +102,29 @@ export class SetService {
 createSemestre(semestre: Semestres) : Observable<Response_String>{
   return this.http.post<Response_String>(this.baseUrl+"api-semestre/add-semestre", semestre);
 }
+ 
+// ---------------------add niveau
+addNiveau(niveau: Niveau) : Observable<Response_String>{
+    return this.http.post<Response_String>(this.baseUrl+"api-niveau/add-niveau", niveau);
+  }
+  // ----------------update niveau
+ updateNiveau(niveau: Niveau) : Observable<Response_String>{
+    return this.http.put<Response_String>(this.baseUrl+"api-niveau/update-niveau", niveau);
+  }
+
+  // ------------------------------delete
+  deleteNiveau(idNiveau: number): Observable<Response_String>{
+    return this.http.delete<Response_String>(`${this.baseUrl}api-niveau/delete-niveau/${idNiveau}`);
+  }
+
+  // ----------------------read all niveau
+  getAllNiveau() :Observable<Niveau[]>{
+    return this.http.get<Niveau[]>(this.baseUrl+"api-niveau/readAll")
+  }
+
+  // ----------------------------delete filiere
+  deleteFiliere(idFiliere: number): Observable<Response_String>{
+    return this.http.delete<Response_String>(`${this.baseUrl}api-filiere/filiere-delete/${idFiliere}`);
+  }
  
 }

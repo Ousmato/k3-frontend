@@ -1,6 +1,10 @@
 main{
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     padding: 10px;
+    transition: box-shadow 0.3s ease-in-out, padding 0.3s ease-in-out;
+    /* opacity: 0; */
+    transform: translateY(20px); /* Déplacer légèrement vers le bas */
+
 }
 
 .back-button{
@@ -18,4 +22,19 @@ main{
         border-radius: 50%;
     }
 
+}
+button{
+    border: none;
+    padding: 5px;
+    background-color: transparent;
+    cursor: pointer;
+    color: var(--primary);
+    margin-bottom: 10px;
+    border-radius: 5px;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+        transition: background-color 0.2s ease-in-out;
+       
+    }
 }

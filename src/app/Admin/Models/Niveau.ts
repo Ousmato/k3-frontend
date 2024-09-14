@@ -1,4 +1,4 @@
 export interface Niveau{
-    id:number;
+    id?:number;
     nom?:string;
 }

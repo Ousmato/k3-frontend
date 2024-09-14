@@ -28,6 +28,12 @@ export interface Student {
     status: Type_status;
 }
 
+export interface Student_reinscription{
+    idStudent: number;
+    idClasse: number;
+    idAnnee: number
+}
+
 export enum Type_status{
     REG = 'régulier',
     PROFESSIONNEL = 'professionnel',

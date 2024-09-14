@@ -1,21 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { faEye,faPlus,faBookOpen,faCalendar, faBell, faClipboard, faEllipsis } from '@fortawesome/free-solid-svg-icons';
+// import { faEye,faPlus,faBookOpen,faCalendar, faBell, faClipboard, faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { ClassStudentService } from './class-student.service';
 import { ClassRoom } from '../../Admin/Models/Classe';
 import { SetService } from '../../Admin/Views/settings/set.service';
-import { Module } from '../../Admin/Models/Module';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClassModules } from '../../Admin/Models/ClassModule';
-import { Ue } from '../../Admin/Models/UE';
 import { ServiceService } from '../../DER/emplois-du-temps/service.service';
-import { forkJoin } from 'rxjs';
 import { Emplois } from '../../Admin/Models/Emplois';
-import { map } from 'rxjs';
 import { NavigationExtras, Route, Router } from '@angular/router';
-import { data } from 'jquery';
 import { IconsService } from '../../Services/icons.service';
 import { ToastrService } from 'ngx-toastr';
-import { bootstrapApplication } from '@angular/platform-browser';
+import { SideBarService } from '../../sidebar/side-bar.service';
 
 @Component({
   selector: 'app-class-students',
@@ -23,35 +18,52 @@ import { bootstrapApplication } from '@angular/platform-browser';
   styleUrl: './class-students.component.css'
 })
 export class ClassStudentsComponent implements OnInit {
-  faEye = faEye; fanot = faBell; fanote = faClipboard; faElip = faEllipsis;
-  fadd = faPlus; fabook = faBookOpen; faEmploi =faCalendar;
+ 
+  searchTerm : string = ""
   classRoms : ClassRoom[]=[];
   classesWithEmplois: ClassRoom[] = [];
-  classes!: ClassRoom;
-  classroom: ClassRoom[] =[];
+  filteredClasse: ClassRoom[] = [];
   idCurrent!: ClassRoom;
-  emplois!: Emplois;
-  seance: any;
-  hasEmplois!: boolean;
-  emploisData: any;
 
   classeSelect!: any
-  class_extrate_ue!: any
 
   ueList: any[] = [];
   list_checked: any[] = [];
   isDesabled: boolean = false;
   isShow_add_module : boolean = false
-  show_add_mention : boolean = false
   notFund_modal : boolean = true
   isShow_link_modal : boolean = true
   isShow_update_emplois: boolean = false
   addModules!: FormGroup;
+  classes_L1:  ClassRoom[] =[]
+  classes_L2:  ClassRoom[] =[]
+  classes_L3:  ClassRoom[] =[]
   permission: boolean = false
 
-  constructor(private service : ClassStudentService, private emploisService: ServiceService, private toastr: ToastrService,
-    private setSevice: SetService, private fb: FormBuilder, private router: Router, public icons: IconsService){
+  constructor(private service : ClassStudentService, private sideBarService: SideBarService,
+    private emploisService: ServiceService, private toastr: ToastrService,
+    private setSevice: SetService, private router: Router, public icons: IconsService){
     
+  }
+  ngOnInit() {
+    this.getPermission();
+    this.loadClasses();
+    const formGroupControls: any = {};
+    this.ueList.forEach(ue => {
+      formGroupControls[ue.id] = new FormControl(false);
+    });
+
+    this.addModules = new FormGroup(formGroupControls);
+
+    this.sideBarService.currentSearchTerm.subscribe(term => {
+      this.searchTerm = term;
+      this.filterClasse_L1();
+      this.filterClasse_L2();
+      this.filterClasse_L3();
+      
+
+    
+    });
   }
 
   isOpen = false;
@@ -70,20 +82,17 @@ export class ClassStudentsComponent implements OnInit {
   preventClick(event: MouseEvent): void {
     event.stopPropagation(); // Empêche la propagation de l'événement de clic
   }
-  ngOnInit() {
-    this.getPermission();
-    this.loadClasses();
-    const formGroupControls: any = {};
-    this.ueList.forEach(ue => {
-      formGroupControls[ue.id] = new FormControl(false); // Initialisation avec false (non coché)
-    });
-
-    this.addModules = new FormGroup(formGroupControls);
-  }
+ 
   // ------------------------------------------get all classRoom
   loadClasses(): void {
+
     this.service.getAll().subscribe((classRoms: ClassRoom[]) => {
+
       this.classRoms = classRoms;
+      this.classes_L1 = classRoms.filter(clr => clr.idFiliere?.idNiveau.nom === "LICENCE 1");
+      this.classes_L2 = classRoms.filter(clr => clr.idFiliere?.idNiveau.nom === "LICENCE 2");
+      this.classes_L3 = classRoms.filter(clr => clr.idFiliere?.idNiveau.nom === "LICENCE 3");
+
     });
   }
 // ----------------------------------------add module in classRoom
@@ -220,8 +229,6 @@ toggle_to_emplois(classRom: ClassRoom): void {
         };
         this.router.navigate(['/dga/seance'], navigationExtras);
         
-        // Sinon, naviguer vers la page de création d'emploi du temps
-        
       }
     
     });
@@ -306,5 +313,26 @@ toggle_to_emplois(classRom: ClassRoom): void {
     }
     
   }
-  // ----------------------
+  // ----------------------filtered 
+  filterClasse_L1(){
+    if(!this.searchTerm){
+       return this.filteredClasse = this.classes_L1;
+    }
+   return this.filteredClasse = this.classes_L1.filter(clf => clf.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase())||
+   clf.idFiliere?.idNiveau.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()))
+  }
+  filterClasse_L2(){
+    if(!this.searchTerm){
+       return this.filteredClasse = this.classes_L2;
+    }
+   return this.filteredClasse = this.classes_L1.filter(clf => clf.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase())||
+   clf.idFiliere?.idNiveau.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()))
+  }
+  filterClasse_L3(){
+    if(!this.searchTerm){
+       return this.filteredClasse = this.classes_L3;
+    }
+   return this.filteredClasse = this.classes_L1.filter(clf => clf.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase())||
+   clf.idFiliere?.idNiveau.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()))
+  }
 }

@@ -229,3 +229,20 @@ main{
         }
     
     }
+    .head-content{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    select{
+        cursor: pointer;
+        border: none;
+        color: var(--primary);
+    }
+    .option{
+        text-align: end;
+    }
+    select:focus{
+        outline: none;
+        border: none;
+    }

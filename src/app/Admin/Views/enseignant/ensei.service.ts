@@ -5,7 +5,7 @@ import { Teacher } from '../../Models/Teachers';
 import { Teacher_presence } from '../../Models/objectPresence';
 import { Seances } from '../../Models/Seances';
 import { Presence } from '../../Models/Teacher-presence';
-import { Paie } from '../../Models/paie';
+import { Paie, PaieDTO } from '../../Models/paie';
 import { Response_String } from '../../Models/Response_String';
 import { Paie_Pages, Presence_pages, Teacher_presence_pages, TeacherPages } from '../../Models/Pagination-module';
 
@@ -65,19 +65,19 @@ export class EnseiService {
   // getAllPaie(page: number, size: number) : Observable<Paie_Pages>{
   //   return this.http.get<Paie_Pages>(`${this.baseUrl}list-paie?page=${page}&size=${size}`);
   // }
-  getAllPaie(): Observable<Paie[]>{
-    return this.http.get<Paie[]>(this.baseUrl+"list-paie")
+  getAllPaie(): Observable<PaieDTO[]>{
+    return this.http.get<PaieDTO[]>(this.baseUrl+"list-paie")
   }
   // ----------------------get all hours paie of teacher
   getPaieBy_Enseignant_id(idEnseignant : number) : Observable<Paie[]>{
     return this.http.get<Paie[]>(this.baseUrl+"all-hours-paie-of-teacher/" + idEnseignant)
   }
   // -------------------------------------------update teacher
-  updateTeacher(teacher: Teacher, photo: File): Observable<Response_String>{
-    const formData = new FormData();
-    formData.append('teacher', JSON.stringify(teacher));
-      formData.append('file', photo);
-    return this.http.put<Response_String>(this.baseUrl + 'update', formData);
+  updateTeacher(teacher: Teacher): Observable<Response_String>{
+    // const formData = new FormData();
+    // formData.append('teacher', JSON.stringify(teacher));
+      // formData.append('file', photo);
+    return this.http.put<Response_String>(this.baseUrl + 'update', teacher);
   }
   // -----------------------get teacher by id
   getTeacher_by_id(idTeacher: number) : Observable<Teacher>{

@@ -9,7 +9,7 @@ export interface Teacher {
     sexe: string;
     idUe: Ue,
     diplome: Diplomes;
-    password: string;
+    password?: string;
     telephone: number;
     urlPhoto?: string;
     isDeleted?: boolean;

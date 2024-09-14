@@ -1,0 +1,160 @@
+<main>
+    <ng-container *ngIf="show_add">
+        <div class="views">
+            <h3 class="span">Ajouter Classe</h3>
+
+            <form [formGroup]="addClass" (ngSubmit)="createClassroom()"> 
+                <div class="container-views">
+                    <div class="form-content">
+                        <div class="content-input">
+                            <div class="form form-group"> 
+                                <label >Scolarité :</label> 
+                                <input type="text" formControlName="scolarite" class="form-control" id="nom" placeholder="La scolarite..." [class.is-invalid]="addClass.get('scolarite')!.invalid && addClass.get('scolarite')!.touched"> 
+                                <div *ngIf="addClass.get('scolarite')!.invalid && addClass.get('scolarite')!.touched" class="invalid-feedback">
+                                    <div *ngIf="addClass.get('scolarite')!.errors?.['required']">
+                                        <span class="label-error">La scolarite est requise.</span>
+                                    </div>
+                                    <div *ngIf="addClass.get('scolarite')!.errors?.['min'] || addClass.get('scolarite')!.errors?.['max']">
+                                        <span class="label-error">La scolarite  doit être egale ou supperieure a 100000 FCFA</span>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="form form-group">
+                                <label for="select-modules-multiple" class="label form-label">Filiere :</label>
+                                <select class="form-select" formControlName="idFiliere" placeholder="Nom du classe..." [class.is-invalid]="addClass.get('idFiliere')!.invalid && addClass.get('idFiliere')!.touched">
+                                    <option selected disabled value="">Choisir la filiere</option>
+                                    <option *ngFor="let filiere of filieres" [value]="filiere.id">{{filiere.nomFiliere}} </option>
+                                </select> 
+                                <div *ngIf="addClass.get('idFiliere')!.invalid && addClass.get('idFiliere')!.touched" class="invalid-feedback">
+                                    <div *ngIf="addClass.get('idFiliere')!.errors?.['required']">
+                                        <span class="label-error">La filiere est requise.</span>
+                                    </div>
+                                   
+                                </div>                   
+                            </div>
+                        </div>
+                        
+                        <!-- --------------------------------------- -->
+                         <div class="content-input">
+                            <div class="form form-group">
+                                <label for="select-modules-multiple" class="label form-label">Niveau :</label>
+                                <select class="form-select" formControlName="idNiveau"  [class.is-invalid]="addClass.get('idNiveau')!.invalid && addClass.get('idNiveau')!.touched">
+                                    <option selected disabled value="">Choisir le niveau</option>
+                                    <option *ngFor="let niveau of niveaux" [value]="niveau.id">{{niveau.nom}} </option>
+                                </select> 
+                                <div *ngIf="addClass.get('idNiveau')!.invalid && addClass.get('idNiveau')!.touched" class="invalid-feedback">
+                                    <div *ngIf="addClass.get('idNiveau')!.errors?.['required']">
+                                        <span class="label-error">Le Niveau est requis.</span>
+                                    </div>
+                                   
+                                </div>                   
+                            </div>
+                            <div class="form form-group">
+                                <label for="select-modules-multiple" class="label form-label">Promotion :</label>
+                                <select class="form-select" formControlName="idAnnee"  [class.is-invalid]="addClass.get('idAnnee')!.invalid && addClass.get('idAnnee')!.touched">
+                                    <option selected disabled value="">Choisir Promotion</option>
+                                    <option *ngFor="let annee of annees" [value]="annee.id">Promotion {{annee.ans}}</option>
+                                </select> 
+                                <div *ngIf="addClass.get('idAnnee')!.invalid && addClass.get('idAnnee')!.touched" class="invalid-feedback">
+                                    <div *ngIf="addClass.get('idAnnee')!.errors?.['required']">
+                                        <span class="label-error">La promotion est requise.</span>
+                                    </div>
+                                   
+                                </div>                   
+                            </div>
+                         </div>
+                        
+                    </div>   
+                        <div class="button-cash">
+                            <a (click)="close_add()" class="submit"  ><span>Annuler</span></a>
+                            <button class="submit" type="submit" ><span>Enregistrer</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                        </div>
+                    
+                </div>
+                
+                
+            </form> 
+        </div>
+    </ng-container>
+    <!-- --------------------------------- -->
+    <ng-container *ngIf="show_update">
+        <div class="views">
+            <h3 class="span">Modifier Classe</h3>
+            <form  [formGroup]="update_classe_form" (ngSubmit)="update_classe()">
+                <div class="container-views">
+                    <div class="form-group">
+                        <label for="">La classe :</label>
+                        <select  class="form-select" formControlName="id" placeholder="Choisir la clase" (change)="onClasseChange($event)"  [class.is-invalid]="update_classe_form.get('id')!.invalid && update_classe_form.get('id')!.touched">
+                            <option  selected disabled value="">Choisir La classe</option>
+                            
+                            <option  *ngFor="let cl of classes" [value]="cl.id">{{cl.idFiliere?.idNiveau?.nom}}({{cl.idFiliere?.idFiliere?.nomFiliere}})</option>
+                        </select>
+                        <div *ngIf="update_classe_form.get('id')!.errors?.['required']">
+                            <span class="label-error">La scolarite est requise.</span>
+                        </div>
+                    </div>
+                    
+                    <input type="text"  class=" form-control" formControlName="idFiliere" *ngIf="false" >
+                    
+                    <div class="form-group" >
+                        <label for="">Scolarite :</label>
+                         <input type="text"  class=" form-control" formControlName="scolarite" placeholder="La scolarité..."  [class.is-invalid]="update_classe_form.get('scolarite')!.invalid && update_classe_form.get('scolarite')!.touched">
+                            <div *ngIf="update_classe_form.get('scolarite')!.invalid && update_classe_form.get('scolarite')!.touched" class="invalid-feedback">
+                                <div *ngIf="update_classe_form.get('scolarite')!.errors?.['required']">
+                                    <span class="label-error">La scolarite est requise.</span>
+                                </div>
+                                <div *ngIf="update_classe_form.get('scolarite')!.errors?.['min'] || update_classe_form.get('scolarite')!.errors?.['max']">
+                                    <span class="label-error">La scolarite  doit être egale ou supperieure a 100000 FCFA</span>
+                                </div>
+                            </div>
+                    </div>
+                   
+                
+                    <div class="button-cash">
+                        <a (click)="close_update()" class="submit"  ><span>Annuler</span></a>
+                        <button class="submit" type="submit" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+            
+    </ng-container>
+    <!-- ------------------------------ -->
+    <ng-container *ngIf="show_deleted" >
+        <div class="views" >
+                <h3 class="span">Supprimer classe</h3>
+               <div class="container-views">
+                <select  class="form-select"placeholder="Choisir la clase" (change)="onDelete($event)">
+                    <option  selected disabled value="">Choisir La filière</option>
+                    
+                    <option  *ngFor="let cl of classes" [value]="cl.id">{{cl.idFiliere?.idNiveau?.nom}} {{cl.idFiliere?.idFiliere?.nomFiliere}}</option>
+                </select>
+                    <div class="button-cash">
+                        <a (click)="close_delete()" class="submit"  ><span>Annuler</span></a>
+                        <button (click)="nextToConfirm()" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                    </div> 
+               </div>
+        </div>
+       
+    </ng-container>
+    <div class="views" *ngIf="isConfirm">
+        <h3 class="span">Confirmation</h3>
+        <div class="container-views">
+            <p>Êtes-vous sûr de vouloir supprimer la classe : {{classFordelete.idFiliere?.idNiveau?.nom}} {{classFordelete.idFiliere?.idFiliere?.nomFiliere}}</p>
+            
+                <div class="button-cash">
+                    <a type="button" (click)="exitDelete()">Annuler</a>
+                    <button type="button" (click)="delete_classe(classFordelete.id!)">Supprimer</button>
+                </div>
+            
+        </div>
+    </div>
+    <!-- ---------------------------------- -->
+    <div class="second-child">
+        <a (click)="show_added()"><fa-icon [icon]="icons.squarePlus"></fa-icon> <span>Ajouter</span></a>
+        <a (click)="show_updated()" ><fa-icon [icon]="icons.edit"></fa-icon> <span>Modifier</span></a>
+        <a (click)="show_delete()" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> <span >Supprimer</span></a>
+       
+    </div>
+</main>

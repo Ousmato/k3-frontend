@@ -1,45 +1,51 @@
-<main>
+<main >
     <div (click)="goBack()" class="back-button">
         <fa-icon [icon]="icons.back"></fa-icon>
       </div>
-      
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Dates</th>
-                <th>Heures/Sv</th>
-                <th>Montant</th>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Mentions</th>
-                <th>Type</th>
-                <th>Module</th>
-                <th>Emergement</th>
-            </tr>
-        </thead>
-        <tbody>
-            <ng-container *ngIf="paies.length; else notFund">
-                <ng-container  *ngFor="let paie of paies" >
-                    <tr>
-                        <td>{{paie.date}}</td>
-                        <td>{{paie.nbreHeures}}</td>
-                        <td>{{paie.montant}}</td>
-                        <td>{{paie.journee.idTeacher.nom}}</td>
-                        <td>{{paie.journee.idTeacher.prenom}}</td>
-                        <td>{{paie.journee.idEmplois.idClasse.idFiliere?.idNiveau?.nom}} {{paie.journee.idEmplois.idClasse.idFiliere?.idFiliere?.nomFiliere}}</td>
-                        <td>{{paie.journee.seanceType.toLocaleUpperCase()}}</td>
-                        <td>{{paie.journee.idEmplois.idModule.nomModule}}</td>
-                        <td></td>
-                    </tr>
-                </ng-container>
-                
-            </ng-container>
-            <ng-template #notFund>
+
+      <button (click)="imprimer()">Imprimer</button>
+      <div class="table-container" id="idTable">
+        <table class="table table-bordered" >
+            <thead>
                 <tr>
-                    <td colspan="9" class="text-center">Aucun résultat trouvé</td>
+                    <!-- <th>Dates</th> -->
+                   
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th>Mentions</th>
+                    <!-- <th>Type</th> -->
+                    <th>Module</th>
+                    <th>Heures/Sv</th>
+                    <th>Montant</th>
+                    <th>Emergement</th>
                 </tr>
-            </ng-template>
-            
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <ng-container *ngIf="paies.length; else notFund">
+                    <ng-container  *ngFor="let paie of filteredPaie()" >
+                        <tr>
+                            <!-- <td>{{paie.date}}</td> -->
+                            <td>{{paie.nom}}</td>
+                            <td>{{paie.prenom}}</td>
+                            <td>{{paie.niveau}} {{paie.filiere}}</td>
+                            <!-- <td>{{paie.type.toLocaleUpperCase()}}</td> -->
+                            <td>{{paie.module}}</td>
+                            
+                            <td>{{paie.nbreHeures}} Heures</td>
+                            <td>{{paie.montanFormat}}</td>
+                            <td></td>
+                        </tr>
+                    </ng-container>
+                    
+                </ng-container>
+                <ng-template #notFund>
+                    <tr>
+                        <td colspan="9" class="text-center">Aucun résultat trouvé</td>
+                    </tr>
+                </ng-template>
+                
+            </tbody>
+        </table>
+      </div>
+    
 </main>

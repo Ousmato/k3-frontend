@@ -7,6 +7,7 @@ import { SchoolService } from '../../Services/school.service';
 import { SideBarService } from '../../sidebar/side-bar.service';
 import { SchoolInfo } from '../../Admin/Models/School-info';
 import { Subscription } from 'rxjs';
+import { ClassRoom } from '../../Admin/Models/Classe';
 
 @Component({
   selector: 'app-dga-sidebar',
@@ -18,6 +19,7 @@ export class DgaSidebarComponent implements OnInit, OnDestroy {
   
   
   title!: string;
+  
   isSidebarCollapsed = false;
   isSubmenuCollapsed = false;
   desable_add_button = true;
@@ -29,7 +31,10 @@ export class DgaSidebarComponent implements OnInit, OnDestroy {
 
   routerEventsSubscription!: Subscription;
 
-  component_Name: string [] = ['_EnseignantComponent',  '_EtudiantsComponent', '_TeachersPresenceComponent', '_FichePaieComponent', '_ArchivesComponent']
+  component_Name: string [] = ['_EnseignantComponent',  
+    '_EtudiantsComponent', '_TeachersPresenceComponent', 
+    '_FichePaieComponent', '_ArchivesComponent', "_ClassStudentsComponent"
+  ]
  
 
   searchTerm: string = '';

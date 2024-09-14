@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Student } from '../../../Admin/Models/Students';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Student, Student_reinscription } from '../../../Admin/Models/Students';
 import { EtudeService } from '../../../Admin/Views/etudiants/etude.service';
 import { ClassRoom } from '../../../Admin/Models/Classe';
 import { ClassStudentService } from '../../../DGA/class-students/class-student.service';
@@ -15,7 +14,7 @@ import { PageTitleService } from '../../../Services/page-title.service';
 })
 export class ReInscriptionWidgetComponent implements OnInit {
 
-  @Input() student!: Student
+  @Input() student?: Student
   @Output() closeModal = new EventEmitter<any>()
   classRoom: ClassRoom [] = []
   class_select!: ClassRoom
@@ -38,6 +37,11 @@ export class ReInscriptionWidgetComponent implements OnInit {
   getAnneeScolaire(){
     this.infoscool.getAll_annee().subscribe(data =>{
       this.all_annee = data;
+      this.all_annee.forEach(an =>{
+        const date = new Date(an.finAnnee)
+        const ans = date.getFullYear();
+        an.ans = ans;
+      })
     })
   }
   // -------------------------on select class
@@ -53,12 +57,14 @@ export class ReInscriptionWidgetComponent implements OnInit {
 
   }
   send(){
-    this.student.idClasse = this.class_select
-    this.student.idAnneeScolaire = this.anneeSelect
-    this.student.idEtudiant = 0
-    console.log(this.student, "student")
+    const idStudent = this.student?.idEtudiant
+     const idAnnee = this.anneeSelect.id
+     const idClasse = this.class_select.id
+
+    
+    console.log(idStudent, "idStudent", idClasse,"idClasse", idAnnee,"idAnnee" )
     // return
-    this.studentService.reInscriptionStudent(this.student).subscribe({
+    this.studentService.reInscriptionStudent(idStudent!, idClasse!, idAnnee!).subscribe({
       next: (result)=>{
         this.pageTitle.showSuccessToast(result.message)
         this.closeModal.emit()
@@ -68,7 +74,6 @@ export class ReInscriptionWidgetComponent implements OnInit {
       }
     })
 
-    // this.studentService.reInscriptionStudent()
   }
   close(){
     this.closeModal.emit()

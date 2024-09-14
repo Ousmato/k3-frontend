@@ -4,5 +4,15 @@ export interface  Module{
     id?: number;
     nomModule: string;
     coefficient: number;
-    idUe: Ue
+    idUe: Ue;
+   
+}
+
+export interface Ecue{
+    nomModule: string;
+    coefficient: number;
+}
+export interface moduleDTO{
+    idUe: Ue;
+    modules: Ecue[];
 }

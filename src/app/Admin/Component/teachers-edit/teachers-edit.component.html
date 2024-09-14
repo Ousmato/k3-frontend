@@ -7,7 +7,7 @@
             <div class="column-f">
                 <div class="input">
                     <label for="validationDefault01" class="label form-label">Nom :</label>
-                    <input type="text" class="input-with form-control" formControlName="nom" id="nom" [class.is-invalid]="teacher_form.get('nom')!.invalid && teacher_form.get('nom')!.touched"  placeholder="Nom....">
+                    <input [attr.readonly]="!isEdit ? true : null" type="text" class="input-with form-control" formControlName="nom" id="nom" [class.is-invalid]="teacher_form.get('nom')!.invalid && teacher_form.get('nom')!.touched"  placeholder="Nom....">
                     <span *ngIf="teacher_form.controls['nom'].invalid && teacher_form.controls['nom'].touched" [ngStyle]="{color: 'red'}">
                     Champ obligatoire*
                     </span>
@@ -15,7 +15,7 @@
         
                 <div class="input">
                     <label for="validationDefault02" class="label form-label">Prenom :</label>
-                    <input type="text" formControlName="prenom" class="input-with form-control" id="prenom" [class.is-invalid]="teacher_form.get('prenom')!.invalid && teacher_form.get('prenom')!.touched"   placeholder="Prenom....">
+                    <input [attr.readonly]="!isEdit ? true : null" type="text" formControlName="prenom" class="input-with form-control" id="prenom" [class.is-invalid]="teacher_form.get('prenom')!.invalid && teacher_form.get('prenom')!.touched"   placeholder="Prenom....">
                     <span *ngIf="teacher_form.controls['prenom'].invalid && teacher_form.controls['prenom'].touched" [ngStyle]="{color: 'red'}">
                     Champ  obligatoire*
                     </span>
@@ -23,30 +23,31 @@
         
                 <div class="input">
                     <label  class="label form-label">Email :</label>
-                    <input type="email" formControlName="email" class=" input-with form-control" [class.is-invalid]="teacher_form.get('email')!.invalid && teacher_form.get('email')!.touched" placeholder="Email...">
+                    <input [attr.readonly]="!isEdit ? true : null" type="email" formControlName="email" class=" input-with form-control" [class.is-invalid]="teacher_form.get('email')!.invalid && teacher_form.get('email')!.touched" placeholder="Email...">
                     <span *ngIf="teacher_form.controls['email'].invalid && teacher_form.controls['email'].touched" [ngStyle]="{color: 'red'}">
                     Champ bligatoire*
                     </span>
                     
                 </div>
         
-                <div class="input">
+                <!-- <div class="input">
                     <label for="validationDefault02" class="label form-label">Mot de Passe :</label>
-                    <div class="pass-chec position-relative">
+                    <div [attr.readonly]="!isEdit ? true : null" class="pass-chec position-relative">
                         <input type="{{ passwordVisible ? 'text' : 'password' }}" class="form-control" formControlName="password" [class.is-invalid]="teacher_form.get('password')!.invalid && teacher_form.get('password')!.touched" id="password" placeholder="Mot de passe....">
                         <span *ngIf="teacher_form.controls['password'].invalid && teacher_form.controls['password'].touched" [ngStyle]="{color: 'red'}">
                             Champ obligatoire*
                         </span>
                         <fa-icon [icon]="passwordVisible ? icons.eyeSlash : icons.eye" class="toggle-password position-absolute" id="togglePassword" [ngStyle]="{cursor: 'pointer', right: '10px', top: '50%', transform: 'translateY(-50%)'}" (click)="togglePasswordVisibility()"></fa-icon>
                     </div>
-                </div>
+                </div> -->
                 
             </div>
             <div class="column-f">
                 
                 <div class="input">
                     <label for="telephone" class="label form-label">Téléphone :</label>
-                    <input type="text" formControlName="telephone" class="form-control" [class.is-invalid]="teacher_form.get('telephone')!.invalid && teacher_form.get('telephone')!.touched" pattern="[0-9]{1,8}" placeholder="Numero de telephone....">
+                    <!-- [class.is-invalid]="teacher_form.get('telephone')!.invalid && teacher_form.get('telephone')!.touched" pattern="[0-9]{1,8}" -->
+                    <input [attr.readonly]="!isEdit ? true : null" type="text" formControlName="telephone" class="form-control"  placeholder="Numero de telephone....">
                     <span *ngIf="teacher_form.controls['telephone'].hasError('required') && teacher_form.controls['telephone'].touched"
                         [ngStyle]="{color: 'red'}">
                         Champ obligatoire*
@@ -61,34 +62,34 @@
                 
 
                 <div class="form form-group">
-                    <label>Status :</label> 
-                    <select class="form-select" formControlName="status"  id="enseignant" placeholder="Status"  required>
-                        <option  selected disabled value="">Choisir Le status</option>
-                        <option *ngFor="let status of teacherStatusOptions" [value]="status" >{{status}}</option>
+                    <label class="label form-label">Status : </label> 
+                    <select  class="form-select" formControlName="status"   placeholder="Status"  required>
+                        <option  disabled value="">{{enseignant?.status}}</option>
+                        <option [ngStyle]="{ 'display': !isEdit ? 'none' : 'block' }" *ngFor="let status of teacherStatusOptions" [value]="status" >{{status}}</option>
                     </select>
-                    <span *ngIf="teacher_form.controls['status'].invalid && teacher_form.controls['status'].touched" [ngStyle]="{color: 'red'}">
+                    <!-- <span *ngIf="teacher_form.controls['status'].invalid && teacher_form.controls['status'].touched" [ngStyle]="{color: 'red'}">
                         Champ obligatoire*
-                    </span> 
+                    </span>  -->
                 </div>
 
-                <div class="input">
+                <!-- <div class="input">
                     <label for="validationDefault05" class="label form-label">Photo :</label>
                     <input type="file" formControlName="urlPhoto" accept="image/*" class="input-with form-control" [class.is-invalid]="teacher_form.get('urlPhoto')!.invalid && teacher_form.get('urlPhoto')!.touched" id="inputPhoto" (change)="onFileSelected($event)"  required>
                     <span *ngIf="teacher_form.controls['urlPhoto'].invalid && teacher_form.controls['urlPhoto'].touched" [ngStyle]="{color: 'red'}">
                     Champ obligatoire*
                     </span>
-                </div>
+                </div> -->
 
                 <div class="radio">
                     <label for="">Choisir le sexe :</label>
                     <div class="radio-content">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio1" value="Homme" required>
+                            <input [attr.readonly]="!isEdit ? true : null" class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio1" value="Homme" required>
                             <label class="form-check-label" for="inlineRadio1">Homme</label>
                         </div>
 
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio2" value="Femme" required>
+                            <input [attr.readonly]="!isEdit ? true : null" class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio2" value="Femme" required>
                             <label class="form-check-label" for="inlineRadio2">Femme</label>
                         </div>
                     </div>
@@ -99,21 +100,22 @@
             </div>
             <div class="column-f">
                 <div class="form form-group">
-                    <label>Spécialités :</label> 
-                    <select class="form-select" formControlName="idUe"    [class.is-invalid]="teacher_form.get('idUe')!.invalid && teacher_form.get('idUe')!.touched">
-                        <option  selected disabled value="">Choisir La spécialités </option>
-                        <option *ngFor="let ue of ueList" [value]="ue.id" >{{ue.nomUE}}</option>
-                        <span *ngIf="teacher_form.controls['idUe'].invalid && teacher_form.controls['idUe'].touched" [ngStyle]="{color: 'red'}">
+                    <label class="label form-label">Spécialités : </label> 
+                    <!-- [class.is-invalid]="teacher_form.get('idUe')!.invalid && teacher_form.get('idUe')!.touched" -->
+                    <select class="form-select" formControlName="idUe" >
+                        <option  selected disabled value="">{{enseignant?.idUe?.nomUE}}</option>
+                        <option [ngStyle]="{ 'display': !isEdit ? 'none' : 'block' }" *ngFor="let ue of ueList" [value]="ue.id" >{{ue.nomUE}}</option>
+                        <!-- <span *ngIf="teacher_form.controls['idUe'].invalid && teacher_form.controls['idUe'].touched" [ngStyle]="{color: 'red'}">
                             Champ obligatoire*
-                            </span>
+                            </span> -->
                     </select> 
                 </div>
 
                 <div class="form form-group">
-                    <label>Diplomes :</label> 
+                    <label class="label form-label">Diplomes : </label> 
                     <select class="form-select" formControlName="diplome"  [class.is-invalid]="teacher_form.get('diplome')!.invalid && teacher_form.get('diplome')!.touched">
-                        <option  selected disabled value="">Choisir Le diplome</option>
-                        <option *ngFor="let diplome of teacherDiplomOptions" [value]="diplome.key" >{{diplome.value}}</option>
+                        <option  selected disabled value="">{{enseignant?.diplome}}</option>
+                        <option [ngStyle]="{ 'display': !isEdit ? 'none' : 'block' }" *ngFor="let diplome of teacherDiplomOptions" [value]="diplome.key" >{{diplome.value}}</option>
                     </select>
                     <span *ngIf="teacher_form.controls['diplome'].invalid && teacher_form.controls['diplome'].touched" [ngStyle]="{color: 'red'}">
                         Champ obligatoire*
@@ -124,7 +126,13 @@
 
         </div>
         <div class="col-12">
-          <button   type="submit">Enregistrer</button>
+            @if(isEdit){
+                <button  (click)="sunmit()" >Enregistrer</button>
+            }@else {
+                <button   (click)="toggle_toChageEdit()" >Modifier</button>
+            }
+          
+          
         </div>
     </form>
 </main>

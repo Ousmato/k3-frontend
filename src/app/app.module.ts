@@ -28,23 +28,15 @@ import { AllNotesSemestreComponent } from './Admin/Views/all-notes-semestre/all-
 import { EtudiantsDeLaClasseComponent } from './Admin/Views/etudiants-de-la-classe/etudiants-de-la-classe.component';
 import { StudentEditComponent } from './Admin/Component/student-edit/student-edit.component';
 import { StudentViewComponent } from './Admin/Component/student-view/student-view.component';
-import { SemestreComponent } from './Widget/semestre/semestre.component';
 import { MatieresComponent } from './Widget/matieres/matieres.component';
 import { EmploisWidgetComponent } from './Widget/emplois-widget/emplois-widget.component';
 import { TeachersSinginComponent } from './Admin/Component/teachers-singin/teachers-singin.component';
 import { TeachersEditComponent } from './Admin/Component/teachers-edit/teachers-edit.component';
 import { AddNoteWidgetComponent } from './Widget/add-note-widget/add-note-widget.component';
 import { StudentBulletinComponent } from './Admin/Component/student-bulletin/student-bulletin.component';
-import { AddModuleWidgetComponent } from './Widget/add-module-widget/add-module-widget.component';
 import { FicheDePaieComponent } from './Admin/Component/fiche-de-paie/fiche-de-paie.component';
 import { EnseignantFichePaieComponent } from './Admin/Component/enseignant-fiche-paie/enseignant-fiche-paie.component';
-import { UpdateModuleWifgetComponent } from './Widget/update-module-wifget/update-module-wifget.component';
-import { ClassRoomWidgetComponent } from './DGA/Widget/class-room-widget/class-room-widget.component';
-import { ClassRoomEditWidgetComponent } from './Widget/class-room-edit-widget/class-room-edit-widget.component';
-import { AddFiliereWidgetComponent } from './Widget/add-filiere-widget/add-filiere-widget.component';
-import { FiliereEditWidgetComponent } from './Widget/filiere-edit-widget/filiere-edit-widget.component';
 import { SchoolEditWidgetComponent } from './Widget/school-edit-widget/school-edit-widget.component';
-import { SemestreEditWidgetComponent } from './Widget/semestre-edit-widget/semestre-edit-widget.component';
 import { AdminSettingWidgetComponent } from './Widget/admin-setting-widget/admin-setting-widget.component';
 import { AddAdminComponent } from './Admin/Component/add-admin/add-admin.component';
 import { DashboardComponent } from './DR/dashboard/dashboard.component';
@@ -58,7 +50,6 @@ import { DerSeancesComponent } from './DER/der-seances/der-seances.component';
 import { DerEmploiDuTempsComponent } from './DER/der-emploi-du-temps-list/der-emploi-du-temps.component';
 import { DgaMentionListComponent } from './DGA/dga-mention-list/dga-mention-list.component';
 import { DgaHomeComponent } from './DGA/dga-home/dga-home.component';
-import { DgaSettingComponent } from './DGA/dga-setting/dga-setting.component';
 import { DerEditSeanceComponent } from './DER/Widget/der-edit-seance/der-edit-seance.component';
 import { ConfigureSeanceComponent } from './DER/Widget/configure-seance/configure-seance.component';
 import { AddGroupStudentComponent } from './DER/Widget/add-group-student/add-group-student.component';
@@ -81,6 +72,13 @@ import { DerDocComponent } from './DER/der-doc/der-doc.component';
 import { AddDocComponent } from './DER/Widget/add-doc/add-doc.component';
 import { ProgramSoutenanceComponent } from './DER/Widget/program-soutenance/program-soutenance.component';
 import { ViewSoutenanceComponent } from './DER/Widget/view-soutenance/view-soutenance.component';
+import { NiveauWidgetComponent } from './Widget/niveau-widget/niveau-widget.component';
+import { FiliereWidgetComponent } from './Widget/filiere-widget/filiere-widget.component';
+import { ClasseroomWidgetComponent } from './Widget/classeroom-widget/classeroom-widget.component';
+import { PromotionWidgetComponent } from './Widget/promotion-widget/promotion-widget.component';
+import { ModuleWidgetComponent } from './Widget/module-widget/module-widget.component';
+import { UeWidgetComponent } from './Widget/ue-widget/ue-widget.component';
+import { SemestreWidgetComponent } from './Widget/semestre-widget/semestre-widget.component';
 
 registerLocaleData(localeFr);
 @NgModule({
@@ -102,23 +100,15 @@ registerLocaleData(localeFr);
     EtudiantsDeLaClasseComponent,
     StudentEditComponent,
     StudentViewComponent,
-    SemestreComponent,
     MatieresComponent,
     EmploisWidgetComponent,
     TeachersSinginComponent,
     TeachersEditComponent,
     AddNoteWidgetComponent,
     StudentBulletinComponent,
-    AddModuleWidgetComponent,
     FicheDePaieComponent,
     EnseignantFichePaieComponent,
-    UpdateModuleWifgetComponent,
-    ClassRoomWidgetComponent,
-    ClassRoomEditWidgetComponent,
-    AddFiliereWidgetComponent,
-    FiliereEditWidgetComponent,
     SchoolEditWidgetComponent,
-    SemestreEditWidgetComponent,
     AdminSettingWidgetComponent,
     AddAdminComponent,
     DashboardComponent,
@@ -132,7 +122,6 @@ registerLocaleData(localeFr);
     DerEmploiDuTempsComponent,
     DgaMentionListComponent,
     DgaHomeComponent,
-    DgaSettingComponent,
     DerEditSeanceComponent,
     ConfigureSeanceComponent,
     AddGroupStudentComponent,
@@ -155,6 +144,13 @@ registerLocaleData(localeFr);
     AddDocComponent,
     ProgramSoutenanceComponent,
     ViewSoutenanceComponent,
+    NiveauWidgetComponent,
+    FiliereWidgetComponent,
+    ClasseroomWidgetComponent,
+    PromotionWidgetComponent,
+    ModuleWidgetComponent,
+    UeWidgetComponent,
+    SemestreWidgetComponent,
   ],
   imports: [
     BrowserModule,

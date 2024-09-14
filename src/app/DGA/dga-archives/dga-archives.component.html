@@ -1,8 +1,5 @@
 <main>
-    <div class="col-12">
-        <button (click)="add_annee()" class="btn">Ajouter année promotion</button>
-    </div>
-
+   
     <div class="grid-container">
         <div class="grid-item" *ngFor="let annee of annees">
             <div class="section-folder">
@@ -24,31 +21,15 @@
             </div>
         </div>
     </div>
+    <ng-container *ngIf="annees.length == 0">
+        <p class="not-fund">Aucune année scolaire trouvé veillez ajouter</p>
+    </ng-container>
     
     <div class="views" *ngIf="is_show">
         <form [formGroup]="form_annee" (ngSubmit)="submit()">
             <h4>Ajouter une année scolaire</h4>
             <div class="form-content">
-                <div class="form-group">
-                    <label for="">Début d'année :</label>
-                    <input type="date" class="form-control" formControlName="debutAnnee" [class.is-invalid]="form_annee.get('debutAnnee')!.invalid && form_annee.get('debutAnnee')!.touched">
-                    <span *ngIf="form_annee.controls['debutAnnee'].hasError('required') && form_annee.controls['debutAnnee'].touched"
-                        [ngStyle]="{color: 'red'}">
-                        Champ obligatoire*
-                    </span>
-                </div>
-                <div class="form-group">
-                    <label for="">Fin d'année :</label>
-                    <input type="date" class="form-control" formControlName="finAnnee" [class.is-invalid]="form_annee.get('finAnnee')!.invalid && form_annee.get('finAnnee')!.touched">
-                    <span *ngIf="form_annee.controls['finAnnee'].hasError('required') && form_annee.controls['finAnnee'].touched"
-                        [ngStyle]="{color: 'red'}">
-                        Champ obligatoire*
-                    </span>
-                </div>
-                <div class="button-cash">
-                    <a (click)="add_annee()" class="submit" ><span>Annuler</span></a>
-                    <button class="submit" type="submit" ><span>Enregistre</span></button>
-                </div>
+                
             </div>
             
         </form>
@@ -58,27 +39,7 @@
         <form [formGroup]="form_edit" (ngSubmit)="update()">
             <h4>Modifier l'année scolaire</h4>
             <div class="form-content">
-                <div class="form-group">
-                    <label for="">Début d'année :</label>
-                    <input type="number" formControlName="id" *ngIf="false">
-                    <input type="date" class="form-control" formControlName="debutAnnee" [class.is-invalid]="form_edit.get('debutAnnee')!.invalid && form_edit.get('debutAnnee')!.touched">
-                    <span *ngIf="form_edit.controls['debutAnnee'].hasError('required') && form_edit.controls['debutAnnee'].touched"
-                        [ngStyle]="{color: 'red'}">
-                        Champ obligatoire*
-                    </span>
-                </div>
-                <div class="form-group">
-                    <label >Fin d'année :</label>
-                    <input type="date" class="form-control" formControlName="finAnnee" [class.is-invalid]="form_edit.get('finAnnee')!.invalid && form_edit.get('finAnnee')!.touched">
-                    <span *ngIf="form_edit.controls['finAnnee'].hasError('required') && form_edit.controls['finAnnee'].touched"
-                        [ngStyle]="{color: 'red'}">
-                        Champ obligatoire*
-                    </span>
-                </div>
-                <div class="button-cash">
-                    <a (click)="close()" class="submit" ><span>Annuler</span></a>
-                    <button class="submit" type="submit" ><span>Enregistre</span></button>
-                </div>
+                
             </div>
             
         </form>

@@ -68,7 +68,7 @@
         <span>Salle: {{salle?.nom}}</span>
         <div class="tab-footer">
             <div class="footer">
-                
+                <strong>Membres du jury</strong>
                 @for (item of jurys; track $index) {
                     <p>M. {{item.idTeacher.nom}} {{item.idTeacher.prenom}} : {{item.role.toUpperCase()}}</p>
                 }

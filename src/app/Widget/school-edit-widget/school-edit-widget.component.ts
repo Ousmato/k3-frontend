@@ -37,7 +37,7 @@ export class SchoolEditWidgetComponent implements OnInit{
         localite: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         telephone: ['', [Validators.required, Validators.maxLength(12)]],
-        anneeScolaire: ['', Validators.required],
+        // anneeScolaire: ['', Validators.required],
         // finAnnee: ['', Validators.required],
         // urlPhoto: ['']
         
@@ -61,7 +61,6 @@ export class SchoolEditWidgetComponent implements OnInit{
       localite: fomData.localite,
       email: fomData.email,
       telephone: fomData.telephone,
-      anneeScolaire: annee!
       // urlPhoto: this.fileName.name
     }
     if(this.update_school_form.valid){

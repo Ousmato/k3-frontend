@@ -8,6 +8,8 @@ import { PageTitleService } from '../../Services/page-title.service';
 import { SideBarService } from '../../sidebar/side-bar.service';
 import { Admin } from '../../Admin/Models/Admin';
 import { StudentPages } from '../../Admin/Models/Pagination-module';
+import { ClassStudentService } from '../../DGA/class-students/class-student.service';
+import { ClassRoom } from '../../Admin/Models/Classe';
 
 @Component({
   selector: 'app-r-s-reinscription',
@@ -19,6 +21,8 @@ export class RSReinscriptionComponent  implements OnInit{
   searchTerm: string = '';
   students: Student[] = [];
   path_url!: string
+  classRoom: ClassRoom[]=[]
+  isPage: boolean = false
 
   studentspage?: StudentPages;
   page = 0;
@@ -31,20 +35,23 @@ export class RSReinscriptionComponent  implements OnInit{
   permission: boolean = false
   is_show: boolean = false
   update_student_form!: FormGroup
-  student!: Student;
+  classeStudent: Student[]=[]
+  student?: Student;
   fileName!: File
   photoSelect!: File
   urlImage! : string | ArrayBuffer
   
   constructor(private service: EtudeService,private rout: ActivatedRoute, private sideBarService: SideBarService,
-    private rooter: Router, public icons: IconsService, private pageTitle : PageTitleService) { }
+    private classeService: ClassStudentService, public icons: IconsService, private pageTitle : PageTitleService) { }
 
   ngOnInit(): void {
     this.getPermission();
-   this.loadStudents();
+    // this.loadStudents();
+    this.load_classes();
     this.sideBarService.currentSearchTerm.subscribe(term => {
       this.searchTerm = term;
       this.filterStudents();
+      
     
     });
   }
@@ -70,30 +77,12 @@ export class RSReinscriptionComponent  implements OnInit{
       );
     }
   }
-  // ----------------------load students
-  loadStudents(): void {
-    this.rout.queryParams.subscribe(param=>{
-      this.idAnne = +param['id']
-    })
-    this.service.getAll_by_idAnnee(this.idAnne, this.page, this.size).subscribe(data => {
-      this.students = data.content;
-      this.students.forEach((item : Student) => {
-        this.path_url = item.urlPhoto!
-        item.urlPhoto = `http://localhost/StudentImg/${item.urlPhoto}`;
-      })
-      this.studentspage = data;
-      this.filteredItems = this.students;
-      this.pages = Array.from({ length: data.totalPages! }, (_, i) => i);
-
-      this.extractUniqueStudents(this.students)
-      // console.log(this.students, "pagenation teachers")
-    });
-  }
+ 
   // ------------------------------next page
   setPage(page: number): void {
     if (page >= 0 && page < this.studentspage!.totalPages!) {
       this.page = page;
-      this.loadStudents();
+      // this.loadStudents();
     }
   }
 
@@ -108,14 +97,22 @@ export class RSReinscriptionComponent  implements OnInit{
       this.setPage(this.page - 1);
     }
   }
-  
-// -----------------------------------------------load form update student
- 
+   // -----------------------load all classe 
+   load_classes(){
+    this.classeService.getAll().subscribe(result =>{
+      this.classRoom = result;
+
+      console.log(this.classRoom, "88888888888888")
+    })
+  }
 
   // ------------------------------------------------------------
   getStudentView(student: Student){
    const url = this.extractFileName(student.urlPhoto!);
     student.urlPhoto = url
+    const date = new Date(student.idAnneeScolaire.finAnnee);
+    const ans = date.getFullYear();
+    student.idAnneeScolaire.ans = ans
    this.student = student
     this.is_show =! this.is_show
     // const navigationExtras: NavigationExtras = {
@@ -179,5 +176,25 @@ export class RSReinscriptionComponent  implements OnInit{
   // -------------------------go back
   goBack(){
     window.history.back();
+  }
+  changeClasse(event: any){
+    const idClasse = event.target.value;
+    this.rout.queryParams.subscribe(param=>{
+      this.idAnne = +param['id']
+    })
+    this.service.getStudentByIdAnneeAndIdClasse(this.idAnne, +idClasse, this.page, this.size).subscribe(data => {
+      this.students = data.content;
+      this.students.forEach((item : Student) => {
+        this.path_url = item.urlPhoto!
+        item.urlPhoto = `http://localhost/StudentImg/${item.urlPhoto}`;
+      })
+      this.studentspage = data;
+      this.filteredItems = this.students;
+      this.pages = Array.from({ length: data.totalPages! }, (_, i) => i);
+
+      this.extractUniqueStudents(this.students)
+      this.isPage = true
+      console.log(this.students, "pagenation teachers")
+    });
   }
 }

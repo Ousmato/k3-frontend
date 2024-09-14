@@ -1,0 +1,102 @@
+<main>
+    <ng-container *ngIf="show_update">
+        <div class="views">
+            <h3 class="span">Modifier Niveau</h3>
+             <form  [formGroup]="update_ue_form" (ngSubmit)="update_ue()">
+                <div class="container-views">
+
+                    <div class="form-group">
+                        <select  class="form-select" formControlName="id"  (change)="onUeChange($event)">
+                            <option  selected disabled value="">Choisir L'Ue</option>
+                            <option  *ngFor="let ue of ueList" [value]="ue.id">{{ue.nomUE}}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nom UE :</label>
+                        <input type="text"  class=" form-control" formControlName="nomUE" placeholder="Nom de l'ue...">
+                        <div *ngIf="update_ue_form.get('nomUE')!.invalid && update_ue_form.get('nomUE')!.touched" class="invalid-feedback">
+                            <div *ngIf="update_ue_form.get('nomUE')!.errors?.['required']">
+                                <span class="label-error" class="label-error">Le nom de l'UE est requis.</span>
+                            </div>
+                            <div *ngIf="update_ue_form.get('nomUE')!.errors?.['maxlength']">
+                                <span class="label-error">Le nom de l'UE ne doit pas dépasser 40 caractères.</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <input type="number" formControlName="id" *ngIf="false">
+                    <div class="button-cash">
+                        <a (click)="close_update()" class="submit"  ><span>Annuler</span></a>
+                        <button class="submit" type="submit" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+    </ng-container>
+    <!-- --------------------------------------- -->
+    <ng-container *ngIf="show_add" >
+        <div class="views">
+            <form [formGroup]="addUe" (ngSubmit)="creatUe()" > 
+                <h3 class="span">Ajouter UE</h3>
+               <div class="container-views">
+                    <div class="form form-group"> 
+                        <label for="email">Nom:</label> 
+                        <input type="text" formControlName="nomUE" class="form-control"  placeholder="Nom de l'ue..."  [class.is-invalid]="addUe.get('nomUE')!.invalid && addUe.get('nomUE')!.touched"> 
+                        <div *ngIf="addUe.get('nomUE')!.invalid && addUe.get('nomUE')!.touched" class="invalid-feedback">
+                            <div *ngIf="addUe.get('nomUE')!.errors?.['required']">
+                                <span class="label-error" class="label-error">Le nom de l'UE est requis.</span>
+                            </div>
+                            <div *ngIf="addUe.get('nomUE')!.errors?.['maxlength']">
+                                <span class="label-error">Le nom de l'UE ne doit pas dépasser 40 caractères.</span>
+                            </div>
+                        </div>
+                        
+                    </div> 
+                    <div class="button-cash">
+                        <a (click)="close_add()" class="submit"  ><span>Annuler</span></a>
+                        <button class="submit" type="submit" ><span>Enregistrer</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                    </div> 
+               </div>
+                
+            </form> 
+        </div>
+    </ng-container>
+    <!-- ----------------------------- -->
+    <ng-container *ngIf="show_deleted" >
+        <div class="views" >
+                <h3 class="span">Supprimer UE</h3>
+               <div class="container-views">
+                <select  class="form-select"placeholder="Choisir la clase" (change)="onDelete($event)">
+                    <option  selected disabled value="">Choisir l'UE</option>
+                    <option  *ngFor="let ue of ueList" [value]="ue.id">{{ue.nomUE}}</option>
+                </select>
+                    <div class="button-cash">
+                        <a (click)="close_delete()" class="submit"  ><span>Annuler</span></a>
+                        <button (click)="nextToConfirm()" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                    </div> 
+               </div>
+        </div>
+       
+    </ng-container>
+    <div class="views" *ngIf="isConfirm">
+        <h3 class="span">Confirmation</h3>
+        <div class="container-views">
+            <p>Êtes-vous sûr de vouloir supprimer l'UE : {{ueForDeleted.nomUE}}?</p>
+            
+                <div class="button-cash">
+                    <a type="button" (click)="exitDelete()">Annuler</a>
+                    <button type="button" (click)="delete_niveau(ueForDeleted.id!)">Supprimer</button>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="second-child">
+        <a (click)="show_added()"><fa-icon [icon]="icons.squarePlus"></fa-icon> <span>Ajouter</span></a>
+        <a (click)="show_updated()" ><fa-icon [icon]="icons.edit"></fa-icon> <span>Modifier</span></a>
+        <a (click)="show_delete()" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> <span >Supprimer</span></a>
+       
+    </div>
+</main>

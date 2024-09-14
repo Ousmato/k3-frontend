@@ -4,7 +4,7 @@
       <div class="sidebar-header ">
         <img  [src]="school?.urlPhoto" alt="">
         <!-- <h1>UAM</h1> -->
-        <strong>{{school?.nomSchool}}</strong>
+        <strong class="strong">{{school?.nomSchool}}</strong>
       </div>
       <div class="side-child">
         <ul class="list-unstyled components">
@@ -21,32 +21,7 @@
               <span><fa-icon [icon]="icons.scool"></fa-icon>Mentions</span>
             </a>
           </li>
-          <!-- ------------------------------- -->
-           <!-- <li class="menu-link">
-            <div (click)="toggleSubMenuEnseignant()">
-              <a><span><fa-icon [icon]="icons.users"></fa-icon>Enseignants<fa-icon [icon]="isSubMenuOpen.enseignants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
-                    
-              </a>
-            </div>
-            <ul class="sub-menu" *ngIf="isSubMenuOpen.enseignants">
-              <li><a routerLink="/der/enseignants" routerLinkActive="active">Liste des enseignant</a></li>
-              <li><a routerLink="/der/ajouter-emplois" routerLinkActive="active">Programmer EDT</a></li>
-              <li><a routerLink="/der/ajouter-seance" routerLinkActive="active">Programmer seances</a></li>
-              <li><a routerLink="/der/emplois-du-temps" routerLinkActive="active">Les emplois du temps</a></li>
-             
-            </ul>
-          </li> -->
-          <!-- 
-          <li class="menu-link">
-            <div (click)="toggleSubMenuStudent()">
-              <a> <span><fa-icon [icon]="icons.grade"></fa-icon>Etudiants<fa-icon [icon]="isSubMenuOpen.etudiants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
-              </a>
-            </div>
-            <ul class="sub-menu" *ngIf="isSubMenuOpen.etudiants">
-              <li><a routerLink="/sidebar/etudiant" routerLinkActive="active">Liste des Etudiants</a></li>
-              <li><a routerLink="/sidebar/inscription" routerLinkActive="active">Fiche d'inscription</a></li>
-            </ul>
-          </li> -->
+         
          
           <li class="menu-link" >
             <a routerLink="/dga/emplois-du-temps" routerLinkActive="active">
@@ -57,7 +32,7 @@
           
           <li class="menu-link">
             <a routerLink="/dga/archive-scolaire">
-              <span><fa-icon [icon]="icons.folder"></fa-icon>Archives</span>
+              <span><fa-icon [icon]="icons.folder"></fa-icon>Promotions</span>
             </a>
           </li>
           <li class="menu-link">
@@ -66,20 +41,7 @@
             </a>
           </li>
           <!-- ---------------- -->
-          <!-- <li class="menu-link">
-            <div (click)="toggleSubMenuArchive()">
-                <a routerLink="#">
-                  <span><fa-icon [icon]="icons.archive" ></fa-icon>Rapport et Memoire 
-                    <fa-icon [icon]="isSubMenuOpen.etudiants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
-                </a>
-            </div>
-            <ul class="sub-menu" *ngIf="isSubMenuOpen.archive">
-              <li><a routerLink="">2019 - 2020</a></li>
-              <li><a href="#">2021 - 2022</a></li>
-              <li><a href="#">2022 - 2023</a></li>
-            </ul>
-            
-          </li> -->
+         
         </ul>
       </div>
     </nav>
@@ -87,7 +49,8 @@
     <!-- Page Content -->
     <div id="content">
       <div class="navDiv">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <!-- bg-light -->
+        <nav class="navbar navbar-expand-lg navbar-light ">
             <div class="container-fluid nav-element">
                 <div class="btn-contenair">
                     <button type="button" id="sidebarCollapse" class="btn btn-info" (click)="toggleSidebar()">
@@ -103,7 +66,7 @@
                     <input type="text" [(ngModel)]="searchTerm" (input)="onSearchChange()" placeholder="Recherche..."  class="search-input">
                  </div>
                 <div class="title-page" *ngIf="showTitle">
-                  <h5>{{title}}</h5></div>
+                  <h6>{{title}}</h6></div>
                   
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">

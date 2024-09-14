@@ -230,3 +230,10 @@ input{
 .btn:focus {
   outline: none;
 }
+.not-fund{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #666;
+}

@@ -1,0 +1,99 @@
+<main>
+    <ng-container *ngIf="ishow_update">
+        <div class="views">
+            <h3 class="span">Modifier Niveau</h3>
+             <form  [formGroup]="formUpdate" (ngSubmit)="update_niveau()">
+                <div class="container-views">
+                    <select  class="form-select" formControlName="id" placeholder="Choisir la clase" (change)="onChange($event)">
+                        <option  selected disabled value="">Choisir Le Niveau</option>
+                        
+                        <option  *ngFor="let niv of niveaux" [value]="niv.id">{{niv.nom}}</option>
+                    </select>
+    
+                    <input type="number" formControlName="id" *ngIf="false">
+    
+                    <!-- <label *ngIf="formUpdate.get('id')!.value || formUpdate.get('id')!.value !== ''">Nom UE :</label> -->
+                    <input type="text"  class=" form-control" formControlName="nom"  placeholder="Nom du niveau...">
+                    <div *ngIf="formUpdate.get('nom')!.invalid && formUpdate.get('nom')!.touched" class="invalid-feedback">
+                        <div *ngIf="formUpdate.get('nom')!.errors?.['required']">
+                            <span class="label-error" class="label-error">Le nom de l'UE est requis.</span>
+                        </div>
+                        <div *ngIf="formUpdate.get('nom')!.errors?.['maxlength']">
+                            <span class="label-error">Le nom de l'UE ne doit pas dépasser 40 caractères.</span>
+                        </div>
+                    </div>
+            
+                    <div class="button-cash">
+                        <a (click)="exitUpdate()" class="submit"  ><span>Annuler</span></a>
+                        <button class="submit" type="submit" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="show_add" >
+        <div class="views">
+            <form [formGroup]="formAdd" (ngSubmit)="add_niveau()" > 
+                <h3 class="span">AJouter Niveau</h3>
+               <div class="container-views">
+                    <div class="form form-group"> 
+                        <label for="email">Nom :</label> 
+                        <input type="text" formControlName="nom" class="form-control"  placeholder="Nom du niveau..."  [class.is-invalid]="formAdd.get('nom')!.invalid && formAdd.get('nom')!.touched"> 
+                        <div *ngIf="formAdd.get('nom')!.invalid && formAdd.get('nom')!.touched" class="invalid-feedback">
+                            <div *ngIf="formAdd.get('nom')!.errors?.['required']">
+                                <span class="label-error" class="label-error">Le nom est requis.</span>
+                            </div>
+                            <div *ngIf="formAdd.get('nom')!.errors?.['maxlength']">
+                                <span class="label-error">Le nom  ne doit pas dépasser 40 caractères.</span>
+                            </div>
+                        </div>
+                        
+                    </div> 
+                    <div class="button-cash">
+                        <a (click)="exitAdd()" class="submit"  ><span>Annuler</span></a>
+                        <button class="submit" type="submit" ><span>Enregistrer</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                    </div> 
+               </div>
+                
+            </form> 
+        </div>
+    </ng-container>
+    <!--------- contenaire pour supprimer ue de la liste---------------------  -->
+    <ng-container *ngIf="show_deleted" >
+        <div class="views" >
+                <h3 class="span">Supprimer niveau</h3>
+               <div class="container-views">
+                <select  class="form-select"placeholder="Choisir la clase" (change)="onDelete($event)">
+                    <option  selected disabled value="">Choisir Le Niveau</option>
+                    
+                    <option  *ngFor="let niv of niveaux" [value]="niv.id">{{niv.nom}}</option>
+                </select>
+                    <div class="button-cash">
+                        <a (click)="annuler()" class="submit"  ><span>Annuler</span></a>
+                        <button (click)="nextToConfirm()" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                    </div> 
+               </div>
+        </div>
+       
+    </ng-container>
+    <div class="views" *ngIf="isConfirm">
+        <h3 class="span">Confirmation</h3>
+        <div class="container-views">
+            <p>Êtes-vous sûr de vouloir supprimer le niveau : {{niveauForDeleted.nom}}?</p>
+            
+                <div class="button-cash">
+                    <a type="button" (click)="exitDelete()">Annuler</a>
+                    <button type="button" (click)="delete_niveau(niveauForDeleted.id!)">Supprimer</button>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="second-child">
+        <a (click)="show_added()"><fa-icon [icon]="icons.squarePlus"></fa-icon> <span>Ajouter</span></a>
+        <a (click)="show_updated()" ><fa-icon [icon]="icons.edit"></fa-icon> <span>Modifier</span></a>
+        <a (click)="show_delete()" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> <span >Supprimer</span></a>
+       
+    </div>
+</main>

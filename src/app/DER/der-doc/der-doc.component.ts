@@ -85,7 +85,9 @@ export class DerDocComponent implements OnInit {
   // ---------------------
   onChange(event: any){
     const idAnnee = event.target.value
+    console.log(idAnnee, "idAnnee")
     this.studentService.getAnneeByIdClasseAndAnnee(this.page, this.size, idAnnee).subscribe(result=>{
+          this.docs = []
           console.log(result, "result")
           this.docPage = result;
           this.docs = result.content;

@@ -41,75 +41,34 @@
         <div class="first-child">
             <div class="child">
                 <div class="logo">
-                <img  src="assets/time-period-icon.svg" alt="">
-                <h4>INFORMATION SUR LES SEMESTRES</h4>
+                    <img  src="assets/time-period-icon.svg" alt="">
+                    <h4>INFORMATION SUR LES SEMESTRES</h4>
                 </div>
                 <p>NB : Ici vous pouvez modifier les informations des semestres</p>
-                <ng-container *ngIf="ishow_semestre_detail">
-                    <div class="views">
-                        <p *ngFor="let semes of semestres"><span>{{semes.nomSemetre}}</span> date de fin : {{semes.datFin}}</p>
-                        <div class="button-cash">
-                            <a (click)="annuler()" class="submit"  ><span>Annuler</span></a>
-                        </div>
-                    </div>
-                    </ng-container>
-                <ng-container *ngIf="ishow_semestre_update">
-                    <div class="views">
-                        <h4>Modifier semestre</h4>
-                        <app-semestre-edit-widget (closeModal)="annuler()"></app-semestre-edit-widget>
-                        
-                    </div>
                 
-            </ng-container>
-
-            <ng-container *ngIf="isShow_add_semestre">
-                <div class="views">
-                    <app-semestre (closeModal)="annuler()"> </app-semestre>
-                </div>
-                
-            </ng-container>
                 
             </div>
             
         </div>
         <div class="second-child">
-            <a (click)="show_detail_semestre()"><fa-icon [icon]="icons.eye"></fa-icon><span>Details</span></a>
-            <a (click)="show_add_semestre()"><fa-icon [icon]="icons.plus"></fa-icon><span>Ajouter</span></a>
-            <a (click)="show_update_semestre()"><fa-icon [icon]="icons.edit"></fa-icon><span>Modifier</span></a>
-           
+           <app-semestre-widget (closeModal)="closeNiveau()"></app-semestre-widget>
         </div>
     </section>
     <!-- -----------------------------------Filiere informations---------------------- -->
+   
     <section class="contenaire">
         <div class="first-child">
             <div class="child">
                 <div class="logo">
-                <img id="idFiliere" src="assets/book-open-icon.svg" alt="">
+                    <img id="idFiliere" src="assets/book-open-icon.svg" alt="">
                 <h4>INFORMATIONS SUR LES FILIERES</h4>
-            </div>
-            <p>NB : Ici vous pouvez modifier les informations des semestres</p>
-            
-            <ng-container *ngIf="ishow_filiere">
-                <div class="views">
-                    <app-filiere-edit-widget (closeModal)="annuler()"> </app-filiere-edit-widget>
-                   
                 </div>
-            </ng-container>
-            <ng-container *ngIf="isshow_add_filiere" >
-                <div class="views">
-                    <app-add-filiere-widget (closeModal)="annuler()"> </app-add-filiere-widget>
-                    
-                </div>
-            </ng-container>
+                <p>NB : Ici vous pouvez modifier les informations des semestres</p>
+
             </div>
-            
-           
-        </div>
+        </div> 
         <div class="second-child">
-            <a (click)="show_add_form_filiere()"> <fa-icon [icon]="icons.squarePlus"></fa-icon><span>Ajouter</span></a>
-            <a (click)="show_input_filierre()"><fa-icon [icon]="icons.edit"></fa-icon><span>Modifier</span></a>
-            <a><fa-icon [icon]="icons.delete" class="delete"></fa-icon><span>Supprimer</span></a>
-           
+            <app-filiere-widget (closeModal)="closeNiveau()"></app-filiere-widget>
         </div>
     </section>
     <!-- -----------------------------------classe section-------------------- -->
@@ -120,28 +79,15 @@
                     <img src="assets/school-admission-icon.svg" alt="">
                     <h4>INFORMATIONS SUR LES MENTIONS</h4>
                 </div>
-            <p>NB : Ici vous pouvez modifier les informations sur les mentions</p>
-            <ng-container *ngIf="ishow_classe">
-                <div class="views">
-                    <app-class-room-edit-widget (closeModal)="annuler()" > </app-class-room-edit-widget>
-                  
-                </div>
-            </ng-container>
-            <ng-container *ngIf="isshow_add_classe">
-                <div class="views">
-                    <app-class-room-widget (closeModal)="annuler()"> </app-class-room-widget>
-                    
-                </div>
-            </ng-container>
+                <p>NB : Ici vous pouvez modifier les informations sur les mentions</p>
+            
             </div>
             
         </div>
         <div class="second-child">
-            <a (click)="show_add_class_form()"><fa-icon [icon]="icons.squarePlus"></fa-icon> <span>Ajouter</span></a>
-            <a (click)="show_input_classe()"><fa-icon [icon]="icons.edit"></fa-icon><span>Modifier</span></a>
-            <a><fa-icon [icon]="icons.delete" class="delete"></fa-icon><span>Supprimer</span></a>
-        
+            <app-classeroom-widget (closeModal)="closeNiveau()"></app-classeroom-widget>
         </div>
+        
         
     </section>
     <!-- -------------------------UEs section------------------------------ -->
@@ -152,99 +98,12 @@
                     <img src="assets/school-graduation-icon.svg" alt="">
                     <h4>INFORMATION DES UE</h4>
                 </div>
-            <p>NB : Ici vous pouvez modifier les information des Unite d'enseignament</p>
-            <ng-container *ngIf="ishow_ue">
-                <div class="views">
-                     <form  [formGroup]="update_ue_form" (ngSubmit)="update_ue(selectedUeId)">
-                        <select *ngIf="!selectedUeId" class="form-select" formControlName="id" placeholder="Choisir la clase" (change)="onUeChange($event)">
-                        <option  selected disabled value="">Choisir L'Ue</option>
-                        
-                        <option  *ngFor="let ue of ueList" [value]="ue.id">{{ue.nomUE}}</option>
-                        </select>
-
-                        <input type="number" formControlName="id" *ngIf="false">
-
-                        <label *ngIf="update_ue_form.get('id')!.value || update_ue_form.get('id')!.value !== ''">Nom UE :</label>
-                        <input type="text"  class=" form-control" formControlName="nomUE" *ngIf="update_ue_form.get('id')!.value || update_ue_form.get('id')!.value == ''">
-                        <div *ngIf="update_ue_form.get('nomUE')!.invalid && update_ue_form.get('nomUE')!.touched" class="invalid-feedback">
-                            <div *ngIf="update_ue_form.get('nomUE')!.errors?.['required']">
-                                <span class="label-error" class="label-error">Le nom de l'UE est requis.</span>
-                            </div>
-                            <div *ngIf="update_ue_form.get('nomUE')!.errors?.['maxlength']">
-                                <span class="label-error">Le nom de l'UE ne doit pas dépasser 40 caractères.</span>
-                            </div>
-                        </div>
-                
-                        <div class="button-cash">
-                            <a (click)="annuler()" class="submit"  ><span>Annuler</span></a>
-                            <button class="submit" type="submit" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
-                        </div>
-                    </form>
-                </div>
-            </ng-container>
-            <ng-container *ngIf="isshow_add_ue" >
-                <div class="views">
-                    <form [formGroup]="addUe" (ngSubmit)="creatUe()" > 
-                        <h3 class="span">Ajouter UE</h3>
-                       <div class="container-views">
-                            <div class="form form-group"> 
-                                <label for="email">Nom:</label> 
-                                <input type="text" formControlName="nomUE" class="form-control" id="nom" placeholder="nom de l'ue"  [class.is-invalid]="addUe.get('nomUE')!.invalid && addUe.get('nomUE')!.touched"> 
-                                <div *ngIf="addUe.get('nomUE')!.invalid && addUe.get('nomUE')!.touched" class="invalid-feedback">
-                                    <div *ngIf="addUe.get('nomUE')!.errors?.['required']">
-                                        <span class="label-error" class="label-error">Le nom de l'UE est requis.</span>
-                                    </div>
-                                    <div *ngIf="addUe.get('nomUE')!.errors?.['maxlength']">
-                                        <span class="label-error">Le nom de l'UE ne doit pas dépasser 40 caractères.</span>
-                                    </div>
-                                </div>
-                                
-                            </div> 
-                            <div class="button-cash">
-                                <a (click)="annuler()" class="submit"  ><span>Annuler</span></a>
-                                <button class="submit" type="submit" ><span>Enregistrer</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
-                            </div> 
-                       </div>
-                        
-                    </form> 
-                </div>
-            </ng-container>
-            <!--------- contenaire pour supprimer ue de la liste---------------------  -->
-            <ng-container *ngIf="isHow_delete" >
-                <div class="views-delete" *ngIf="ueListForDelete.length > 0, else ueListForDeleteNotFund">
-                        <div class="grid-container" >
-                            <div *ngFor="let item of ueListForDelete" class="grid-item" (click)="deleted_ue(item.id!)">
-                                <p>{{item.nomUE}}</p>
-                            </div>
-                        </div>
-                        <div  class="button-cash">
-                            <a (click)="exit()"><span>Annuler</span></a>
-                        </div>
-                    
-                </div>
-                <ng-template #ueListForDeleteNotFund>
-                    <div class="views-delete">
-                        <div class="template-vide">
-                           
-                                <p>Aucune UE à supprimer.</p>
-                                <div  class="button-cash">
-                                    <a (click)="exit()"><span>Annuler</span></a>
-                                </div>
-                        </div>
-                    </div>
-                </ng-template>
-            </ng-container>
-           
-            
+                <p>NB : Ici vous pouvez modifier les information des Unite d'enseignament</p>
             </div>    
         </div>
         <!-- ----------------------------------------------------------- -->
         <div class="second-child">
-            <div></div>
-            <a (click)="show_add_ue_form()" ><fa-icon [icon]="icons.squarePlus" ></fa-icon > <span>Ajouter</span></a>
-            <a (click)="show_input_ue()"><fa-icon [icon]="icons.edit"></fa-icon> <span>Modifier</span></a>
-            <a (click)="showDeleted()"><fa-icon [icon]="icons.delete" class="delete"></fa-icon> <span>Supprimer</span></a>
-            
+           <app-ue-widget (closeModale)="closeNiveau()"></app-ue-widget>
         </div>
     </section>
     <!-- ------------------------------Modules section------------------------- -->
@@ -255,68 +114,48 @@
                     <img src="assets/school-graduation-icon.svg" alt="">
                     <h4>INFORMATION DES MODULES</h4>
                 </div>
-            <p>NB : Ici vous pouvez modifier les informations des Modules</p>
-           
-                <ng-container *ngIf="isHow_delete_module" >
-                    <div class="views-delete" *ngIf="modulForDelete.length > 0, else modulForDeleteNotFund">
-                        <h4 class="views-head"></h4>
-                            <div class="grid-container" >
-                                <div *ngFor="let item of modulForDelete" class="grid-item" (click)="deleted_module(item.id!)">
-                                    <p>{{item.nomModule}}</p>
-                                </div>
-                            </div>
-                            <div  class="button-cash">
-                                <a (click)="exit()"><span>Annuler</span></a>
-                            </div>
-                        
-                    </div>
-                    <ng-template #modulForDeleteNotFund>
-                        <div class="views-delete">
-                            <div class="template-vide">
-                               
-                                    <p>Aucun Module à supprimer.</p>
-                                    <div  class="button-cash">
-                                        <a (click)="exit()"><span>Annuler</span></a>
-                                    </div>
-                            </div>
-                        </div>
-                    <!-- <p>Aucune UE à supprimer.</p> -->
-                    </ng-template>
-                </ng-container>
+                <p>NB : Ici vous pouvez modifier les informations des Modules</p>
            
             </div>
            
         </div>
         <div class="second-child">
-            <a (click)="show_module_form()"><fa-icon [icon]="icons.squarePlus"></fa-icon> <span>Ajouter</span></a>
-            <a (click)="show_update_module()" ><fa-icon [icon]="icons.edit"></fa-icon> <span>Modifier</span></a>
-            <a (click)="delete_module()" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> <span >Supprimer</span></a>
-           
+            <app-module-widget (closeModale)="closeNiveau()"></app-module-widget>
+        </div>
+    </section>
+    <!-- ----------------------- niveaux------------------------ -->
+    <section class="contenaire">
+        <div class="first-child">
+            <div class="child">
+                <div class="logo">
+                    <img src="assets/school-graduation-icon.svg" alt="">
+                    <h4>INFORMATION SUR LES NIVEAUX</h4>
+                </div>
+                <p>NB : Ici vous pouvez modifier les information sur les niveaux</p>
+            </div>
+        </div> 
+        <div class="second-child">
+            <app-niveau-widget (closeModal)="closeNiveau()"></app-niveau-widget>
+        </div>
+    </section>
+    <!-- ---------------------promotion-------------------- -->
+    <section class="contenaire">
+        <div class="first-child">
+            <div class="child">
+                <div class="logo">
+                    <img src="assets/school-graduation-icon.svg" alt="">
+                    <h4>INFORMATION SUR LES PROMOTION</h4>
+                </div>
+                <p>NB : Ici vous pouvez modifier les information sur les promotions</p>
+            </div>
+        </div> 
+        <div class="second-child">
+            <app-promotion-widget (closeModal)="closeNiveau()"></app-promotion-widget>
         </div>
     </section>
 
     <div class="overlay" *ngIf="isshow_school_detail" (click)="preventClick($event)"></div>
-    <div class="overlay" *ngIf="ishow_semestre_detail" (click)="preventClick($event)"></div>
-    <div class="overlay" *ngIf="isshow_add_classe" (click)="preventClick($event)"></div>
-    <div class="overlay" *ngIf="ishow_semestre_update" (click)="preventClick($event)"></div>
-    <div class="overlay" *ngIf="isShow_add_semestre" (click)="preventClick($event)"></div>
-    <div class="overlay" *ngIf="isshow_add_filiere" (click)="preventClick($event)"></div>
-    <div class="overlay" *ngIf="isshow_add_ue" (click)="preventClick($event)"></div>
     <div class="overlay" *ngIf="isshow_school_update" (click)="preventClick($event)"></div>
-    <div class="overlay" *ngIf="ishow_ue" (click)="preventClick($event)"></div>
-    <div class="overlay" *ngIf="ishow_classe" (click)="preventClick($event)"></div>
-    <div class="overlay" *ngIf="ishow_module" (click)="preventClick($event)"></div>
-    <div class="overlay" *ngIf="ishow_filiere" (click)="preventClick($event)"></div>
-    <div class="overlay-delete" *ngIf="isHow_delete" (click)="preventClick_delete($event)"></div>  
-    <div class="overlay-delete" *ngIf="isHow_delete_module" (click)="preventClick_delete($event)"></div>  
-
-    <ng-container *ngIf="isshow_add_module">
-        <app-add-module-widget (closeModal)="annuler()"></app-add-module-widget>
-    </ng-container>
-    <ng-container *ngIf="isshow_update_module">
-        <app-update-module-wifget (closeWidget)="exit()"> </app-update-module-wifget>
-    </ng-container>
-
+    <div class="overlay" *ngIf="isOverlay" ></div>
    
-
 </main>

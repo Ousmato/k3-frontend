@@ -1,0 +1,110 @@
+<main>
+    
+    <ng-container *ngIf="ishow_add">
+        <div class="views">
+            <h3 class="span">Ajouter promotion</h3>
+             <form  [formGroup]="form_annee" (ngSubmit)="submit()">
+                <div class="container-views">
+                    <div class="form-group">
+                        <label for="">Début d'année :</label>
+                        <input type="date" class="form-control" formControlName="debutAnnee" [class.is-invalid]="form_annee.get('debutAnnee')!.invalid && form_annee.get('debutAnnee')!.touched">
+                        <span *ngIf="form_annee.controls['debutAnnee'].hasError('required') && form_annee.controls['debutAnnee'].touched"
+                            [ngStyle]="{color: 'red'}">
+                            Champ obligatoire*
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Fin d'année :</label>
+                        <input type="date" class="form-control" formControlName="finAnnee" [class.is-invalid]="form_annee.get('finAnnee')!.invalid && form_annee.get('finAnnee')!.touched">
+                        <span *ngIf="form_annee.controls['finAnnee'].hasError('required') && form_annee.controls['finAnnee'].touched"
+                            [ngStyle]="{color: 'red'}">
+                            Champ obligatoire*
+                        </span>
+                    </div>
+                    <div class="button-cash">
+                        <a (click)="close_add()" class="submit" ><span>Annuler</span></a>
+                        <button class="submit" type="submit" ><span>Enregistre</span></button>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="ishow_update">
+        <div class="views">
+            <h3 class="span">Modifier promotion</h3>
+             <form  [formGroup]="form_edit" (ngSubmit)="update_promotion()">
+                <div class="container-views">
+                    <div class="form-group">
+                        <label for="">Promotion :</label>
+                        <select  class="form-select"  (change)="onChange($event)">
+                            <option  selected disabled value="">Choisir La promotion</option>
+                            
+                            <option  *ngFor="let an of annees" [value]="an.id">Promotion {{an.ans}}</option>
+                        </select>
+                        
+                    </div>
+                    <div class="form-group">
+                        <label for="">Début d'année :</label>
+                        <input type="number" formControlName="id" *ngIf="false">
+                        <input type="date" class="form-control" formControlName="debutAnnee" [class.is-invalid]="form_edit.get('debutAnnee')!.invalid && form_edit.get('debutAnnee')!.touched">
+                        <span *ngIf="form_edit.controls['debutAnnee'].hasError('required') && form_edit.controls['debutAnnee'].touched"
+                            [ngStyle]="{color: 'red'}">
+                            Champ obligatoire*
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <label >Fin d'année :</label>
+                        <input type="date" class="form-control" formControlName="finAnnee" [class.is-invalid]="form_edit.get('finAnnee')!.invalid && form_edit.get('finAnnee')!.touched">
+                        <span *ngIf="form_edit.controls['finAnnee'].hasError('required') && form_edit.controls['finAnnee'].touched"
+                            [ngStyle]="{color: 'red'}">
+                            Champ obligatoire*
+                        </span>
+                    </div>
+                    <div class="button-cash">
+                        <a (click)="close_update()" class="submit" ><span>Annuler</span></a>
+                        <button class="submit" type="submit" ><span>Enregistre</span></button>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+    </ng-container>
+
+    <!-- ------------------------------------------ -->
+    <ng-container *ngIf="ishow_delete" >
+        <div class="views" >
+                <h3 class="span">Supprimer promotion</h3>
+               <div class="container-views">
+                <select  class="form-select"placeholder="Choisir la clase" (change)="onDelete($event)">
+                    <option  selected disabled value="">Choisir La filière</option>
+                    
+                    <option  *ngFor="let an of annees" [value]="an.id">Promotion {{an.ans}}</option>
+                </select>
+                    <div class="button-cash">
+                        <a (click)="annuler()" class="submit"  ><span>Annuler</span></a>
+                        <button (click)="nextToConfirm()" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                    </div> 
+               </div>
+        </div>
+       
+    </ng-container>
+    <div class="views" *ngIf="isConfirm">
+        <h3 class="span">Confirmation</h3>
+        <div class="container-views">
+            <p>Êtes-vous sûr de vouloir supprimer la promotion : {{anneForDelete.ans}}</p>
+            
+                <div class="button-cash">
+                    <a type="button" (click)="exitDelete()">Annuler</a>
+                    <button type="button" (click)="delete_classe(anneForDelete.id!)">Supprimer</button>
+                </div>
+            
+        </div>
+    </div>
+    <div class="second-child">
+        <a (click)="show_added()"><fa-icon [icon]="icons.squarePlus"></fa-icon> <span>Ajouter</span></a>
+        <a (click)="show_updated()" ><fa-icon [icon]="icons.edit"></fa-icon> <span>Modifier</span></a>
+        <a (click)="show_delete()" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> <span >Supprimer</span></a>
+       
+    </div>
+</main>

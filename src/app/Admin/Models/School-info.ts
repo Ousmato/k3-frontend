@@ -4,7 +4,7 @@ export interface SchoolInfo{
     localite: string;
     email: string;
     telephone: number;
-    anneeScolaire: AnneeScolaire
+    anneeScolaire?: AnneeScolaire
     urlPhoto?: string;
     annee ?: string; 
 

@@ -1,5 +1,7 @@
 main{
     width: 100%;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 form{
@@ -21,6 +23,10 @@ form{
     }
 
 }
+strong{
+    font-size: 12px;
+    color: var(--tertiary);
+}
 .form-add{
     display: flex;
     gap: 50px;
@@ -35,12 +41,9 @@ label{
     gap: 10px;
 }
 .radio .radio-content{
-    height: 50px;
     display: flex;
     width: 100%;
     padding-left: 8px;
-    border-radius: 5px;
-    border: 1px solid var(--tertiary);
     align-items: center;
 }
 .column-f{
@@ -70,3 +73,5 @@ input:focus, select:focus{
     outline: none;
     box-shadow: 0 0 5px var(--primary);
 }
+
+/*  */

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Participant, Student, Student_count, Student_group } from '../../Models/Students';
+import { Participant, Student, Student_count, Student_group, Student_reinscription } from '../../Models/Students';
 import { Notes } from '../../Models/Notes';
 import { Module } from '../../Models/Module';
 import { Response_String } from '../../Models/Response_String';
@@ -89,9 +89,9 @@ export class EtudeService {
     formData.append('file', file!);
     return this.http.put<Response_String>(this.baseUrl + 'update', formData);
   }
-  reInscriptionStudent(student: Student): Observable<Response_String> {
+  reInscriptionStudent(idStudent: number, idClasse: number, idAnne: number): Observable<Response_String> {
     
-    return this.http.post<Response_String>(this.baseUrl + 're-inscription', student);
+    return this.http.get<Response_String>(`${this.baseUrl}re-inscription/${idStudent}/${idClasse}/${idAnne}`);
   }
   // -----------------------update scolarite
   update_student_scolarite(idEtudiant: number, scolarite: number): Observable<Response_String> {
@@ -164,4 +164,9 @@ export class EtudeService {
   getRapportNumber() : Observable<number>{
     return this.http.get<number>(this.baseUrl+"rapport-number");
   }
+  // ----------------------get student by id annee and id classe
+  getStudentByIdAnneeAndIdClasse(idAnnee: number, idClass: number, page: number, size: number): Observable<StudentPages> {
+    return this.http.get<StudentPages>(`${this.baseUrl}get-student-annee-and-classe/${idAnnee}/${idClass}?page=${page}&size=${size}`);
+  }
+
 }

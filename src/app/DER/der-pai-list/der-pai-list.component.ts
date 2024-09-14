@@ -1,61 +1,102 @@
 import { Component, OnInit } from '@angular/core';
-import { Paie_Pages } from '../../Admin/Models/Pagination-module';
-import { Teacher } from '../../Admin/Models/Teachers';
 import { EnseiService } from '../../Admin/Views/enseignant/ensei.service';
-import { Paie } from '../../Admin/Models/paie';
-import { Seances } from '../../Admin/Models/Seances';
+import { PaieDTO } from '../../Admin/Models/paie';
 import { IconsService } from '../../Services/icons.service';
+import { SideBarService } from '../../sidebar/side-bar.service';
+
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-der-pai-list',
   templateUrl: './der-pai-list.component.html',
-  styleUrl: './der-pai-list.component.css'
+  styleUrl: './der-pai-list.component.css',
+  animations: [
+    trigger('zoom', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(20px)' }),
+        animate('0.5s ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ])
+    ])
+  ]
 })
 export class DerPaiListComponent implements OnInit{
-  paie_page!: Paie_Pages;
-  page = 0;
-  size = 10;
-  filteredItems : Teacher[] = []
-  pages: number[] = []
-  Enseignants: Teacher[] =[]
-  seances : Seances [] =[];
-  paies : Paie[] =[];
-  constructor(private teacherService: EnseiService, public icons: IconsService){}
+ 
+  searchTerm: string = ''
+  filteredPai : PaieDTO[]=[]
+  paies : PaieDTO[] =[];
+
+  constructor(private teacherService: EnseiService, public icons: IconsService, private sideBarService: SideBarService){}
 
   ngOnInit(): void {
     this.getAllPaie();
-  }
+    this.sideBarService.currentSearchTerm.subscribe(term => {
+      this.searchTerm = term;
+      this.filteredPaie();
 
+    
+    });
+
+  }
   // load all paie in month
   getAllPaie(){
     this.teacherService.getAllPaie().subscribe(result=>{
-      // this.paies = result;
-      console.log(result, "uoooooipkiunh");
-      console.log(result, "paieee")
-      let nbreHeures: number[] = [];
-      let totalHeure: number = 0;
-      
-      result.forEach(rlt => {
-        if (rlt && !this.paies.some(p => p.journee?.idTeacher.idEnseignant === rlt.journee?.idTeacher.idEnseignant)) {
-          this.paies.push(rlt);
+     // this.paies = result;
+      result.forEach(res =>{
+        if(!this.paies.some(p =>p.idTeacher == res.idTeacher)){
+          res.montant = res.coutHeure * res.nbreHeures
+          const formatter = Intl.NumberFormat(
+            'fr-FR',
+            {
+              style: 'currency',
+              currency: 'XOF',
+            },
+          )
+          res.montanFormat = formatter.format(res.montant)
+          this.paies.push(res);
         }
-        nbreHeures.push(rlt.nbreHeures);
-        rlt.nbreHeures = totalHeure;
-        
-      });
-      // Calculer la somme totale des heures
-        totalHeure = nbreHeures.reduce((acc, heures) => acc + heures, 0);
-        this.paies.forEach(p => {
-          p.nbreHeures = totalHeure;
-          const montant = p.coutHeure * p.nbreHeures;
-          p.montant = montant;
-        })
-        console.log(totalHeure, "total");
+      })
     })
-      
-  
+  }
+  // -----------------------filter method
+  filteredPaie(){
+    if(!this.searchTerm){
+      return this.filteredPai = this.paies
+    }
+    return this.filteredPai = this.paies.filter(p =>p.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+    p.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()))
   }
  goBack(){
+    this.searchTerm = ''
     window.history.back();
+    
    }
+  //  ----------------------imprime button
+  imprimer() { 
+    // const buttonContent = document.getElementById('button') as HTMLElement;
+    // buttonContent.style.display = "none";
+    var data = document.getElementById('idTable') as HTMLElement;
+    if(data){
+      data.style.padding = '50px'; 
+      // data.style.fontSize = "14px"  
+    }
+    
+    
+    // Id of the table
+    html2canvas(data!, { scale: 2 }).then(canvas => {
+        // Few necessary setting options
+        let imgWidth = 297; // A4 landscape width in mm
+        let imgHeight = (canvas.height * imgWidth) / canvas.width;
+        
+        const contentDataURL = canvas.toDataURL('image/png');
+        let pdf = new jsPDF('l', 'mm', 'a4'); // 'l' for landscape
+        let position = 0;
+        pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+        pdf.save('programme-de-soutenace.pdf');
+        // buttonContent.style.display = "block";
+        data.style.padding = '0px'
+        // data.style.fontSize = '16px'
+    });
+  } 
 }

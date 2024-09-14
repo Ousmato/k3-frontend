@@ -1,0 +1,110 @@
+<main>
+    <ng-container *ngIf="ishow_add">
+        <div class="views">
+            <h3 class="span">Ajouter Filière</h3>
+            <form [formGroup]="addFiliere" (ngSubmit)="send()" > 
+                
+               <div class="container-views">
+                    <div class="form form-group"> 
+                        <label for="email">Nom</label> 
+                        <input type="text" formControlName="nomFiliere" class="form-control" id="nom" placeholder="nom de la filiere"  [class.is-invalid]="addFiliere.get('nomFiliere')!.invalid && addFiliere.get('nomFiliere')!.touched"> 
+                        <div *ngIf="addFiliere.get('nomFiliere')!.invalid && addFiliere.get('nomFiliere')!.touched" class="invalid-feedback">
+                            <div *ngIf="addFiliere.get('nomFiliere')!.errors?.['required']">
+                                <span class="label-error">Le nom de la filière est requise.</span>
+                            </div>
+                            <div *ngIf="addFiliere.get('nomFiliere')!.errors?.['maxlength']">
+                                <span class="label-error">Le nom de la filière ne doit pas dépasser 40 caractères.</span>
+                            </div>
+                        </div>
+                    </div> 
+                
+                    <div class="button-cash">
+                        <a (click)="close_add()" class="submit" ><span>Annuler</span></a>
+                        <button class="submit" type="submit" ><span>Enregistre</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                    </div>
+               </div>
+                
+            </form> 
+        </div>
+            
+    </ng-container>
+    
+    <!-- --------------------------------- -->
+    <ng-container *ngIf="ishow_update">
+         <div class="views">
+            <h3 class="span">Modifier Filière</h3>
+            <form  [formGroup]="update_filiere_form" (ngSubmit)="update_filiere()">
+       
+                <div class="container-views">
+                    <div class="form form-group">
+                        <select  class="form-select"   (change)="onFiliereChange($event)">
+                        <option  selected disabled value="">Choisir La filière...</option>
+                        
+                        <option  *ngFor="let filiere of filieres" [value]="filiere.id">{{filiere.nomFiliere}}</option>
+                        </select>
+                    </div>
+                    
+                    <input type="number" formControlName="id" *ngIf="false">
+                    <div class="form form-group">
+                        <input type="text"  class=" form-control" formControlName="nomFiliere" placeholder="Nom du filière.."  [class.is-invalid]="update_filiere_form.get('nomFiliere')!.invalid && update_filiere_form.get('nomFiliere')!.touched">
+                        <div *ngIf="update_filiere_form.get('nomFiliere')!.invalid && update_filiere_form.get('nomFiliere')!.touched" class="invalid-feedback">
+                            <div *ngIf="update_filiere_form.get('nomFiliere')!.errors?.['required']">
+                                <span class="label-error">La filière est requise.</span>
+                            </div>
+                            <div *ngIf="update_filiere_form.get('nomFiliere')!.errors?.['maxlength']">
+                                <span class="label-error">Le nom de la filière ne doit pas dépasser 40 caractères.</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="button-cash">
+                        <a (click)="close_update()" class="submit" ><span>Annuler</span></a>
+                        <button class="submit" type="submit" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                    </div>
+                </div>
+                 
+             </form>
+         </div>
+    </ng-container>
+    <!-- ----------------------------- -->
+    <ng-container *ngIf="show_deleted" >
+        <div class="views" >
+                <h3 class="span">Supprimer filière</h3>
+               <div class="container-views">
+                <select  class="form-select"placeholder="Choisir la clase" (change)="onDelete($event)">
+                    <option  selected disabled value="">Choisir La filière</option>
+                    
+                    <option  *ngFor="let fil of filieres" [value]="fil.id">{{fil.nomFiliere}}</option>
+                </select>
+                    <div class="button-cash">
+                        <a (click)="annuler()" class="submit"  ><span>Annuler</span></a>
+                        <button (click)="nextToConfirm()" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                    </div> 
+               </div>
+        </div>
+       
+    </ng-container>
+    <div class="views" *ngIf="isConfirm">
+        <h3 class="span">Confirmation</h3>
+        <div class="container-views">
+            <p>Êtes-vous sûr de vouloir supprimer la filière : {{filiereFordelete?.nomFiliere}}?</p>
+            
+                <div class="button-cash">
+                    <a type="button" (click)="exitDelete()">Annuler</a>
+                    <button type="button" (click)="delete_niveau(filiereFordelete?.id!)">Supprimer</button>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="second-child">
+        <a (click)="show_added()"><fa-icon [icon]="icons.squarePlus"></fa-icon> <span>Ajouter</span></a>
+        <a (click)="show_updated()" ><fa-icon [icon]="icons.edit"></fa-icon> <span>Modifier</span></a>
+        <a (click)="show_delete()" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> <span >Supprimer</span></a>
+       
+    </div>
+       
+            
+    
+</main>

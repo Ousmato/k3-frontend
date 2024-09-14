@@ -1,46 +1,43 @@
-
-<div class="main">
-
-   
-    <!-- -----------------------------------------------------modal add module in classe-------------- -->
-
+<main>
     
-<!-- </div > -->
-<!-- section  -->
- <ng-container *ngIf="classRoms.length > 0, else notFundTemplate">
-<div class="grid-container" *ngFor="let classRom of classRoms ">
+<p class="niveau-contenaire">
+    <span class="span">LICENCE 1</span>
+</p>
+<div class="main">
+    <ng-container *ngIf="classRoms.length > 0, else notFundTemplate">
+    
+        <div class="grid-container" *ngFor="let classRom of filterClasse_L1()">
+            <div class="grid-item">
+                <div class="section-folder">
+                    <div class="class-folder">
+                        <div class="icon-folder">
+                            <fa-icon [icon]="icons.folder" class="icons-style"></fa-icon>
+                        </div>
 
-    <div class="grid-item">
-        <div class="section-folder">
-            <div class="class-folder">
-                <div class="icon-folder">
-                    <fa-icon [icon]="icons.folder" class="icons-style"></fa-icon>
+                        <div class="info-folder">
+                            <h2 class="title">Nivau : {{classRom.idFiliere?.idNiveau?.nom}} </h2>
+                            <p class="title">Filiere : {{classRom.idFiliere?.idFiliere?.nomFiliere}}</p>
+                            <p>Effectifs : {{classRom.effectifs}}</p>
+                            <a (click)="show_views(classRom)">Clique ici<fa-icon [icon]="icons.angleDown"></fa-icon></a>
+                        </div>
+                    </div>
+                    <ng-container *ngIf=" classRom === classeSelect">
+                        <div class="views" *ngIf="isShow_link_modal">
+                            <!-- <li *ngIf="getPermission()"> <a (click)="toggle_to_emplois(classeSelect)" > Consulter l'emploi du temps</a></li> -->
+                            <li *ngIf="permission"><a (click)="getAll_ues(classeSelect.id!)" >Ajouter des modules</a></li>
+                            <li *ngIf="permission" ><a (click)="toggle_to_notes(classeSelect.id!)" >Ajouter des notes</a></li>
+                            <li><a (click)="toggle_to_presence(classeSelect.id!)" >Liste des étudiants</a></li>
+                            <li><a (click)="toggle_to_noteSemestre(classeSelect.id!)" >Notes du semestre</a></li>
+                            <!-- <li><a (click)="toggle_to_update_emplois (classeSelect.id!)" >Modifier l'emploi du temps</a></li> -->
+                            <li><a >Archives</a></li>
+                        </div>
+                    </ng-container>
                 </div>
-
-                <div class="info-folder">
-                    <h2 class="title">Nivau : {{classRom.idFiliere?.idNiveau?.nom}} </h2>
-                    <p class="title">Filiere : {{classRom.idFiliere?.idFiliere?.nomFiliere}}</p>
-                    <p>Effectifs : {{classRom.effectifs}}</p>
-                    <a (click)="show_views(classRom)">Clique ici<fa-icon [icon]="icons.angleDown"></fa-icon></a>
-                </div>
-            </div>
-            <ng-container *ngIf=" classRom === classeSelect">
-                <div class="views" *ngIf="isShow_link_modal">
-                    <!-- <li *ngIf="getPermission()"> <a (click)="toggle_to_emplois(classeSelect)" > Consulter l'emploi du temps</a></li> -->
-                    <li *ngIf="permission"><a (click)="getAll_ues(classeSelect.id!)" >Ajouter des modules</a></li>
-                    <li *ngIf="permission" ><a (click)="toggle_to_notes(classeSelect.id!)" >Ajouter des notes</a></li>
-                    <li><a (click)="toggle_to_presence(classeSelect.id!)" >Liste des étudiants</a></li>
-                    <li><a (click)="toggle_to_noteSemestre(classeSelect.id!)" >Notes du semestre</a></li>
-                    <!-- <li><a (click)="toggle_to_update_emplois (classeSelect.id!)" >Modifier l'emploi du temps</a></li> -->
-                    <li><a >Archives</a></li>
-                </div>
-            </ng-container>
+                <!-- ----------------------------- -->
+                
+            </div> 
         </div>
-        <!-- ----------------------------- -->
-        
-    </div> 
-</div>
-</ng-container>
+    </ng-container>
 <ng-template #notFundTemplate>
     <div class="not-found">
          <div class="img">
@@ -84,4 +81,84 @@
 
 
 </div>
+<p class="niveau-contenaire">
+    <span class="span">LICENCE 2</span>
+</p>
+<div class="main">
+    <ng-container *ngIf="classRoms.length > 0, else notFundTemplate">
+    
+        <div class="grid-container" *ngFor="let classRom of filterClasse_L2()">
+            <div class="grid-item">
+                <div class="section-folder">
+                    <div class="class-folder">
+                        <div class="icon-folder">
+                            <fa-icon [icon]="icons.folder" class="icons-style"></fa-icon>
+                        </div>
+
+                        <div class="info-folder">
+                            <h2 class="title">Nivau : {{classRom.idFiliere?.idNiveau?.nom}} </h2>
+                            <p class="title">Filiere : {{classRom.idFiliere?.idFiliere?.nomFiliere}}</p>
+                            <p>Effectifs : {{classRom.effectifs}}</p>
+                            <a (click)="show_views(classRom)">Clique ici<fa-icon [icon]="icons.angleDown"></fa-icon></a>
+                        </div>
+                    </div>
+                    <ng-container *ngIf=" classRom === classeSelect">
+                        <div class="views" *ngIf="isShow_link_modal">
+                            <!-- <li *ngIf="getPermission()"> <a (click)="toggle_to_emplois(classeSelect)" > Consulter l'emploi du temps</a></li> -->
+                            <li *ngIf="permission"><a (click)="getAll_ues(classeSelect.id!)" >Ajouter des modules</a></li>
+                            <li *ngIf="permission" ><a (click)="toggle_to_notes(classeSelect.id!)" >Ajouter des notes</a></li>
+                            <li><a (click)="toggle_to_presence(classeSelect.id!)" >Liste des étudiants</a></li>
+                            <li><a (click)="toggle_to_noteSemestre(classeSelect.id!)" >Notes du semestre</a></li>
+                            <!-- <li><a (click)="toggle_to_update_emplois (classeSelect.id!)" >Modifier l'emploi du temps</a></li> -->
+                            <li><a >Archives</a></li>
+                        </div>
+                    </ng-container>
+                </div>
+                <!-- ----------------------------- -->
+                
+            </div> 
+        </div>
+    </ng-container>
+</div>
+<p class="niveau-contenaire">
+    <span class="span">LICENCE 3</span>
+</p>
+<div class="main">
+    <ng-container *ngIf="classRoms.length > 0, else notFundTemplate">
+    
+        <div class="grid-container" *ngFor="let classRom of filterClasse_L3()">
+            <div class="grid-item">
+                <div class="section-folder">
+                    <div class="class-folder">
+                        <div class="icon-folder">
+                            <fa-icon [icon]="icons.folder" class="icons-style"></fa-icon>
+                        </div>
+
+                        <div class="info-folder">
+                            <h2 class="title">Nivau : {{classRom.idFiliere?.idNiveau?.nom}} </h2>
+                            <p class="title">Filiere : {{classRom.idFiliere?.idFiliere?.nomFiliere}}</p>
+                            <p>Effectifs : {{classRom.effectifs}}</p>
+                            <a (click)="show_views(classRom)">Clique ici<fa-icon [icon]="icons.angleDown"></fa-icon></a>
+                        </div>
+                    </div>
+                    <ng-container *ngIf=" classRom === classeSelect">
+                        <div class="views" *ngIf="isShow_link_modal">
+                            <!-- <li *ngIf="getPermission()"> <a (click)="toggle_to_emplois(classeSelect)" > Consulter l'emploi du temps</a></li> -->
+                            <li *ngIf="permission"><a (click)="getAll_ues(classeSelect.id!)" >Ajouter des modules</a></li>
+                            <li *ngIf="permission" ><a (click)="toggle_to_notes(classeSelect.id!)" >Ajouter des notes</a></li>
+                            <li><a (click)="toggle_to_presence(classeSelect.id!)" >Liste des étudiants</a></li>
+                            <li><a (click)="toggle_to_noteSemestre(classeSelect.id!)" >Notes du semestre</a></li>
+                            <!-- <li><a (click)="toggle_to_update_emplois (classeSelect.id!)" >Modifier l'emploi du temps</a></li> -->
+                            <li><a >Archives</a></li>
+                        </div>
+                    </ng-container>
+                </div>
+                <!-- ----------------------------- -->
+                
+            </div> 
+        </div>
+    </ng-container>
+</div>
 <div class="overlay" *ngIf="isShow_add_module" (click)="preventClick($event)"></div>
+
+</main>

@@ -144,11 +144,11 @@ export class AllNotesSemestreComponent  implements OnInit{
     this.schollService.getSchools().subscribe(data => {
       this.school = data;
       this.school.urlPhoto = `http://localhost/StudentImg/${this.school.urlPhoto}`;
-      const dte = new Date(this.school.anneeScolaire.debutAnnee);
-      const dtf = new Date(this.school.anneeScolaire.finAnnee);
-      const yearDte = dte.getFullYear();
-      const yearDtf = dtf.getFullYear();
-      this.school.annee = yearDte + '-' + yearDtf;
+      // const dte = new Date(this.school.anneeScolaire.debutAnnee);
+      // const dtf = new Date(this.school.anneeScolaire.finAnnee);
+      // const yearDte = dte.getFullYear();
+      // const yearDtf = dtf.getFullYear();
+      // this.school.annee = yearDte + '-' + yearDtf;
     //  console.log(this.school.annee_de, "0000000000000000")
 
     })

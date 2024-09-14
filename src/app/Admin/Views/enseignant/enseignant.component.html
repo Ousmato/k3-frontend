@@ -35,43 +35,10 @@
             <td>{{enseign.idUe.nomUE}}</td>
               <td>
                 <div class="btn-contenaire">
-                  <a data-bs-toggle="modal" [attr.data-bs-target]="'#enseignantDetail_' + enseign.idEnseignant" ><fa-icon [icon]="icons.eye"></fa-icon><span>Details</span></a>
-                  <a (click)="toggle_toEdit(enseign.idEnseignant!)" ><fa-icon [icon]="icons.edit"></fa-icon><span>Modifier</span></a>
+                  <!-- <a data-bs-toggle="modal" [attr.data-bs-target]="'#enseignantDetail_' + enseign.idEnseignant" ><fa-icon [icon]="icons.eye"></fa-icon><span>Details</span></a> -->
+                  <a (click)="toggle_toEdit(enseign.idEnseignant!)" ><fa-icon [icon]="icons.eye"></fa-icon><span>Details</span></a>
                 </div>
               </td>
-
-           <!-- ------------------------------------------------modals---------------------------------- -->
-           <div class="modal fade"  [id]="'enseignantDetail_' + enseign.idEnseignant"  data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog ">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="exampleModalLabel">Detail de l'Enseignant</h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <div class="modal-body">
-                  <div class="info-container">
-                      <div class="img-contenaire">
-                        <img id="img-info"  src="{{enseign.urlPhoto}}" alt="Image">
-                        <!-- <div class="classe">
-                          <h4> Status : {{enseign.status}}</h4>
-                        </div> -->
-                    </div>
-                      <div class="column-2">
-                        <li><span>Nom : </span>{{enseign.nom}}</li>
-                        <li><span>Prenom : </span>{{enseign.prenom}} </li>
-
-                      </div>
-                  </div>
-                  
-                  <li><span>Email : </span>{{enseign.email}}</li>
-                  <li><span>Telephone : </span>{{enseign.telephone}}</li>
-                  <li><span>Sexe : </span>{{enseign.sexe}}</li>
-                <!-- </ul -->
-                </div>
-              </div>
-            </div>
-          </div>
           <!-- ------------------------------------------------------------------------ -->
           
           </tr>

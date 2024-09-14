@@ -44,10 +44,11 @@ export class AddDocComponent implements OnInit {
 
   // -------------laod student by classe id
   load_students(idClass : number){
+    console.log(idClass, "idClasse")
     this.studentService.getStudentByIdClasse(idClass).subscribe(
       (data: Student[]) => {
         this.students = data;
-        // console.log(this.students, "students")
+        console.log(this.students, "students")
         this.getAllDocsByClass(idClass, this.students);
       }
     )

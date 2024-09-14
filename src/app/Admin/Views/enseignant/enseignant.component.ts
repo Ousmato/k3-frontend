@@ -93,6 +93,8 @@ export class EnseignantComponent implements OnInit {
   }
 
   timeWorks(){
+    this.searchTerm = ''
+    this.ngOnInit()
     this.root.navigate(['/der/paiement']);
   }
 

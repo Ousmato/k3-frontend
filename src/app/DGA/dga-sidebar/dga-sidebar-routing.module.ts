@@ -18,7 +18,7 @@ const routes: Routes = [{path: '', component: DgaSidebarComponent,
   children: [
     {path: '', component: DgaHomeComponent},
     {path: 'mentions-liste', component: ClassStudentsComponent},
-    {path: 'setting', component: SettingsComponent},
+    {path: 'setting', component: SettingsComponent, data:{title: "PARAMETRE ET CONFIDENTIALITE"}},
     {path: 'etudiant', component: EtudiantsComponent},
     {path: 'student-notes', component: StudentNoteComponent},
     {path: 'archive-scolaire', component: DgaArchivesComponent},

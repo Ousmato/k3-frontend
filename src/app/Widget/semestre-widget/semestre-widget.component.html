@@ -1,0 +1,150 @@
+<main>
+    <ng-container *ngIf="show_add">
+        <div class="views">
+            <h3 class="span">Ajouter semestre</h3>
+             <form  [formGroup]="add_semestre" (ngSubmit)="submit()">
+                <div class="container-views">
+                    <div class="form-group">
+                        <label for="">Promotion :</label>
+                        
+                        <select  class="form-select" formControlName="idAnneeScolaire" [class.is-invalid]="add_semestre.get('idAnneeScolaire')!.invalid && add_semestre.get('idAnneeScolaire')!.touched">
+                            <option  selected disabled value="">Choisir la promotion...</option>
+                            
+                            <option  *ngFor="let an of annees" [value]="an.id"> Poromotion {{an.ans}}</option>
+                            <div *ngIf="add_semestre.get('idAnneeScolaire')!.errors?.['required']">
+                                <span class="label-error">Champ obligatoire.</span>
+                            </div>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Nom du semestre :</label>
+                        <select  class="form-select" formControlName="nomSemetre" [class.is-invalid]="add_semestre.get('nomSemetre')!.invalid && add_semestre.get('nomSemetre')!.touched">
+                            <option  selected disabled value="">Choisir nom semestre...</option>
+                            
+                            <option  *ngFor="let sem of semestreNames" [value]="sem.key">{{sem.value}}</option>
+                            <div *ngIf="add_semestre.get('nomSemetre')!.errors?.['required']">
+                                <span class="label-error">Champ obligatoire.</span>
+                            </div>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Date de début :</label>
+                        <input type="date"  class=" form-control" formControlName="dateDebut"  [class.is-invalid]="add_semestre.get('dateDebut')!.invalid && add_semestre.get('dateDebut')!.touched">
+                        <div *ngIf="add_semestre.get('dateDebut')?.invalid && add_semestre.get('dateDebut')?.touched" class="invalid-feedback">
+                            <div *ngIf="add_semestre.get('dateDebut')!.errors?.['required']">
+                                <span class="label-error">Champ obligatoire.</span>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for=""> Date de fin :</label>
+                        <input type="date"  class=" form-control" formControlName="datFin"  [class.is-invalid]="add_semestre.get('datFin')!.invalid && add_semestre.get('datFin')!.touched">
+                        <div *ngIf="add_semestre.get('datFin')?.invalid && add_semestre.get('datFin')?.touched" class="invalid-feedback">
+                            <div *ngIf="add_semestre.get('datFin')!.errors?.['required']">
+                                <span class="label-error">Champ obligatoire.</span>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="button-cash">
+                        <a (click)="close_add()" class="submit"  ><span>Annuler</span></a>
+                        <button class="submit" type="submit" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                    </div>
+                </div>
+             </form>
+        </div>
+    </ng-container>
+    <!-- --------------------------------- -->
+     <ng-container *ngIf="show_update">
+        <div class="views">
+            <h3 class="span">Modifier semestre</h3>
+             <form  [formGroup]="update_semestre_form" (ngSubmit)="update()">
+                <div class="container-views">
+                    <input type="number" formControlName="idAnneeScolaire" *ngIf="false">
+
+                    <select  class="form-select" formControlName="id" placeholder="Choisir la clase" (change)="onSemestreChange($event)">
+                       <option  selected disabled value="">Choisir Le Semestre...</option>
+                       
+                       <option  *ngFor="let s of semestres" [value]="s.id">{{s.nomSemetre}} Pro {{s.idAnneeScolaire.ans}}</option>
+                   </select>
+                   <div class="form-group">
+                       <label for="">Nom du semestre :</label>
+                       <input type="text"  class=" form-control" formControlName="nomSemetre"  placeholder="Le nom du semestre..." readonly>
+                       <div *ngIf="update_semestre_form.get('nomSemetre')?.invalid && update_semestre_form.get('nomSemetre')?.touched" class="invalid-feedback">
+                           <div *ngIf="update_semestre_form.get('nomSemetre')!.errors?.['required']">
+                               <span class="label-error">Champ obligatoire.</span>
+                           </div>
+                           <div *ngIf="update_semestre_form.get('nomSemetre')!.errors?.['maxlength']">
+                               <span class="label-error">Le nom de la filière ne doit pas dépasser 40 caractères.</span>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <label for="">Date de début :</label>
+                       <input type="date"  class=" form-control" formControlName="dateDebut"  [class.is-invalid]="update_semestre_form.get('dateDebut')!.invalid && update_semestre_form.get('dateDebut')!.touched">
+                       <div *ngIf="update_semestre_form.get('dateDebut')?.invalid && update_semestre_form.get('dateDebut')?.touched" class="invalid-feedback">
+                           <div *ngIf="update_semestre_form.get('dateDebut')!.errors?.['required']">
+                               <span class="label-error">Champ obligatoire.</span>
+                           </div>
+                           
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <label for=""> Date de fin :</label>
+                       <input type="date"  class=" form-control" formControlName="datFin"  [class.is-invalid]="update_semestre_form.get('datFin')!.invalid && update_semestre_form.get('datFin')!.touched">
+                       <div *ngIf="update_semestre_form.get('datFin')?.invalid && update_semestre_form.get('datFin')?.touched" class="invalid-feedback">
+                           <div *ngIf="update_semestre_form.get('datFin')!.errors?.['required']">
+                               <span class="label-error">Champ obligatoire.</span>
+                           </div>
+                           
+                       </div>
+                   </div>
+                   
+                   <div class="button-cash">
+                       <a (click)="close_update()" class="submit"  ><span>Annuler</span></a>
+                       <button class="submit" type="submit" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                   </div>
+                </div>
+            </form>
+        </div>
+     </ng-container>
+     <!-- --------------------------------- -->
+
+     <ng-container *ngIf="show_deleted" >
+        <div class="views" >
+                <h3 class="span">Supprimer le semestre</h3>
+               <div class="container-views">
+                <select  class="form-select"placeholder="Choisir la clase" (change)="onDelete($event)">
+                    <option  selected disabled value="">Choisir le semestre</option>
+                    
+                    <option  *ngFor="let sem of semestres" [value]="sem.id">{{sem.nomSemetre}} Pro {{sem.idAnneeScolaire.ans}}</option>
+                </select>
+                    <div class="button-cash">
+                        <a (click)="annuler()" class="submit"><span>Annuler</span></a>
+                        <button (click)="nextToConfirm()" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                    </div> 
+               </div>
+        </div>
+       
+    </ng-container>
+    <div class="views" *ngIf="isConfirm">
+        <h3 class="span">Confirmation</h3>
+        <div class="container-views">
+            <p>Êtes-vous sûr de vouloir supprimer le semestre : {{semestreFordelete.nomSemetre}} Pro {{semestreFordelete.idAnneeScolaire.ans}}</p>
+            
+                <div class="button-cash">
+                    <a type="button" (click)="exitDelete()">Annuler</a>
+                    <button type="button" (click)="delete_semestre(semestreFordelete.id!)">Supprimer</button>
+                </div>
+            
+        </div>
+    </div>
+     <div class="second-child">
+        <a (click)="show_added()"><fa-icon [icon]="icons.squarePlus"></fa-icon> <span>Ajouter</span></a>
+        <a (click)="show_updated()" ><fa-icon [icon]="icons.edit"></fa-icon> <span>Modifier</span></a>
+        <!-- <a (click)="show_delete()" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> <span >Supprimer</span></a> -->
+       
+    </div>
+</main>

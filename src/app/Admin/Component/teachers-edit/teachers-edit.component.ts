@@ -15,7 +15,7 @@ import { Ue } from '../../Models/UE';
 })
 export class TeachersEditComponent implements OnInit {
 
-  enseignant! : Teacher 
+  enseignant? : Teacher 
   fileName!: File;
   photoSelect!: File
   urlImage! : string | ArrayBuffer
@@ -23,6 +23,8 @@ export class TeachersEditComponent implements OnInit {
   passwordVisible : boolean = false
   idEnseignant!: number
   ueList : Ue [] = []
+  isEdit: boolean = false
+  isUpdate: boolean = false
 
   
   teacherStatusOptions!: string[];
@@ -45,16 +47,16 @@ export class TeachersEditComponent implements OnInit {
     this.teacher_form = this.fb.group({
       idEnseignant: ['', Validators.required],
       
-        nom: ['',Validators.required],
-        prenom: ['',Validators.required],
-        email: ['', Validators.required],
-        sexe: ["", Validators.required],
-        password: ['', Validators.required],
-        telephone: ['', Validators.required],
+        nom: [''],
+        prenom: [''],
+        email: [''],
+        sexe: [""],
+        password: [''],
+        telephone: [''],
         urlPhoto: [''],
-        idUe: ['', Validators.required],
-        diplome: ['', Validators.required],
-        status: ['',Validators.required]
+        idUe: [''],
+        diplome: [''],
+        status: ['', Validators.required]
   
     })
    
@@ -125,37 +127,48 @@ export class TeachersEditComponent implements OnInit {
     reader.readAsDataURL(this.photoSelect);
   }
   update_enseignant(){
+    if(this.isUpdate){
+      const formData = this.teacher_form.value
+      console.log(formData, "fomData");
+      const idUe = this.ueList.find(ue =>ue.id == formData.idUe);
 
-    const formData = this.teacher_form.value
-    const ensei = this.enseignant
-    ensei!.idEnseignant = ensei?.idEnseignant;
-    ensei!.nom = formData.nom;
-    ensei!.prenom = formData.prenom;
-    ensei!.email = formData.email;
-    ensei!.sexe = formData.sexe;
-    ensei!.telephone = formData.telephone;
-    ensei!.status = formData.status;
+      const enseignant : Teacher ={
+        idEnseignant: formData.idEnseignant,
+        nom: formData.nom,
+        prenom: formData.prenom,
+        email: formData.email,
+        sexe: formData.sexe,
+        telephone: formData.telephone,
+        status: formData.status,
+        idUe: idUe!,
+        diplome: formData.diplome
 
-  if(this.teacher_form.valid){
-    this.enseignantService.updateTeacher(ensei!, this.photoSelect).subscribe({
-      next: (response) => {
-        console.log(response, "response")
-        this.pageTitle.showSuccessToast(response.message)
-        this.teacher_form.reset();
-        // window.location.reload();
-      },
-      error: (erreur) => {
-        this.pageTitle.showErrorToast(erreur.error.message)
-        
         
       }
-    })
-  }else{
-    this.teacher_form.markAllAsTouched();
-    console.log('non valide', this.teacher_form.value);
-  }
-  
+      console.log(enseignant, "enseign")
     
+      this.enseignantService.updateTeacher(enseignant!).subscribe({
+        next: (response) => {
+          this.pageTitle.showSuccessToast(response.message)
+          this.teacher_form.reset();
+          this.load_update_form()
+          this.getTeacher()
+          
+          // window.location.reload();
+        },
+        error: (erreur) => {
+          this.pageTitle.showErrorToast(erreur.error.message)
+          
+          
+        }
+      })
+    
+    }
+  }
+
+  sunmit(){
+    this.isUpdate = true;
+    this.update_enseignant();
   }
   // ---------------------------------------go back button
   goBack(){
@@ -164,5 +177,9 @@ export class TeachersEditComponent implements OnInit {
   // -----------------------------------password visible
   togglePasswordVisibility(): void {
     this.passwordVisible = !this.passwordVisible;
+}
+
+toggle_toChageEdit(){
+  this.isEdit =! this.isEdit
 }
 }
