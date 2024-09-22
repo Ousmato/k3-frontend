@@ -22,6 +22,7 @@ export class RSReinscriptionComponent  implements OnInit{
   students: Student[] = [];
   path_url!: string
   classRoom: ClassRoom[]=[]
+  NextClassRoom: ClassRoom[]=[]
   isPage: boolean = false
 
   studentspage?: StudentPages;
@@ -98,8 +99,12 @@ export class RSReinscriptionComponent  implements OnInit{
     }
   }
    // -----------------------load all classe 
+
    load_classes(){
-    this.classeService.getAll().subscribe(result =>{
+    this.rout.queryParams.subscribe(param =>{
+      this.idAnne = param['id']
+    })
+    this.classeService.getAllClasse(this.idAnne).subscribe(result =>{
       this.classRoom = result;
 
       console.log(this.classRoom, "88888888888888")
@@ -110,11 +115,14 @@ export class RSReinscriptionComponent  implements OnInit{
   getStudentView(student: Student){
    const url = this.extractFileName(student.urlPhoto!);
     student.urlPhoto = url
-    const date = new Date(student.idAnneeScolaire.finAnnee);
+    const date = new Date(student.idClasse.idAnneeScolaire!.finAnnee)!;
     const ans = date.getFullYear();
-    student.idAnneeScolaire.ans = ans
-   this.student = student
+    console.log(student, "student 000")
+    // this.student?.idAnneeScolaire.ans = ans
+    this.student = student
+   
     this.is_show =! this.is_show
+    
     // const navigationExtras: NavigationExtras = {
     //   queryParams: { id: student?.idEtudiant }
     // };
@@ -179,9 +187,12 @@ export class RSReinscriptionComponent  implements OnInit{
   }
   changeClasse(event: any){
     const idClasse = event.target.value;
+    this.load_nextClasse(idClasse);
     this.rout.queryParams.subscribe(param=>{
       this.idAnne = +param['id']
+      // this.load_classes(idClasse);
     })
+
     this.service.getStudentByIdAnneeAndIdClasse(this.idAnne, +idClasse, this.page, this.size).subscribe(data => {
       this.students = data.content;
       this.students.forEach((item : Student) => {
@@ -196,5 +207,12 @@ export class RSReinscriptionComponent  implements OnInit{
       this.isPage = true
       console.log(this.students, "pagenation teachers")
     });
+  }
+
+  load_nextClasse(idClasse: number){
+    this.classeService.getNextClasseByIdPrevious(idClasse).subscribe(result =>{
+     this.NextClassRoom = result;
+      console.log(result, "next class")
+    })
   }
 }

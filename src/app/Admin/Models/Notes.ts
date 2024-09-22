@@ -13,3 +13,18 @@ export interface Notes{
     rang?: number;
     mension?: string
 }
+
+export interface NoteDto{
+    nomUE : string;
+    modules : NoteModuleDto[];
+    noteUE: number;
+    coefficientUe: number;
+    session : number;
+}
+
+export interface NoteModuleDto{
+    idModule: number;
+    nomModule: string;
+    noteModule: number;
+    coefficient: number;
+}

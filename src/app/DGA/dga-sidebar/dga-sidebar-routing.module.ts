@@ -13,6 +13,8 @@ import { EtudiantsDeLaClasseComponent } from '../../Admin/Views/etudiants-de-la-
 import { StudentBulletinComponent } from '../../Admin/Component/student-bulletin/student-bulletin.component';
 import { DgaArchivesComponent } from '../dga-archives/dga-archives.component';
 import { SchoolEditWidgetComponent } from '../../Widget/school-edit-widget/school-edit-widget.component';
+import { ViewUeComponent } from '../../Widget/ue-widget/view-ue/view-ue.component';
+import { ClassArchiveComponent } from '../class-students/class-archive/class-archive.component';
 
 const routes: Routes = [{path: '', component: DgaSidebarComponent,
   children: [
@@ -27,6 +29,9 @@ const routes: Routes = [{path: '', component: DgaSidebarComponent,
     {path: 'student-bulletin', component: StudentBulletinComponent},
     {path: 'update-school', component: SchoolEditWidgetComponent, data:{title: "Information de l'Etablissement"}},
 
+    {path: 'class-archives', component: ClassArchiveComponent},
+    {path: 'view-ues', component: ViewUeComponent, data:{title: "LES UNITES D'ENSEIGNEMENT"}},
+    {path: 'all-notes', component: AllNotesSemestreComponent, data:{title: "Notes du Semestre"}},
     
     {path: 'emplois-seances', component: EmploisSeanceComponent},
     {path: 'emplois-du-temps', component: DerEmploiDuTempsComponent},

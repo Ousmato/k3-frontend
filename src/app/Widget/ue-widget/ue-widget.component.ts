@@ -1,9 +1,14 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Ue } from '../../Admin/Models/UE';
+import { AddUeDto, Ue } from '../../Admin/Models/UE';
 import { SetService } from '../../Admin/Views/settings/set.service';
 import { PageTitleService } from '../../Services/page-title.service';
 import { IconsService } from '../../Services/icons.service';
+import { NivFiliere } from '../../Admin/Models/NivFiliere';
+import { ClassRoom } from '../../Admin/Models/Classe';
+import { ClassStudentService } from '../../DGA/class-students/class-student.service';
+import { SemestreService } from '../../Services/semestre.service';
+import { Semestres } from '../../Admin/Models/Semestre';
 
 @Component({
   selector: 'app-ue-widget',
@@ -17,16 +22,22 @@ export class UeWidgetComponent implements OnInit {
   update_ue_form!: FormGroup 
 
   ueList: Ue[] = []
+  semestre: Semestres[] = []
   show_update: boolean = false;
   show_add: boolean = false;
   show_deleted: boolean = false;
+  isOldUe: boolean = false;
   isConfirm: boolean = false;
   ueForDeleted!: Ue
-  constructor(private setService: SetService, public icons: IconsService,
+  oldUes: Ue [] = [];
+  classes: ClassRoom[] = []
+
+  constructor(private setService: SetService, private semestreService: SemestreService,
+    public icons: IconsService, private classService: ClassStudentService,
     private pageTitle: PageTitleService, private fb: FormBuilder){}
 
   ngOnInit(): void {
-    this.load_formAdd();
+    // this.load_formAdd();
     this.load_formUpdate();
   }
 
@@ -35,39 +46,24 @@ export class UeWidgetComponent implements OnInit {
   load_formUpdate(){
     this.update_ue_form = this.fb.group({
       id: [''],
-      nomUE: ['', [Validators.required, Validators.maxLength(40)]]
+      nomUE: ['', [Validators.required, Validators.maxLength(40)]],
+      
     });
   }
  
-  load_formAdd(){
-    this.addUe = this.fb.group({
-      nomUE : ['', [Validators.required, Validators.maxLength(40)]]
-    })
-  }
-  // -----------------add ue
-  creatUe(){
-    const formData = this.addUe.value;
-    const ue: Ue = {
-      nomUE: formData.nomUE
-    }
-    if(this.addUe.valid){
-      this.setService.createUe(ue).subscribe({
-        next: (response) =>{
-          this.pageTitle.showSuccessToast(response.message);
-          this.addUe.reset();
-          this.load_ues();
-          
-        },
-        error : (erreur) =>{
-          this.pageTitle.showErrorToast(erreur.error.message + "Erreur")
-        }
-      })
-    }else{
-      this.addUe.markAllAsTouched();
-    }
-    
-  }
-
+ 
+// ----------------------------get all niveau filiere
+load(){
+  this.semestreService.getCurrentSemestresOfYear().subscribe(result =>{
+    this.semestre = result;
+    console.log(this.semestre, "semestre");
+  })
+  this.classService.getAllCurrentClassOfYear().subscribe(response =>{
+    this.classes = response;
+    console.log(this.classes, "---------nivF")
+  
+  })
+}
   load_ues(){
     this.setService.getAll_ue_all().subscribe(response =>{
       this.ueList = response;
@@ -142,12 +138,10 @@ export class UeWidgetComponent implements OnInit {
     this.show_update = false;
     this.closeModale.emit();
   }
-  close_add(){
-    this.show_add = false;
-    this.closeModale.emit();
-  }
+  
 
   show_added(){
+    this.load();
     this.show_add = true
     this.closeModale.emit();
   }
@@ -165,6 +159,12 @@ export class UeWidgetComponent implements OnInit {
   }
   nextToConfirm(){
     this.isConfirm = true
+    this.closeModale.emit();
+  }
+  // --------------------------
+  
+  close_old_ues(){
+    this.isOldUe = false;
     this.closeModale.emit();
   }
 }

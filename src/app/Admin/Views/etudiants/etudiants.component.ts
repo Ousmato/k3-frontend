@@ -37,12 +37,13 @@ export class EtudiantsComponent implements OnInit {
     private root: Router, public icons: IconsService, private pageTitle : PageTitleService) { }
 
   ngOnInit(): void {
-    
+    this.getPermission();
    this.loadStudents();
     this.load_student_form();
     this.sideBarService.currentSearchTerm.subscribe(term => {
       this.searchTerm = term;
       this.filterStudents();
+
     
     });
   }

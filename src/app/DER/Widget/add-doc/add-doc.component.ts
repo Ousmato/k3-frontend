@@ -57,7 +57,7 @@ export class AddDocComponent implements OnInit {
 
   // -----------------------load all classe 
   load_classes(){
-    this.classService.getAll().subscribe(result =>{
+    this.classService.getAllCurrentClassOfYear().subscribe(result =>{
       this.classRoom = result;
     })
   }

@@ -6,8 +6,6 @@ import { Admin, Admin_role } from '../Admin/Models/Admin';
 import { Teacher } from '../Admin/Models/Teachers';
 import { Router } from '@angular/router';
 import { IconsService } from '../Services/icons.service';
-import { PageTitleService } from '../Services/page-title.service';
-import { data } from 'jquery';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({

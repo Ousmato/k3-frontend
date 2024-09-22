@@ -13,6 +13,9 @@ import { AllNotesSemestreComponent } from '../../Admin/Views/all-notes-semestre/
 import { StudentBulletinComponent } from '../../Admin/Component/student-bulletin/student-bulletin.component';
 import { RSReinscriptionComponent } from '../r-s-reinscription/r-s-reinscription.component';
 import { StudentReInscriptionComponent } from '../student-re-inscription/student-re-inscription.component';
+import { ViewUeComponent } from '../../Widget/ue-widget/view-ue/view-ue.component';
+import { ClassArchiveComponent } from '../../DGA/class-students/class-archive/class-archive.component';
+import { RSImportComponent } from '../r-s-import/r-s-import.component';
 
 const routes: Routes = [{path: '', component: RSSidebarComponent,
   children: [
@@ -23,6 +26,8 @@ const routes: Routes = [{path: '', component: RSSidebarComponent,
     {path: 're-inscription-list', component: RSReinscriptionComponent},
     {path: 're-inscription', component: StudentReInscriptionComponent},
     {path: 'student-re-inscription-add', component: StudentReInscriptionComponent},
+    {path: 'class-archives', component: ClassArchiveComponent},
+    {path: 'import', component: RSImportComponent},
     
     {path: 'student-bulletin', component: StudentBulletinComponent},
     {path: 'all-notes', component: AllNotesSemestreComponent, data:{title: "Notes du Semestre"}},
@@ -30,6 +35,7 @@ const routes: Routes = [{path: '', component: RSSidebarComponent,
     { path: 'classe', component: ClassStudentsComponent, data:{title: "Les Classes de Formation"} },
     {path: 'student-edit', component: StudentEditComponent, data:{title: "Formulaire de Modification"}},
     {path: 'student-view', component: StudentViewComponent, data:{title: "Information de l'etudiant"}},
+    {path: 'view-ues', component: ViewUeComponent, data:{title: "LES UNITES D'ENSEIGNEMENT"}},
     
   ]
 }];

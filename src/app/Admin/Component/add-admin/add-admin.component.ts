@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IconsService } from '../../../Services/icons.service';
 import { AdminService } from '../../../Services/admin.service';
 import { PageTitleService } from '../../../Services/page-title.service';
-import { error } from 'jquery';
 
 @Component({
   selector: 'app-add-admin',

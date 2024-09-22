@@ -80,7 +80,8 @@ export class StudentNoteComponent implements OnInit {
      this.idUrl = data['id'];
      this.studentService.getStudent_ByIdClasse(this.page, this.size, this.idUrl).subscribe(data => {
       this.students = data.content;
-      this.students.forEach((item : Student) => {
+      this.students.forEach((item, index) => {
+        item.numero = index + 1
         item.urlPhoto = `http://localhost/StudentImg/${item.urlPhoto}`;
       })
       this.studentPages = data;
@@ -114,7 +115,7 @@ export class StudentNoteComponent implements OnInit {
 
       }
 
-      this.root.navigate(['/sidebar/student-bulletin'], navigationExtrat);
+      this.root.navigate(['/r-scolarite/student-bulletin'], navigationExtrat);
    
     }
 // --------------------------------------------------------------------------method filter
@@ -140,17 +141,17 @@ filterStudents() {
     this.isShow_modal = true
     this.semestreService.getCurentSemestre().subscribe(semestre =>{
       const idSemestre = semestre
-      this.studentService.getAllNoteByIdStudent(student.idEtudiant!, idSemestre.id!).subscribe(note =>{
-        note.forEach(n => {
-          if(!this.modules.some(module => module.id === n.idModule.id)){
-            this.modules.push(n.idModule)
-          }
-          this.moduleSelect = n
+      // this.studentService.getAllNoteByIdStudent(student.idEtudiant!, idSemestre.id!).subscribe(note =>{
+      //   note.forEach(n => {
+      //     if(!this.modules.some(module => module.id === n.idModule.id)){
+      //       this.modules.push(n.idModule)
+      //     }
+      //     this.moduleSelect = n
           
-        });
-        this.notes = note
+      //   });
+      //   this.notes = note
         
-      })
+      // })
     })
   }
   // ---------------------load update form

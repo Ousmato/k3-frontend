@@ -9,7 +9,8 @@ a button{
 
 /* Styler l'en-tête du tableau */
 th {
-    background-color: var(--primary-light);
+    background: linear-gradient(180deg, #ffffff, #d4d4d4);
+
 }
 
 .table-container{
@@ -237,6 +238,7 @@ main{
     select{
         cursor: pointer;
         border: none;
+        background-color: transparent;
         color: var(--primary);
     }
     .option{

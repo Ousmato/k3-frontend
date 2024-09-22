@@ -59,10 +59,9 @@ form{
     position: absolute;
     /* border: 1px solid #ddd; */
     border-radius: 4px;
-    left: 25%;
-    width: 50%;
-    top: 15%;
-    z-index: 10001;
+    margin-top: 15px;
+    right: 10px;
+    z-index: 1000;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15);
    
     }

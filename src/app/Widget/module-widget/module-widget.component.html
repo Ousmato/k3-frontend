@@ -1,75 +1,5 @@
 <main>
-    <ng-container *ngIf="ishow_add">
-        <div class="views">
-            <h3 class="span">Ajouter module</h3>
-            <form  [formGroup]="addModule" (ngSubmit)="createModule()">
-                <div class="container-views">
-
-                    <div class="form form-group">
-                        <label for="select-modules-multiple" class="label form-label">UE :</label>
-                        <select class="form-select" formControlName="idUe" id="select-modules-multiple" placeholder="Choisir une unite d'enseignament" [class.is-invalid]="addModule.get('idUe')!.invalid && addModule.get('idUe')!.touched" (change)="onSelect($event)">
-                          <option selected disabled value="">Choisir une unite d'enseignament</option>
-                          <option *ngFor="let ue of ueListe" [value]="ue.id">{{ue.nomUE}}</option>
-                        </select>
-                        <div *ngIf="addModule.get('idUe')!.invalid && addModule.get('idUe')!.touched" class="invalid-feedback">
-                            <span class="label-error">Champ obligatoire</span>
-                         </div>                      
-                    </div>
-
-                    <div class="isEcue" *ngIf="isEcue">
-                        <div class="ecue-contenaire">
-                            <span class="icons" >ECUE 
-                                <fa-icon class="icons" [icon]="icons.mimus" (click)="decrement()"></fa-icon>
-                                {{count}}
-                                <fa-icon class="icons" [icon]="icons.plusCircle" (click)="increment()"></fa-icon>
-                            </span>
-                            
-                        </div>
-                        <ng-container *ngFor="let item of ecueNumbers; let i = index">
-                            <div class="container-ecue">
-                                <div class="form form-group"> 
-                                    <label >Nom : </label> 
-                                    <input type="text" [formControlName]="'nomModule' + (i + 1)"  class="form-control" id="nom" [placeholder]="'Nom du module'" 
-                                           [class.is-invalid]="addModule.get('nomModule' + (i + 1))!.invalid && addModule.get('nomModule'+(i+1))!.touched"> 
-                                    <div *ngIf="addModule.get('nomModule' +(i+1))!.invalid && addModule.get('nomModule'+(i+1))!.touched" class="invalid-feedback">
-                                        <div *ngIf="addModule.get('nomModule'+(i+1))!.errors?.['required']">
-                                            <span class="label-error">Le nom du module est requis.</span>
-                                        </div>
-                                        <div *ngIf="addModule.get('nomModule'+(i+1))!.errors?.['maxlength']">
-                                            <span class="label-error">Le nom du module ne doit pas dépasser 40 caractères.</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="form form-group coefficient"> 
-                                    <label for="coefficient">Coef :</label> 
-                                    <input type="number" [formControlName]="'coefficient' +(i+1)" class="form-control"  placeholder="Coefficient" 
-                                           [class.is-invalid]="addModule.get('coefficient'+(i+1))!.invalid && addModule.get('coefficient'+(i+1))!.touched"> 
-                                    <div *ngIf="addModule.get('coefficient' +(i+1))!.invalid && addModule.get('coefficient' +(i+1))!.touched" class="invalid-feedback">
-                                        <div *ngIf="addModule.get('coefficient' +(i+1))!.errors?.['required']">
-                                            <span class="label-error">Le coefficient est requis.</span>
-                                        </div>
-                                        <div *ngIf="addModule.get('coefficient' + i)!.errors?.['min'] || addModule.get('coefficient' + i)!.errors?.['max']">
-                                            <span class="label-error">Le coefficient doit être compris entre 1 et 6.</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </ng-container>
-                    </div>
-                    
-                    
-                   
-                    
-                    
-                    <div class="button-cash">
-                        <a (click)="close_add()" class="submit" ><span>Annuler</span></a>
-                        <button class="submit" type="submit" ><span>Enregistrer</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </ng-container>
+   
     <!-- ------------------------------------------ -->
     <ng-container *ngIf="ishow_update">
         <div class="views">
@@ -164,7 +94,6 @@
 
 
     <div class="second-child">
-        <a (click)="show_added()"><fa-icon [icon]="icons.squarePlus"></fa-icon> <span>Ajouter</span></a>
         <a (click)="show_updated()" ><fa-icon [icon]="icons.edit"></fa-icon> <span>Modifier</span></a>
         <a (click)="show_delete()" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> <span >Supprimer</span></a>
        

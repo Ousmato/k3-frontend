@@ -1,5 +1,5 @@
 
-<main>
+<main >
 
     <div (click)="goBack()" class="back-button">
         <fa-icon  [icon]="icons.back"></fa-icon>
@@ -143,7 +143,7 @@
                     Champ obligatoire*
                     </span>                    
                 </div>
-                <div class="input">
+                <!-- <div class="input">
                     <label for="validationDefault03" class="label form-label">Année scolaire :</label>
                     <select class="form-select" formControlName="idAnneeScolaire"  [class.is-invalid]="studentForm.get('idAnneeScolaire')!.invalid && studentForm.get('idAnneeScolaire')!.touched">
                         <option  selected disabled value="">Choisir l'année scolaire </option>
@@ -152,7 +152,7 @@
                     <span *ngIf="studentForm.controls['idAnneeScolaire'].invalid && studentForm.controls['idAnneeScolaire'].touched" [ngStyle]="{color: 'red'}">
                     Champ obligatoire*
                     </span>            
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="col-12">

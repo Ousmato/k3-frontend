@@ -14,7 +14,8 @@ import { PageTitleService } from '../../../Services/page-title.service';
 })
 export class ReInscriptionWidgetComponent implements OnInit {
 
-  @Input() student?: Student
+  @Input() student?: Student 
+  @Input() nextClass?: ClassRoom[] =[]
   @Output() closeModal = new EventEmitter<any>()
   classRoom: ClassRoom [] = []
   class_select!: ClassRoom
@@ -23,16 +24,10 @@ export class ReInscriptionWidgetComponent implements OnInit {
   constructor(private infoscool: SchoolService, private pageTitle: PageTitleService,
     private classeService: ClassStudentService, private studentService: EtudeService) { }
   ngOnInit(): void {
-      this.loa_classe()
       this.getAnneeScolaire();
   }
 
-  loa_classe(){
-    this.classeService.getAll().subscribe(data =>{
-      this.classRoom = data;
-      console.log(this.classRoom, "class");
-    });
-  }
+ 
   // ----------------------------get all annee scolaire
   getAnneeScolaire(){
     this.infoscool.getAll_annee().subscribe(data =>{
@@ -47,7 +42,7 @@ export class ReInscriptionWidgetComponent implements OnInit {
   // -------------------------on select class
   onSelect(event : any){
     const idClasse = event.target.value
-    this.class_select = this.classRoom.find(cl=> cl.id == +idClasse)!;
+    this.class_select = this.nextClass!.find(cl=> cl.id == +idClasse)!;
   }
 
   // ----------------------------on select annee
@@ -58,13 +53,13 @@ export class ReInscriptionWidgetComponent implements OnInit {
   }
   send(){
     const idStudent = this.student?.idEtudiant
-     const idAnnee = this.anneeSelect.id
-     const idClasse = this.class_select.id
 
+    const idClasse = this.class_select.id!
+    const { numero, modules, ...studut } = this.student!;
     
-    console.log(idStudent, "idStudent", idClasse,"idClasse", idAnnee,"idAnnee" )
+    console.log(idStudent, "idStudent", idClasse,"idClasse")
     // return
-    this.studentService.reInscriptionStudent(idStudent!, idClasse!, idAnnee!).subscribe({
+    this.studentService.reInscriptionStudent(studut!, idClasse!).subscribe({
       next: (result)=>{
         this.pageTitle.showSuccessToast(result.message)
         this.closeModal.emit()

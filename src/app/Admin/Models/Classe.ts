@@ -6,9 +6,8 @@ import { AnneeScolaire } from "./School-info";
 export interface ClassRoom{
     id?:number;
     effectifs?: number;
-    scolarite: number;
     idFiliere?: NivFiliere
-    idAnnee?: AnneeScolaire
+    idAnneeScolaire?: AnneeScolaire
 
 }
 

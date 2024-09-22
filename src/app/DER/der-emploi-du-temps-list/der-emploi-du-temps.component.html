@@ -7,7 +7,11 @@
         <div class="tab-head">
             <p>Les emplois du temps en cours</p>
         </div>
-        <button type="button"  (click)="nouveau()"> Nouveau</button>
+        <div class="app" *ngIf="show_add">
+            <app-emplois-du-temps (closeModale)="nouveau()"></app-emplois-du-temps>
+        </div>
+       
+        <button *ngIf="permission" type="button"  (click)="nouveau()"> Nouveau</button>
    </div>
     <table class="table table-bordered">
         <thead>
@@ -21,11 +25,17 @@
         <tbody>
             <ng-container *ngIf="emplois.length; else notFund">
                 <ng-container  *ngFor="let eploi of emplois" >
-                    <tr (click)="toggle_toSeance(eploi.id!)">
+                    <tr>
                         <td>{{eploi.dateDebut}}</td>
                         <td>{{eploi.dateFin}}</td>
                         <td>{{eploi.idSemestre.nomSemetre}}</td>
-                        <td class="next-col">{{eploi.idClasse.idFiliere?.idNiveau?.nom}} {{eploi.idClasse.idFiliere?.idFiliere?.nomFiliere}} <fa-icon  [icon]="icons.next"></fa-icon></td>
+                        <td class="next-col second-child">{{eploi.idClasse.idFiliere?.idNiveau?.nom}} {{eploi.idClasse.idFiliere?.idFiliere?.nomFiliere}} 
+                            <a (click)="deleted(eploi.id!)" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon></a>
+                        
+                            <a (click)="updated(eploi.id!)" ><fa-icon [icon]="icons.edit"></fa-icon></a>
+                            <a (click)="toggle_toSeance(eploi.id!)"><fa-icon [icon]="icons.eye"></fa-icon></a>
+                            
+                        </td>
                     </tr>
                 </ng-container>
                 

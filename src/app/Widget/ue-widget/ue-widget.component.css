@@ -119,9 +119,10 @@ label{
     background-color: white;
     position: absolute;
     border: 1px solid #ddd;
-    top: -236%;
+    top: -266%;
+    width: 250px;
     border-radius: 4px;
-    z-index: 10001;
+    z-index: 1000;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15);
     /* transition: 0.5s; */
    

@@ -18,6 +18,7 @@ export class StudentViewComponent implements OnInit {
   idStudent!: number
   type_status!: Type_status[]
   montantRestant!: number
+  imageUrl!: string
   update_paie_student_form!: FormGroup
   isShow: boolean = false
   
@@ -25,10 +26,14 @@ export class StudentViewComponent implements OnInit {
     private router: ActivatedRoute, private root: Router, public icons: IconsService, private pageTitle: PageTitleService){}
 
   ngOnInit(): void {
+    this.imageUrl = this.student?.urlPhoto || 'assets/business-professional-icon.svg';
     this.loadStudent();
   }
   goBack(){
     this.location.back();
+  }
+  onError() {
+    this.imageUrl = 'assets/business-professional-icon.svg';
   }
   // ------------------label to specifie type student status
   getLabel(): string {
@@ -52,13 +57,13 @@ export class StudentViewComponent implements OnInit {
       this.idStudent = +params['id'];
       this.studentService.getStudent_by_id(this.idStudent).subscribe(data =>{
         this.student = data;
-       console.log( this.student.status , "status")
+       console.log( this.student , "status")
         this.student.urlPhoto = 'http://localhost/StudentImg/'+this.student.urlPhoto
       
       
       const montant_payer = this.student?.scolarite;
       console.log(montant_payer, "payer")
-      const school_scolarite = this.student?.idClasse.scolarite;
+      const school_scolarite = this.student?.idClasse.idFiliere?.scolarite;
       console.log(school_scolarite, "scolarite")
       this.montantRestant = +school_scolarite! - +montant_payer!
 

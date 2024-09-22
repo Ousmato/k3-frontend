@@ -1,0 +1,145 @@
+
+.col-12{
+    padding: 0 10px;
+}
+button{
+    color: var(--secondary);
+    margin-top: 20px;
+    background-color: var(--primary);
+    border: none;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+}
+a{
+  text-decoration: none;
+}
+/* ----------------------------- */
+.class-folder{
+    /* height: 100px; */
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+  }
+ 
+  .effectif{
+    font-size: 14px;
+    font-weight: normal !important;
+  }
+  .icons-style{
+    color: rgb(10, 10, 10);
+    font-size: 2.7rem;
+  }
+  .info-folder p{
+    margin: 0;
+    font-weight: bold;
+    font-size: 14px;
+  }
+  .info-folder{
+    text-align: left;
+  }
+
+.info-folder a{
+    text-decoration: none;
+    display: flex;
+    gap: 8px;
+    margin: 0;
+    cursor: pointer;
+    color: var(--primary);
+    font-size: 14px;
+    &:hover{
+      color: var(--secondary);
+      background-color: var(--primary);
+      padding: 2px;
+      border-radius: 5px;
+      width: 100px;
+    }
+  }
+ .info-folder .title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* -------------------------grid style */
+.grid-container{
+    
+    padding: 10px; 
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+  }
+    .grid-item {
+      position: relative;
+      text-align: center;
+    }
+
+h4{
+    background-color: var(--primary);
+    color: var(--secondary);
+    padding: 10px;
+    font-size: 16px;
+}
+
+/* -----------------------------icons style */
+.btn-container span{
+  padding: 5px;
+  border-radius: 4px;
+  &:hover{
+    color: var(--primary);
+    cursor: pointer;
+    
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15);
+  }
+}
+.btn-container{
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+  align-items: center;
+}
+
+.views li{
+  /* font-weight: 800; */
+ text-align: left;
+  padding: 5px;
+  color: var(--primary);
+  border-bottom: 1px solid var(--tertiary);
+  cursor: pointer;
+  &:hover{
+    color: var(--secondary);
+  }
+}
+
+.views{
+  background-color: #fff;
+  position: absolute;
+  top: 80px;
+  left: 11px;
+  border: 1px solid #ddd;
+  padding: 8px;
+  /* border-radius: 4px; */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+ 
+  }
+
+  .back-button{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    padding: 8px;
+    font-size: 20px;
+    margin: 10px 0;
+    &:hover{
+        background-color: var(--tertiary);
+        color: var(--primary);
+        border: none;
+        border-radius: 50%;
+    }
+
+}

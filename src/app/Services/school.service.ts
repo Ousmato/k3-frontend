@@ -38,4 +38,8 @@ export class SchoolService {
   deleteAnnee(idAnnee: number) : Observable<Response_String>{
     return this.http.delete<Response_String>(`${this.baseUrl}delete-annee-scolaire/${idAnnee}`);
   }
+  // -----------------get all superior annee scolaire
+  getSuperiorAnnee() : Observable<AnneeScolaire[]>{
+    return this.http.get<AnneeScolaire[]>(this.baseUrl+"get-superior-annee");
+  }
 }

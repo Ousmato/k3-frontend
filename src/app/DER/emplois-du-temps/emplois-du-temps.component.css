@@ -7,13 +7,6 @@ main{
    
 }
 
-/*  */
-.one-column{
-   width: 70%;
-   display: flex;
-   flex-direction: column;
-   
-}
 .form-group{
     padding: 10px;
 }
@@ -59,19 +52,33 @@ button{
     justify-content: space-between;
 }
 
+.views{
+    background-color: white;
+    position: absolute;
+    border: 1px solid #ddd;
+    /* top: -236%; */
+    width: 390px;
+    right: 23px;
+    border-radius: 4px;
+    z-index: 1000;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15);
+    /* transition: 0.5s; */
+   
+    }
+
   .back-button{
-    width: 30px;
+    /* width: 30px; */
     height: 30px;
     display: flex;
     align-items: center;
     padding: 8px;
     font-size: 20px;
+    border-radius: 5px;
     margin: 10px 0;
     &:hover{
         background-color: var(--tertiary);
         color: var(--primary);
         border: none;
-        border-radius: 50%;
     }
 
 }
@@ -102,4 +109,57 @@ input:focus, select:focus{
     width: 100%;
     display: flex;
     gap: 20px;
+}
+
+.button-cash{
+    display: flex;
+    gap: 20px;
+    padding: 10px;
+    justify-content: end;
+    
+   
+}
+.span{
+    background-color: var(--primary);
+    color: var(--secondary);
+    font-size: 14px;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.button-cash button{
+    border: none;
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 5px;
+    border-radius: 5px;
+    /* background-color: var(--primary); */
+    color: var(--secondary);
+    cursor: pointer;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+   
+}
+
+
+.button-cash a{
+   text-decoration: none;
+    border: none;
+    margin-top: 8px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: var(--secondary);
+    cursor: pointer;
+    &:hover{
+        
+    background-color: var(--secondary);
+        color: var(--primary);
+    }
+    
 }

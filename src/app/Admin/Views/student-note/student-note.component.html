@@ -11,7 +11,7 @@
         <thead>
             <tr>
               <th>ID</th>
-              <th>Photo</th>
+              <!-- <th>Photo</th> -->
               <th>Nom</th>
               <th>Prenom</th>
               <th>Email</th>
@@ -27,8 +27,8 @@
             <ng-container *ngIf="filterStudents().length; else noResults">
             <ng-container *ngFor="let studens of students">
                 <tr >
-                <td>{{studens.idEtudiant}}</td>
-                <td><img src="{{studens.urlPhoto}}" alt=""></td>
+                <td>{{studens.numero}}</td>
+                <!-- <td><img src="{{studens.urlPhoto}}" alt=""></td> -->
                 <td>{{studens.nom}}</td>
                 <td>{{studens.prenom}}</td>
                 <td>{{studens.email}}</td>

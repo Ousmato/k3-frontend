@@ -71,13 +71,13 @@
                     </span> 
                 </div>
 
-                <div class="input">
+                <!-- <div class="input">
                     <label for="validationDefault05" class="label form-label">Photo :</label>
                     <input type="file"  accept="image/*" class="input-with form-control"  (change)="onFileSelected($event)"  required>
-                    <!-- <span *ngIf="teacher_form.controls['urlPhoto'].invalid && teacher_form.controls['urlPhoto'].touched" [ngStyle]="{color: 'red'}">
+                    <span *ngIf="teacher_form.controls['urlPhoto'].invalid && teacher_form.controls['urlPhoto'].touched" [ngStyle]="{color: 'red'}">
                     Champ obligatoire*
-                    </span> -->
-                </div>
+                    </span>
+                </div> -->
 
                 <div class="radio">
                     <label for="">Choisir le sexe :</label>
@@ -99,17 +99,6 @@
             </div>
             <div class="column-f">
                 <div class="form form-group">
-                    <label>Spécialités :</label> 
-                    <select class="form-select" formControlName="idUe"    [class.is-invalid]="teacher_form.get('idUe')!.invalid && teacher_form.get('idUe')!.touched">
-                        <option  selected disabled value="">Choisir La spécialités </option>
-                        <option *ngFor="let ue of ueList" [value]="ue.id" >{{ue.nomUE}}</option>
-                        <span *ngIf="teacher_form.controls['idUe'].invalid && teacher_form.controls['idUe'].touched" [ngStyle]="{color: 'red'}">
-                            Champ obligatoire*
-                            </span>
-                    </select> 
-                </div>
-
-                <div class="form form-group">
                     <label>Diplomes :</label> 
                     <select class="form-select" formControlName="diplome"  [class.is-invalid]="teacher_form.get('diplome')!.invalid && teacher_form.get('diplome')!.touched">
                         <option  selected disabled value="">Choisir Le diplome</option>
@@ -118,6 +107,32 @@
                     <span *ngIf="teacher_form.controls['diplome'].invalid && teacher_form.controls['diplome'].touched" [ngStyle]="{color: 'red'}">
                         Champ obligatoire*
                     </span> 
+                </div>
+
+
+                <div class="filieres-content">
+                    <div class="ecue-contenaire">
+                        <span class="icons" > <label>Spécialités </label>  
+                            <fa-icon class="icons" [icon]="icons.mimus" (click)="decrement()"></fa-icon>
+                            {{count}}
+                            <fa-icon class="icons" [icon]="icons.plusCircle" (click)="increment()"></fa-icon>
+                        </span>
+                        
+                    </div>
+                    <span  id="error" >Veuillez ajouter au moins une filière</span>
+    
+                    <div class="filieres" *ngFor="let item of filiereNumbers, let i = index">
+                        <div class="form form-group">
+                            <select class="form-select" [formControlName]=" 'idFiliere' +(i + 1)"    [class.is-invalid]="teacher_form.get('idFiliere' + (i +1))!.invalid && teacher_form.get('idFiliere' + (i +1))!.touched" (change)="onSelect($event, i+1)">
+                                <option  selected disabled value="">Choisir La spécialités </option>
+                                <option *ngFor="let fl of filieres" [value]="fl.id" >{{fl.nomFiliere}}</option>
+                                <span *ngIf="teacher_form.controls['idFiliere' + (i +1)].invalid && teacher_form.controls['idFiliere' + (i +1)].touched" [ngStyle]="{color: 'red'}">
+                                    Champ obligatoire*
+                                    </span>
+                            </select> 
+                        </div>
+                    </div>
+                   
                 </div>
 
             </div>

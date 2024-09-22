@@ -3,51 +3,62 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ClassModules } from '../../Admin/Models/ClassModule';
 import { Module } from '../../Admin/Models/Module';
-import { Ue } from '../../Admin/Models/UE';
+import { AddUeDto, Ue } from '../../Admin/Models/UE';
 import { ClassRoom } from '../../Admin/Models/Classe';
 import { Response_String } from '../../Admin/Models/Response_String';
+import { NivFiliere } from '../../Admin/Models/NivFiliere';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClassStudentService {
 
-  constructor(private http : HttpClient) { }
-  private getAll_url = 'http://localhost:8080/api-class/list-class';
+  constructor(private http: HttpClient) { }
   private baseUrl = "http://localhost:8080/api-class/";
 
-  getAll() : Observable<ClassRoom[]>{
-    return this.http.get<ClassRoom[]>(this.getAll_url);
+  // ---------------------------------------
+  getAllCurrentClassOfYear(): Observable<ClassRoom[]> {
+    return this.http.get<ClassRoom[]>(this.baseUrl + "list-class");
+  }
+  getCurrentClassOfYearWithUe(): Observable<ClassRoom[]> {
+    return this.http.get<ClassRoom[]>(this.baseUrl + "current-classe-with-ue");
+  }
+
+  getAllClasse(idAnnee: number) : Observable<ClassRoom[]> {
+    return this.http.get<ClassRoom[]>(this.baseUrl + "get-all-classe-by-id-annee/"+idAnnee);
   }
   // -------------------------------------add modules in classroom
   createClassModule(modules: ClassModules): Observable<Response_String> {
     return this.http.post<Response_String>(`${this.baseUrl}add-module-class`, modules);
   }
-//  ------------------------get class by id
+  //  ------------------------get class by id
   getClassById(id: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}class/${id}`);
   }
-//  ------------------------get All module of class
+  //  ------------------------get All module of class
   getAllModules(id: number): Observable<Module[]> {
     return this.http.get<Module[]>(`${this.baseUrl}all-module/${id}`);
-   
+
   }
-//  ------------------------get all module without note in classe
+  //  ------------------------get all module without note in classe
   getAllModulesWithoutNote(idClasse: number): Observable<Module[]> {
-    return this.http.get<Module[]>(this.baseUrl + "all-module-without-note/" +idClasse);
-   
+    return this.http.get<Module[]>(this.baseUrl + "all-module-without-note/" + idClasse);
+
   }
   // ---------------------all module without note
-  allModuleWithoutNotes() : Observable<Module[]>{
+  allModuleWithoutNotes(): Observable<Module[]> {
     return this.http.get<Module[]>(this.baseUrl + "all-module-without-note_all");
   }
   // ------------------------------------------------------------------
-  getAllModulesByUeId(idUe: number) :Observable<Module[]>{
+  getAllModulesByUeId(idUe: number): Observable<Module[]> {
     return this.http.get<Module[]>(`${this.baseUrl}list-by-idUe/${idUe}`);
   }
-//  -----------------------get all ue by classe id
-  getAll_ue(idClasse: number): Observable<Ue[]> {
-    return this.http.get<Ue[]>(`${this.baseUrl}list-ue/${idClasse}`);
+  //  -----------------------get all ue by classe id
+  getAll_ue(idClasseNivFil: number, idSemestre: number): Observable<AddUeDto[]> {
+    return this.http.get<AddUeDto[]>(`${this.baseUrl}list-ue/${idClasseNivFil}/${idSemestre}`);
+  }
+  getAllUeByIdClasse(idClasse: number): Observable<Ue[]> {
+    return this.http.get<Ue[]>(this.baseUrl + "all-ue-by-idClasse/" + idClasse)
   }
   // --------------------------------------------update classe
   update_classe(classe: ClassRoom): Observable<Response_String> {
@@ -58,5 +69,31 @@ export class ClassStudentService {
   countClassNumber(): Observable<number> {
     return this.http.get<number>(this.baseUrl + 'count-class');
   }
-  
+
+  // -----------------------get all archives of classe by idNivFil(mention)
+  getAllArchivesByClasseIdNivFil(idNivFil: number): Observable<ClassRoom[]> {
+    console.log(idNivFil, "idNivFil")
+    return this.http.get<ClassRoom[]>(this.baseUrl + "get-all-archives-by-class-id/" + idNivFil);
+  }
+
+  getAllNivFil(): Observable<NivFiliere[]> {
+    return this.http.get<NivFiliere[]>(this.baseUrl + "all-niv-filiere");
+  }
+
+  // -----------------------add pomotion classe
+  addProClasse(idNivFil: number, idAnnee: number,): Observable<Response_String> {
+    return this.http.get<Response_String>(this.baseUrl + "add-promotion-classe/" + idAnnee + "/" + idNivFil);
+  }
+  // -------------------------delete promotion classe
+  deleteProClasse(idClasse: number): Observable<Response_String> {
+    return this.http.delete<Response_String>(this.baseUrl + "delete-promotion-classe/" + idClasse);
+  }
+  // -----------update promotion classe
+  updateProClasse(idClasse: number, idAnnee: number,): Observable<Response_String> {
+    return this.http.get<Response_String>(this.baseUrl + "update-promotion-classe/" + idAnnee + "/" + idClasse);
+  }
+  // ---------------------------get list of supperior class
+  getNextClasseByIdPrevious(idClasse: number): Observable<ClassRoom[]> {
+    return this.http.get<ClassRoom[]>(this.baseUrl + "get-all-next-classe-by-id/" + idClasse);
+  }
 }

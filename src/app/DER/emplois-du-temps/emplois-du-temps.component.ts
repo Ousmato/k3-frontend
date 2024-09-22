@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Semestres } from '../../Admin/Models/Semestre';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IconsService } from '../../Services/icons.service';
@@ -23,79 +23,73 @@ export class EmploisDuTempsComponent implements OnInit {
   days: string[] = [];
   modules: Module[] = [];
   // currentEmploi?: DtoEmploi
-  is_showJour: boolean = false;
-  
- current!: Semestres ;
- EmploisAdd! : FormGroup;
- current_emplois!: Emplois;
- classRomId!: number;
- plageHoraire: string[] =[]
- module_fund?: Module
- classRoom: ClassRoom [] = [];
- classModule!: ClassModules;
- 
-datesWithDays: { day: string, date: string }[] = [];
- formattedDateFin: any;
-//  -----------------------------------constructor
-  constructor(
-    public icon : IconsService, public icons: IconsService, 
-    private semestreService: SemestreService, private classService: ClassStudentService, private datePipe: DatePipe,
-    private fb: FormBuilder, private emploisService: ServiceService,private pageTitle: PageTitleService, private location: Location){}
-  // -------------------------------------------ngOinit
-    ngOnInit(): void {
-      // this.getStatusOptions()
-      this.load_form();
-    
-      this.classService.getAll().subscribe(data =>{
-        this.classRoom = data;
-        console.log("classe :", this.classRoom);
-      })
-    // ------------------------------------get all semestre
-    this.semestreService.getAllSemestre().subscribe((response: Semestres[]) =>{
-      this.semestre = response;
-      console.log(this.semestre);
-    })
-  //  ---------------------------get list dates between dateDebut emplois and dateFin emplois
-  
-}
+  isShow: boolean = false;
 
-nouveau(){
-  this.is_showJour =! this.is_showJour
-}
-// load form
-load_form(){
-  this.EmploisAdd = this.fb.group({
-    idSemestre: ['',Validators.required],
-    idClasse: ['',[Validators.required]],
-    idModule: ['', Validators.required],
-    // seanceType: ['', Validators.required],
-    dateDebut: ['', Validators.required],
-    dateFin: [{ value: '', disabled: true }]
-  })
-}
-goBack(){
-  this.location.back();
-}
-loadModulesByClass(idClasse: number) : void{
-  this.classService.getAllModules(idClasse).subscribe((data: Module[]) => {
-   this.modules = data;
-   console.log(this.modules,"modules");
- 
-   })
-  
-}
+  @Output() closeModale = new EventEmitter<any>()
+  current!: Semestres;
+  EmploisAdd!: FormGroup;
+  current_emplois!: Emplois;
+  classRomId!: number;
+  plageHoraire: string[] = []
+  module_fund?: Module
+  classRoom: ClassRoom[] = [];
+  classModule!: ClassModules;
+
+  datesWithDays: { day: string, date: string }[] = [];
+  formattedDateFin: any;
+  //  -----------------------------------constructor
+  constructor(
+    public icon: IconsService, public icons: IconsService,
+    private semestreService: SemestreService, private classService: ClassStudentService, private datePipe: DatePipe,
+    private fb: FormBuilder, private emploisService: ServiceService, private pageTitle: PageTitleService, private location: Location) { }
+  // -------------------------------------------ngOinit
+  ngOnInit(): void {
+    // this.getStatusOptions()
+    this.load_form();
+
+    this.classService.getCurrentClassOfYearWithUe().subscribe(data => {
+      data.forEach(clr => {
+        if(!this.classRoom.some(cl => cl.id == clr.id)){
+          this.classRoom.push(clr)
+        }
+      });
+      console.log("classe :", this.classRoom);
+    })
+  }
+
+  load_form() {
+    this.EmploisAdd = this.fb.group({
+      idSemestre: ['', Validators.required],
+      idClasse: ['', [Validators.required]],
+      idModule: ['', Validators.required],
+      // seanceType: ['', Validators.required],
+      dateDebut: ['', Validators.required],
+      dateFin: [{ value: '', disabled: true }]
+    })
+  }
+  goBack() {
+    this.location.back();
+  }
+  loadModulesByClass(idClasse: number): void {
+    this.classService.getAllModules(idClasse).subscribe((data: Module[]) => {
+      this.modules = data;
+      console.log(this.modules, "modules");
+
+    })
+
+  }
   // --------------------------------add emplois
-  addEmplois(){
+  addEmplois() {
     if (this.EmploisAdd.valid) {
-      
+
       console.log("form valid")
       const formData = this.EmploisAdd.value;
 
       const classe = this.classRoom.find(cl => cl.id == formData.idClasse);
       const module = this.modules.find(mod => mod.id == formData.idModule);
-      
+
       const semestre: Semestres = this.semestre.find(sm => sm.id === formData.idSemestre)!;
-      const emplois : Emplois = {
+      const emplois: Emplois = {
         idSemestre: semestre,
         idModule: module!,
         dateDebut: formData.dateDebut,
@@ -103,37 +97,44 @@ loadModulesByClass(idClasse: number) : void{
         idClasse: classe!,
 
       }
-     this.emploisService.addEmplois(emplois).subscribe({
-      next: (result) =>{
-        this.pageTitle.showSuccessToast(result.message);
-        this.EmploisAdd.reset();
-        this.ngOnInit();
-        this.is_showJour = false;
+      this.emploisService.addEmplois(emplois).subscribe({
+        next: (result) => {
+          this.pageTitle.showSuccessToast(result.message);
+          this.EmploisAdd.reset();
+          this.ngOnInit();
+          // this.is_showJour = false;
 
-      },
-      error: (err) =>{
-        this.pageTitle.showErrorToast(err.error.message);
-      }
-     })
-    }else{
+        },
+        error: (err) => {
+          this.pageTitle.showErrorToast(err.error.message);
+        }
+      })
+    } else {
       this.EmploisAdd.markAllAsTouched();
       console.log(this.EmploisAdd.value);
     }
   }
- 
+
   // // ------------------------------module select
-  moduleSelect(event: any){
-    const idModule = event.target.value; // Récupérez la valeur brute
-    console.log("Valeur brute sélectionnée :", idModule);
-    
-    const idModuleNumber = +idModule; // Convertissez en nombre
-    console.log("Valeur convertie en nombre :", idModuleNumber);
-  
-    console.log(idModule, "idclasse")
-    this.loadModulesByClass(idModule);
-   
+  classSelect(event: any) {
+    const idClasse = event.target.value; 
+
+    this.loadModulesByClass(idClasse);
+    const classeSelect = this.classRoom.find(cl =>cl.id == idClasse);
+
+     // ------------------------------------get all semestre
+     this.semestreService.getCurrentSemestresByIdNivFiliere(classeSelect?.idFiliere?.id!).subscribe((response: Semestres[]) =>{
+      response.forEach(sm =>{
+        if(!this.semestre.some(s => s.id ==sm.id)){
+          this.semestre.push(sm)
+        }
+      });
+      console.log(this.semestre);
+    })
+    this.isShow = true
+
   }
-  check_date(event: any){
+  check_date(event: any) {
     const dateDebu = event.target.value;
 
     const dateDebut = new Date(dateDebu!);
@@ -141,26 +142,32 @@ loadModulesByClass(idClasse: number) : void{
     const dateFin = new Date(dateDebut);
     dateFin.setDate(dateDebut.getDate() + 5);
     this.formattedDateFin = this.datePipe.transform(dateFin, 'yyyy-MM-dd');
-    
+
     this.EmploisAdd.get('dateFin')?.setValue(this.formattedDateFin);
     // console.log(this.EmploisAdd.value, this.formattedDateFin, "000000000000000")
     this.datesWithDays = this.emploisService.getDaysBetweenDates(dateDebu, this.formattedDateFin);
     // console.log(this.datesWithDays, "dates days component")
-    this.datesWithDays.sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    this.datesWithDays.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     this.sortByDay()
     // this.is_showJour = true
   }
- 
+
   sortByDay() {
     const daysOfWeek = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
 
-  // Trier les séances par jour en utilisant l'ordre défini dans daysOfWeek
-  this.datesWithDays.sort((a, b) => {
-    const dayIndexA = daysOfWeek.indexOf(a.day!);
-    const dayIndexB = daysOfWeek.indexOf(b.day!);
-    
-    return dayIndexA - dayIndexB;
-  });
+    // Trier les séances par jour en utilisant l'ordre défini dans daysOfWeek
+    this.datesWithDays.sort((a, b) => {
+      const dayIndexA = daysOfWeek.indexOf(a.day!);
+      const dayIndexB = daysOfWeek.indexOf(b.day!);
+
+      return dayIndexA - dayIndexB;
+    });
   }
+
+  
+  close(){
+    this.closeModale.emit();
+  }
+
 
 }

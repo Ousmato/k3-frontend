@@ -58,7 +58,7 @@ export class PromotionWidgetComponent implements OnInit {
       finAnnee: formData.finAnnee
     }
     console.log(annee, "promotion");
-    return
+    // return
     if(this.form_annee.valid){
       this.infoSchool.addAnnee(annee).subscribe({
         next: (result) =>{

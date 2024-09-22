@@ -50,11 +50,11 @@ studentStatusOptions: { key: string, value: string }[] = [];
       idClasse: ['', Validators.required],
       lieuNaissance: ['',Validators.required],
       dateNaissance: ['',Validators.required],
-      idAnneeScolaire: ['', Validators.required] 
+      // idAnneeScolaire: ['', Validators.required] 
     });
     // ----------------------------------------------------------------------
     
-    this.classeService.getAll().subscribe(data =>{
+    this.classeService.getAllCurrentClassOfYear().subscribe(data =>{
       this.classRoom = data;
       console.log(this.classRoom);
     });
@@ -106,9 +106,7 @@ load_all_annee(){
       }
       // console.log(this.classRoom.find(c => c.id === formData.idClasse));
       const classe: ClassRoom = this.classRoom.find(c => c.id === +formData.idClasse)!;
-      const annee = this.anneeScolaire.find(ans=>ans.id == +formData.idAnneeScolaire);
-      if (annee) {
-        const { ans, ...anneeSansAns } = annee;
+      
       
       const student: Student = {
         nom: formData.nom,
@@ -118,7 +116,6 @@ load_all_annee(){
         status: formData.status,
         telephone: formData.telephone,
         password: formData.password,
-        idAnneeScolaire: anneeSansAns!,
         matricule: formData.matricule,
         // date: formData.date,
         lieuNaissance: formData.lieuNaissance,
@@ -146,7 +143,6 @@ load_all_annee(){
       this.studentForm.markAllAsTouched();
       console.log("Veuillez remplir tous les champs correctement!");
     }
-  }
   }
   // --------------------------back button
   goBack(){

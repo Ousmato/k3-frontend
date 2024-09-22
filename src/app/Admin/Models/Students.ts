@@ -19,7 +19,6 @@ export interface Student {
     urlPhoto?: string;
     matricule: string;
     date?: string; 
-    idAnneeScolaire: AnneeScolaire;
     lieuNaissance: string;
     dateNaissance: string; 
     idClasse : ClassRoom;
@@ -56,4 +55,10 @@ export interface Participant{
 export interface Student_count{
     inscrit: number;
     non_inscrit: number;
+}
+
+export interface Student_import {
+    idClasse: number;
+    idAnnee: number;
+    students: Student[]
 }

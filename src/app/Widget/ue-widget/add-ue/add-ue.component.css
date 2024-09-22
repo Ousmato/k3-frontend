@@ -1,0 +1,74 @@
+.views{
+    padding: 10px;
+}
+select{
+    margin-bottom: 10px;
+}
+
+input:focus, select:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+.button-cash button{
+    border: none;
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 5px;
+    border-radius: 5px;
+    /* background-color: var(--primary); */
+    color: var(--secondary);
+    cursor: pointer;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+   
+}
+label{
+    margin-bottom: 5px;
+}
+
+.button-cash a{
+   text-decoration: none;
+    border: none;
+    margin-top: 8px;
+    padding: 5px;
+    border-radius: 5px;
+    color: var(--secondary);
+    background-color: var(--primary);
+    cursor: pointer;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+    
+}
+.button-cash{
+    display: flex;
+    gap: 20px;
+    justify-content: end;
+    
+}
+
+.icons{
+    font-size: 12px;
+    color: var(--primary);
+}
+.container-ecue{
+    display: flex;
+    padding: 5px;
+    margin-top: 8px;
+    border-radius: 5px;
+    gap: 8px;
+    border: 1px solid var(--tertiary);
+}
+.coefficient{
+    width: 90%;
+}
+#error{
+    display: none;
+    font-size: 12px;
+    color: red;
+}

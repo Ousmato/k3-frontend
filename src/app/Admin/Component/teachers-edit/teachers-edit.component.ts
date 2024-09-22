@@ -140,7 +140,6 @@ export class TeachersEditComponent implements OnInit {
         sexe: formData.sexe,
         telephone: formData.telephone,
         status: formData.status,
-        idUe: idUe!,
         diplome: formData.diplome
 
         

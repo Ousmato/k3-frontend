@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Teacher, TeachersStatus } from '../../Models/Teachers';
+import { ProfilDto, Teacher, TeachersStatus } from '../../Models/Teachers';
 import { IconsService } from '../../../Services/icons.service';
 import { EnseiService } from './ensei.service';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { TeacherPages } from '../../Models/Pagination-module';
 import { SideBarService } from '../../../sidebar/side-bar.service';
+import { Filiere } from '../../Models/Filieres';
 
 @Component({
   selector: 'app-enseignant',
@@ -12,18 +13,20 @@ import { SideBarService } from '../../../sidebar/side-bar.service';
   styleUrl: './enseignant.component.css'
 })
 export class EnseignantComponent implements OnInit {
-  enseignants: Teacher [] =[];
-  searchTerm : string = "";
+  enseignants: Teacher[] = [];
+  searchTerm: string = "";
 
   teachers!: TeacherPages;
   page = 0;
   size = 10;
-  filteredItems : Teacher[] = []
+  filteredItems: Teacher[] = []
   pages: number[] = []
 
+  profiles: ProfilDto[] = []
+  // profiles: ProfilDto[] = []
   current_enseignat_create!: Teacher;
-  
-  
+
+
 
   constructor(public icons: IconsService, private root: Router, private sideBareService: SideBarService,
     private enseignantService: EnseiService) { }
@@ -34,15 +37,15 @@ export class EnseignantComponent implements OnInit {
     this.sideBareService.currentSearchTerm.subscribe(term => {
       this.searchTerm = term;
       this.filterTeachers();
-    
+
     });
   }
 
   filterTeachers() {
     if (!this.searchTerm) {
-     return this.filteredItems = this.enseignants;
+      return this.filteredItems = this.enseignants;
     } else {
-    return  this.filteredItems = this.enseignants.filter(enseignant =>
+      return this.filteredItems = this.enseignants.filter(enseignant =>
         enseignant.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         enseignant.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         enseignant.email.toLowerCase().includes(this.searchTerm.toLowerCase())
@@ -51,7 +54,7 @@ export class EnseignantComponent implements OnInit {
   }
 
   // ---------------------------toggle to edit page
-  toggle_toEdit(idEnseignant: number){
+  toggle_toEdit(idEnseignant: number) {
     const navigationExtras: NavigationExtras = {
       queryParams: { id: idEnseignant }
     };
@@ -60,16 +63,32 @@ export class EnseignantComponent implements OnInit {
   // -----------------------------load teacher by pages
   loadTeachers(): void {
     this.enseignantService.getTeachers(this.page, this.size).subscribe(data => {
-      this.enseignants = data.content;
-      this.enseignants.forEach((item, index) => {
-        item.numero = index + 1;
-        item.urlPhoto = `http://localhost/StudentImg/${item.urlPhoto}`;
+      // data.content.forEach(dc => dc.)
+      // this.profiles
+      data.content.forEach(p =>{
+
+        console.log(data.content, "data content")
+
+        if(!this.enseignants.some(en => en.idEnseignant === p.teachers.idEnseignant)){
+          this.enseignants.push(p.teachers);
+          this.profiles.push(p)
+        }
+        
+        console.log(this.profiles, "-------------------enseignant------------")
+        this.enseignants.forEach((item, index) => {
+       
+          item.numero = index + 1;
+          item.urlPhoto = `http://localhost/StudentImg/${item.urlPhoto}`;
+          
+        })
       })
+      
       this.teachers = data;
       this.filteredItems = this.enseignants;
       this.pages = Array.from({ length: data.totalPages! }, (_, i) => i);
 
-      console.log(this.teachers, "pagenation teachers")
+      // console.log(this.teachers, "pagenation teachers")
+     
     });
   }
   // ------------------------------next page
@@ -92,13 +111,27 @@ export class EnseignantComponent implements OnInit {
     }
   }
 
-  timeWorks(){
+  timeWorks() {
     this.searchTerm = ''
     this.ngOnInit()
     this.root.navigate(['/der/paiement']);
   }
 
-  addTeacher(){
+  addTeacher() {
     this.root.navigate(['/der/t-singin']);
+  }
+
+  // ----------------------abreviation name filiere
+  abbreviateFiliereName(nomFiliere: string): string {
+    // Découper le nom de la filière en mots
+    const words = nomFiliere.split(' ');
+  
+    // Garder uniquement les mots de plus de 3 lettres pour l'abréviation
+    const abbreviation = words
+      .filter(word => word.length > 3) // Ne prendre que les mots significatifs
+      .map(word => word[0].toUpperCase()) // Prendre la première lettre en majuscule
+      .join(''); // Joindre les lettres pour former l'abréviation
+  
+    return abbreviation;
   }
 }

@@ -11,7 +11,12 @@
             <div class="chil">
                 <div class="image-column">
                     <div class="pop-img">
-                        <img  [src]="student?.urlPhoto" alt="">
+                        <img 
+                        [src]="imageUrl" 
+                        (error)="onError()" 
+                        alt="Profile Image">
+                        <!-- <img [src]="student?.urlPhoto ? student?.urlPhoto : 'assets/business-professional-icon.svg'" alt="Profile Image"> -->
+
                       </div>
                     <div class="inputs-box">
                         <div class="input">

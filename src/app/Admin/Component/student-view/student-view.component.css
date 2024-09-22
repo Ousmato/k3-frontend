@@ -24,6 +24,12 @@ form{
     border-radius: 8px;
 }
 
+.pop-img {
+    height: 135px;
+    width: auto;
+    border: 1px solid var(--tertiary);
+    /* color: #ccc; */
+}
 
 .input{
     margin-top: 10px;

@@ -27,6 +27,7 @@ export class ClasseroomWidgetComponent implements OnInit {
   classes: ClassRoom[] = []
   annees: AnneeScolaire[] = []
   filieres: Filiere[] = []
+  nivFilieres: NivFiliere[] = []
   niveaux: Niveau[] = []
   update_classe_form!: FormGroup
   addClass!: FormGroup
@@ -46,10 +47,9 @@ export class ClasseroomWidgetComponent implements OnInit {
 
   onClasseChange(event: any){
     const idSelect = event.target.value
-    const selectClasse = this.classes.find(c =>c.id == idSelect)
-    this.update_classe_form.get("id")?.setValue(selectClasse?.id);
-    this.update_classe_form.get("idFiliere")?.setValue(selectClasse?.idFiliere);
+    const selectClasse = this.nivFilieres.find(c =>c.id == idSelect)
     this.update_classe_form.get("scolarite")?.setValue(selectClasse?.scolarite);
+    this.update_classe_form.get("id")?.setValue(selectClasse?.id);
 
 
   }
@@ -64,9 +64,15 @@ export class ClasseroomWidgetComponent implements OnInit {
   delete_classe(idSelect: number){}
   // ----------------------------------load classes
   load_all_classe(){
-    this.classService.getAll().subscribe((res: ClassRoom[]) =>{
+    this.classService.getAllCurrentClassOfYear().subscribe((res: ClassRoom[]) =>{
       this.classes = res;
     })
+  }
+  get_nivFiliere(){
+    this.classService.getAllNivFil().subscribe(data =>{
+      this.nivFilieres = data;
+    })
+
   }
   // ---------------------------------load form
   load_form_update(){
@@ -100,7 +106,6 @@ export class ClasseroomWidgetComponent implements OnInit {
 // ---------------------------------form to create class-room
 load_form_add(){
   this.addClass = this.fb.group({
-    idAnnee: ['', Validators.required],
     idNiveau: ['',Validators.required],
     idFiliere: ['',Validators.required],
     scolarite: ['',[Validators.required, Validators.min(100000), Validators.max(3000000)]]
@@ -110,14 +115,16 @@ load_form_add(){
 // -----------------------------methode add class-room
   createClassroom(){
     const formData = this.addClass.value;
-    const classe: DTONivauFiliereClass = {
-      scolarite: formData.scolarite,
-      idFiliere: formData.idFiliere,
-      idNiveau: formData.idNiveau!,
-      idAnnee: formData.idAnnee!
+    const niveau = this.niveaux.find(nv => nv.id == formData.idNiveau);
+    const filiere = this.filieres.find(fl => fl.id == formData.idFiliere);
+    const nivFil : NivFiliere ={
+      idNiveau: niveau!,
+      idFiliere: filiere!,
+      scolarite: formData.scolarite
     }
+    
     if(this.addClass.valid){
-        this.setService.addClass(classe).subscribe({
+        this.setService.addNiveauFiliere(nivFil).subscribe({
           next: (response) =>{
             this.pageTitle.showSuccessToast(response.message);
             this.addClass.reset();
@@ -138,34 +145,31 @@ load_form_add(){
     
 
   }
-// ----------------------------method update
-update_classe(){
-  const formData = this.update_classe_form.value;
-  const fliere =  formData.idFiliere;
-  const id = formData.id;
-  const classe : ClassRoom ={
-    id: id,
-    // effectifs: formData.effectifs,
-    scolarite: formData.scolarite,
-    idFiliere: fliere
-  }
-  if(this.update_classe_form.valid){
-    this.classService.update_classe(classe).subscribe({
-      // console.log(response);
-      next: (response) =>{
-        this.pageTitle.showSuccessToast(response.message);
-        this.closeModal.emit();
-      }, 
-      error: (erreur) =>{
-        this.pageTitle.showErrorToast(erreur.error.message);
-      }
-    })
-  }else{
+
+  // --------------------update
+  update_classe(){
+    const formData = this.update_classe_form.value;
+    
+    if(this.update_classe_form.valid){
+        this.setService.updateNiveauFiliere(formData).subscribe({
+          next: (response) =>{
+            this.pageTitle.showSuccessToast(response.message);
+            this.update_classe_form.reset();
+            this.get_nivFiliere();
+            this.show_update = false;
+            this.closeModal.emit();
+          }, 
+          error: (erreur)=>{
+            this.pageTitle.showErrorToast(erreur.error.message);
+          }
+      
+      })
+    }else{
     this.update_classe_form.markAllAsTouched();
-    console.log("invalid", this.update_classe_form.value)
+    
   }
-  
 }
+
   close_update(){
     this.show_update = false
     this.closeModal.emit();
@@ -180,6 +184,7 @@ update_classe(){
     this.closeModal.emit();
   }
   show_updated(){
+    this.get_nivFiliere();
     this.show_update = true
     this.closeModal.emit();
   }

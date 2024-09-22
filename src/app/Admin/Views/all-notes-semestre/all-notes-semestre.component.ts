@@ -34,6 +34,7 @@ export class AllNotesSemestreComponent  implements OnInit{
   searchTerm: string = '';
   page = 0;
   size = 10;
+  anneeScolaire!: any
   filteredItems : Student[] = []
   pages: number[] = []
 
@@ -148,7 +149,7 @@ export class AllNotesSemestreComponent  implements OnInit{
       // const dtf = new Date(this.school.anneeScolaire.finAnnee);
       // const yearDte = dte.getFullYear();
       // const yearDtf = dtf.getFullYear();
-      // this.school.annee = yearDte + '-' + yearDtf;
+      // this.school.anneeScolaire.;
     //  console.log(this.school.annee_de, "0000000000000000")
 
     })
@@ -157,6 +158,10 @@ export class AllNotesSemestreComponent  implements OnInit{
   getCurrentSemestre(){
     this.semestreService.getCurentSemestre().subscribe(data => {
       this.semestre = data;
+      const date = new Date(this.semestre.idAnneeScolaire.debutAnnee)
+      const year = date.getFullYear();
+      this.anneeScolaire = `${year} - ${year + 1}`
+      // console.log(anneeScolaire, "annee")
     })
   }
   // -------------------------------------------get classe

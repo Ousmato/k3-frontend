@@ -104,7 +104,7 @@ export class DerEditSeanceComponent implements OnInit{
 
   // ----------------------load class-room
   load_classe(){
-    this.classService.getAll().subscribe(data =>{
+    this.classService.getAllCurrentClassOfYear().subscribe(data =>{
       this.classes = data;
     })
   }

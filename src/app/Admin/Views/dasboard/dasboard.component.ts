@@ -59,7 +59,7 @@ export class DasboardComponent  implements OnInit{
   }
   // -----------------------------count number of classe
   countClasses(){
-    this.classeService.getAll().subscribe(res =>{
+    this.classeService.getAllCurrentClassOfYear().subscribe(res =>{
       this.classesCount = res.length;
       // console.log(this.classesCount);
     });

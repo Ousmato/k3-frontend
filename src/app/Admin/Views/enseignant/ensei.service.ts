@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Teacher } from '../../Models/Teachers';
+import { ProfilDto, Teacher } from '../../Models/Teachers';
 import { Teacher_presence } from '../../Models/objectPresence';
-import { Seances } from '../../Models/Seances';
 import { Presence } from '../../Models/Teacher-presence';
 import { Paie, PaieDTO } from '../../Models/paie';
 import { Response_String } from '../../Models/Response_String';
 import { Paie_Pages, Presence_pages, Teacher_presence_pages, TeacherPages } from '../../Models/Pagination-module';
+import { Filiere } from '../../Models/Filieres';
 
 @Injectable({
   providedIn: 'root'
@@ -30,11 +30,11 @@ export class EnseiService {
   }
 
   // -----------------------------add enseignant
-  create(teacher: Teacher, photo: File): Observable<Response_String>{
-    const formData = new FormData();
-    formData.append('teacher', JSON.stringify(teacher));
-    formData.append('file', photo!);
-    return this.http.post<Response_String>(this.baseUrl + 'add', formData);
+  create(dto: ProfilDto): Observable<Response_String>{
+    // const formData = new FormData();
+    // formData.append('teacher', JSON.stringify(teacher));
+    // formData.append('file', photo!);
+    return this.http.post<Response_String>(this.baseUrl + 'add', dto);
   }
   // ------------------------------get enseignant detaille  emplois by id 
   getTeacherPresence(id: number ) : Observable<Teacher_presence>{
@@ -58,8 +58,8 @@ export class EnseiService {
     return this.http.get<Presence[]>(this.baseUrl + 'list-presence');
   }
   // --------------------------------add paie
-  getAll_Teacher_By_IdUe(idUe : number) : Observable<Teacher[]>{
-    return this.http.get<Teacher[]>(this.baseUrl+"list-teacher-by-idUe/"+ idUe);
+  getAll_Teacher_By_IdUe(idFiliere : number) : Observable<Teacher[]>{
+    return this.http.get<Teacher[]>(this.baseUrl+"list-teacher-by-filiere/"+ idFiliere);
   }
   // -----------------------------------get all paie
   // getAllPaie(page: number, size: number) : Observable<Paie_Pages>{
@@ -85,7 +85,7 @@ export class EnseiService {
   }
   // ----------------------------------lad teacher by pagination
   getTeachers(page: number, size: number): Observable<TeacherPages> {
-    return this.http.get<TeacherPages>(`${this.baseUrl}list?page=${page}&size=${size}`);
+    return this.http.get<TeacherPages>(`${this.baseUrl}all-techer-by-with-profile?page=${page}&size=${size}`);
   }
   // -----------------------------------method pour appeller tous les presence du mois
   getAll_presence_ofMonth(page: number, size: number): Observable<Presence_pages> {
@@ -100,4 +100,5 @@ export class EnseiService {
   countTeacherNumber() : Observable<number>{
     return this.http.get<number>(this.baseUrl+"count-teacher-number")
   }
+
 }

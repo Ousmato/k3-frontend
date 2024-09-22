@@ -39,7 +39,7 @@
               <td>
                   <div class="btn-contenaire">
                     
-                      <a (click)="getStudentView(studens)" ><fa-icon [icon]="icons.eye"></fa-icon><span>Details</span></a>
+                      <a (click)="getStudentView(studens)" ><fa-icon [icon]="icons.userCheck"></fa-icon><span>{{permission ? 'Details' : 'Valider'}}</span></a>
                       <a *ngIf="permission" (click)="getStudent(studens)"><fa-icon [icon]="icons.edit"></fa-icon><span>Modifier</span></a>
                       
                   </div>

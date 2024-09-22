@@ -1,0 +1,39 @@
+<main>
+    <div (click)="goBack()" class="back-button">
+        <fa-icon [icon]="icons.back"></fa-icon>
+    </div>
+    
+    <select   (change)="onSelect($event)">
+        <option  selected disabled value="">Semestre</option>
+        <option  *ngFor="let sem of semestres" [value]="sem.id">{{sem.nomSemetre}}</option>
+    </select>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>ECUE</th>
+                <th class="coef">Coefficient</th>
+                <!-- <th>Mensions</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let ue of ues">
+                <td >{{ ue.idUe.nomUE }}</td>
+                <td >
+                     @for (item of ue.modules; track $index) {
+                        
+                        {{item.nomModule}} <br>
+                     }
+                </td>
+                <td class="coef">
+                    @for (item of ue.modules; track $index) {
+                        
+                        {{item.coefficient}} <br>
+                     }
+                </td>
+               
+            </tr>
+        </tbody>
+    </table>
+
+</main>

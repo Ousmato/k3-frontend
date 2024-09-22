@@ -4,10 +4,10 @@ import { Teacher_presence } from "./objectPresence";
 import { Paie } from "./paie";
 import { Student } from "./Students";
 import { Presence } from "./Teacher-presence";
-import { Teacher } from "./Teachers";
+import { ProfilDto, Teacher } from "./Teachers";
 
 export interface TeacherPages{
-    content: Teacher[];
+    content: ProfilDto[];
     totalElements: number;
     totalPages?: number;
     size: number;

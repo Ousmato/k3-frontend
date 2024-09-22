@@ -79,6 +79,12 @@ import { PromotionWidgetComponent } from './Widget/promotion-widget/promotion-wi
 import { ModuleWidgetComponent } from './Widget/module-widget/module-widget.component';
 import { UeWidgetComponent } from './Widget/ue-widget/ue-widget.component';
 import { SemestreWidgetComponent } from './Widget/semestre-widget/semestre-widget.component';
+import { AddUeComponent } from './Widget/ue-widget/add-ue/add-ue.component';
+import { ViewUeComponent } from './Widget/ue-widget/view-ue/view-ue.component';
+import { AddClassPromotionComponent } from './Widget/classeroom-widget/add-class-promotion/add-class-promotion.component';
+import { ClassArchiveComponent } from './DGA/class-students/class-archive/class-archive.component';
+import { RSImportComponent } from './R-SCOLARITE/r-s-import/r-s-import.component';
+import { SpinnerComponent } from './Widget/spinner/spinner.component';
 
 registerLocaleData(localeFr);
 @NgModule({
@@ -151,6 +157,12 @@ registerLocaleData(localeFr);
     ModuleWidgetComponent,
     UeWidgetComponent,
     SemestreWidgetComponent,
+    AddUeComponent,
+    ViewUeComponent,
+    AddClassPromotionComponent,
+    ClassArchiveComponent,
+    RSImportComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,

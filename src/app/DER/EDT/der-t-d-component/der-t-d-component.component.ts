@@ -77,10 +77,10 @@ load_form(){
    // ----------------------get all teachers
    getAllTeacherByIdUe(){
     console.log(this.currentEmploi, "---------------")
-    const idUe = this.currentEmploi.idModule.idUe.id
-    this.teacherService.getAll_Teacher_By_IdUe(idUe!).subscribe(result => {
+    const idProfile = this.currentEmploi.idClasse.idFiliere?.idFiliere.id
+    this.teacherService.getAll_Teacher_By_IdUe(idProfile!).subscribe(result => {
       this.enseignants = result;
-      // console.log(this.enseignants, "enseignants");
+      console.log(this.enseignants, "enseignants");
     })
   }
 

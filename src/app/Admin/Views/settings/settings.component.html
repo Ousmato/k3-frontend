@@ -90,39 +90,7 @@
         
         
     </section>
-    <!-- -------------------------UEs section------------------------------ -->
-    <section class="contenaire">
-        <div class="first-child">
-            <div class="child">
-                <div class="logo">
-                    <img src="assets/school-graduation-icon.svg" alt="">
-                    <h4>INFORMATION DES UE</h4>
-                </div>
-                <p>NB : Ici vous pouvez modifier les information des Unite d'enseignament</p>
-            </div>    
-        </div>
-        <!-- ----------------------------------------------------------- -->
-        <div class="second-child">
-           <app-ue-widget (closeModale)="closeNiveau()"></app-ue-widget>
-        </div>
-    </section>
-    <!-- ------------------------------Modules section------------------------- -->
-    <section class="contenaire">
-        <div class="first-child">
-            <div class="child">
-                <div class="logo">
-                    <img src="assets/school-graduation-icon.svg" alt="">
-                    <h4>INFORMATION DES MODULES</h4>
-                </div>
-                <p>NB : Ici vous pouvez modifier les informations des Modules</p>
-           
-            </div>
-           
-        </div>
-        <div class="second-child">
-            <app-module-widget (closeModale)="closeNiveau()"></app-module-widget>
-        </div>
-    </section>
+   
     <!-- ----------------------- niveaux------------------------ -->
     <section class="contenaire">
         <div class="first-child">
@@ -151,6 +119,21 @@
         </div> 
         <div class="second-child">
             <app-promotion-widget (closeModal)="closeNiveau()"></app-promotion-widget>
+        </div>
+    </section>
+    <!-- ----------------------------class promotion------------------ -->
+    <section class="contenaire">
+        <div class="first-child">
+            <div class="child">
+                <div class="logo">
+                    <img src="assets/school-graduation-icon.svg" alt="">
+                    <h4>INFORMATION SUR LES PRO-CLASSES</h4>
+                </div>
+                <p>NB : Ici vous pouvez modifier les information sur les promotions des classes</p>
+            </div>
+        </div> 
+        <div class="second-child">
+          <app-add-class-promotion (closeModale)="closeNiveau()"></app-add-class-promotion>
         </div>
     </section>
 

@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Participant, Student, Student_count, Student_group, Student_reinscription } from '../../Models/Students';
-import { Notes } from '../../Models/Notes';
+import { Participant, Student, Student_count, Student_group, Student_import, Student_reinscription } from '../../Models/Students';
+import { NoteDto, Notes } from '../../Models/Notes';
 import { Module } from '../../Models/Module';
 import { Response_String } from '../../Models/Response_String';
 import { Doc_Pages, NotesPages, StudentPages } from '../../Models/Pagination-module';
@@ -25,7 +25,10 @@ export class EtudeService {
   addDoc(doc: StudentDoc) : Observable<Response_String>{
     return this.http.post<Response_String>(this.baseUrl+"add-doc" , doc);
   }
-
+// --------------------add studens import excel file 
+addStudentImport(studentImport: Student_import) : Observable<Response_String>{
+  return this.http.post<Response_String>(this.baseUrl+"students-import", studentImport);
+}
   // ---------------------------get all docs(memoir/rapport)
   getAllDoc() : Observable<Docum[]>{
     return this.http.get<Docum[]>(this.baseUrl+"all-doc");
@@ -60,13 +63,14 @@ export class EtudeService {
   }
 
    // -----------------------------------get all module filter
-   getAllModulesWithoutNoteFilter(id: number, idClass: number): Observable<Module[]> {
-    return this.http.get<Module[]>(this.baseUrl_note + "all-Modules-filter/" +id+"/"+ idClass);
+   getAllModulesWithoutNoteFilter(idStudent: number, idClass: number, idSemestre: number): Observable<Module[]> {
+    console.log("student ", idStudent, "class", idClass, "semestre", idSemestre)
+    return this.http.get<Module[]>(`${this.baseUrl_note}all-Modules-filter/${idStudent}/${idClass}/${idSemestre}`);
    
   }
   // -------------------get note of student in current semestre
-   getAllNoteByIdStudent(id: number, idSemestre: number): Observable<Notes[]> {
-    return this.http.get<Notes[]>(this.baseUrl_note + "read/" +id+"/"+ idSemestre);
+   getAllNoteByIdStudent(id: number, idSemestre: number): Observable<NoteDto[]> {
+    return this.http.get<NoteDto[]>(this.baseUrl_note + "read/" +id+"/"+ idSemestre);
    
   }
   // ----------------------------------get all note of classe
@@ -89,10 +93,10 @@ export class EtudeService {
     formData.append('file', file!);
     return this.http.put<Response_String>(this.baseUrl + 'update', formData);
   }
-  reInscriptionStudent(idStudent: number, idClasse: number, idAnne: number): Observable<Response_String> {
-    
-    return this.http.get<Response_String>(`${this.baseUrl}re-inscription/${idStudent}/${idClasse}/${idAnne}`);
-  }
+  reInscriptionStudent(student: Student, idClasse: number): Observable<Response_String> {
+    const url = `${this.baseUrl}re-inscription/${idClasse}`;
+    return this.http.post<Response_String>(url, student);
+}
   // -----------------------update scolarite
   update_student_scolarite(idEtudiant: number, scolarite: number): Observable<Response_String> {
     const url = `${this.baseUrl}update-scolarite/${idEtudiant}`;
@@ -168,5 +172,6 @@ export class EtudeService {
   getStudentByIdAnneeAndIdClasse(idAnnee: number, idClass: number, page: number, size: number): Observable<StudentPages> {
     return this.http.get<StudentPages>(`${this.baseUrl}get-student-annee-and-classe/${idAnnee}/${idClass}?page=${page}&size=${size}`);
   }
+
 
 }

@@ -5,7 +5,8 @@ import { IconsService } from '../../Services/icons.service';
 import { SetService } from '../../Admin/Views/settings/set.service';
 import { ClassStudentService } from '../../DGA/class-students/class-student.service';
 import { Ue } from '../../Admin/Models/UE';
-import { Ecue, Module, moduleDTO } from '../../Admin/Models/Module';
+import {  Module } from '../../Admin/Models/Module';
+import { ClassRoom } from '../../Admin/Models/Classe';
 
 @Component({
   selector: 'app-module-widget',
@@ -27,17 +28,14 @@ export class ModuleWidgetComponent implements OnInit {
   update_module_form!: FormGroup;
   ueListe : Ue[] = []
   modules : Module[] = []
+  classes : ClassRoom[] = []
   moduleForDelete!: Module
-  count: number = 1
-  ecueNumbers: number []=[1]
-  ecues: Set<{nomModule: string, coefficient: number}> = new Set();
 
   constructor(private fb: FormBuilder,  private pageTitle: PageTitleService,
     private service: SetService, public icons: IconsService, private classService: ClassStudentService){}
 
 
   ngOnInit(): void {
-    this.loa_form();
     this.load_ues();
     this.loadUpdateModuleForm();
   }
@@ -51,61 +49,8 @@ export class ModuleWidgetComponent implements OnInit {
   }
 
   // ------------------load form add module
-  loa_form(){
-    this.addModule = this.fb.group({
-      nomModule3 : ['',[Validators.required, Validators.maxLength(40)]],
-      nomModule1 : ['',[Validators.required, Validators.maxLength(40)]],
-      // nomModule0 : ['',[Validators.required, Validators.maxLength(40)]],
-      nomModule2 : ['',[Validators.required, Validators.maxLength(40)]],
-      coefficient3 : ['', [Validators.required, Validators.min(1), Validators.max(10)]],
-      // coefficient0 : ['', [Validators.required, Validators.min(1), Validators.max(10)]],
-      coefficient1 : ['', [Validators.required, Validators.min(1), Validators.max(10)]],
-      coefficient2 : ['', [Validators.required, Validators.min(1), Validators.max(10)]],
-      idUe : ['', Validators.required]
+ 
 
-    })
-    
-  }
-
-
-  // -----------------methode add
-  createModule(){
-    this.ecueNumbers.forEach(ec=>{
-      this.getEcues(ec);
-    })
-    const formData = this.addModule.value;
-    // return
-    const ue: Ue = this.ueListe.find(ue => ue.id === +formData.idUe)!;
-    
-    // if(!listModule.some(lm => lm.modules.))
-    const module: moduleDTO = {
-      modules : Array.from(this.ecues),
-      idUe: ue
-    }
-    // console.log(module, "modules");
-    // return
-    if(this.addModule.valid){
-      this.service.createModule(module).subscribe({
-      next: (response) => {
-        this.pageTitle.showSuccessToast(response.message)
-        this.addModule.reset();
-        this.loa_form();
-        this.load_ues();
-      },
-      error: (erreur) => {
-        this.pageTitle.showErrorToast(erreur.error.message)
-      }
-    })
-    }else{
-      this.addModule.markAllAsTouched();
-      console.log('invalid', this.addModule.value)
-    }
-    
-  }
-
-  onSelect(event: any){
-    this.isEcue = true
-  }
   loadUpdateModuleForm() {
     this.update_module_form = this.fb.group({
       id: ['', Validators.required],
@@ -187,10 +132,7 @@ export class ModuleWidgetComponent implements OnInit {
      
    }
   // ----------exit
-  close_add(){
-    this.closeModale.emit();
-    this.ishow_add = false
-  }
+ 
   close_update(){
     this.closeModale.emit();
     this.ishow_update = false
@@ -207,10 +149,7 @@ export class ModuleWidgetComponent implements OnInit {
     this.closeModale.emit()
   }
   // ---------------------show form
-  show_added(){
-    this.ishow_add = true
-    this.closeModale.emit();
-  }
+ 
   show_updated(){
     this.load_module();
     this.ishow_update = true;
@@ -228,33 +167,5 @@ export class ModuleWidgetComponent implements OnInit {
   }
 
   // ------------------------------
-  decrement(){
-    if(this.count > 1){
-      this.count--;
-      this.ecueNumbers.splice(this.count)
-      console.log(this.ecueNumbers, "tab ecue after")
-    }
-  }
-  increment(){
-    console.log("is cont")
-    if(this.count <= 2){
-      this.count++;
-      this.ecueNumbers.push(this.count)
-      console.log(this.ecueNumbers, "tab ecue")
-      // this.getEcues(this.count)
-    }
-  }
-
-  getEcues(count: number){
-    const coef = this.addModule.get("coefficient"+ count)?.value;
-    const module = this.addModule.get("nomModule"+ count)?.value;
-
-  // Ajouter à l'ensemble seulement si les deux valeurs sont définies
-  if (module !== undefined && coef !== undefined) {
-    this.ecues.add({nomModule: module, coefficient: coef});
-    console.log(this.ecues, "ECUEs récupérés");
-  } else {
-    console.log("Erreur : Valeur manquante pour l'index", count);
-  }
-  }
+ 
 }

@@ -15,59 +15,62 @@ import { PageTitleService } from '../../Services/page-title.service';
   templateUrl: './add-note-widget.component.html',
   styleUrl: './add-note-widget.component.css'
 })
-export class AddNoteWidgetComponent  implements OnInit{
+export class AddNoteWidgetComponent implements OnInit {
   @Input() idClasse!: number;
   @Input() student!: Student;
-  @Input() modules : Module [] = []
+  @Input() modules: Module[] = []
   @Output() closeAddNoteModal = new EventEmitter<any>();
 
   moduleForm!: FormGroup;
-  semestres! : Semestres;
-  
+  semestres: Semestres[] = [];
+  semestreSelect!: Semestres
+
   showFormId: number | null = null;
-  isShow_add_note: boolean =true
-  isOverlay: boolean =true
+  isShow_add_note: boolean = true
+  isOverlay: boolean = true
 
   constructor(private fb: FormBuilder, private studentService: EtudeService, private pageTitle: PageTitleService,
-    public icons: IconsService, private semestreService: SemestreService){}
+    public icons: IconsService, private semestreService: SemestreService) { }
   ngOnInit(): void {
     this.load_form();
-    this.load_module();
+    // this.load_module();
     this.loadSemestre();
-      
+
   }
- 
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   console.log('ngOnChanges called', changes);
-  //   if (changes['student'] && changes['student'].currentValue !== changes['student'].previousValue) {
-  //     this.load_module();
-  //   }
-  // }
+
   // ---------------------load semestre
-  loadSemestre(){
-    this.semestreService.get_by_classe(this.idClasse).subscribe(data =>{
-      this.semestres = data;
-      this.moduleForm.get('idSemestre')?.setValue(this.semestres.nomSemetre);
+  loadSemestre() {
+    this.semestreService.getCurrentSemestresByIdNivFiliere(this.student.idClasse.idFiliere?.id!).subscribe(data => {
+      data.forEach(sem => {
+        if (!this.semestres.some(s => s.id == sem.id)) {
+          this.semestres.push(sem);
+        }
+      });
+
+      // this.moduleForm.get('idSemestre')?.setValue(this.semestres.nomSemetre);
     })
   }
   // ------------------------------load form add
-  load_form(){
+  load_form() {
     this.moduleForm = this.fb.group({
       // idStudents: [this.student.idEtudiant, Validators.required],
-        examNote: ['', [Validators.required, Validators.min(0), Validators.max(20)]],
-        classeNote: ['', [Validators.required, Validators.min(0), Validators.max(20)]],
-        // idModule: [''],
-        idSemestre: ['', Validators.required]
-      });
+      examNote: ['', [Validators.required, Validators.min(0), Validators.max(20)]],
+      classeNote: ['', [Validators.required, Validators.min(0), Validators.max(20)]],
+      // idModule: [''],
+      // idSemestre: ['', Validators.required]
+    });
   }
   // -------------------------------load module
-  load_module(){
+  load_module() {
     console.log(this.student, "student select")
-    this.studentService.getAllModulesWithoutNoteFilter(this.student.idEtudiant!,this.student.idClasse.id!).subscribe(
+    this.modules =[]
+    this.studentService.getAllModulesWithoutNoteFilter(this.student.idEtudiant!, this.student.idClasse.idFiliere?.id!, this.semestreSelect.id!).subscribe(
       data => {
-         this.modules = data
-       })
-   
+        this.modules = data
+        console.log(this.modules, "modules")
+      })
+     
+
   }
   // -----------------------------------show form
   show_form(id: number) {
@@ -86,40 +89,45 @@ export class AddNoteWidgetComponent  implements OnInit{
   // ----------------------sumit method
   onSubmit(student: Student, module: Module) {
     // Ajouter une nouvelle note pour le module et l'étudiant
-        const formData = this.moduleForm.value;
-        
-      const semestre =   this.semestres;
-        const note : Notes = {
-          idStudents: student,
-          classeNote: this.moduleForm.value.classeNote,
-          examNote: this.moduleForm.value.examNote,
-          idModule: module,
-          idSemestre: semestre!
+    const {numero,...studentSelect} = student
+    const note: Notes = {
+      idStudents: studentSelect,
+      classeNote: this.moduleForm.value.classeNote,
+      examNote: this.moduleForm.value.examNote,
+      idModule: module,
+      idSemestre: this.semestreSelect!
+    }
+    console.log(note, "notes-----------")
+    if (this.moduleForm.valid) {
+      this.studentService.add_note(note).subscribe({
+        next: (reponse) => {
+          this.pageTitle.showSuccessToast(reponse.message);
+          this.moduleForm.reset();
+          this.load_module();
+        },
+        error: (erreur) => {
+          this.pageTitle.showErrorToast(erreur.error.message);
         }
-        console.log(note, "notes-----------")
-        if(this.moduleForm.valid){
-          this.studentService.add_note(note).subscribe({
-            next: (reponse) =>{
-              this.pageTitle.showSuccessToast(reponse.message);
-              this.moduleForm.reset();
-              this.load_module();
-            },
-            error: (erreur) =>{
-              this.pageTitle.showErrorToast(erreur.error.message);
-            }
-          
-        })
-      
-        }else{
-          this.moduleForm.markAllAsTouched();
-          console.log(this.moduleForm.value, "form invalide")
-        }
-        
-      }
-      // ----------------------close modal
-      close_modal() {
-        this.closeAddNoteModal.emit();
-        this.isShow_add_note = false;
-        this.isOverlay = false;
-      }
+
+      })
+
+    } else {
+      this.moduleForm.markAllAsTouched();
+      console.log(this.moduleForm.value, "form invalide")
+    }
+
+  }
+  // ----------------------close modal
+  close_modal() {
+    this.closeAddNoteModal.emit();
+    this.isShow_add_note = false;
+    this.isOverlay = false;
+  }
+  onSelect(event: any){
+    const idSemestre = event.target.value;
+    this.semestreSelect = this.semestres.find(sem => sem.id == idSemestre)!;
+
+    this.load_module();
+  }
+  
 }

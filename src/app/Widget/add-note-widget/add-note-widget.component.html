@@ -5,6 +5,15 @@
            <p>{{student.nom}} {{student.prenom}}</p></div>
         <div class="content">
             <div class="form-content">
+                <div class="form form-group">
+                    <label for="select-semestre" class="label form-label">Semestre :</label>
+                    <!-- <input type="text" class="form-control input" > -->
+                    <select class="form-select" (change)="onSelect($event)" >
+                        <option selected disabled [value]="">Choisir semestre </option>
+
+                        <option *ngFor="let sem of semestres" [value]="sem.id">{{ sem.nomSemetre }}</option>
+                    </select>
+                </div>
                 <ng-container *ngIf="modules.length > 0; else noModules">
                     <div *ngFor="let module of modules">
                         
@@ -31,13 +40,7 @@
                                 
                                 </div>
                 
-                                <div class="form form-group">
-                                    <label for="select-semestre" class="label form-label">Semestre :</label>
-                                    <input type="text" class="form-control input" formControlName="idSemestre" readonly>
-                                    <!-- <select class="form-select" formControlName="idSemestre" id="select-semestre">
-                                        <option [value]="semestres.id">{{ semestres.nomSemetre }}</option>
-                                    </select> -->
-                                </div>
+   
                                 <button  type="submit">Soumettre</button>
                             </form>
                            </ng-container>

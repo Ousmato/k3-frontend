@@ -8,7 +8,6 @@ import { Participant, Student, Student_group } from '../../../Admin/Models/Stude
 import { StudentPages } from '../../../Admin/Models/Pagination-module';
 import { Emplois } from '../../../Admin/Models/Emplois';
 import { ServiceService } from '../../emplois-du-temps/service.service';
-import { data } from 'jquery';
 
 @Component({
   selector: 'app-add-group-student',
@@ -54,7 +53,7 @@ export class AddGroupStudentComponent implements OnInit {
         this.service.getStudentByIdClasse(this.idClasse).subscribe(data => {
           this.students = data
          
-          console.log(this.students, "pagenation teachers")
+          console.log(this.students, "student of class")
         });
       })
       

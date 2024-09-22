@@ -1,3 +1,4 @@
+import { Filiere } from "./Filieres";
 import { Ue } from "./UE";
 
 export interface Teacher {
@@ -7,7 +8,6 @@ export interface Teacher {
     prenom: string;
     email: string;
     sexe: string;
-    idUe: Ue,
     diplome: Diplomes;
     password?: string;
     telephone: number;
@@ -27,4 +27,10 @@ export enum Diplomes{
     M1 = 'Master 1',
     M2 = 'Master 2',
     Doctorat = 'Doctorat'
+}
+
+export interface ProfilDto{
+    id?: number;
+    teachers: Teacher;
+    filieres: Filiere[]
 }

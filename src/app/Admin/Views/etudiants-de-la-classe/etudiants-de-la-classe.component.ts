@@ -43,10 +43,12 @@ export class EtudiantsDeLaClasseComponent implements OnInit{
   // ------------------------------------------load student by class id
   loadStudents(): void {
     this.route.queryParams.subscribe(param =>{
+      // if(param[''])
           this.idClasse = param['id']
         })
     this.service.getStudent_ByIdClasse(this.page, this.size, this.idClasse).subscribe(data => {
       this.students = data.content;
+      // console.log(this.students, "student of classe")
       this.students.forEach((item : Student) => {
         item.urlPhoto = `http://localhost/StudentImg/${item.urlPhoto}`;
       })
@@ -54,7 +56,7 @@ export class EtudiantsDeLaClasseComponent implements OnInit{
       this.filteredItems = this.students;
       this.pages = Array.from({ length: data.totalPages! }, (_, i) => i);
 
-      console.log(this.students, "pagenation teachers")
+      // console.log(this.students, "pagenation teachers")
       this.extractUniqueStudents(this.students)
     });
   }

@@ -62,7 +62,6 @@ load_all_annee(){
       email: ['', [Validators.required, Validators.email]],
       telephone: ['', Validators.required],
       password: ['', Validators.required],
-      idAnneeScolaire: ['',Validators.required],
       matricule: ['', Validators.required],
       scolarite: ['',Validators.required],
       idClasse: ['', Validators.required],
@@ -89,7 +88,7 @@ load_all_annee(){
   }
   // -----------------------load classRom
   load_class_rooms(){
-    this.classeService.getAll().subscribe((data: ClassRoom[]) => {
+    this.classeService.getAllCurrentClassOfYear().subscribe((data: ClassRoom[]) => {
       this.classRoom = data;
     })
   }

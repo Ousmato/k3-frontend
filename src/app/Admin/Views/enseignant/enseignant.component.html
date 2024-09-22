@@ -13,7 +13,7 @@
             <!-- <th>Photo</th> -->
             <th>Nom</th>
             <th>Prenom</th>
-            <th>Email</th>
+            <!-- <th>Email</th> -->
             <th>Telephone</th>
             <th>Status</th>
             <th>Spécialité </th>
@@ -23,20 +23,24 @@
         </thead>
         <tbody>
           <ng-container *ngIf="filterTeachers().length ; else noResults">
-          <tr *ngFor="let enseign of filterTeachers()">
-            <td>{{enseign.numero}}</td>
+          <tr *ngFor="let pr of profiles">
+            <td>{{pr.teachers.numero}}</td>
             <!-- <td><img [src]="enseign.urlPhoto || icons.user" alt=""></td> -->
-            <td>{{enseign.nom}}</td>
-            <td >{{enseign.prenom}}</td>
-            <td>{{enseign.email}}</td>
+            <td>{{pr.teachers.nom}}</td>
+            <td >{{pr.teachers.prenom}}</td>
+            <!-- <td>{{pr.teachers.email}}</td> -->
             
-            <td>{{enseign.telephone}}</td>
-            <td>{{enseign.status}}</td>
-            <td>{{enseign.idUe.nomUE}}</td>
+            <td>{{pr.teachers.telephone}}</td>
+            <td>{{pr.teachers.status}}</td>
+            <td> @for (item of pr.filieres; track $index) {
+              {{abbreviateFiliereName(item.nomFiliere)}}
+              <br>
+            }
+            </td>
               <td>
                 <div class="btn-contenaire">
                   <!-- <a data-bs-toggle="modal" [attr.data-bs-target]="'#enseignantDetail_' + enseign.idEnseignant" ><fa-icon [icon]="icons.eye"></fa-icon><span>Details</span></a> -->
-                  <a (click)="toggle_toEdit(enseign.idEnseignant!)" ><fa-icon [icon]="icons.eye"></fa-icon><span>Details</span></a>
+                  <a (click)="toggle_toEdit(pr.teachers.idEnseignant!)" ><fa-icon [icon]="icons.eye"></fa-icon><span>Details</span></a>
                 </div>
               </td>
           <!-- ------------------------------------------------------------------------ -->

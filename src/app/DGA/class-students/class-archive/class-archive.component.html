@@ -1,0 +1,33 @@
+<main>
+    <div (click)="goBack()" class="back-button">
+        <fa-icon [icon]="icons.back"></fa-icon>
+      </div>
+    <div class="grid-container" >
+        <div class="grid-item" *ngFor="let arch of classesArchives">
+            <div class="section-folder">
+                <div class="class-folder">
+                    <div class="icon-folder">
+                       <fa-icon [icon]="icons.boxarchive" class="icons-style"></fa-icon>
+                    </div>
+                    <div class="info-folder">
+                        <p class="title">Promotion {{arch.idAnneeScolaire!.ans}}</p>
+                        <p class="effectif">Effectifs : {{arch.effectifs}}</p>
+                        <div class="btn-container">
+                            <a (click)="show_views(arch)">Clique ici<fa-icon [icon]="icons.angleDown"></fa-icon></a>
+                        </div>
+                    </div>
+                    
+                </div>
+                <ng-container *ngIf=" arch === classeSelect">
+                    <div class="views" *ngIf="isShow_link_modal">
+                        <li><a (click)="toggle_to_presence(classeSelect.id!)" >Liste des étudiants</a></li>
+                        <li><a (click)="toggle_to_noteSemestre(classeSelect.id!)" >Notes du semestre</a></li>
+                        <!-- <li><a (click)="toggle_to_update_emplois (classeSelect.id!)" >Modifier l'emploi du temps</a></li> -->
+                        <li ><a (click)="toggle_to_view_ues (classeSelect)" >Unités d'enseignement</a></li>
+                        
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</main>

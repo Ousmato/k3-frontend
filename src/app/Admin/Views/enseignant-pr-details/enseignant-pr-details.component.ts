@@ -12,7 +12,6 @@ import { ClassRoom } from '../../Models/Classe';
 import { Emplois_Classe } from '../../Models/Emplois-classe';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Presence } from '../../Models/Teacher-presence';
-import { data } from 'jquery';
 import { PageTitleService } from '../../../Services/page-title.service';
 
 @Component({

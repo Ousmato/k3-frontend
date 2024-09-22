@@ -1,0 +1,56 @@
+table{
+    width: 100%;
+}
+
+button {
+
+    background-color: var(--primary); 
+    color: var(--secondary); 
+    padding: 4px; 
+    height: 30px;
+    width: 150px;
+    border: none; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    font-size: 14px; 
+    &:hover {
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+}
+
+.head-content{
+    color: var(--primary);
+    margin-top: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.file-check{
+    display: flex;
+   
+}
+.option{
+    text-align: right;
+}
+label:hover, .option{
+    cursor: pointer;
+    color: var(--primary);
+    &:hover{
+        color: var(--secondary);
+    }
+}
+select{
+    cursor: pointer;
+    border: none;
+   
+}
+select:focus{
+    outline: none;
+    box-shadow: none;
+}
+input{
+    display: none;
+}

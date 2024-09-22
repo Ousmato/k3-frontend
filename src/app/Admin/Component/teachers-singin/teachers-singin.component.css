@@ -26,6 +26,7 @@ form{
     gap: 50px;
 }
 label{
+    margin-right: 5px;
     font-weight: bold;
 
 }
@@ -69,4 +70,19 @@ input:focus, select:focus{
     border-color: var(--primary);
     outline: none;
     box-shadow: 0 0 5px var(--primary);
+}
+
+.filieres{
+    margin: 10px 0;
+}
+
+fa-icon{
+    color: var(--primary);
+    cursor: pointer;
+}
+
+#error{
+    display: none;
+    color: red;
+    font-size: 14px;
 }

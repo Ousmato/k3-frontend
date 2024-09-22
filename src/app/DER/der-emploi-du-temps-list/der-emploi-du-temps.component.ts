@@ -9,67 +9,71 @@ import { IconsService } from '../../Services/icons.service';
   templateUrl: './der-emploi-du-temps.component.html',
   styleUrl: './der-emploi-du-temps.component.css'
 })
-export class DerEmploiDuTempsComponent implements OnInit{
+export class DerEmploiDuTempsComponent implements OnInit {
 
-  emplois : Emplois[]=[];
+  emplois: Emplois[] = [];
   @Output() refresh = new EventEmitter<any>();
-  permission : boolean =false
-  constructor(private emploisService: ServiceService, private router: Router, public icons: IconsService){}
+  permission: boolean = false
+  show_add: boolean = false
+  constructor(private emploisService: ServiceService, private router: Router, public icons: IconsService) { }
 
   ngOnInit(): void {
     this.getPermission()
-    if(this.permission){
-       this.load_all_emplois_actif();
-    }else{
+    if (this.permission) {
+      this.load_all_emplois_actif();
+    } else {
       this.load_all_emplois_actif_withSeances();
     }
-     
+
   }
 
-  load_all_emplois_actif(){
-    this.emploisService.getAllEmploisActifs().subscribe(data =>{
+  load_all_emplois_actif() {
+    this.emploisService.getAllEmploisActifs().subscribe(data => {
       this.emplois = data;
-      
+
     })
   }
-  load_all_emplois_actif_withSeances(){
-    this.emploisService.getAllEmploisActifs_with_seances().subscribe(data =>{
+  load_all_emplois_actif_withSeances() {
+    this.emploisService.getAllEmploisActifs_with_seances().subscribe(data => {
       this.emplois = data;
       console.log(this.emplois, "emplois")
     })
   }
-// ----------------------------go to seance by id emplois
-  toggle_toSeance(idClasse : number){
+  // ----------------------------go to seance by id emplois
+  toggle_toSeance(idClasse: number) {
     const navigationExtras: NavigationExtras = {
       queryParams: { id: idClasse }
     };
-    
+
     const autorize_s = sessionStorage.getItem('secretaire');
-    if(this.getPermission()){
+    if (this.getPermission()) {
       this.router.navigate(['/der/emplois-seances'], navigationExtras);
-    }else if(autorize_s){
+    } else if (autorize_s) {
       this.router.navigate(['/secretaire/ajouter-seance'], navigationExtras);
-    }else{
+    } else {
       this.router.navigate(['/dga/emplois-seances'], navigationExtras);
     }
-    
+
   }
   // -----------------------permission methode
   getPermission(): boolean {
     const autorize = sessionStorage.getItem('der');
-    if(autorize){
-      this.permission =true
+    if (autorize) {
+      this.permission = true
       return true;
     }
     return false
   }
   // ----------------back
-  goBack(){
+  goBack() {
     window.history.back();
   }
   // ----------------------refresh
- nouveau(){
-  this.router.navigate(['/der/ajouter-emplois'])
- }
+  nouveau() {
+    this.show_add = !this.show_add
+  }
 
+
+  updated(idEmploi: number){}
+  deleted(idEmploi: number){}
 }

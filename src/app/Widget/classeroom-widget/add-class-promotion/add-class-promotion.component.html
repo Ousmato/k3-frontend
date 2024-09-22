@@ -1,0 +1,118 @@
+<main>
+    <ng-container  *ngIf="isShow_add">
+        <div class="views">
+            <h3 class="span">Ajouter Promotion de Classe</h3>
+            <form [formGroup]="formAdd" (ngSubmit)="addProClasse()">
+                <div class="container-views">
+                    <div class="form form-group">
+                        <label for="select-modules-multiple" class="label form-label">Promotion :</label>
+                        <select class="form-select" formControlName="idAnnee"  [class.is-invalid]="formAdd.get('idAnnee')!.invalid && formAdd.get('idAnnee')!.touched">
+                            <option selected disabled value="">Choisir Promotion</option>
+                            <option *ngFor="let annee of annees" [value]="annee.id">Promotion {{annee.ans}}</option>
+                        </select> 
+                        <div *ngIf="formAdd.get('idAnnee')!.invalid && formAdd.get('idAnnee')!.touched" class="invalid-feedback">
+                            <div *ngIf="formAdd.get('idAnnee')!.errors?.['required']">
+                                <span class="label-error">La promotion est requise.</span>
+                        </div>
+                        
+                        </div>                   
+                    </div>
+
+                    <div class="form form-group">
+                        <label for="select-modules-multiple" class="label form-label">Mentions :</label>
+                        <select class="form-select" formControlName="idFiliere" [class.is-invalid]="formAdd.get('idFiliere')!.invalid && formAdd.get('idFiliere')!.touched">
+                            <option selected disabled value="">Choisir la mention</option>
+                            <option *ngFor="let filiere of filieres" [value]="filiere.id">{{filiere.idNiveau.nom}} {{filiere.idFiliere.nomFiliere}} </option>
+                        </select> 
+                        <div *ngIf="formAdd.get('idFiliere')!.invalid && formAdd.get('idFiliere')!.touched" class="invalid-feedback">
+                            <div *ngIf="formAdd.get('idFiliere')!.errors?.['required']">
+                                <span class="label-error">La filiere est requise.</span>
+                            </div>
+                           
+                        </div>                   
+                    </div>
+                    <div class="button-cash">
+                        <a (click)="close_add()" class="submit"  ><span>Annuler</span></a>
+                        <button class="submit" type="submit" ><span>Enregistrer</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+       
+    </ng-container>
+    <ng-container  *ngIf="isShow_update">
+        <div class="views">
+            <h3 class="span">Modifier Promotion de Classe</h3>
+            <form [formGroup]="formUpdate" (ngSubmit)="update()">
+                <div class="container-views">
+                    <div class="form form-group">
+                        <label for="select-modules-multiple" class="label form-label">Choisir la mentions :</label>
+                        <select class="form-select" (change)="onChage($event)">
+                            <option selected disabled value="">Choisir la mention</option>
+                            <option *ngFor="let cl of classes" [value]="cl.id">{{cl.idFiliere?.idNiveau?.nom}} {{cl.idFiliere?.idFiliere?.nomFiliere}} </option>
+                        </select> 
+                                         
+                    </div>
+
+                    <div class="form form-group">
+                        <label for="select-modules-multiple" class="label form-label">Promotion :</label>
+                        <select class="form-select" formControlName="idAnneeScolaire"  [class.is-invalid]="formUpdate.get('idAnneeScolaire')!.invalid && formUpdate.get('idAnneeScolaire')!.touched">
+                            <option selected disabled value=""> Promotion {{classSect?.idAnneeScolaire?.ans}}</option>
+                            <option *ngFor="let annee of annees" [value]="annee.id">Promotion {{annee.ans}}</option>
+                        </select> 
+                        <div *ngIf="formUpdate.get('idAnneeScolaire')!.invalid && formUpdate.get('idAnneeScolaire')!.touched" class="invalid-feedback">
+                            <div *ngIf="formUpdate.get('idAnneeScolaire')!.errors?.['required']">
+                                <span class="label-error">La promotion est requise.</span>
+                        </div>
+                        
+                        </div>                   
+                    </div>
+
+                    
+                    <div class="button-cash">
+                        <a (click)="close_add()" class="submit"  ><span>Annuler</span></a>
+                        <button class="submit" type="submit" ><span>Enregistrer</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+       
+    </ng-container>
+    <ng-container *ngIf="show_deleted" >
+        <div class="views" >
+                <h3 class="span">Supprimer mention</h3>
+               <div class="container-views">
+                <select  class="form-select"placeholder="Choisir la clase" (change)="onDelete($event)">
+                    <option  selected disabled value="">Choisir La mention</option>
+                    
+                    <option  *ngFor="let cl of classes" [value]="cl.id">{{cl.idFiliere?.idNiveau?.nom}} {{cl.idFiliere?.idFiliere?.nomFiliere}}</option>
+                </select>
+                    <div class="button-cash">
+                        <a (click)="close_delete()" class="submit"  ><span>Annuler</span></a>
+                        <button (click)="nextToConfirm()" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
+                    </div> 
+               </div>
+        </div>
+       
+    </ng-container>
+    <div class="views" *ngIf="isConfirm">
+        <h3 class="span">Confirmation</h3>
+        <div class="container-views">
+            <p>Êtes-vous sûr de vouloir supprimer la mention : {{classFordelete.idFiliere?.idNiveau?.nom}} {{classFordelete.idFiliere?.idFiliere?.nomFiliere}}</p>
+            
+                <div class="button-cash">
+                    <a type="button" (click)="exitDelete()">Annuler</a>
+                    <button type="button" (click)="delete_classe(classFordelete.id!)">Supprimer</button>
+                </div>
+            
+        </div>
+    </div>
+    <div class="second-child">
+        <a (click)="show_added()"><fa-icon [icon]="icons.squarePlus"></fa-icon> <span>Ajouter</span></a>
+        <a (click)="show_updated()" ><fa-icon [icon]="icons.edit"></fa-icon> <span>Modifier</span></a>
+        <a (click)="show_delete()" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> <span >Supprimer</span></a>
+       
+    </div>
+</main>

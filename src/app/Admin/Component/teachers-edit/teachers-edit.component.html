@@ -99,17 +99,17 @@
                 
             </div>
             <div class="column-f">
-                <div class="form form-group">
+                <!-- <div class="form form-group">
                     <label class="label form-label">Spécialités : </label> 
-                    <!-- [class.is-invalid]="teacher_form.get('idUe')!.invalid && teacher_form.get('idUe')!.touched" -->
+                    [class.is-invalid]="teacher_form.get('idUe')!.invalid && teacher_form.get('idUe')!.touched"
                     <select class="form-select" formControlName="idUe" >
                         <option  selected disabled value="">{{enseignant?.idUe?.nomUE}}</option>
                         <option [ngStyle]="{ 'display': !isEdit ? 'none' : 'block' }" *ngFor="let ue of ueList" [value]="ue.id" >{{ue.nomUE}}</option>
-                        <!-- <span *ngIf="teacher_form.controls['idUe'].invalid && teacher_form.controls['idUe'].touched" [ngStyle]="{color: 'red'}">
+                        <span *ngIf="teacher_form.controls['idUe'].invalid && teacher_form.controls['idUe'].touched" [ngStyle]="{color: 'red'}">
                             Champ obligatoire*
-                            </span> -->
+                            </span>
                     </select> 
-                </div>
+                </div> -->
 
                 <div class="form form-group">
                     <label class="label form-label">Diplomes : </label> 

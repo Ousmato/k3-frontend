@@ -5,4 +5,5 @@ export interface NivFiliere{
     id?:number;
     idNiveau: Niveau;
     idFiliere: Filiere
+    scolarite: number
 }

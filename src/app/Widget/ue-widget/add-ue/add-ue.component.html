@@ -1,0 +1,93 @@
+<div class="views">
+    <form [formGroup]="addUe" (ngSubmit)="creatUe()" > 
+       <div class="container-views">
+            <div class="form-group">
+                <input type="number" formControlName="idClasse" *ngIf="false">
+                <!-- <select  class="form-select" formControlName="idClasse" [class.is-invalid]="addUe.get('idClasse')!.invalid && addUe.get('idClasse')!.touched">
+                    <option  selected disabled value="">Choisir la classe...</option>
+                    <option  *ngFor="let cl of classes" [value]="cl.id"> {{cl.idFiliere?.idNiveau?.nom}}  {{cl.idFiliere?.idFiliere?.nomFiliere}}</option>
+                </select> -->
+            </div>
+            <div class="form-group">
+                <label for="">Semestre :</label>
+                <select  class="form-select" formControlName="idSemestre" [class.is-invalid]="addUe.get('idSemestre')!.invalid && addUe.get('idSemestre')!.touched">
+                    <option  selected disabled value="">Choisir semestre...</option>
+                    <option  *ngFor="let sem of semestres" [value]="sem.id"> {{sem.nomSemetre}}</option>
+                </select>
+            </div>
+            
+            <div class="form form-group"> 
+                <label for="email">Nom:</label> 
+                <input type="text" formControlName="nomUE" class="form-control"  placeholder="Nom de l'ue..."  [class.is-invalid]="addUe.get('nomUE')!.invalid && addUe.get('nomUE')!.touched"> 
+                <div *ngIf="addUe.get('nomUE')!.invalid && addUe.get('nomUE')!.touched" class="invalid-feedback">
+                    <div *ngIf="addUe.get('nomUE')!.errors?.['required']">
+                        <span class="label-error" class="label-error">Le nom de l'UE est requis.</span>
+                    </div>
+                    <div *ngIf="addUe.get('nomUE')!.errors?.['maxlength']">
+                        <span class="label-error">Le nom de l'UE ne doit pas dépasser 40 caractères.</span>
+                    </div>
+                </div>
+                
+            </div> 
+
+            <span (click)="show_old_ues()">old</span>
+            <div class="form-group" *ngIf="isOldUe">
+                <label for="">Semestre :</label>
+                <select  class="form-select" formControlName="idSemestre" [class.is-invalid]="addUe.get('idSemestre')!.invalid && addUe.get('idSemestre')!.touched">
+                    <option  selected disabled value="">Choisir semestre...</option>
+                    <option  *ngFor="let ue of oldUes" [value]="ue.id"> {{ue.nomUE}}</option>
+                </select>
+            </div>
+
+            <div class="isEcue">
+                <div class="ecue-contenaire">
+                    <span class="icons" >ECUE 
+                        <fa-icon class="icons" [icon]="icons.mimus" (click)="decrement()"></fa-icon>
+                        {{count}}
+                        <fa-icon class="icons" [icon]="icons.plusCircle" (click)="increment()"></fa-icon>
+                    </span>
+                    
+                </div>
+                <span  id="error" >Veuillez ajouter au moins un module et son coefficient</span>
+
+                <ng-container *ngFor="let item of ecueNumbers; let i = index">
+                    <div class="container-ecue">
+                        <div class="form form-group coefficient"> 
+                            <label >Nom : </label> 
+                            <input type="text" [formControlName]="'nomModule' + (i + 1)"  class="form-control" id="nom" [placeholder]="'Nom du module'" 
+                                   [class.is-invalid]="addUe.get('nomModule' + (i + 1))!.invalid && addUe.get('nomModule'+(i+1))!.touched" (keyup)="onTouch($event)"> 
+                            <div *ngIf="addUe.get('nomModule' +(i+1))!.invalid && addUe.get('nomModule'+(i+1))!.touched" class="invalid-feedback">
+                                <div *ngIf="addUe.get('nomModule'+(i+1))!.errors?.['required']">
+                                    <span class="label-error">Le nom du module est requis.</span>
+                                </div>
+                                <div *ngIf="addUe.get('nomModule'+(i+1))!.errors?.['maxlength']">
+                                    <span class="label-error">Le nom du module ne doit pas dépasser 40 caractères.</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form form-group "> 
+                            <label for="coefficient">Coef :</label> 
+                            <input type="number" [formControlName]="'coefficient' +(i+1)" class="form-control"  placeholder="Coefficient" 
+                                   [class.is-invalid]="addUe.get('coefficient'+(i+1))!.invalid && addUe.get('coefficient'+(i+1))!.touched"> 
+                            <div *ngIf="addUe.get('coefficient' +(i+1))!.invalid && addUe.get('coefficient' +(i+1))!.touched" class="invalid-feedback">
+                                <div *ngIf="addUe.get('coefficient' +(i+1))!.errors?.['required']">
+                                    <span class="label-error">Le coefficient est requis.</span>
+                                </div>
+                                <div *ngIf="addUe.get('coefficient' + i)!.errors?.['min'] || addUe.get('coefficient' + i)!.errors?.['max']">
+                                    <span class="label-error">Le coefficient doit être compris entre 1 et 6.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+
+            <div class="button-cash">
+                <a (click)="close_add()" class="submit"  ><span>Annuler</span></a>
+                <button class="submit" type="submit" ><span>Enregistrer</span></button>
+            </div> 
+       </div>
+        
+    </form> 
+</div>

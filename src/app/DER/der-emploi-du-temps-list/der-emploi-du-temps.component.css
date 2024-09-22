@@ -13,13 +13,24 @@ tr{
         background-color: #e6e4e4;
     }
 }
+.second-child span{
+    color: var(--primary);
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    &:hover{
+    color: var(--secondary);     
+    }
+}
 fa-icon{
-    background-color: var(--tertiary);
-    padding: 5px;
-    height: 30px;
-    /* width: 30px; */
-    color: var(--secondary);
-    border-radius: 50%;
+    cursor: pointer;
+    &:hover{
+    color: var(--secondary);     
+    }
+   
+}
+.delete{
+    color: red;
 }
 
 .tab-head{

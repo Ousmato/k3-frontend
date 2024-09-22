@@ -12,7 +12,3 @@ export interface Ecue{
     nomModule: string;
     coefficient: number;
 }
-export interface moduleDTO{
-    idUe: Ue;
-    modules: Ecue[];
-}

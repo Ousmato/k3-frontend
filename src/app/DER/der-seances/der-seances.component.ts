@@ -82,7 +82,7 @@ seanceTypeOptions: { key: string, value: string }[] = [];
 
   // ----------------------load class-room
   load_classe(){
-    this.classService.getAll().subscribe(data =>{
+    this.classService.getAllCurrentClassOfYear().subscribe(data =>{
       this.classes = data;
       // console.log(this.classes, "classes")
     })

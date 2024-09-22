@@ -8,9 +8,9 @@
             <img [src]="school?.urlPhoto" alt="PHOTO">
         </div>
         <div class="info">
-                <h4>{{school?.nomSchool}}</h4>
-                <p>Annee Universitaire {{school?.annee}}</p>
-                <p>Resultat definitifs du {{semestre?.nomSemetre?.toLowerCase()}}</p>
+                <h4>Institut Universitaire de Formation Professionnelle (IUFP)</h4>
+                <p>Annee Universitaire {{anneeScolaire}}</p>
+                <p>Resultat definitifs du {{semestre?.nomSemetre?.toUpperCase()}}</p>
                 <p>Filiere : {{classe?.idFiliere?.idNiveau?.nom}} {{classe?.idFiliere?.idFiliere?.nomFiliere}}</p>
             </div>
     </section>
