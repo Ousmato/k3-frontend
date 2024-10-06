@@ -1,0 +1,18 @@
+<div class="views">
+    <h3 class="span">Confirmation</h3>
+    <div class="container-views">
+        <form [formGroup]="addNote" (ngSubmit)="submit()">
+            <input type="number" formControlName="note" class="form-control" placeholder="Saisir le note" [class.is-invalid]="addNote.get('note')!.invalid && addNote.get('note')!.touched">
+            <div *ngIf="addNote.get('note')!.errors?.['min'] || addNote.get('note')!.errors?.['max']" class="invalid-feedback">
+                <span class="label-error">La note ne pas etre supperieure a 20</span>
+
+            </div>
+            <div class="button-cash">
+                <a (click)="close()">Annuler</a>
+                <button type="submit">Ajouter</button>
+            </div>
+        </form>
+       
+        
+    </div>
+</div>

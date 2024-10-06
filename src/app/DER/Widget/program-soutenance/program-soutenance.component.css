@@ -1,60 +1,70 @@
-main{
+main {
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-.one-column{
+
+.one-column {
     margin-top: 10px;
     padding: 10px;
     width: 80%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
-.first-inputs{
+
+.first-inputs {
     display: flex;
     gap: 20px;
     align-items: center;
 }
 
-.form{
+.form {
     width: 100%;
 }
-.submit-button{
+
+.submit-button {
     margin-top: 10px;
     display: flex;
     justify-content: space-between;
 }
 
-p{
+p {
     text-align: left;
     font-size: 18px;
 }
-.input-cont{
+
+.input-cont {
     /* width: 80%; */
     display: flex;
     justify-content: space-between;
 }
-span{
+
+span {
     font-size: 12px;
 }
-.btn-con{
+
+.btn-con {
     margin-top: 40px;
 }
-button{
+
+button {
     border: none;
     cursor: pointer;
     padding: 5px 15px;
     border-radius: 5px;
     background-color: var(--primary);
     color: var(--secondary);
-    &:hover{
+
+    &:hover {
         background-color: var(--secondary);
         color: var(--primary);
     }
+
     /* margin-top: 20px; */
 }
-.btn-contenair{
+
+.btn-contenair {
     /* width: 100%; */
     margin-top: 20px;
     padding-right: 10px;
@@ -62,7 +72,7 @@ button{
     justify-content: end;
 }
 
-  .back-button{
+.back-button {
     width: 30px;
     height: 30px;
     display: flex;
@@ -70,7 +80,8 @@ button{
     padding: 8px;
     font-size: 20px;
     margin: 10px 0;
-    &:hover{
+
+    &:hover {
         background-color: var(--tertiary);
         color: var(--primary);
         border: none;
@@ -79,42 +90,49 @@ button{
 
 }
 
-.select-input input:focus, select:focus{
+.select-input input:focus,
+select:focus {
     border-color: var(--primary);
     outline: none;
     box-shadow: 0 0 5px transparent;
 }
-.form-group-heure{
+
+.form-group-heure {
     display: flex;
     gap: 20px;
     align-items: center;
 }
-.jury-content{
+
+.jury-content {
     margin-top: 10px;
     width: 100%;
     border: 1px solid var(--tertiary);
     border-radius: 5px;
     padding: 10px;
 }
-.form-group-jury{
+
+.jury-item {
     border-radius: 5px;
     margin-top: 10px;
     border: 1px solid var(--primary);
     display: flex;
 }
-.select-input{
+
+.select-input {
     border: none;
 }
-.chose-role{
+
+.chose-role {
     border-bottom-right-radius: 5px;
     border-top-right-radius: 5px;
     color: var(--secondary);
     background-color: var(--primary);
     width: 150px;
+   text-align: center;
 }
 
 /* ----------------------back button style */
-.back-button{
+.back-button {
     width: 30px;
     height: 30px;
     display: flex;
@@ -122,11 +140,66 @@ button{
     padding: 8px;
     font-size: 20px;
     margin: 10px 0;
-    &:hover{
+
+    &:hover {
         background-color: var(--tertiary);
         color: var(--primary);
         border: none;
         border-radius: 50%;
     }
 
+}
+
+
+input:focus, select:focus{
+    outline: none;
+    border: 1px solid var(--primary);
+    box-shadow: 0 0 5px var(--primary);
+}
+
+.nom-jury:focus{
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+.nom-jury{
+    border: none;
+}
+.jury-item{
+    display: flex;
+}
+label{
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+}
+#salle-nom{
+    display: none;
+    color: var(--primary);
+
+}
+
+.views {
+    background-color: white;
+    position: absolute;
+    border-radius: 4px;
+    /* left: 63%; */
+    width: 300px;
+    margin-top: 45px;
+    /* width: 60%;
+    top: 10%; */
+    border: 1px solid var(--tertiary);
+    padding: 15px;
+    z-index: 1000;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15);
+
+}
+
+.views p {
+    margin: 0;
+    cursor: pointer;
+
+    &:hover {
+        color: var(--primary);
+    }
 }

@@ -1,6 +1,9 @@
 
   <main>
-    
+    <!-- <select (change)="onChange($event)">
+      <option id="default" selected disabled value="">Promotion {{currentYear}}</option>
+      <option *ngFor="let annee of annees" [value]="annee.id">Promotion {{annee.ans}}</option>
+  </select> -->
   <div class="table-container">
     <table class="table table-striped table-hover">
       <thead>
@@ -22,8 +25,8 @@
         </thead>
         <tbody>
           <ng-container *ngIf="filterStudents().length ; else noResults">
-          <tr *ngFor="let studens of filterStudents()">
-            <td>{{studens.numero}}</td>
+          <tr *ngFor="let studens of filterStudents()  let i = index" >
+            <td class="numerotation-clumn">{{i+1}}</td>
             <!-- <td><img src="{{studens.urlPhoto}}" alt=""></td> -->
             <td>{{studens.nom}}</td>
             <td >{{studens.prenom}}</td>
@@ -34,51 +37,18 @@
             <td>{{studens.telephone}}</td>
             <td>{{studens.status}}</td>
             <td><a >
-              <fa-icon [icon]="studens.payer ? icons.active : icons.desactive " [ngStyle]="{ color: studens.payer ? 'green' : 'red' }"></fa-icon><span >{{ studens.payer ? 'Inscrit' : 'Non inscrit' }}</span></a>
+              <fa-icon [icon]="studens.payer ? icons.active : icons.desactive " [ngStyle]="{ color: studens.payer ? 'green' : 'red' }"></fa-icon><span >{{ studens.payer ? 'Valider' : 'Non Valider' }}</span></a>
             </td>
               <td>
                   <div class="btn-contenaire">
                     
-                      <a (click)="getStudentView(studens)" ><fa-icon [icon]="icons.userCheck"></fa-icon><span>{{permission ? 'Details' : 'Valider'}}</span></a>
-                      <a *ngIf="permission" (click)="getStudent(studens)"><fa-icon [icon]="icons.edit"></fa-icon><span>Modifier</span></a>
+                      <a (click)="getStudent(studens)" ><fa-icon [icon]="permission ? icons.eye : icons.userCheck"></fa-icon><span>{{permission ? 'Details' : 'Valider'}}</span></a>
+                      <!-- <a *ngIf="permission" (click)="getStudent(studens)"><fa-icon [icon]="icons.edit"></fa-icon><span>Modifier</span></a> -->
                       
                   </div>
               </td>
            <!-- -------------------------------------detail etudiants----------------------------------------- -->
-           <div class="modal fade"  [id]="'studentDetail_' + studens.idEtudiant"  data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Detail de l'Etudiants</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-
-                  <div class="modal-body">
-                    <div class="img-contenaire">
-                        <img id="img-info"  src="{{studens.urlPhoto}}" alt="Image">
-                        <div class="classe">
-                          <h4> Niveaux d'etude : {{studens.idClasse.idFiliere?.idNiveau?.nom}}</h4>
-                          <h4> Filiere : {{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}</h4>
-                        </div>
-                      </div>
-                    
-                  <!-- <ul class="list-group list-group-flush">  -->
-                    <li><span>Numero d'Enregistrement : </span>{{studens.idEtudiant}}</li>
-                    <li><span>Nom de l'apprenant : </span>{{studens.nom}}</li>
-                    <li><span>Prenom de l'apprenant : </span>{{studens.prenom}} </li>
-                    <li><span>Email : </span>{{studens.email}}</li>
-                    <li><span>Telephone : </span>{{studens.telephone}}</li>
-                    <li><span>Date de Naissance :</span> {{studens.dateNaissance}}</li>
-                    <li><span>Sexe : </span>{{studens.sexe}}</li>
-                    <li><span>Region de naissance : </span>{{studens.lieuNaissance}}</li>
-                    <li><span>Scolarite payee : </span>{{studens.scolarite}}</li>
-                  <!-- </ul -->
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- ------------------------------------------------update etudiants------------- -->
-
+           
             <!-- ------------------------------------------delete etudians-------------------- -->
             <div class="modal fade"  [id]="'studentDelete_' +studens.idEtudiant" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         
@@ -113,11 +83,18 @@
   </table>
   </div>
     
-    <div class="pagination">
-      <button (click)="previousPage()" [disabled]="page === 0"><fa-icon [icon]="icons.previous"></fa-icon></button>
-      <button *ngFor="let p of pages" (click)="setPage(p)" [class.active]="p === page">
-        {{ p + 1 }}
-      </button>
-      <button (click)="nextPage()" [disabled]="page === studentspage!.totalPages! - 1"><fa-icon [icon]="icons.nexte"></fa-icon></button>
-    </div>
+  <div class="pagination">
+    <button (click)="previousPage()" [disabled]="page === 0">
+      <fa-icon [icon]="icons.previous"></fa-icon>
+    </button>
+    
+    <button *ngFor="let p of getVisiblePages()" (click)="setPage(p)" [class.active]="p === page">
+      {{ p + 1 }}
+    </button>
+    
+    <button (click)="nextPage()" [disabled]="page === studentspage!.totalPages! - 1">
+      <fa-icon [icon]="icons.nexte"></fa-icon>
+    </button>
+  </div>
+  
   </main>

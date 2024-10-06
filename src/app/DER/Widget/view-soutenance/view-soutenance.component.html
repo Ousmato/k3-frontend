@@ -48,7 +48,7 @@
                             <td>{{sout.filiere}}</td>
                             <td>{{sout.niveaux}}</td>
                           
-                            <td>{{sout.idTeacher.nom}} {{sout.idTeacher.prenom}}</td>
+                            <td>{{sout.idTeacher!.nom}} {{sout.idTeacher!.prenom}}</td>
                             <td>{{sout.heureDebut}} - {{sout.heureFin}}</td>
                         </tr>
                         
@@ -70,7 +70,7 @@
             <div class="footer">
                 <strong>Membres du jury</strong>
                 @for (item of jurys; track $index) {
-                    <p>M. {{item.idTeacher.nom}} {{item.idTeacher.prenom}} : {{item.role.toUpperCase()}}</p>
+                    <p>M. {{item.teachers!.nom}} {{item.teachers!.prenom}} : {{item.role.toUpperCase()}}</p>
                 }
             </div>
             <div class="footer-right">

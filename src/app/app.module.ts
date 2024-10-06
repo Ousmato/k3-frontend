@@ -51,7 +51,6 @@ import { DerEmploiDuTempsComponent } from './DER/der-emploi-du-temps-list/der-em
 import { DgaMentionListComponent } from './DGA/dga-mention-list/dga-mention-list.component';
 import { DgaHomeComponent } from './DGA/dga-home/dga-home.component';
 import { DerEditSeanceComponent } from './DER/Widget/der-edit-seance/der-edit-seance.component';
-import { ConfigureSeanceComponent } from './DER/Widget/configure-seance/configure-seance.component';
 import { AddGroupStudentComponent } from './DER/Widget/add-group-student/add-group-student.component';
 import { RSSidebarComponent } from './R-SCOLARITE/r-s-sidebar/r-s-sidebar.component';
 import { RSHomeComponent } from './R-SCOLARITE/r-s-home/r-s-home.component';
@@ -85,6 +84,8 @@ import { AddClassPromotionComponent } from './Widget/classeroom-widget/add-class
 import { ClassArchiveComponent } from './DGA/class-students/class-archive/class-archive.component';
 import { RSImportComponent } from './R-SCOLARITE/r-s-import/r-s-import.component';
 import { SpinnerComponent } from './Widget/spinner/spinner.component';
+import { SoutenanceNoteComponent } from './DER/Widget/soutenance-note/soutenance-note.component';
+import { StudentGroupListComponent } from './DER/student-group-list/student-group-list.component';
 
 registerLocaleData(localeFr);
 @NgModule({
@@ -129,7 +130,6 @@ registerLocaleData(localeFr);
     DgaMentionListComponent,
     DgaHomeComponent,
     DerEditSeanceComponent,
-    ConfigureSeanceComponent,
     AddGroupStudentComponent,
     RSSidebarComponent,
     RSHomeComponent,
@@ -162,7 +162,8 @@ registerLocaleData(localeFr);
     AddClassPromotionComponent,
     ClassArchiveComponent,
     RSImportComponent,
-    SpinnerComponent
+    SpinnerComponent, 
+    SoutenanceNoteComponent, StudentGroupListComponent
   ],
   imports: [
     BrowserModule,

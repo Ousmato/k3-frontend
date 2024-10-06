@@ -24,8 +24,10 @@ import { animate, style, transition, trigger } from '@angular/animations';
 export class DerPaiListComponent implements OnInit{
  
   searchTerm: string = ''
+  month: string = ''
   filteredPai : PaieDTO[]=[]
   paies : PaieDTO[] =[];
+  months: {value: number, name: string}[] = []
 
   constructor(private teacherService: EnseiService, public icons: IconsService, private sideBarService: SideBarService){}
 
@@ -34,7 +36,7 @@ export class DerPaiListComponent implements OnInit{
     this.sideBarService.currentSearchTerm.subscribe(term => {
       this.searchTerm = term;
       this.filteredPaie();
-
+      this.initializeMonths();
     
     });
 
@@ -43,6 +45,7 @@ export class DerPaiListComponent implements OnInit{
   getAllPaie(){
     this.teacherService.getAllPaie().subscribe(result=>{
      // this.paies = result;
+     console.log("resultat : ", result)
       result.forEach(res =>{
         if(!this.paies.some(p =>p.idTeacher == res.idTeacher)){
           res.montant = res.coutHeure * res.nbreHeures
@@ -53,10 +56,15 @@ export class DerPaiListComponent implements OnInit{
               currency: 'XOF',
             },
           )
-          res.montanFormat = formatter.format(res.montant)
+          res.montanFormat = formatter.format(res.montant);
+          const date = new Date(res.date);
+          this.month = date.toLocaleString('fr-FR', { month: 'long' });
+          
+          
           this.paies.push(res);
         }
       })
+      console.log(this.paies, "paie--------------------------")
     })
   }
   // -----------------------filter method
@@ -82,7 +90,6 @@ export class DerPaiListComponent implements OnInit{
       // data.style.fontSize = "14px"  
     }
     
-    
     // Id of the table
     html2canvas(data!, { scale: 2 }).then(canvas => {
         // Few necessary setting options
@@ -99,4 +106,37 @@ export class DerPaiListComponent implements OnInit{
         // data.style.fontSize = '16px'
     });
   } 
+  // -----get all month
+  checkMonth(event: any){
+    const month = event.target.value
+    this.paies = []
+    // console.log(month, "month")
+    this.teacherService.getAllPaieByMonth(month).subscribe(result=>{
+      result.forEach(res =>{
+        if(!this.paies.some(p =>p.idTeacher == res.idTeacher)){
+          res.montant = res.coutHeure * res.nbreHeures
+          const formatter = Intl.NumberFormat(
+            'fr-FR',
+            {
+              style: 'currency',
+              currency: 'XOF',
+            },
+          )
+          res.montanFormat = formatter.format(res.montant)
+          const date = new Date(res.date);
+          this.month = date.toLocaleString('fr-FR', { month: 'long' });
+          this.paies.push(res);
+        }
+      })
+      this.filteredPai = this.paies
+    })
+  }
+
+  initializeMonths() {
+    for (let i = 0; i < 12; i++) {
+        const monthName = new Intl.DateTimeFormat('fr-FR', { month: 'long' }).format(new Date(2023, i));
+       this.months.push({ value: i + 1, name: monthName });
+    }
+    // console.log(this.months, " months")
+}
 }

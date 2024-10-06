@@ -13,6 +13,8 @@ import html2canvas from 'html2canvas';
 import { ClassStudentService } from '../../../DGA/class-students/class-student.service';
 import { AddUeDto } from '../../Models/UE';
 import { Admin } from '../../Models/Admin';
+import { PageTitleService } from '../../../Services/page-title.service';
+import { Toast, ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-student-bulletin',
@@ -30,8 +32,8 @@ export class StudentBulletinComponent implements OnInit {
 
   notes: NoteDto[] = [];
 
-  constructor(public icons: IconsService, private root: ActivatedRoute, private classService: ClassStudentService,
-    private semestreService: SemestreService, private studentService: EtudeService, private school: SchoolService) { }
+  constructor(public icons: IconsService, private root: ActivatedRoute, private toast: ToastrService,
+    private semestreService: SemestreService, private studentService: EtudeService, private pageTitle: PageTitleService) { }
   ngOnInit(): void {
     // this.load_bulletin();
     // this.load_ues()
@@ -71,11 +73,11 @@ export class StudentBulletinComponent implements OnInit {
     this.studentService.getStudent_by_id(this.idStudent).subscribe(student => {
       this.students = student;
       console.log(this.students, "student")
-      this.load_ues();
+      this.load_semestre()
     });
 
   }
-  load_ues() {
+  load_semestre() {
 
     this.semestreService.getCurrentSemestresByIdNivFiliere(this.students.idClasse.idFiliere?.id!).subscribe(result => {
       result.forEach(res => {
@@ -92,6 +94,10 @@ export class StudentBulletinComponent implements OnInit {
     const idSemestre = event.target.value;
     this.studentService.getAllNoteByIdStudent(this.idStudent, idSemestre).subscribe(note => {
       this.notes = note;
+      if(this.notes.length === 0){
+        // this.pageTitle.showErrorToast("Auccune notes est disponible ")
+        this.toast.warning("Les notes de l'étudiant sont indisponible")
+      }
       console.log(this.notes, "notes student")
 
     });

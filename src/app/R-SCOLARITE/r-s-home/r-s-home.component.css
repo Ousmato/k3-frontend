@@ -1,0 +1,124 @@
+
+
+.first-container, .second-container {
+    background-color: #fff;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 8px;
+    
+}
+
+.head-card-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
+    margin-bottom: 20px;
+}
+
+
+.child-card {
+    cursor: pointer;
+    padding: 10px;
+    flex: 1;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s, box-shadow 0.3s;
+    &:hover{
+        border: 1px solid var(--primary);
+        border-radius: 8px;
+    }
+}
+.child-card .child-card-content{
+    display: flex;
+    /* border: 1px solid; */
+}
+.child-card{
+    display: flex;
+    flex-direction: column;
+    justify-content: start; 
+     gap: 10px;
+     
+}
+.child-cards{
+    display: flex;
+    padding: 8px;
+    justify-content: start; 
+     gap: 10px;
+     flex: 1;
+     border: 1px solid #ccc;
+     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.15);
+     transition: transform 0.3s, box-shadow 0.3s;
+     margin-bottom: 10px;
+     
+}
+.child-card .child-card-content{
+display: flex;
+}
+h1{
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+p{
+    font-weight: bold;
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+}
+.calendar-classes-content p{
+    margin: 0;
+    padding: 0;
+}
+.sc-annuel{
+    margin-top: 20px;
+    font-size: 18px;
+}
+.date-content p{
+    margin-top: 5px;
+    font-size: 14px;
+    font-weight: 500;
+}
+.card-img{
+    width: 30%;
+}
+.card-text{
+
+    width: 70%;
+}
+
+#cart-text{
+    margin-left: 20px;
+}
+.card-img img{
+    padding: 5px;
+    border-radius: 8px;
+    height: 60px;
+    width: 60px;
+}
+#calendar{
+    height: 90px;
+    width: 90px;
+}
+
+
+.child-card:last-child {
+    margin-right: 0;
+}
+
+.body-content {
+    /* background-color: #e9ecef; */
+    padding: 20px;
+    border-radius: 8px;
+    border: #ccc 1px solid;
+}
+
+
+.calendar-classes-content{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: var(--primary) 1px solid;
+}
+#span{
+    color: var(--primary);
+}

@@ -15,36 +15,9 @@
             </a>
           </li>
          </div>
-         <!-- ---------------- -->
-         
-          <!-- ------------------------------- -->
-           <!-- <li class="menu-link">
-            <div (click)="toggleSubMenuEnseignant()">
-              <a><span><fa-icon [icon]="icons.users"></fa-icon>Enseignants<fa-icon [icon]="isSubMenuOpen.enseignants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
-                    
-              </a>
-            </div>
-            <ul class="sub-menu" *ngIf="isSubMenuOpen.enseignants">
-              <li><a routerLink="/der/enseignants" routerLinkActive="active">Liste des enseignant</a></li>
-              <li><a routerLink="/der/ajouter-emplois" routerLinkActive="active">Programmer EDT</a></li>
-              <li><a routerLink="/der/ajouter-seance" routerLinkActive="active">Programmer seances</a></li>
-              <li><a routerLink="/der/emplois-du-temps" routerLinkActive="active">Les emplois du temps</a></li>
-             
-            </ul>
-          </li> -->
-          
-          <!-- <li class="menu-link">
-            <div (click)="toggleSubMenuStudent()">
-              <a> <span><fa-icon [icon]="icons.grade"></fa-icon>Etudiants<fa-icon [icon]="isSubMenuOpen.etudiants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
-              </a>
-            </div>
-            <ul class="sub-menu" *ngIf="isSubMenuOpen.etudiants">
-              <li><a routerLink="/r-scolarite/etudiant" routerLinkActive="active">Liste des Etudiants</a></li>
-              <li><a routerLink="/r-scolarite/inscription" routerLinkActive="active">Fiche d'inscription</a></li>
-            </ul>
-          </li> -->
+        
          <li class="menu-link" >
-            <a routerLink="/r-scolarite/etudiant">
+            <a routerLink="/r-scolarite/etudiant" routerLinkActive="active">
               <span ><fa-icon [icon]="icons.users"></fa-icon>Liste des Etudiants</span>
             </a>
           </li>
@@ -70,26 +43,6 @@
           </li>
           
          
-          <!-- <li class="menu-link">
-            <a routerLink="/r-scolarite/">
-              <span><fa-icon [icon]="icons.setting"></fa-icon>Paramettre</span>
-            </a>
-          </li> -->
-          <!-- ---------------- -->
-          <!-- <li class="menu-link">
-            <div (click)="toggleSubMenuArchive()">
-                <a routerLink="#">
-                  <span><fa-icon [icon]="icons.archive" ></fa-icon>Rapport et Memoire 
-                    <fa-icon [icon]="isSubMenuOpen.etudiants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
-                </a>
-            </div>
-            <ul class="sub-menu" *ngIf="isSubMenuOpen.archive">
-              <li><a routerLink="">2019 - 2020</a></li>
-              <li><a href="#">2021 - 2022</a></li>
-              <li><a href="#">2022 - 2023</a></li>
-            </ul>
-            
-          </li> -->
         </ul>
       </div>
     </nav>

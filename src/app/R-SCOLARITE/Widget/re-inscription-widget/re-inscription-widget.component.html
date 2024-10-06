@@ -4,7 +4,7 @@
         <div class="form-content">
             <div class="form-group">
                 <label for="validationDefault03" class="label form-label">Classe :</label>
-                <select class="form-select" placeholder="Choisir une classe...."  id="select-modules-multiple"  (change)="onSelect($event)">
+                <select class="form-select" placeholder="Choisir une classe...."  (change)="onSelect($event)">
                     <option  selected disabled value="">{{student!.idClasse.idFiliere!.idNiveau.nom}} {{student!.idClasse.idFiliere!.idFiliere.nomFiliere}}</option>
                     <option *ngFor="let classe of nextClass" [value]="classe.id">{{classe.idFiliere?.idNiveau?.nom}} {{classe.idFiliere?.idFiliere?.nomFiliere}}</option>
                 </select>

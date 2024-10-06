@@ -19,24 +19,15 @@ export class DerEmploiDuTempsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getPermission()
-    if (this.permission) {
+   
       this.load_all_emplois_actif();
-    } else {
-      this.load_all_emplois_actif_withSeances();
-    }
-
+   
   }
 
   load_all_emplois_actif() {
     this.emploisService.getAllEmploisActifs().subscribe(data => {
       this.emplois = data;
 
-    })
-  }
-  load_all_emplois_actif_withSeances() {
-    this.emploisService.getAllEmploisActifs_with_seances().subscribe(data => {
-      this.emplois = data;
-      console.log(this.emplois, "emplois")
     })
   }
   // ----------------------------go to seance by id emplois
@@ -49,7 +40,7 @@ export class DerEmploiDuTempsComponent implements OnInit {
     if (this.getPermission()) {
       this.router.navigate(['/der/emplois-seances'], navigationExtras);
     } else if (autorize_s) {
-      this.router.navigate(['/secretaire/ajouter-seance'], navigationExtras);
+      this.router.navigate(['/secretaire/emplois-seances'], navigationExtras);
     } else {
       this.router.navigate(['/dga/emplois-seances'], navigationExtras);
     }
@@ -71,6 +62,7 @@ export class DerEmploiDuTempsComponent implements OnInit {
   // ----------------------refresh
   nouveau() {
     this.show_add = !this.show_add
+    this.load_all_emplois_actif();
   }
 
 

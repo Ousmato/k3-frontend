@@ -1,10 +1,7 @@
 
-import { ClassRoom } from "./Classe";
-import { Configure_seance } from "./Configure_seance";
+import { Journee } from "./Configure_seance";
 import { Emplois } from "./Emplois";
 import { Module } from "./Module";
-import { Salles } from "./Salles";
-import { Teacher } from "./Teachers";
 
 export interface Seances{
     id?:number;
@@ -28,10 +25,4 @@ export enum type_seance{
     TP = 'tp',
     Examen ='examen',
     SESSION = "session"
-}
-
-export interface Surveillance {
-    seancesList: Seances[];
-    configList: Configure_seance[]
-    
 }

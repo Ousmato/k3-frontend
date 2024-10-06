@@ -9,6 +9,8 @@ main{
 button{
     color: var(--secondary);
     margin-top: 20px;
+    padding: 5px 10px;
+    border-radius: 5px;
     background-color: var(--primary);
     border: none;
     &:hover{

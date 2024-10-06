@@ -1,23 +1,21 @@
 import { Emplois } from "./Emplois";
 import { Module } from "./Module";
 import { Salles } from "./Salles";
-import { Seances, type_seance } from "./Seances";
+import { type_seance } from "./Seances";
 import { Participant } from "./Students";
 import { Teacher } from "./Teachers";
 
-export interface Configure_seance{
-    id?: number;
-    idSeance?: Seances;
-    idParticipant?: Participant;
-    id_Participant?: Participant[];
+export interface Surveillance{
+    date:  string;
+
+    groupe?: Participant[];
     seanceType: type_seance;
     heureDebut: string;
     heureFin: string;
-    idTeacher: Teacher;
-    idSalle: Salles
-    plageHoraire?: string;
-    heure?: number;
-    munite?: number;
+    idTeacher: Teacher[];
+    idSalle: Salles,
+    idEmploi: Emplois
+    
 }
 
 export interface Journee{

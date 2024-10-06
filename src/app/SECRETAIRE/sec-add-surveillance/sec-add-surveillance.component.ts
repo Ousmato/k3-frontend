@@ -1,20 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { Seances, Surveillance, type_seance } from '../../Admin/Models/Seances';
-import { Module } from '../../Admin/Models/Module';
+import { Component, Input, OnInit } from '@angular/core';
+import { type_seance } from '../../Admin/Models/Seances';
 import { Teacher } from '../../Admin/Models/Teachers';
 import { Salles } from '../../Admin/Models/Salles';
-import { Configure_seance } from '../../Admin/Models/Configure_seance';
+import { Journee, Surveillance } from '../../Admin/Models/Configure_seance';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ServiceService } from '../../DER/emplois-du-temps/service.service';
 import { PageTitleService } from '../../Services/page-title.service';
-import { ClassStudentService } from '../../DGA/class-students/class-student.service';
 import { SalleService } from '../../Services/salle.service';
 import { EnseiService } from '../../Admin/Views/enseignant/ensei.service';
 import { SeancService } from '../../Admin/Views/emplois-seance/seanc.service';
 import { Emplois } from '../../Admin/Models/Emplois';
-import { ClassRoom } from '../../Admin/Models/Classe';
 import { ActivatedRoute } from '@angular/router';
+import { Participant } from '../../Admin/Models/Students';
+import { EtudeService } from '../../Admin/Views/etudiants/etude.service';
+import { Admin } from '../../Admin/Models/Admin';
 import { IconsService } from '../../Services/icons.service';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { SideBarService } from '../../sidebar/side-bar.service';
 
 @Component({
   selector: 'app-sec-add-surveillance',
@@ -23,265 +24,247 @@ import { IconsService } from '../../Services/icons.service';
 })
 export class SecAddSurveillanceComponent implements OnInit {
 
-  
+
+  @Input() currentEmploi!: Emplois;
+  admin!: Admin
+  searchTerm: string = '';
+  surveillance!: Surveillance
+  filteredItems: Teacher[] = []
+  url_typeSeance!: type_seance
+
+  @Input() datesWithDays: { day: string, date: string }[] = [];
+  overlay: boolean = false
+  show_views: boolean = false
+  isContente: boolean = false
+  plag_check: any[] = []
   list_checked: any[] = [];
   enseignants: Teacher[] = [];
-  modules: Module [] =[];
-  classes: ClassRoom [] = [];
-  salles: Salles [] = [];
-  emplois!: Emplois;
-  idUrl!: number;
-  dates_check: any[] = [];
-  isShow_add_jour: boolean = false;
-  // permission: boolean = false;
+  list_enseignant_checked: Teacher[] = []
   
-seanceTypeOptions: { key: string, value: string }[] = [];
-  
-  datesWithDays: { day: string, date: string }[] = [];
-  datesWithDaysTest: { day: string, dates: string[] }[] = [];
+  listParticip_checked: Participant[] = []
+  participants: Participant[] = []
+  form_config!: FormGroup
+  salles: Salles[] = []
 
-  form_seance!: FormGroup
-  constructor(private emploisService: ServiceService, private root:ActivatedRoute,
-    private enseignantService: EnseiService, private pageTitle: PageTitleService,
-   private fb: FormBuilder, private classService: ClassStudentService, public icons: IconsService
-  , private seanceService: SeancService, private salleService: SalleService){}
+  seanceTypeOptions: { key: string, value: string }[] = []
+  selectedGroup: { [teacherId: number]: number | null } = {};
+  selectedGroupAndRoom: { [teacherId: number]: { groupId: number, roomId: number, date: any } } = {};
 
+
+  constructor(private teacherService: EnseiService, private salleService: SalleService, private sideBareService: SideBarService,
+    private studentService: EtudeService, private seanceService: SeancService, public icons: IconsService,
+    private fb: FormBuilder, private root: ActivatedRoute, private pageTitle: PageTitleService) { }
   ngOnInit(): void {
-      this.load_form();
-      this.getStatusOptions();
-      this.load_enseignants();
-      this.load_classe();
-      this.load_salles();
-      this.loadModulesByClass();
-      this.getEmploi()
-      
-  }
-  // ------------------------load form
+    this.load_DtoList();
+    this.load_salles();
+    this.load_form();
+    this.getStatusOptions()
 
-  load_form(){
-    // this.seanceTypeOptions = this.getStatusOptions();
-    this.form_seance = this.fb.group({
-      heureDebut: ['',Validators.required],
-      heureFin: ['',Validators.required],
-      idEmplois: [''],
-      idSalle: ['', Validators.required],
-      idTeacher: ['', Validators.required],
-      date: [""],
-      idModule: ['', Validators.required],
-      jour: [""],
-      idClasse: [''],
-      seanceType: ['', Validators.required]
+    this.sideBareService.currentSearchTerm.subscribe(term => {
+      this.searchTerm = term;
+      this.filterTeachers();
+
     });
   }
 
-   // -----------------------------------load all enseignants
-   load_enseignants(){
-    this.enseignantService.getAll().subscribe((data: Teacher[]) => {
-      this.enseignants = data;
+  load_DtoList() {
+    this.root.queryParams.subscribe(param => {
+      this.url_typeSeance = param['choix']
+    })
+  }
+
+  //  ------------------load form
+  load_form() {
+    this.form_config = this.fb.group({
+      idParticipant: ['', Validators.required],
+      idSalle: ['', Validators.required],
+      seanceType: ['', Validators.required],
+      heureDebut: ['', Validators.required],
+      heureFin: ['', Validators.required],
+      date: ['', Validators.required],
+    })
+  }
+  // ----------------------get all teachers
+  getAllTeacherByIdUe() {
+    // console.log(this.currentEmploi, "---------------")
+    const idProfile = this.currentEmploi.idClasse.idFiliere?.idFiliere.id
+    this.teacherService.getAll_Teacher_By_IdUe(idProfile!).subscribe(result => {
+      this.enseignants = result;
+      this.filteredItems = this.enseignants;
       // console.log(this.enseignants, "enseignants");
     })
   }
 
-  // ----------------------load class-room
-  load_classe(){
-    this.classService.getAllCurrentClassOfYear().subscribe(data =>{
-      this.classes = data;
-      // console.log(this.classes, "classes")
+   // -------------------------------load all participation by idEmploi
+   load_participation_by_classe(idClass: number) {
+    this.studentService.getParticipantsByEmploiId(idClass).subscribe((data) => {
+      data.forEach(part => {
+        if (!this.participants.some(d => d.idStudentGroup.id == part.idStudentGroup.id)) {
+          this.participants.push(part)
+        }
+      })
+
+      // console.log(this.participants, "participations");
     })
   }
-  // --------------------------load salle
-  load_salles(){
-    this.salleService.getAll().subscribe(data =>{
+
+  teacher_check(idTeacher: number) {
+    
+    const teacher_fund = this.enseignants.find(t => t.idEnseignant == idTeacher);
+    const emploi = this.currentEmploi;
+
+    this.load_participation_by_classe(emploi.idClasse.id!);
+    if (teacher_fund) {
+      if (!this.list_enseignant_checked.some(teacher => teacher.idEnseignant == idTeacher) ) {
+        if(this.list_enseignant_checked.length >= 2){
+          this.list_enseignant_checked = [teacher_fund]
+        }else
+          this.list_enseignant_checked.push(teacher_fund);
+      }
+      
+      this.form_config.reset();
+      this.load_form();
+      console.log(this.list_enseignant_checked, "checked", "unchecked");
+    }
+  }
+
+
+  onRoomChange(idEnseignant: number, event: any) {
+    const roomId = event.target.value;
+    this.selectedGroupAndRoom[idEnseignant] = {
+      ...this.selectedGroupAndRoom[idEnseignant],
+      roomId: roomId
+    };
+    // console.log(this.selectedGroupAndRoom, "room selected");
+  }
+
+  is_Teacher_checked(teacher: Teacher): boolean {
+    return this.list_enseignant_checked.some(st => st == teacher);
+  }
+
+
+  // load salle
+
+  load_salles() {
+    this.salleService.getAll().subscribe(data => {
       this.salles = data;
       // console.log(this.salles, "sales")
     })
   }
+  // ---------------submit
+  onSubmit() {
+    const formData = this.form_config.value
+    console.log(formData, "form data")
 
-  // --------------------------------------form to create seance
- 
-  create_seance() {
+    let jourConfig: Journee[] = [];
 
-    let list_seances: Seances[] = []; 
-    let lis_config: Configure_seance [] =[]
+    // Parcourir chaque configuration d'enseignant
+    for (const teacherId in this.selectedGroupAndRoom) {
+      if (this.selectedGroupAndRoom.hasOwnProperty(teacherId)) {
+        const selection = this.selectedGroupAndRoom[teacherId];
+        const teacher_fund = this.enseignants.find(tf => tf.idEnseignant == +teacherId);
+        const salle_fund = this.salles.find(sal => sal.id == selection.roomId);
 
-    const formData = this.form_seance.value;
-    const idModule: Module = this.modules.find(mod => mod.id === +formData.idModule)!;
-    const idTeacher: Teacher = this.enseignants.find(t => t.idEnseignant === +formData.idTeacher)!;
-    const idSalle: Salles = this.salles.find(s => s.id == +formData.idSalle)!;
 
-   
+        console.log(teacher_fund, "teacher")
+        console.log(salle_fund, "sallle")
+        
+          const jounee: Journee = {
+            date: formData.date,
+            heureDebut: formData.heureDebut,
+            heureFin: formData.heureFin,
+            idEmplois: this.currentEmploi,
+            idTeacher: teacher_fund!,
+            idSalle: salle_fund!,
 
-    // Vérifiez si dates_check contient des dates
-    if (this.dates_check && this.dates_check.length > 0) {
-        this.dates_check.forEach(date => {
-          // const formattedDate = formatDate(date, 'yyyy-MM-dd', 'en-US');
-            // Création de l'objet Séance à partir des données du formulaire pour chaque date
-            const seance: Seances = {
-                heureDebut: formData.heureDebut,
-                heureFin: formData.heureFin,
-                date: date.date,
-                idEmplois: this.emplois,
-                idModule: idModule,
-            };
-            list_seances.push(seance);
-
-             // config seance to surveillance
-            const config : Configure_seance ={
-              idParticipant: null!,
-              heureDebut: formData.heureDebut,
-              heureFin: formData.heureFin,
-              seanceType: formData.seanceType,
-              idTeacher: idTeacher,
-              idSalle: idSalle
-              
-            }
-            lis_config.push(config);
-        });
-      }
-
-    if (this.form_seance.valid) {
-       const surveillance : Surveillance ={
-          seancesList: list_seances,
-          configList: lis_config
-        }
-
-        this.seanceService.addSurveillance(surveillance).subscribe({
-          next: (response) => {
-            this.pageTitle.showSuccessToast(response.message)
-            this.form_seance.reset();
-            this.load_classe();
-            this.load_classe();
-            this.load_salles();
-            this.load_enseignants();
-            this.load_form();
-          },
-          error: (erreur) => {
-            this.pageTitle.showErrorToast(erreur.error.message)
+            seanceType: formData.seanceType
           }
-
-        })
-      }else{
-      // Marquer tous les champs comme touchés pour afficher les messages d'erreur
-      this.form_seance.markAllAsTouched();
-      console.log("Le formulaire n'est pas valide", this.form_seance.value);
-    }
-  }
-
-  // ------------------------------load emplois with seance
-  getEmploi(){
-    this.emploisService.getEmploisByClasse2(this.idUrl).subscribe(data  =>{
-      this.emplois = data;
-      const dateDebut = this.emplois.dateDebut;
-      const dateFin = this.emplois.dateFin;
-      console.log(this.emplois, "emplois trouver");
-      this.form_seance.get('idEmplois')?.setValue(this.emplois.id);
-      // this.datesWithDaysTest = this.emploisService.getDaysBetweenDatesTest(dateDebut, dateFin)
-      this.datesWithDays = this.emploisService.getDaysBetweenDates(dateDebut, dateFin)
-      this.datesWithDays.sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-      this.sortSeancesByDay()
-    
-    })
-    
-  }
-
-  // ------------ modules of classe
-  loadModulesByClass() {
-    this.root.queryParams.subscribe(param=>{
-      this.idUrl = +param['id']
-    })
-     this.classService.getAllModules(this.idUrl).subscribe((data: Module[]) => {
-      this.modules = data;
-      // console.log(this.modules,"modules");
-    
-      })
-     
-  }
-
-  // ----------------------------get automatic date 
-  getSeance_date(date : string, moreSelect: any){
-
-    if(moreSelect.length == 0 ){
-      this.form_seance.get('date')?.setValue(date)
-
-    }else{
-      this.form_seance.get('date')?.setValue('')
-    }
-  }
-  // -----------------all date is checked
-  hasChecked(checked : any[]){
-   if(checked.length > 0){
-    this.dates_check = checked;
-    this.isShow_add_jour = false
-   }
-  }
-  // ----------------close modal
-  closeModal(){
-    this.isShow_add_jour = false
-  }
-  // -------------------------
-  onMention_Select(){
-    this.isShow_add_jour =! this.isShow_add_jour
-  }
-
-  day_check(date : string, event: any){
-    const day_find = this.datesWithDays.find(d => d.date === date);
-
-    this.getSeance_date(day_find?.date!, this.list_checked);
-
-    if (day_find) {
-      if (event.target.checked) {
-        if (!this.list_checked.some(lc => lc.date === date)) {
-          this.list_checked.push(day_find);
-        }
-      } else {
-        this.list_checked = this.list_checked.filter(lc => lc.date !== day_find.date);
+          jourConfig.push(jounee);
       }
-      console.log(this.list_checked, event.target.checked ? "checked" : "unchecked");
     }
-  }
-// -----------------select all ues
-selectAll(event : any){
-  if (event.target.checked) {
-    this.list_checked = [...this.datesWithDays];
-    this.getSeance_date('', this.list_checked);
-  } else {
-    this.list_checked = [];
-  }
-  console.log(this.list_checked, event.target.checked ? "tous checked" : "tous unchecked");
 
-}
-  is_checked(date: string): boolean {
-    return this.list_checked.some(lc => lc.date === date);
-  }
+    console.log(jourConfig, "dto");
+    // return
+    this.seanceService.addSurveillance(jourConfig).subscribe({
+      next: (result) => {
+        this.pageTitle.showSuccessToast(result.message);
+        this.form_config.reset();
+        this.selectedGroupAndRoom = {}
+        this.list_enseignant_checked = []
+        this.list_checked = []
+      },
+      error: (error) => {
+        this.pageTitle.showErrorToast(error.error.message);
+      }
 
-  areAllChecked(): boolean {
-    return this.list_checked.length === this.datesWithDays.length;
-  }
+    })
 
+  }
   getStatusOptions() {
     const objet = Object.keys(type_seance).map(key => ({
-      
+
       key: key,
-      value: type_seance[key as keyof typeof type_seance] 
+      value: type_seance[key as keyof typeof type_seance]
     }));
     objet.forEach(o => {
-      if(o.value == type_seance.SESSION || o.value == type_seance.Examen ){
+      if (o.value == type_seance.SESSION || o.value == type_seance.Examen) {
         this.seanceTypeOptions.push(o)
       }
     })
   }
-  sortSeancesByDay() {
-    const daysOfWeek = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
- 
-   // Trier les séances par jour en utilisant l'ordre défini dans daysOfWeek
-   this.datesWithDays.sort((a, b) => {
-     const dayIndexA = daysOfWeek.indexOf(a.day!);
-     const dayIndexB = daysOfWeek.indexOf(b.day!);
-     
-     return dayIndexA - dayIndexB;
-   });
- }
-  goBack(){
-    window.history.back();
+
+  is_Particip_checked(particpant: Participant): boolean {
+    return this.listParticip_checked.some(st => st === particpant);
   }
+
+  isGroupAlreadySelected(groupId: number): boolean {
+    return Object.values(this.selectedGroupAndRoom).some(selection => selection.groupId === groupId);
+  }
+
+  // Vérifie si un groupe est sélectionné pour un enseignant
+  isGroupSelected(teacherId: number, participantId: number): boolean {
+    return this.selectedGroup[teacherId] === participantId;
+  }
+
+  group_check(idEnseignant: number, idStudentGroup: number, event: any) {
+    if (event.target.checked) {
+      this.selectedGroupAndRoom[idEnseignant] = {
+        ...this.selectedGroupAndRoom[idEnseignant],
+        groupId: idStudentGroup
+      };
+    }
+    console.log(this.selectedGroupAndRoom, "group selected");
+  }
+
+
+  // ------------teacher select
+  chose_teacher(teacher: Teacher) {
+    this.teacher_check(teacher.idEnseignant!);
+    this.is_Teacher_checked(teacher)
+    this.show_views = false
+  }
+
+  show_teachers() {
+      this.show_views =! this.show_views
+
+      this.getAllTeacherByIdUe();
+
+  }
+
+  filterTeachers() {
+    console.log(this.searchTerm, "cherche")
+    if (!this.searchTerm) {
+      return this.filteredItems = this.enseignants;
+    } else {
+      return this.filteredItems = this.enseignants.filter(enseignant =>
+        enseignant.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        enseignant.prenom.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    }
+  }
+
+  onSearchChange() {
+    this.sideBareService.changeSearchTerm(this.searchTerm);
+  }
+
 }

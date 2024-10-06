@@ -1,137 +1,106 @@
 <main>
+    <div class="modal-search" *ngIf="show_views">
+        <div class="views">
+            <div class="form-input">
+                <fa-icon class="search-icon" [icon]="icons.search"></fa-icon>
+                <input type="text" class="search" (input)="onSearchChange()" [(ngModel)]="searchTerm"
+                    placeholder="Rechercher...">
+            </div>
+            <ng-container *ngFor="let teacher of filteredItems">
+                <p (click)="chose_teacher(teacher)">{{teacher.nom}} {{teacher.prenom}}</p>
+            </ng-container>
 
-    <div (click)="goBack()" class="back-button">
-        <fa-icon [icon]="icons.back"></fa-icon>
+        </div>
     </div>
 
-    <form class="form-add" [formGroup]="form_seance" (ngSubmit)="create_seance()" >
-        <div class="head" (click)="onMention_Select()"><span>Choisir le jour  <fa-icon [icon]="icons.angleDown"></fa-icon></span> </div>
-        <div class="div-content">
-            <!-- ---------------------------- -->
-             <div class="first-content">
+    <form [formGroup]="form_config" (ngSubmit)="onSubmit()">
+        <div class="input-time">
+            <div class="">
+                <label>Heure de début :</label>
+                <input type="time" class="form-control input-width" id="heureDebut" formControlName="heureDebut"
+                    [class.is-invalid]="form_config.get('heureDebut')!.invalid && form_config.get('heureDebut')!.touched"
+                    >
 
-                <div class="input-content">
-                
-                    <div class="form form-group">
-                        <label>Enseignants :</label> 
-                        
-                        <select class="form-select" formControlName="idTeacher"  id="enseignant" placeholder="Enseignants" [class.is-invalid]="form_seance.get('idTeacher')!.invalid && form_seance.get('idTeacher')!.touched" required>
-                        <option  selected disabled value="">Choisir L'Enseignant</option>
-                        <option *ngFor="let enseignant of enseignants" [value]="enseignant.idEnseignant">{{enseignant.nom}} {{enseignant.prenom}}</option>
-                        </select> 
-                        <span *ngIf="form_seance.controls['idTeacher'].invalid && form_seance.controls['idTeacher'].touched" [ngStyle]="{color: 'red'}">
-                        Champ obligatoire*
-                        </span>
-                    </div>
-                  <!-- ------------------- -->
-                   
-                    <!-- ------------------------- -->
-                    <div class="form form-group">
-                        <label>Modules :</label> 
-                        <select class="form-select" formControlName="idModule"  id="idModule" placeholder="Modules"  [class.is-invalid]="form_seance.get('idModule')!.invalid && form_seance.get('idModule')!.touched"  required>
-                            <option  selected disabled value="">Choisir Le Module</option>
-                            <option *ngFor="let module of modules" value="{{module.id}}">{{module.nomModule}}</option>
-                        </select> 
-                        <span *ngIf="form_seance.controls['idModule'].invalid && form_seance.controls['idModule'].touched" [ngStyle]="{color: 'red'}">
-                            Champ obligatoire*
-                        </span>
-                    </div>
-
-                    <ng-container *ngIf="isShow_add_jour">
-                    <div class="form form-group"> 
-                        <!-- <label>Jours :</label>  -->
-
-                            <div class="views-add-ues" *ngIf="datesWithDays.length > 0">
-                                <div class="nom-class"> <h5 >Choisir une ou plusieurs jours</h5></div>
-                                <div class="formModuleMatiere"> 
-                                   <div class="select-al input">
-                                        <span>Sélectionner tout</span>
-                                            <input type="checkbox" class="custom-checked" (change)="selectAll($event)" [checked]="areAllChecked()" >
-                                    </div>
-                                    <div class="form form-group">
-                                        
-                                        <ng-container *ngFor="let dateInfo of datesWithDays">
-                                            <div class="input">
-                                                <label >{{dateInfo.day}}</label>
-                                                <input type="checkbox"  (change)="day_check(dateInfo.date, $event)" [checked]="is_checked(dateInfo.date)" [ngClass]="{ 'custom-checked': is_checked(dateInfo.date) }">
-                                            </div>
-                                        </ng-container>
-                                    </div>
-                                    <div class="check-val">
-                                        <a (click)="closeModal()" ><span>Annuler</span></a>
-                                        <div class="isCheck-valid" (click)="hasChecked(list_checked)" ><span>Valider</span></div>
-                                      </div>
-                                </div> 
-                                </div>
-                         
-                     
-                    </div>
-                </ng-container>
-                    <!-- <div class="form form-group">
-                        <label for="">Jours :</label>
-                        <input [ngClass]="datesWithDays.length ? 'input-click' : 'input-disabled'" type="text" value="Choisir les jours" class="form-control" readonly
-                        (click)="datesWithDays.length ?  : null">
-                    </div> -->
-
-                     <div class="form-group" >
-                        <label>Type surveillance : </label> 
-                        <select class="form-select" formControlName="seanceType" [class.is-invalid]="form_seance.get('seanceType')!.invalid && form_seance.get('seanceType')!.touched">
-                            <option  selected disabled value="">Choisir Le type</option>
-                            <option *ngFor="let status of seanceTypeOptions" [value]="status.value" >{{status.key}}</option>
-                        </select>
-                    </div>
-                </div>
-
-                 
-                 <!-- ======================================================== -->
-                 <div class="input-content">
-                    <div class="form form-group"> 
-                        <label>Salles :</label> 
-                        <select class="form-select" formControlName="idSalle"  [class.is-invalid]="form_seance.get('idSalle')!.invalid && form_seance.get('idSalle')!.touched " required>
-                          <option selected disabled value="">Choisir la salle</option>
-                          <option *ngFor="let salle of salles" [value]="salle.id">{{salle.nom}}</option>
-                        </select> 
-                        <span *ngIf="form_seance.controls['idSalle'].invalid && form_seance.controls['idSalle']!.touched" [ngStyle]="{color:'red'}">
-                          Champ obligatoire*
-                        </span>
-                    </div>
-                   <!-- -------------------------------- -->
-                    <div class="form form-group"> 
-                        <label for="date">Date </label> 
-                        <input id="date" type="date" class="form-control" formControlName="date" readonly>
-                    </div>
-                    <!-- ----------------- -->
-                    <div class="input-time">
-                        <div class="form form-group">
-                             <label>Heure de début :</label>
-                            <input type="time" class="form-control" id="heureDebut" formControlName="heureDebut" [class.is-invalid]="form_seance.get('heureDebut')!.invalid && form_seance.get('heureDebut')!.touched" required>
-                            <span *ngIf="form_seance.controls['heureDebut'].invalid && form_seance.controls['heureDebut']!.touched" [ngStyle]="{color:'red'}">
-                                Champ obligatoire*
-                              </span>
-                        </div>
-                       <div class="form form-group">
-                            <label>Heure de Fin :</label>
-                            <input type="time" class="form-control" id="heureFin" formControlName="heureFin" [class.is-invalid]="form_seance.get('heureFin')!.invalid && form_seance.get('heureFin')!.touched" required>
-                            <span *ngIf="form_seance.controls['heureFin'].invalid && form_seance.controls['heureFin']!.touched" [ngStyle]="{color:'red'}">
-                                Champ obligatoire*
-                              </span>
-                        </div>
-                                    
-                    </div>
-                   <input type="number" formControlName="idEmplois" *ngIf="false">
-                </div>
-                
             </div>
-               
-                
-             
+            <div class="">
+                <label>Heure de Fin :</label>
+                <input type="time" class="form-control" id="heureFin" formControlName="heureFin"
+                    [class.is-invalid]="form_config.get('heureFin')!.invalid && form_config.get('heureFin')!.touched"
+                    >
+
+            </div>
         </div>
+        <div class="form form-group" id="type-seance">
+            <label>Types :</label>
+            <select class="form-select" formControlName="seanceType">
+                <option selected disabled value="">Choisir Le type</option>
+                <option *ngFor="let s_type of seanceTypeOptions" [value]="s_type.value">{{s_type.key}}
+                </option>
+
+            </select>
+
+        </div>
+        <label class="chose_teacher" (click)="show_teachers()">Selectionner Enseignants</label>
         
-        <div class="button-cash">
-            <!-- <button *ngIf="isCreating" class="btn btn-danger" type="button" (click)="annuller()">Annuler</button> -->
-            <button id="btn-submit" class="btn" type="submit">Enregistrer</button>
+
+        <div class="contenair-teach" *ngIf="list_enseignant_checked.length">
+            <div class="plage-days" >
+                <div class="input-content" *ngFor="let dateInfo of datesWithDays">
+                    <div class="input">
+                        <label for="inlineRadio{{dateInfo.day}}">{{dateInfo.day}}</label>
+                        <input type="radio" formControlName="date" [value]="dateInfo.date"
+                        id="inlineRadio{{ dateInfo.day }}">
+                    </div>
+                </div>
+            </div>
+            <div class="plag plag-enseignat">
+
+                <div class="plage-container" *ngFor="let item of list_enseignant_checked">
+                    <label *ngIf="is_Teacher_checked(item!)">{{item.nom}} {{item.prenom}}</label>
+
+                    <div class="group">
+                        <div class="form-check form-check-inline" *ngFor="let participant of participants">
+                            <input 
+                                class="form-check-input"
+                                type="radio"
+                                name="groupSelection"
+                                [value]="participant.id"
+                                (change)="group_check(item.idEnseignant!, participant.id!, $event)"
+                                [checked]="isGroupSelected(item.idEnseignant!, participant.id!)"
+                                [disabled]="isGroupAlreadySelected(participant.id!)"
+                                id="inlineRadio{{ participant.id }}"/>
+                            <label class="form-check-label" [for]="'inlineRadio' + participant.id">
+                                {{ participant.idStudentGroup.nom }}
+                            </label>
+                        </div>
+                    </div> 
+                    <div class="plag-enseignat">
+                        
+                        <select class="form-select" formControlName="idSalle"
+                            [class.is-invalid]="form_config.get('idSalle')!.invalid && form_config.get('idSalle')!.touched"
+                            (change)="onRoomChange(item.idEnseignant!, $event)">
+                            <option selected disabled value="">Salles</option>
+                            <option *ngFor="let salle of salles" [value]="salle.id">{{salle.nom}}</option>
+                        </select>
+
+
+                    </div>
+
+                </div>
+              
+
+            </div>
+           
+                <div class="button-cash">
+                    <button class="btn" type="submit" >Enregistrer</button>
+                </div>
+
         </div>
-            
-      </form>
-      <div class="overlay" *ngIf="isShow_add_jour"></div>
+
+    </form>
+
+   
+
+    <!-- <div class="overlay" *ngIf="overlay"></div> -->
+
 </main>

@@ -4,6 +4,8 @@
       </div>
     @if(datesWithDays.length > 0){
        <!-- <app-der-jour-component [datesWithDays]="datesWithDays" [currentEmploi]="emploi" [currentTypeSeance]="url_typeSeance"></app-der-jour-component> -->
-        <app-der-t-d-component [datesWithDays]="datesWithDays" [currentEmploi]="emploi"></app-der-t-d-component>
+        <app-der-t-d-component *ngIf="permission" [datesWithDays]="datesWithDays" [currentEmploi]="emploi"></app-der-t-d-component>
+
+        <app-sec-add-surveillance *ngIf="!permission" [datesWithDays]="datesWithDays" [currentEmploi]="emploi"></app-sec-add-surveillance>
     }
 </main>

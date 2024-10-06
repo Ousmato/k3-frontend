@@ -24,17 +24,17 @@ const routes: Routes = [{path: '', component: DgaSidebarComponent,
     {path: 'etudiant', component: EtudiantsComponent},
     {path: 'student-notes', component: StudentNoteComponent},
     {path: 'archive-scolaire', component: DgaArchivesComponent},
-    {path: 'all-notes', component: AllNotesSemestreComponent, data:{title: "Notes du Semestre"}},
+    // {path: 'all-notes', component: AllNotesSemestreComponent, data:{title: "Notes du Semestre"}},
     {path: 'etudiant-de-la-classe', component : EtudiantsDeLaClasseComponent},
     {path: 'student-bulletin', component: StudentBulletinComponent},
     {path: 'update-school', component: SchoolEditWidgetComponent, data:{title: "Information de l'Etablissement"}},
 
     {path: 'class-archives', component: ClassArchiveComponent},
     {path: 'view-ues', component: ViewUeComponent, data:{title: "LES UNITES D'ENSEIGNEMENT"}},
-    {path: 'all-notes', component: AllNotesSemestreComponent, data:{title: "Notes du Semestre"}},
+    {path: 'all-notes', component: AllNotesSemestreComponent, data:{title: "NOTES DU SEMESTRE"}},
     
     {path: 'emplois-seances', component: EmploisSeanceComponent},
-    {path: 'emplois-du-temps', component: DerEmploiDuTempsComponent},
+    {path: 'emplois-du-temps', component: DerEmploiDuTempsComponent, data:{title: "LES EMPLOIS DU TEMPS ENCOURS"}},
     
 
   ]

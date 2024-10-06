@@ -14,6 +14,8 @@ export interface Docum {
     docType: TypeDoc
     date?: Date
     soutenue?: boolean
+    programmer?: boolean
+    idEncadrant: Teacher
     
 }
 
@@ -27,7 +29,7 @@ export interface Soutenance{
     niveaux?: string
     idSalle: Salles
     date: Date
-    idTeacher: Teacher
+    idTeacher?: Teacher
     idJury?: Jury[]
     
 }
@@ -35,7 +37,9 @@ export interface Soutenance{
 export interface Jury{
     id?: number
     role: string
-    idTeacher: Teacher
+    idTeacher: number;
+    teachers?: Teacher
+    idSoutenance?: Soutenance;
 
 }
 export enum Jury_role{
@@ -52,4 +56,9 @@ export interface StudentDoc{
     prenom? : string;
     niveau ?: string;
     filiere? : string;
+}
+
+export interface ProgramSoutenance{
+    jurys: Jury[]
+    soutenance: Soutenance
 }

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { Niveau } from './Admin/Models/Niveau';
 import { User } from './Admin/Models/Auth';
+import { Admin } from './Admin/Models/Admin';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +41,7 @@ export class AuthServiceService {
       .pipe(
         map(() => {
           // Suppression du jeton d'authentification du localStorage lors de la déconnexion
-          sessionStorage.removeItem('token');
+          sessionStorage.clear();
           return true; // Vous pouvez retourner toute autre donnée pertinente de la réponse si nécessaire
         })
       );
@@ -50,6 +51,8 @@ export class AuthServiceService {
   isLoggedIn(): boolean {
     // Logique pour vérifier si l'utilisateur a un jeton d'authentification valide
     // Retourne true si l'utilisateur est authentifié, sinon false
-    return sessionStorage.getItem('admin') != null; // Exemple : vérifie si un jeton est présent dans le stockage local
+    console.log( sessionStorage.getItem('r-scolarite') != null)
+    return sessionStorage.getItem('admin') != null || sessionStorage.getItem('der') != null || sessionStorage.getItem('dga') != null || sessionStorage.getItem('dg') != null
+     || sessionStorage.getItem('comptable') != null || sessionStorage.getItem('scolarite') != null || sessionStorage.getItem('secretaire') != null; // Exemple : vérifie si un jeton est présent dans le stockage local
   }
 }

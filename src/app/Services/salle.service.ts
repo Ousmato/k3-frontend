@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Salles } from '../Admin/Models/Salles';
 import { Response_String } from '../Admin/Models/Response_String';
+import { teacherConfigureDto } from '../Admin/Models/Teachers';
 
 @Injectable({
   providedIn: 'root'
@@ -37,4 +38,10 @@ export class SalleService {
   getNombreSalleOccupe(): Observable<number>{
     return this.http.get<number>(this.baseUrl+"number-salle-occupe")
   }
+  // --------------get salle by nom
+  getSalleByNom(searchTream: string) : Observable<Salles>{
+    return this.http.post<Salles>(this.baseUrl + "get-salle-by-nom", searchTream);
+  }
+
+ 
 }

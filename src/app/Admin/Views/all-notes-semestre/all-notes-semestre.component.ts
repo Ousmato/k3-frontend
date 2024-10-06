@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Notes } from '../../Models/Notes';
+import { NoteDto, NoteModuleDto, Notes, StudentsNotesDto } from '../../Models/Notes';
 import { EtudeService } from '../etudiants/etude.service';
 import { ActivatedRoute } from '@angular/router';
 import { ClassStudentService } from '../../../DGA/class-students/class-student.service';
@@ -12,7 +12,7 @@ import { SchoolInfo } from '../../Models/School-info';
 import { SemestreService } from '../../../Services/semestre.service';
 import { Semestres } from '../../Models/Semestre';
 import { IconsService } from '../../../Services/icons.service';
-import { StudentPages } from '../../Models/Pagination-module';
+import { NotesPages, StudentPages } from '../../Models/Pagination-module';
 import { SideBarService } from '../../../sidebar/side-bar.service';
 
 @Component({
@@ -20,128 +20,57 @@ import { SideBarService } from '../../../sidebar/side-bar.service';
   templateUrl: './all-notes-semestre.component.html',
   styleUrl: './all-notes-semestre.component.css'
 })
-export class AllNotesSemestreComponent  implements OnInit{
-  notes: Notes[] = []
+export class AllNotesSemestreComponent implements OnInit {
+  notes: NoteDto[] = []
   idClasse!: number
-  ueListe : Ue[] =[]
-  modules: Module[] = []
-  students: Student[] =[]
-  classe ?: ClassRoom
+  idSemestre!: number
+  ueListe: Ue[] = []
+  modules: NoteModuleDto[] = []
+  students: StudentsNotesDto[] = []
+  classe?: ClassRoom
   school?: SchoolInfo
-  semestre?: Semestres
+  semestres: Semestres[] = []
 
-  studentspage?: StudentPages;
+  studentspage?: NotesPages;
   searchTerm: string = '';
   page = 0;
   size = 10;
   anneeScolaire!: any
-  filteredItems : Student[] = []
+  filteredItems: StudentsNotesDto[] = []
   pages: number[] = []
 
   constructor(private etudiantService: EtudeService, public icons: IconsService,
     private semestreService: SemestreService, private clasService: ClassStudentService,
     private route: ActivatedRoute, private schollService: SchoolService, private sideBarService: SideBarService) { }
   ngOnInit(): void {
-    this.getNotes_classe();
     this.getSchoolInfo();
-    this.getCurrentSemestre();
+    this.load_semestre();
     this.getClasse();
 
 
     this.sideBarService.currentSearchTerm.subscribe(term => {
       this.searchTerm = term;
       this.filterStudents();
-    
+
     });
   }
 
-  // -----------------------get all notes of classe
-  getNotes_classe(){
-    this.route.queryParams.subscribe(param =>{
-      this.idClasse = param['id'];
-    })
-    let sts : Student[] =[]
-    this.etudiantService.getAllNoteByClasse(this.page, this.size, this.idClasse).subscribe(data => {
-      this.notes = data.content;
-      data.content.forEach(item =>{
-       this.modules.push(item.idModule)
-       
-       sts.push(item.idStudents)
-      })
-      this.students = this.extractUniqueStudents(sts)
-      // this.students = sts;
-    })
+  // -----------------------------------------------------------
+  // getStudentModuleScore(student: number, moduleId: number): number {
 
-  }
-// -----------------------------------------------------------
-  getStudentModuleScore(student: number, moduleId: number): number {
-    
-    // console.log(this.notes, "monn8888")
-    const note = this.notes.find(note => note.idStudents.idEtudiant === student && note.idModule.id === moduleId);
-    if (note) {
-      const noteArrondi = (note.classeNote + note.examNote) /2;
-        return  +noteArrondi.toFixed(2)
-    } else {
-        return 0; // Ou une valeur par défaut si aucune note trouvée pour ce module
-    }
-}
+  //   // console.log(this.notes, "monn8888")
+  //   const note = this.notes.find(note => note.idStudents.idEtudiant === student && note.idModule.id === moduleId);
+  //   if (note) {
+  //     const noteArrondi = (note.classeNote + note.examNote) / 2;
+  //     return +noteArrondi.toFixed(2)
+  //   } else {
+  //     return 0; // Ou une valeur par défaut si aucune note trouvée pour ce module
+  //   }
+  // }
 
 
-  calculateAverage(student: Student): number {
-   
-      let totalPonderedScore = 0;
-      let totalCoefficient = 0;
-      let noteCoef =0
-  
-      this.notes.forEach((note: Notes) => {
-        if (student.idEtudiant === note.idStudents.idEtudiant) {
-          const coefficient = note.idModule.coefficient;
-
-          noteCoef = ((note.examNote + note.classeNote )/2) * coefficient;
-          totalPonderedScore += noteCoef; 
-
-          totalCoefficient += coefficient;
-        }
-      });
-
-    if (totalCoefficient > 0) {
-      const average = totalPonderedScore / totalCoefficient;
-      const noteArrondi = +average.toFixed(2);
-        return noteArrondi;
-    } else {
-        return 0; // Ou une valeur par défaut si aucune note disponible
-    }
-}
-
-  // --------------------------methode get observation
-  determineObservation(student: any): string {
-    const average = this.calculateAverage(student);
-
-    if (average >= 10) {
-        return 'Admis';
-    } else {
-        return 'Ajounee';
-    }
-}
-// ----------------------------------extration 
-  private extractUniqueStudents(notes: Student[]): Student[] {
-    const uniqueStudents = new Set<number>(); // Utilise un Set pour stocker les idEtudiant uniques
-    const result: Student[] = [];
-    
-    notes.forEach(item => {
-      if (!uniqueStudents.has(item.idEtudiant!)) { // Vérifie si l'idEtudiant n'est pas déjà dans le Set
-        uniqueStudents.add(item.idEtudiant!); 
-        result.push(item); // Ajoute l'étudiant au tableau résultant des étudiants uniques
-      }
-    });
-    result.forEach((student, index) => {
-      student.numero = index + 1; // Ajoute 1 pour commencer à partir de 1 (si nécessaire)
-    });
-
-    return result;
-  }
   // --------------------------------------get information of school
-  getSchoolInfo(){
+  getSchoolInfo() {
     this.schollService.getSchools().subscribe(data => {
       this.school = data;
       this.school.urlPhoto = `http://localhost/StudentImg/${this.school.urlPhoto}`;
@@ -150,39 +79,42 @@ export class AllNotesSemestreComponent  implements OnInit{
       // const yearDte = dte.getFullYear();
       // const yearDtf = dtf.getFullYear();
       // this.school.anneeScolaire.;
-    //  console.log(this.school.annee_de, "0000000000000000")
+      //  console.log(this.school.annee_de, "0000000000000000")
 
     })
   }
-  // -------------------------------------------get currente semestre
-  getCurrentSemestre(){
-    this.semestreService.getCurentSemestre().subscribe(data => {
-      this.semestre = data;
-      const date = new Date(this.semestre.idAnneeScolaire.debutAnnee)
-      const year = date.getFullYear();
-      this.anneeScolaire = `${year} - ${year + 1}`
-      // console.log(anneeScolaire, "annee")
+  load_semestre() {
+    this.route.queryParams.subscribe(param =>{
+      this.idClasse = param['id'];
+    })
+    this.semestreService.getCurrentSemestresByIdNivFiliere(this.idClasse).subscribe(result => {
+      result.forEach(res => {
+        if (!this.semestres.some(sem => sem.id == res.id)) {
+          this.semestres.push(res)
+        }
+      })
+      console.log(this.semestres, "semestre")
     })
   }
   // -------------------------------------------get classe
-  getClasse(){
+  getClasse() {
     this.clasService.getClassById(this.idClasse).subscribe(data => {
       this.classe = data;
     })
   }
   // -------------------------------------button got back
-  goBack(){
+  goBack() {
     window.history.back();
   }
   // -----------------------------method filter
   filterStudents() {
     if (!this.searchTerm) {
-     return this.filteredItems = this.students;
+      return this.filteredItems = this.students;
     } else {
-    return  this.filteredItems = this.students.filter(student =>
+      return this.filteredItems = this.students.filter(student =>
         student.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        student.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        student.email.toLowerCase().includes(this.searchTerm.toLowerCase())
+        student.prenom.toLowerCase().includes(this.searchTerm.toLowerCase())
+       
       );
     }
   }
@@ -205,5 +137,44 @@ export class AllNotesSemestreComponent  implements OnInit{
       this.setPage(this.page - 1);
     }
   }
+
+  // ------------------------select semestre
+  onSelect(event: any){
+    this.idSemestre = event.target.value;
+   this.getNotes_classe();
+  }
+
+  getNotes_classe() {
+    this.etudiantService.getAllNoteByClasse(this.page, this.size, this.idClasse, this.idSemestre).subscribe(data => {
+        this.studentspage = data;
+        this.students = this.studentspage.content;
+        
+        this.modules = []; // Initialise pour accumuler les modules
+        this.notes = []; // Initialise pour accumuler les notes
+        
+        this.studentspage.content.forEach(stm => {
+            if (stm.noteDTO && stm.noteDTO.length > 0) {
+                stm.noteDTO.forEach(nt => {
+                    // Ajoute la note uniquement si elle n'est pas déjà présente
+                    if (!this.notes.some(n => n.nomUE === nt.nomUE)) {
+                        this.notes.push(nt);
+                    }
+                    nt.modules.forEach(mod => {
+                        // Ajoute uniquement des modules uniques
+                        if (!this.modules.some(existingModule => existingModule.nomModule === mod.nomModule)) {
+                            this.modules.push(mod);
+                        }
+                    });
+                });
+                console.log(this.modules, "modules");
+                console.log(this.notes, "notes");
+            } else {
+                console.log(`Pas de modules pour ${stm.nom} ${stm.prenom}`);
+            }
+        });
+        console.log(this.studentspage, "student note page");
+    });
+}
+
 }
 

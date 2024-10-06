@@ -1,18 +1,17 @@
+<main>
 
-<main >
-    
     <form class="one-column" [formGroup]="prog_form" (ngSubmit)="submit()">
-            
+
         <div (click)="goBack()" class="back-button">
             <fa-icon [icon]="icons.back"></fa-icon>
-          </div>
-          <input type="number" formControlName="idDoc" *ngIf="false">
+        </div>
+        <input type="number" formControlName="idDoc" *ngIf="false">
         <div class="first-inputs">
-            <div class="form" > 
-                <label for="password">Date :</label> 
-                <input type="date" class="form-control" formControlName="date" placeholder="La date" >
-            </div>
             <div class="form">
+                <label for="password">Date :</label>
+                <input type="date" class="form-control" formControlName="date" placeholder="La date">
+            </div>
+            <!-- <div class="form">
                 <label >Encadrant :</label> 
                 <select class="form-select" formControlName="idTeacher"   [class.is-invalid]="prog_form.get('idTeacher')!.invalid && prog_form.get('idTeacher')!.touched">
                     <option  selected disabled value="">Choisir L'encadrant</option>
@@ -21,67 +20,74 @@
                 <span *ngIf="prog_form.controls['idTeacher'].invalid && prog_form.controls['idTeacher'].touched" [ngStyle]="{color: 'red'}">
                     Champ obligatoire*
                     </span>              
-            </div>
+            </div> -->
             <div class="form">
-                <label >Salles :</label> 
-                <select class="form-select" formControlName="idSalle"   [class.is-invalid]="prog_form.get('idSalle')!.invalid && prog_form.get('idSalle')!.touched">
-                    <option  selected disabled value="">Choisir La  salle</option>
-        
-                    <option *ngFor="let sal of salles" [ngValue]="sal.id">{{sal.nom}}</option>
-                </select>         
-                <span *ngIf="prog_form.controls['idSalle'].invalid && prog_form.controls['idSalle'].touched" [ngStyle]="{color: 'red'}">
+                <label>Salles : <span id="salle-nom">{{salle ? salle.nom : "Acunne salle trouver"}}</span></label>
+               
+                <input type="text" formControlName="salle" class="form-control" placeholder="Saisir le nom de la salle">
+
+                <span *ngIf="prog_form.controls['salle'].invalid && prog_form.controls['salle'].touched"
+                    [ngStyle]="{color: 'red'}">
                     Champ obligatoire*
-                    </span>              
-            </div>
-        </div>  
-        
-    
-        <div class="form-group-heure">
-            <div class="form "> 
-                <label >Heure du début :</label> 
-                <!-- <input type="date" class="form-control" id="dateDebut" formControlName="dateDebut" placeholder="Date du debut" required> -->
-                <input type="time" class="form-control" formControlName="heureDebut" [class.is-invalid]="prog_form.get('heureDebut')!.invalid && prog_form.get('heureDebut')!.touched" (change)="heureChange($event)">
-                <span *ngIf="prog_form.controls['heureDebut'].invalid && prog_form.controls['heureDebut'].touched" [ngStyle]="{color: 'red'}">
-                Champ obligatoire*
                 </span>
             </div>
-        
-            <div class="form form-group" > 
-                <label for="password">Heure de fin :</label> 
-                <input type="time" class="form-control" id="heureFin" formControlName="heureFin" placeholder="Heure de fin" readonly >
+        </div>
+
+
+        <div class="form-group-heure">
+            <div class="form ">
+                <label>Heure du début :</label>
+                <!-- <input type="date" class="form-control" id="dateDebut" formControlName="dateDebut" placeholder="Date du debut" required> -->
+                <input type="time" class="form-control" formControlName="heureDebut"
+                    [class.is-invalid]="prog_form.get('heureDebut')!.invalid && prog_form.get('heureDebut')!.touched"
+                    (change)="heureChange($event)">
+                <span *ngIf="prog_form.controls['heureDebut'].invalid && prog_form.controls['heureDebut'].touched"
+                    [ngStyle]="{color: 'red'}">
+                    Champ obligatoire*
+                </span>
+            </div>
+
+            <div class="form form-group">
+                <label for="password">Heure de fin :</label>
+                <input type="time" class="form-control" id="heureFin" formControlName="heureFin"
+                    placeholder="Heure de fin" readonly>
             </div>
         </div>
-        
-        
-    
-        <div class="jury-content ">
+
+
+
+        <div class="jury-content">
             <label for="">Membres du jury</label>
-           
-            <div class="form form-group-jury" *ngFor="let item of numberJury; let i = index">
-                <select class="form-select select-input"
-                        [formControlName]="'idTeacher' + i"
-                        (change)="onTeacherChange($event, i)"
-                        [class.is-invalid]="prog_form.get('idTeacher' + i)?.invalid && prog_form.get('idTeacher' + i)?.touched">
-                  <option selected disabled value="">Choisir Le membre du jury</option>
-                  <option *ngFor="let teacher of teachers" 
-                          [value]="teacher.idEnseignant"
-                          [disabled]="isTeacherSelected(teacher.idEnseignant!) && prog_form.get('idTeacher' + i)?.value !== teacher.idEnseignant">
-                    {{teacher.nom}}
-                  </option>
-                </select> 
-              
-                <select class="chose-role" [formControlName]="'role' + i" (change)="onRoleChange($event, i)">
-                  <option selected disabled value="">Role</option>
-                  <option *ngFor="let role of juryRole" [value]="role.value">{{role.key}}</option>
-                </select>
-              </div>
-              
-            
+
+            <div formArrayName="jurys">
+                
+                <div *ngFor="let juryControl of juryControls().controls; let i=index">
+                    <div [formGroupName]="i" class="jury-item">
+                        <!-- Champ idTeacher masqué mais toujours présent dans le formulaire -->
+                        <input type="number" formControlName="idTeacher" *ngIf="false">
+                       
+                        <input type="text" class="form-control nom-jury" formControlName="nomJury" (focus)="setSelectedJuryIndex(i)" placeholder="Saisir le nom du jury">
+                        <div class="views" *ngIf="selectedJuryIndex === i && teachers!.length > 0">
+                            <p *ngFor="let teach of teachers" (click)="selectTeacher(teach)">{{teach.nom}} {{teach.prenom}}</p>
+                             <p *ngIf="teachers!.length === 0">Aucun enseignant trouvé.</p>
+                         </div>
+                        <span *ngIf="juryControl.get('nomJury')!.invalid && juryControl.get('nomJury')!.touched"
+                            [ngStyle]="{color:'red'}">
+                            Champ obligatoire*
+                        </span>
+
+                        <!-- Champ role en lecture seule -->
+                        <input type="text" class="chose-role form-control-plaintext" formControlName="role" readonly>
+                    </div>
+                </div>
+                
+            </div>
         </div>
-       
+
+
         <div class="submit-button">
             <button type="submit">Enregistrer</button>
-        </div> 
-        
-    </form> 
+        </div>
+
+    </form>
 </main>

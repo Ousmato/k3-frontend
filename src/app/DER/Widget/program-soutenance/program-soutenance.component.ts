@@ -1,192 +1,193 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Teacher } from '../../../Admin/Models/Teachers';
 import { EnseiService } from '../../../Admin/Views/enseignant/ensei.service';
 import { SalleService } from '../../../Services/salle.service';
 import { Salles } from '../../../Admin/Models/Salles';
-import { Jury, Jury_role, Soutenance } from '../../../Admin/Models/doc';
+import { Jury, Jury_role, ProgramSoutenance, Soutenance } from '../../../Admin/Models/doc';
 import { IconsService } from '../../../Services/icons.service';
 import { ActivatedRoute } from '@angular/router';
 import { EtudeService } from '../../../Admin/Views/etudiants/etude.service';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { DatePipe } from '@angular/common';
+import { debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-program-soutenance',
   templateUrl: './program-soutenance.component.html',
   styleUrl: './program-soutenance.component.css'
 })
-export class ProgramSoutenanceComponent implements OnInit{
+export class ProgramSoutenanceComponent implements OnInit {
 
   prog_form!: FormGroup
-  @Input() idDoc!: number |null
+  @Input() idDoc!: number | null
   @Output() closeModal = new EventEmitter<any>();
-  teachers: Teacher [] = []
-  salles: Salles [] = []
-  numberJury: any[]=[1,2,3]
+  teachers?: Teacher[] = []
+  salle?: Salles
+  numberJury: any[] = [1, 2, 3]
 
-  jury: Jury [] = []
+  jury: Jury[] = []
   soutenance!: Soutenance
-usedTeachers: Set<{teacher: number, role: string}> = new Set();
-  juryRole: {key: string, value: string}[] = []
+  selectedJuryIndex: number | null = null;
+  isSalle: boolean = false
+  isTeacher: boolean = false
+  usedTeachers: Set<{ teacher: number, role: string }> = new Set();
+  juryRole: { key: string, value: string }[] = []
+
   constructor(private fb: FormBuilder, private teacherService: EnseiService, private datePipe: DatePipe,
     private pageTitle: PageTitleService,
     private studentService: EtudeService,
     private root: ActivatedRoute,
     public icons: IconsService,
-    private salleService: SalleService){}
+    private salleService: SalleService) { }
 
   ngOnInit(): void {
     this.loa_form();
     this.getAllTeacher();
     this.getAllSalles();
-    this.getTypesOptions()
-      
+
   }
 
   // --------------------------load form
-  loa_form(){
+  loa_form() {
     this.prog_form = this.fb.group({
-      idDoc: ['', Validators.required],
+      idDoc: [this.idDoc],
       date: ['', Validators.required],
       heureDebut: ['', Validators.required],
       heureFin: ['', Validators.required],
-      idSalle: ['', Validators.required],
-      idTeacher: ['',Validators.required],
-      idTeacher0: ['',Validators.required],
-      idTeacher1: ['', Validators.required],
-      idTeacher2: ['', Validators.required],
-      role0: ['',Validators.required],
-      role1: ['', Validators.required],
-      role2: ['', Validators.required]
-    })
+      salle: ['', Validators.required],
+      jurys: this.fb.array([ // Un FormArray pour gérer plusieurs jurys
+        this.createJuryGroup('PRESIDENT'),
+        this.createJuryGroup('RAPPORTEUR'),
+        this.createJuryGroup('RAPPORTEUR')
+      ])
+    });
   }
-  submit(){
-    const formData = this.prog_form.value
-    let teacher : Teacher
-    const idSalle = this.salles.find(sl => sl.id == formData.idSalle);
-    const idTeacher = this.teachers.find(tch => tch.idEnseignant == formData.idTeacher);
-    
+  createJuryGroup(role: string): FormGroup {
+    return this.fb.group({
+      nomJury: ['', Validators.required],
+      idTeacher: [''],
+      role: [role]
+    });
+  }
 
-    this.usedTeachers.forEach(jr => {
-      teacher = this.teachers.find(t => t.idEnseignant == jr.teacher)!;
-      const jury : Jury ={
-      role: jr.role,
-      idTeacher: teacher!
+  juryControls(): FormArray {
+    return this.prog_form.get("jurys") as FormArray
+  }
+ 
+  submit() {
+    const formData : any = this.prog_form.value
+    const jurys = formData.jurys;
+    // let teacher: Teacher
+    console.log(jurys, "farmData")
+   jurys.forEach((jr: any) => {
+      // teacher = this.teachers.find(t => t.idEnseignant == jr.teacher)!;
+      const jury: Jury = {
+        role: jr.role,
+        idTeacher: jr.idTeacher!,
+       
+      }
+      this.jury.push(jury)
+      // console.log(jury, "jury")
 
-    }
-    this.jury.push(jury)
-    console.log(jury, "jury")
+    })
+
     
-     this.soutenance ={
-      date:formData.date,
+    this.soutenance = {
+      date: formData.date,
       heureDebut: formData.heureDebut,
       heureFin: formData.heureFin,
       idDoc: formData.idDoc,
-      idSalle: idSalle!,
-      idTeacher: idTeacher!,
-      idJury: this.jury
+      idSalle: this.salle!,
+      
     }
-    })
-
-    if(this.prog_form.valid){
-      console.log("soutenance : ", this.soutenance)
-      this.studentService.createSoutenance(this.soutenance).subscribe({
+    const prog : ProgramSoutenance ={
+      jurys: this.jury,
+      soutenance: this.soutenance
+    }
+    // console.log(prog, "souuuuuuuuuuuuuuuuu")
+    // return
+    if (this.prog_form.valid) {
+      this.studentService.createSoutenance(prog).subscribe({
         next: (result) => {
-         this.pageTitle.showSuccessToast(result.message);
-         this.prog_form.reset();
-         this.loa_form();
-         this.usedTeachers.clear();
+          this.pageTitle.showSuccessToast(result.message);
+          this.prog_form.reset();
+          this.loa_form();
         },
         error: (error) => {
-         this.pageTitle.showErrorToast(error.error.message);
-         this.prog_form.reset();
-         this.loa_form();
-         this.usedTeachers.clear();
+          this.pageTitle.showErrorToast(error.error.message);
+          
         }
 
 
       })
-    }else{
+    } else {
       this.prog_form.markAllAsTouched();
       console.log(this.prog_form.value, "inavlid")
     }
 
   }
   // --------------------------get all teachers
-  getAllTeacher(){
-    this.teacherService.getAll().subscribe((data) => {
-      this.teachers = data;
-    })
+  getAllTeacher() {
+    const jurysArray = this.prog_form.get('jurys') as FormArray;
+    jurysArray.controls.forEach((juryControl, index) => {
+      this.subscribeToControl(juryControl.get('nomJury'), index);
+    });
   }
+
+  private subscribeToControl(control: AbstractControl | null, index: number) {
+    this.teachers = []
+    control?.valueChanges.pipe(
+      debounceTime(1000),
+      distinctUntilChanged(),
+      tap(value => console.log('Valeur avant switchMap:', value)),
+      
+      switchMap(value => this.teacherService.getListFilteredTeachers(value)) // interrompt la requête en cours si une nouvelle valeur arrive
+      // console.log(value)
+    ).subscribe(result => {
+      console.log(result, "resultat")
+      if (result && result != null) {
+        this.teachers = result; 
+      }
+    });
+  }
+
+
   // --------------------------get all salles
-  getAllSalles(){
-    this.root.queryParams.subscribe(param => {
-      this.idDoc = param['id'];
-      this.prog_form.get('idDoc')?.setValue(this.idDoc);
-    })
-    this.salleService.getAll().subscribe((data) => {
-      this.salles = data;
+  getAllSalles() {
+
+    this.prog_form.get("salle")?.valueChanges.pipe(debounceTime(1000)).subscribe(value => {
+      console.log(value, "value")
+      var display = document.getElementById("salle-nom") as HTMLElement;
+      display.style.display = "none"
+      this.salleService.getSalleByNom(value).subscribe(result => {
+        this.salle = result
+        display.style.display = "block";
+       
+
+        console.log(this.salle, "les sales")
+      })
     })
   }
 
-  getTypesOptions() {
-    const objet = Object.keys(Jury_role).map(key => ({
-      
-      key: key,
-      value: Jury_role[key as keyof typeof Jury_role] 
-    }));
-    objet.forEach(o => {
-        this.juryRole.push(o)
-      
-    })
+  setSelectedJuryIndex(index: number) {
+    this.selectedJuryIndex = index;
+  }
+
+  selectTeacher(teach: any) {
+    if (this.selectedJuryIndex !== null) {
+      const juryControl = this.juryControls().at(this.selectedJuryIndex);
+      juryControl.get('idTeacher')?.setValue(teach.idEnseignant);
+      juryControl.get('nomJury')?.setValue(`${teach.nom} ${teach.prenom}`);
+     
+    }
   }
   // -----------------------go back
-  goBack(){
+  goBack() {
     window.history.back()
   }
-  isTeacherSelected(teacherId: number): boolean {
-    return Array.from(this.usedTeachers).some(item => item.teacher === teacherId);
-  }
-  
-  onTeacherChange(event: any, index: number) {
-    const idTeacher = event.target.value;
-    const role = this.prog_form.get('role' + index)?.value;
-  
-    // Remove the previously selected teacher (if any) for this index
-    const previousTeacher = Array.from(this.usedTeachers).find(item => item.teacher === this.prog_form.get('idTeacher' + index)?.value);
-  
-    if (previousTeacher) {
-      this.usedTeachers.delete(previousTeacher);
-    }
-  
-  // Ajouter l'enseignant si à la fois l'enseignant et le rôle sont sélectionnés
-    if (idTeacher && role) {
-      this.usedTeachers.add({ teacher: idTeacher, role: role });
-      console.log(this.usedTeachers, "Selected teachers with roles");
-    }
-  }
 
-
-onRoleChange(event: any, index: number) {
-  const role = event.target.value;
-  const idTeacher = this.prog_form.get('idTeacher' + index)?.value;
-
-  // If both teacher and role are available, update the usedTeachers set
-  if (idTeacher && role) {
-    // Remove the previous entry for this teacher
-    const previousTeacher = Array.from(this.usedTeachers).find(item => item.teacher === idTeacher);
-    if (previousTeacher) {
-      this.usedTeachers.delete(previousTeacher);
-    }
-
-    // Add the teacher with the new role
-    this.usedTeachers.add({ teacher: idTeacher, role: role });
-    console.log(this.usedTeachers, "Selected teachers with updated roles");
-  }
-}
-
-// ------------------------calculate hours
+  // ------------------------calculate hours
   calculateHours(): number {
     const debut = new Date(this.prog_form.get('heureDebut')?.value);
     // Ajouter 45 minutes à l'heure de début
@@ -201,8 +202,8 @@ onRoleChange(event: any, index: number) {
     return hours;
   }
 
-  heureChange(event : any){
-   const heureDebut = event.target.value
+  heureChange(event: any) {
+    const heureDebut = event.target.value
     const date = new Date();
     // Calculer les heures de fin en ajoutant 45 minutes à l'heure de début
     const [hours, minutes] = heureDebut.split(':').map(Number);
@@ -216,7 +217,7 @@ onRoleChange(event: any, index: number) {
     const fin = new Date(date);
     fin.setMinutes(fin.getMinutes() + 45);
 
-   const time = this.datePipe.transform(fin, "HH:mm");
+    const time = this.datePipe.transform(fin, "HH:mm");
     console.log(time, "hours");
 
     this.prog_form.get('heureFin')?.setValue(time);

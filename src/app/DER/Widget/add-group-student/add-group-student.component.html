@@ -26,15 +26,16 @@
                         <form class="form" [formGroup]="form_add" (ngSubmit)="add_groupe()">
                             <div class="form-group">
                                 <label>Nom du groupe :</label>
-                                <input type="text" formControlName="nom" placeholder="Nom du groupe..." class="form-control"
+                                <input type="text" formControlName="nom" placeholder="Nom du groupe..."
+                                    class="form-control"
                                     [class.is-invalid]="form_add.get('nom')!.invalid && form_add.get('nom')!.touched">
                                 <span *ngIf="form_add.controls['nom'].invalid && form_add.controls['nom'].touched"
                                     [ngStyle]="{color: 'red'}">
                                     Champ obligatoire*
                                 </span>
-            
+
                             </div>
-            
+
                             <div class="button-cash">
                                 <a (click)="close()">Annuler</a>
                                 <button type="submit">Enregistrer</button>
@@ -42,7 +43,7 @@
                         </form>
                     </div>
                 </div>
-                
+
             </div>
 
         </div>
@@ -50,7 +51,7 @@
     </form>
 
     <div class="table-container">
-        
+
         <table class="table table-bordered">
             <thead>
                 <tr>

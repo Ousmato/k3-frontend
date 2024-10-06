@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, filter, map } from 'rxjs';
+import { IconsService } from './icons.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class PageTitleService {
     this.titleSubject.next(title);
   }
   
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private toastr: ToastrService) {
+  constructor(private router: Router, public icons: IconsService,
+    private activatedRoute: ActivatedRoute, private toastr: ToastrService) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       map(() => {
@@ -33,10 +35,10 @@ export class PageTitleService {
   }
   // ---------------------------------------
   showSuccessToast(message: any) {
-    this.toastr.success(message, 'Succès');
+    this.toastr.success(message, `Succès`);
     
   }
   showErrorToast(erreur: any) {
-    this.toastr.error("Erreur : "+ erreur)
+    this.toastr.error(erreur, `Erreur`)
   }
 }

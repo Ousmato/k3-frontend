@@ -28,7 +28,8 @@ export class RSSidebarComponent implements OnInit, OnDestroy {
 
   routerEventsSubscription!: Subscription;
 
-  component_Name: string [] = ['_EnseignantComponent',  '_EtudiantsComponent', '_TeachersPresenceComponent', '_FichePaieComponent', '_ArchivesComponent', '_EtudiantsDeLaClasseComponent']
+  component_Name: string [] = ['_EnseignantComponent',  '_EtudiantsComponent', '_TeachersPresenceComponent', '_FichePaieComponent', 
+    '_ArchivesComponent', '_EtudiantsDeLaClasseComponent', '_RSReinscriptionComponent']
  
 
   searchTerm: string = '';

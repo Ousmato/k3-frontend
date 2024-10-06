@@ -5,210 +5,219 @@
   </div>
   <div class="position-realive">
     <!-- <app-configure-seance *ngIf="is_show_configure" [idEmplois]="idUrl" (closeModal)="show_configure()" [configSeance]="configSeance"></app-configure-seance> -->
-  
+
   </div>
-    <section class="section-head">
-     
-        <div class="month-contenaire">
-            <!-- <p>{{formattedDate}}</p> -->
-            <p> ETD {{emplois?.dateDebut}} au {{emplois?.dateFin}}</p>
-          </div>
-              
-            
-        <div id="idContent" class="btn-contenaire" *ngIf="permission">
-            <div class="child-1">
-              <button (click)="imprimer()" class="btn btn-valid-emplois" type="button"><fa-icon [icon]="icons.pdf" class="pdf-icon"></fa-icon> Imprimer</button>
-              <button (click)="to_show_button()" class="btn btn-valid-emplois" type="button"><fa-icon [icon]="icons.edit"></fa-icon> Editer</button>
-       
-              <button  class="btn btn-show-form" type="button" (click)="to_groupe(emplois?.idClasse?.id!, emplois?.id!)"><fa-icon [icon]="icons.user"></fa-icon> Groupe</button>
-              <button  class="btn btn-show-form" type="button" (click)="to_configure()"><fa-icon [icon]="icons.list"></fa-icon> Journée</button>
-            </div>
-           
-        </div>
+  <section class="section-head">
 
-    </section>
-
-    <div class="entete-content">
-      <div class="children">
-        <h4>FILIERE : {{emplois?.idClasse?.idFiliere?.idFiliere?.nomFiliere}}</h4>
-      </div>
-      <div class="children">
-        <h4>NIVEAU : {{emplois?.idClasse?.idFiliere?.idNiveau?.nom}}</h4>
-      </div>
-      <div class="children">
-        <h4>Annee : {{formattedDate}}</h4>
-      </div>
-      <div class="children">
-        @for (salle of listSalle; track $index) {
-            @for (item of salle.typeSeance; track $index) {
-              @if (item.toString().toLocaleUpperCase() == 'CM') {
-                <h4>Salle CM : {{salle.salle.nom}}  </h4>
-              }
-            }
-           
-       }
-      </div>
-      <div class="children"></div>
+    <div class="month-contenaire">
+      <!-- <p>{{formattedDate}}</p> -->
+      <p> ETD {{emplois?.dateDebut}} au {{emplois?.dateFin}}</p>
     </div>
-    <section class="content">
-     
-        <!-- ------------------------------------------------------ -->
-         <div  class="section-table">
-          <table class="table table-bordered" id="table">
-            <thead>
-              <tr>
-                <th class="horai">Horaires</th>
-                <!-- En-tête des jours -->
-                <ng-container *ngFor="let dateInfo of datesWithDays">
-                  <th scope="col">{{ dateInfo.dateDay }}</th>
-                </ng-container>
-              </tr>
-            </thead>
-            <tbody *ngIf="journee.length; else notFound">
-              <!-- Iterer sur les créneaux horaires -->
-              <ng-container *ngFor="let timeSlot of palageHoraires">
-                <tr *ngIf="timeSlot !== '12H00 - 14H00'">
-                  <th scope="row" class="text-left">
-                    <div class="seance-content">
-                      <p>{{ timeSlot }}</p>
-                    </div>
-                  </th>
-                  <!-- Iterer sur les jours -->
-                  <ng-container *ngFor="let dateInfo of datesWithDays">
-                    <td>
-                      <ng-container *ngFor="let seance of test">
-                        <!-- <p *ngIf="dateInfo.day.toLowerCase() == getDayFromDate(seance.date?.toString()!)">{{dateInfo.date}}</p> -->
-                        <ng-container *ngIf="dateInfo.day.toLowerCase() === getDayFromDate(seance.date?.toString()!) && seance.plageHoraire?.includes(timeSlot)">
-                         
-                          <div class="seance-content">
-                            <div class="childre-1">
-                              @if(seance.seanceType.toString() == 'examen'){
-                                <strong>
-                                  {{seance.seanceType.toLocaleUpperCase()}}
-                                </strong>
-                              }@else {
-                               
-                                <strong>
-                                  <!-- {{seance.idEmplois}} ({{seance.seanceType.toLocaleUpperCase()}}) -->
-                                  {{seance.module}} ({{seance.seanceType.toLocaleUpperCase()}})
-                                </strong><br>
-                                  @if (seance.seanceType.toString() == 'td') {
-                               
-                                  {{seance.groupe}} <br>
-                                  <!-- {{seance.idParticipant}} <br>
-                                  {{seance.nomTeacher}} -->
-                                }@else {
-                                  {{seance.nomTeacher.charAt(0).toUpperCase()}}. {{seance.prenomTeacher}}
-                              
-                                }
-                              }
-                            </div>
-                            <div class="childre-2">
-                              <div class="btn-cont" *ngIf="is_show_button">
-                                <button (click)="show_comfirme_delete(seance.heureDebut!, seance.heureFin!)" type="button">
-                                  <fa-icon [icon]="icons.delete" [ngStyle]="{ color: 'red' }" class="icon"></fa-icon>
-                                </button>
-                                <button (click)="show_update_seance(seance.id)">
-                                  <fa-icon [icon]="icons.edit" class="icon"></fa-icon>
-                                </button>
-                              </div>
-                            </div>
 
-                          </div>
-                        </ng-container>
 
-                      </ng-container>
-                    </td>
-                  </ng-container>
-                </tr>
-                <tr *ngIf="timeSlot === '12H00 - 14H00'">
-                  <td colspan="9" class="text-center"><b>PAUSE</b></td>
-                </tr>
-              </ng-container>
-              
-             
-            </tbody>
-            <ng-template #notFound>
-              <tr>
-                <td colspan="100%">Aucune séance trouvée</td>
-              </tr>
-            </ng-template>
-          </table>
-          <div class="footer-content">
-            <div class="f-contenair">
-              @for (seance of teachersProgram; track $index) {
-                <div class="footer">
-                  <p>{{seance.teacher.nom}} {{seance.teacher.prenom}} :</p>
-                   @for (item of seance.typeSeance; track $index) {
-                     <p> @if (item.toString() == 'cm') {
-                        {{item.toLocaleUpperCase()}} &
-                    }
-                       @if (item.toString() == 'td') {
-                        {{item.toLocaleUpperCase()}}_{{seance.group}} 
-                      }                  
-                    </p>
-                   
-                   
-                  }
+    <div id="idContent" class="btn-contenaire">
+      <div class="child-1">
+        <button *ngIf="permission && group !== null " (click)="go_toList(emplois?.id!)"
+          class="btn btn-valid-emplois" type="button"><fa-icon [icon]="icons.list"></fa-icon>
+          Groupe Listes</button>
+        <button *ngIf="permission" (click)="imprimer()" class="btn btn-valid-emplois" type="button"><fa-icon
+            [icon]="icons.pdf" class="pdf-icon"></fa-icon> Imprimer</button>
+        <button *ngIf="permission" (click)="to_show_button()" class="btn btn-valid-emplois" type="button"><fa-icon
+            [icon]="icons.edit"></fa-icon> Editer</button>
+
+        <button *ngIf="permission" class="btn btn-show-form" type="button"
+          (click)="to_groupe(emplois?.idClasse?.id!, emplois?.id!)"><fa-icon [icon]="icons.user"></fa-icon>
+          Groupe</button>
+        <button class="btn btn-show-form" *ngIf="scolarite || permission" type="button" (click)="to_configure()"><fa-icon
+            [icon]="icons.setting"></fa-icon> Configurer</button>
+      </div>
+
+    </div>
+
+  </section>
+
+  <div class="entete-content">
+    <div class="children">
+      <h4>FILIERE : {{emplois?.idClasse?.idFiliere?.idFiliere?.nomFiliere}}</h4>
+    </div>
+    <div class="children">
+      <h4>NIVEAU : {{emplois?.idClasse?.idFiliere?.idNiveau?.nom}}</h4>
+    </div>
+    <div class="children">
+      <h4>Annee : {{formattedDate}}</h4>
+    </div>
+    <div class="children">
+      @for (salle of listSalle; track $index) {
+      @for (item of salle.typeSeance; track $index) {
+      @if (item.toString().toLocaleUpperCase() == 'CM') {
+      <h4>Salle CM : {{salle.salle.nom}} </h4>
+      }
+      }
+
+      }
+    </div>
+    <div class="children"></div>
+  </div>
+  <section class="content">
+
+    <!-- ------------------------------------------------------ -->
+    <div class="section-table">
+      <table class="table table-bordered" id="table">
+        <thead>
+          <tr>
+            <th class="horai">Horaires</th>
+            <!-- En-tête des jours -->
+            <ng-container *ngFor="let dateInfo of datesWithDays">
+              <th scope="col">{{ dateInfo.dateDay }}</th>
+            </ng-container>
+          </tr>
+        </thead>
+        <tbody *ngIf="journee.length; else notFound">
+          <!-- Iterer sur les créneaux horaires -->
+          <ng-container *ngFor="let timeSlot of palageHoraires">
+            <tr *ngIf="timeSlot !== '12H00 - 14H00'">
+              <th scope="row" class="text-left">
+                <div class="seance-content">
+                  <p>{{ timeSlot }}</p>
                 </div>
-                
+              </th>
+              <!-- Iterer sur les jours -->
+              <ng-container *ngFor="let dateInfo of datesWithDays">
+                <td>
+                  <ng-container *ngFor="let seance of test">
+                    <!-- <p *ngIf="dateInfo.day.toLowerCase() == getDayFromDate(seance.date?.toString()!)">{{dateInfo.date}}</p> -->
+                    <ng-container
+                      *ngIf="dateInfo.day.toLowerCase() === getDayFromDate(seance.date?.toString()!) && seance.plageHoraire?.includes(timeSlot)">
+
+                      <div class="seance-content">
+                        <div class="childre-1">
+                          @if(seance.seanceType.toString() == 'examen'){
+                          <strong>
+                            {{seance.seanceType.toLocaleUpperCase()}}
+                          </strong>
+                          }@else {
+
+                          <strong>
+                            <!-- {{seance.idEmplois}} ({{seance.seanceType.toLocaleUpperCase()}}) -->
+                            {{seance.module}} ({{seance.seanceType.toLocaleUpperCase()}})
+                          </strong><br>
+                          @if (seance.seanceType.toString() == 'td') {
+
+                          {{seance.groupe ? seance.groupe : ""}} <br>
+                          <!-- {{seance.idParticipant}} <br>
+                                  {{seance.nomTeacher}} -->
+                          }@else {
+                          {{seance.nomTeacher.charAt(0).toUpperCase()}}. {{seance.prenomTeacher}}
+
+                          }
+                          }
+                        </div>
+                        <div class="childre-2">
+                          <div class="btn-cont" *ngIf="is_show_button">
+                            <button (click)="show_comfirme_delete(seance.heureDebut!, seance.heureFin!)" type="button">
+                              <fa-icon [icon]="icons.delete" [ngStyle]="{ color: 'red' }" class="icon"></fa-icon>
+                            </button>
+                            <button (click)="show_update_seance(seance.id)">
+                              <fa-icon [icon]="icons.edit" class="icon"></fa-icon>
+                            </button>
+                          </div>
+                        </div>
+
+                      </div>
+                    </ng-container>
+
+                  </ng-container>
+                </td>
+              </ng-container>
+            </tr>
+            <tr *ngIf="timeSlot === '12H00 - 14H00'">
+              <td colspan="9" class="text-center"><b>PAUSE</b></td>
+            </tr>
+          </ng-container>
+
+
+        </tbody>
+        <ng-template #notFound>
+          <tr>
+            <td colspan="100%">Aucune séance trouvée</td>
+          </tr>
+        </ng-template>
+      </table>
+      <div class="footer-content" *ngIf="permission">
+        <div class="f-contenair">
+          @for (seance of teacherConf; track $index) {
+          <div class="footer">
+            <p>{{seance.nom}} {{seance.prenom}} :</p>
+            @for (item of seance.seanceType; track $index) {
+            <p> @if (item.toString() === 'cm') {
+              {{item.toLocaleUpperCase()}} &
               }
-              <div class="footer salle-footer">
-                Salle TD :
-                  @for (sal of sallesListe; track $index) {
-                    <div class="salle-row">
-                      @for (item of sal.group; track $index) {
-                        
-                        @if (sal.typeSeance.toString() == 'td') {
-                          <p class="group">{{item.nom}} :  </p> 
-                              @for (salle of sal.salle; track $index) {
-                                <p class="salle"> {{salle.nom}};</p>
-                              }
-                        }
-                      }
-                    </div>
-                  }
-              </div>
-            </div>
-            <div class="signature">
-              <p>Ségou le, {{getCurrentDate()}}<br>
-                Le chéf de Département
-              </p>
-              <p>Dr  {{admin.nom.charAt(0).toLocaleUpperCase()}} {{admin.prenom.toLocaleUpperCase()}}<br>
-                Maître assistant
-              </p>
-            </div>
+              @if (item.toString() === 'td') {
+              {{item.toLocaleUpperCase()}}_{{seance.groupe}}
+              }
+            </p>
+
+
+            }
           </div>
-          
-          
+
+          }
+          <div class="footer salle-footer">
+            Salle TD :
+            @for (sal of teacherConf; track $index) {
+            <div class="salle-row">
+              @for (item of sal.seanceType; track $index) {
+
+              @if (item.toString() == 'td') {
+              <p class="group">{{sal.groupe}} : </p>
+
+              <p class="salle"> {{sal.salle}};</p>
+
+              }
+              }
+            </div>
+            }
+          </div>
         </div>
-        
-          
-        
-    </section>
-    
-    <!-- --------------------------------------- -->
-
-    <div class="overlay" *ngIf="selected_seance_heure_fin" (click)="preventClick($event)"></div>
-    <div class="overlay" *ngIf="is_show_configure"></div>
-    <div class="overlay" *ngIf="choisir_group"></div>
-    <div class="overlay" *ngIf="deleted_modal" (click)="preventClick($event)"></div>
-
-    <div class="views delete-modal" *ngIf="deleted_modal">
-      <h4>Confirmation de suppression</h4>
-      <div class="content">
-        <p>Êtes-vous sûr de vouloir supprimer cet élément ?</p>
+        <div class="signature">
+          <p>Ségou le, {{getCurrentDate()}}<br>
+            Le chéf de Département
+          </p>
+          <p>Dr {{admin.nom.charAt(0).toLocaleUpperCase()}} {{admin.prenom.toLocaleUpperCase()}}<br>
+            Maître assistant
+          </p>
+        </div>
       </div>
-      <div class="button-cash">
-        <a (click)="close_delete_modal()"><span>Annuler</span></a>
-        <button class="submit" (click)="deleted(hasDeleted)" ><span>Confirmer</span></button>
-      </div>
+
+
     </div>
 
-    <div class="views" *ngIf="choisir_group">
-      <h4>Choisir </h4>
-      <div class="content">
-         <!-- <div class="form form-group">
+
+
+  </section>
+
+  <!-- --------------------------------------- -->
+
+  <div class="overlay" *ngIf="selected_seance_heure_fin" (click)="preventClick($event)"></div>
+  <div class="overlay" *ngIf="is_show_configure"></div>
+  <div class="overlay" *ngIf="choisir_group"></div>
+  <div class="overlay" *ngIf="deleted_modal" (click)="preventClick($event)"></div>
+
+  <div class="views delete-modal" *ngIf="deleted_modal">
+    <h4>Confirmation de suppression</h4>
+    <div class="content">
+      <p>Êtes-vous sûr de vouloir supprimer cet élément ?</p>
+    </div>
+    <div class="button-cash">
+      <a (click)="close_delete_modal()"><span>Annuler</span></a>
+      <button class="submit" (click)="deleted(hasDeleted)"><span>Confirmer</span></button>
+    </div>
+  </div>
+
+  <div class="views" *ngIf="choisir_group">
+    <h4>Choisir </h4>
+    <div class="content">
+      <!-- <div class="form form-group">
                 <label>Types :</label> 
                 <select class="form-select"  (change)="changeType($event)">
                     <option  selected disabled value="">Choisir Le type</option>
@@ -217,10 +226,10 @@
                 </select> 
                 
             </div> -->
-      </div>
-      <div class="button-cash">
-        <button (click)="close_delete_modal()">Annuler</button>
-        <!-- <button class="submit" (click)="deleted(hasDeleted)" ><span>Confirmer</span></button> -->
-      </div>
     </div>
+    <div class="button-cash">
+      <button (click)="close_delete_modal()">Annuler</button>
+      <!-- <button class="submit" (click)="deleted(hasDeleted)" ><span>Confirmer</span></button> -->
+    </div>
+  </div>
 </main>

@@ -1,0 +1,33 @@
+table{
+    margin-top: 20px;
+}
+main{width: 100%;
+
+    padding-top: 20px;
+}
+
+.back-button{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    font-size: 20px;
+    margin: 10px 0;
+    &:hover{
+        background-color: var(--tertiary);
+        color: var(--primary);
+        border: none;
+        border-radius: 50%;
+    }
+
+}
+
+select{
+    border: none;
+}
+
+select:focus{
+    outline: none;
+    box-shadow: none;
+}

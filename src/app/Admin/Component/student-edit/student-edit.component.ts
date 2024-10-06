@@ -16,44 +16,48 @@ import { AnneeScolaire } from '../../Models/School-info';
   templateUrl: './student-edit.component.html',
   styleUrl: './student-edit.component.css'
 })
-export class StudentEditComponent implements OnInit{
+export class StudentEditComponent implements OnInit {
 
-  studentForm! : FormGroup
-  filename!: File 
+  imageUrl: string = ''
+  studentForm!: FormGroup
+  filename!: File
   photoSelect!: File
-  classRoom: ClassRoom [] = []
+  classRoom: ClassRoom[] = []
   passwordVisible: boolean = false
+  isEdit: boolean = false
+  isUpdate: boolean = false
   idStudent!: number
   student?: Student
-  urlImage! : string | ArrayBuffer
-  anneeScolaire: AnneeScolaire [] = []
+  urlImage!: string | ArrayBuffer
+  anneeScolaire: AnneeScolaire[] = []
 
 
-  constructor( private formBuilder: FormBuilder, private infoSchool: SchoolService,
+  constructor(private formBuilder: FormBuilder, private infoSchool: SchoolService,
     private studentService: EtudeService, private classeService: ClassStudentService,
-    private router: ActivatedRoute, private root: Router, public icons: IconsService, private pageTitle: PageTitleService, private location: Location){}
+    private router: ActivatedRoute, private root: Router, public icons: IconsService, private pageTitle: PageTitleService, private location: Location) { }
 
   ngOnInit(): void {
-      this.load_class_rooms();
-      this.load_form();
-      this.load_student();
-      this.load_all_annee()
-      
+    this.imageUrl = this.student?.urlPhoto || 'assets/business-professional-icon.svg';
+    this.load_class_rooms();
+    this.load_form();
+    this.load_student();
+    this.load_all_annee()
+
   }
-goBack(){
-  this.location.back();
-}
-// --------------get all annee
-load_all_annee(){
-  this.infoSchool.getAll_annee().subscribe(data=>{
-    this.anneeScolaire = data;
-  })
-}
-  togglePasswordVisibility(){
-    this.passwordVisible =! this.passwordVisible
+  goBack() {
+    this.location.back();
   }
-// ---------------------------load update
-  load_form(){
+  // --------------get all annee
+  load_all_annee() {
+    this.infoSchool.getAll_annee().subscribe(data => {
+      this.anneeScolaire = data;
+    })
+  }
+  togglePasswordVisibility() {
+    this.passwordVisible = !this.passwordVisible
+  }
+  // ---------------------------load update
+  load_form() {
     this.studentForm = this.formBuilder.group({
       idEtudiant: ['', Validators.required],
       nom: ['', Validators.required],
@@ -61,22 +65,26 @@ load_all_annee(){
       sexe: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       telephone: ['', Validators.required],
-      password: ['', Validators.required],
+      password: [''],
       matricule: ['', Validators.required],
-      scolarite: ['',Validators.required],
+      scolarite: ['', Validators.required],
       idClasse: ['', Validators.required],
-      lieuNaissance: ['',Validators.required],
-      dateNaissance: ['',Validators.required],
+      lieuNaissance: ['', Validators.required],
+      dateNaissance: ['', Validators.required],
       // admin: [''] 
     });
   }
+
+  onError() {
+    this.imageUrl = 'assets/business-professional-icon.svg';
+  }
   // ----------------------select file
-  onFileSelected(event: any){
+  onFileSelected(event: any) {
     this.filename = event.target.files[0];
   }
 
-  onPhotoSelected(event: any){
-    
+  onPhotoSelected(event: any) {
+
     console.log(this.filename, "fill")
     this.photoSelect = event.target.files[0];
     // console.log(this.photoSelect, "photo select")
@@ -87,22 +95,23 @@ load_all_annee(){
     reader.readAsDataURL(this.photoSelect);
   }
   // -----------------------load classRom
-  load_class_rooms(){
+  load_class_rooms() {
     this.classeService.getAllCurrentClassOfYear().subscribe((data: ClassRoom[]) => {
       this.classRoom = data;
     })
   }
-  load_student(){
-    this.router.queryParams.subscribe(param =>{
+  load_student() {
+    this.router.queryParams.subscribe(param => {
       this.idStudent = param['id']
     })
-    this.studentService.getStudent_by_id(this.idStudent).subscribe(data =>{
+    this.studentService.getStudent_by_id(this.idStudent).subscribe(data => {
       this.student = data;
       // this.studentForm.get('urlPhoto')?.setValue(this.student!.urlPhoto);
-      this.student.urlPhoto = 'http://localhost/StudentImg/'+this.student.urlPhoto
-      
-      this.studentForm.get('idEtudiant')?.setValue( this.student!.idEtudiant);
-      this.studentForm.get('nom')?.setValue( this.student!.nom);
+      this.student.urlPhoto = 'http://localhost/StudentImg/' + this.student.urlPhoto
+
+      console.log(this.student.password, "ppppppp");
+      this.studentForm.get('idEtudiant')?.setValue(this.student!.idEtudiant);
+      this.studentForm.get('nom')?.setValue(this.student!.nom);
       this.studentForm.get('prenom')?.setValue(this.student!.prenom);
       this.studentForm.get('sexe')?.setValue(this.student!.sexe);
       this.studentForm.get('email')?.setValue(this.student!.email);
@@ -116,25 +125,41 @@ load_all_annee(){
 
     })
   }
-    update(){
-      const formData = this.studentForm.value
-      console.log(formData, "formdata")
-      if(this.studentForm.valid){
-        const student: Student = {
-         ...formData,
-          idClasse: this.classRoom.find(cl => cl.id === +formData.idClasse)!
-        }
-        console.log(student, "student")
-        
+  update() {
+    const formData = this.studentForm.value
+    console.log(formData, "formdata")
+
+    const student: Student = {
+      ...formData,
+      idClasse: this.classRoom.find(cl => cl.id === +formData.idClasse)!
+    }
+    console.log(student, "student")
+
+    if (this.studentForm.valid) {
+      if (this.isUpdate) {
+        console.log("consoler")
         this.studentService.updateStudent(student, this.filename).subscribe({
-          next :(response) =>{
+          next: (response) => {
             this.pageTitle.showSuccessToast(response.message)
             this.root.navigate(['/sidebar/etudiant']);
           },
-          error: (erreur) =>{
+          error: (erreur) => {
             this.pageTitle.showErrorToast(erreur.error.message)
           }
         })
       }
+
+    }else{
+      console.log("invalid :", this.studentForm.value)
     }
+  }
+  // ----------------------------
+  toggle_toChageEdit() {
+    this.isEdit = !this.isEdit
+  }
+
+  sunmit() {
+    this.isUpdate = true;
+    this.update();
+  }
 }

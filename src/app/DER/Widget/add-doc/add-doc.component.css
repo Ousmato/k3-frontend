@@ -1,8 +1,8 @@
-
-main{
+main {
     margin-top: 20px;
 }
-.form-input{
+
+.form-input {
     width: 100%;
     display: flex;
     justify-content: end;
@@ -11,7 +11,7 @@ main{
 }
 
 /* -----------------select jours select */
-select{
+select {
     width: 110px;
     border: none;
 }
@@ -20,42 +20,45 @@ select{
     border: 1px solid red;
 }
 
-.col-12{
+.col-12 {
     gap: 10px;
-     padding: 0 10px;
- }
- 
- .student-container{
-    display: flex;
-    justify-content: space-between;
- }
-
- /* Styler l'en-tête du tableau */
-th {
-    background-color: var(--primary-light);
+    padding: 0 10px;
 }
 
-.table-container{
+.student-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Styler l'en-tête du tableau */
+th {
+    background: linear-gradient(180deg, #ffffff, #d4d4d4);
+
+}
+
+.table-container {
     height: 400px;
     position: relative;
     overflow-y: auto;
 }
+
 .table thead {
     position: sticky;
     top: 0;
     z-index: 1;
 }
-.table-container::-webkit-scrollbar{
+
+.table-container::-webkit-scrollbar {
     display: none;
 }
 
-tr td{
+tr td {
     font-size: 16px;
     text-overflow: ellipsis;
 }
 
 /* ----------------------back button style */
-.back-button{
+.back-button {
     width: 30px;
     height: 30px;
     display: flex;
@@ -63,7 +66,8 @@ tr td{
     padding: 8px;
     font-size: 20px;
     margin: 10px 0;
-    &:hover{
+
+    &:hover {
         background-color: var(--tertiary);
         color: var(--primary);
         border: none;
@@ -72,18 +76,53 @@ tr td{
 
 }
 
-button{
+button {
     border: none;
     /* padding: 5px; */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     background-color: transparent;
     width: 90px;
     color: var(--secondary);
     cursor: pointer;
-    &:hover{
+
+    &:hover {
         background-color: var(--secondary);
         color: var(--primary);
     }
 
+}
+
+select {
+    border: none;
+}
+
+
+.views {
+    background-color: white;
+    position: absolute;
+    border-radius: 4px;
+    left: 63%;
+    /* width: 60%;
+    top: 10%; */
+    padding: 15px;
+    z-index: 1000;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15);
+
+}
+
+.views p {
+    margin: 0;
+    cursor: pointer;
+
+    &:hover {
+        color: var(--primary);
+    }
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border: 1px solid var(--primary);
+    box-shadow: 0 0 5px var(--primary);
 }

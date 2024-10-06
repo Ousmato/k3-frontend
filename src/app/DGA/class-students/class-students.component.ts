@@ -247,4 +247,12 @@ export class ClassStudentsComponent implements OnInit {
     return this.filteredClasse = this.classes_L1.filter(clf => clf.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
       clf.idFiliere?.idNiveau.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()))
   }
+
+  // ------------------methode to abrevigate
+  abreviateFiliereName(nom : string) : string{
+    const wordAbreviate = nom.split(' ');
+    const word = wordAbreviate.filter(w => w.length > 3).map(w => w[0].toUpperCase()).join('');
+    return word;
+    
+  }
 }

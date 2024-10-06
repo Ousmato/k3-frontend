@@ -16,7 +16,7 @@ export class EnseignantComponent implements OnInit {
   enseignants: Teacher[] = [];
   searchTerm: string = "";
 
-  teachers!: TeacherPages;
+  teachersPage!: TeacherPages;
   page = 0;
   size = 10;
   filteredItems: Teacher[] = []
@@ -63,44 +63,32 @@ export class EnseignantComponent implements OnInit {
   // -----------------------------load teacher by pages
   loadTeachers(): void {
     this.enseignantService.getTeachers(this.page, this.size).subscribe(data => {
-      // data.content.forEach(dc => dc.)
-      // this.profiles
+    
       data.content.forEach(p =>{
-
-        console.log(data.content, "data content")
-
         if(!this.enseignants.some(en => en.idEnseignant === p.teachers.idEnseignant)){
           this.enseignants.push(p.teachers);
           this.profiles.push(p)
         }
-        
-        console.log(this.profiles, "-------------------enseignant------------")
-        this.enseignants.forEach((item, index) => {
        
-          item.numero = index + 1;
-          item.urlPhoto = `http://localhost/StudentImg/${item.urlPhoto}`;
-          
-        })
       })
       
-      this.teachers = data;
+      this.teachersPage = data;
+      console.log(this.teachersPage, "teacher")
       this.filteredItems = this.enseignants;
       this.pages = Array.from({ length: data.totalPages! }, (_, i) => i);
-
-      // console.log(this.teachers, "pagenation teachers")
-     
+      console.log(this.pages, "pages")
     });
   }
   // ------------------------------next page
   setPage(page: number): void {
-    if (page >= 0 && page < this.teachers.totalPages!) {
+    if (page >= 0 && page < this.teachersPage.totalPages!) {
       this.page = page;
       this.loadTeachers();
     }
   }
 
   nextPage(): void {
-    if (this.page < this.teachers.totalPages! - 1) {
+    if (this.page < this.teachersPage.totalPages! - 1) {
       this.setPage(this.page + 1);
     }
   }
@@ -133,5 +121,20 @@ export class EnseignantComponent implements OnInit {
       .join(''); // Joindre les lettres pour former l'abréviation
   
     return abbreviation;
+  }
+
+   // ------------------------------pages visibles
+   getVisiblePages(): number[] {
+    const visiblePages: number[] = [];
+    const totalPages = this.teachersPage!.totalPages!;
+
+    const startPage = Math.max(0, this.page - 1); // Une page avant la courante
+    const endPage = Math.min(totalPages - 1, this.page + 1); // Une page après la courante
+
+    for (let i = startPage; i <= endPage; i++) {
+      visiblePages.push(i);
+    }
+
+    return visiblePages;
   }
 }

@@ -5,6 +5,7 @@ import { ServiceService } from '../../emplois-du-temps/service.service';
 import { EtudeService } from '../../../Admin/Views/etudiants/etude.service';
 import { Participant } from '../../../Admin/Models/Students';
 import { IconsService } from '../../../Services/icons.service';
+import { Admin } from '../../../Admin/Models/Admin';
 
 @Component({
   selector: 'app-der-e-d-t',
@@ -16,6 +17,8 @@ export class DerEDTComponent implements OnInit{
   url_typeSeance! : string
   idClass!: number
   emploi!: Emplois
+  admin!: Admin
+  permission: boolean = false
   participants: Participant[] = []
   
   datesWithDays: { day: string, date: string }[] = [];
@@ -23,6 +26,7 @@ export class DerEDTComponent implements OnInit{
     private emploiService: ServiceService) { }
   ngOnInit(): void {
    this.load_all();
+   this.getPermission();
   }
 
   // -----------------------------------------
@@ -59,6 +63,18 @@ export class DerEDTComponent implements OnInit{
     })
   }
   goBack(){
+    // this.load_all();
     window.history.back()
+  }
+
+  getPermission(): boolean {
+    const autorize = sessionStorage.getItem('der');
+    this.admin = JSON.parse(autorize!);
+    if(autorize){
+      this.permission = true
+      // console.log(autorize,"autorize")
+      return true;
+    }
+    return false
   }
 }

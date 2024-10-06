@@ -1,7 +1,7 @@
 <main>
-    <div (click)="goBack()" class="back-button" *ngIf="!permission">
+    <!-- <div (click)="goBack()" class="back-button" *ngIf="!permission">
         <fa-icon [icon]="icons.back"></fa-icon>
-    </div>
+    </div> -->
     
     <div class="btn-contenair">
         <div class="tab-head">
@@ -20,6 +20,7 @@
                 <th>Date de fin</th>
                 <th>Semestre</th>
                 <th>Mensions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -29,13 +30,11 @@
                         <td>{{eploi.dateDebut}}</td>
                         <td>{{eploi.dateFin}}</td>
                         <td>{{eploi.idSemestre.nomSemetre}}</td>
-                        <td class="next-col second-child">{{eploi.idClasse.idFiliere?.idNiveau?.nom}} {{eploi.idClasse.idFiliere?.idFiliere?.nomFiliere}} 
-                            <a (click)="deleted(eploi.id!)" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon></a>
+                        <td >{{eploi.idClasse.idFiliere?.idNiveau?.nom}} {{eploi.idClasse.idFiliere?.idFiliere?.nomFiliere}} </td>
+                        <td class="next-col second-child"> <a *ngIf="permission" (click)="deleted(eploi.id!)" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> Supprimer</a>
                         
-                            <a (click)="updated(eploi.id!)" ><fa-icon [icon]="icons.edit"></fa-icon></a>
-                            <a (click)="toggle_toSeance(eploi.id!)"><fa-icon [icon]="icons.eye"></fa-icon></a>
-                            
-                        </td>
+                            <a *ngIf="permission" (click)="updated(eploi.id!)" ><fa-icon [icon]="icons.edit"></fa-icon>Modifier</a>
+                            <a (click)="toggle_toSeance(eploi.id!)"><fa-icon [icon]="icons.eye"></fa-icon>Consulter</a></td>
                     </tr>
                 </ng-container>
                 

@@ -16,6 +16,7 @@ export interface Notes{
 
 export interface NoteDto{
     nomUE : string;
+    idUe: number;
     modules : NoteModuleDto[];
     noteUE: number;
     coefficientUe: number;
@@ -24,7 +25,16 @@ export interface NoteDto{
 
 export interface NoteModuleDto{
     idModule: number;
+    idUe: number;
     nomModule: string;
     noteModule: number;
     coefficient: number;
+}
+
+export interface StudentsNotesDto{
+    noteDTO: NoteDto[];
+    nom: string;
+    prenom: string;
+    lieuNaissance: string;
+    date_naissance: Date;
 }

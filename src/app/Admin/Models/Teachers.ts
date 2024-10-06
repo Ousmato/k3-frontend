@@ -1,4 +1,5 @@
 import { Filiere } from "./Filieres";
+import { type_seance } from "./Seances";
 import { Ue } from "./UE";
 
 export interface Teacher {
@@ -33,4 +34,13 @@ export interface ProfilDto{
     id?: number;
     teachers: Teacher;
     filieres: Filiere[]
+}
+
+export interface teacherConfigureDto{
+    id : number;
+    nom : string;
+    prenom: string;
+    salle : string;
+    groupe: string;
+    seanceType: type_seance[];
 }

@@ -2,14 +2,19 @@
     <div (click)="goBack()" class="back-button">
         <fa-icon [icon]="icons.back"></fa-icon>
       </div>
+<div class="btn-contente">
+          <button (click)="imprimer()">Imprimer</button>
+          <select (change)="checkMonth($event)" >
+            <option selected disabled value="">Archives</option>
+            <option *ngFor="let month of months" value="{{month.value}}">{{month.name.toUpperCase()}}</option>
+          </select>
+</div>
 
-      <button (click)="imprimer()">Imprimer</button>
       <div class="table-container" id="idTable">
         <table class="table table-bordered" >
             <thead>
                 <tr>
-                    <!-- <th>Dates</th> -->
-                   
+                    <th>Mois</th>
                     <th>Nom</th>
                     <th>Prenom</th>
                     <th>Mentions</th>
@@ -24,7 +29,7 @@
                 <ng-container *ngIf="paies.length; else notFund">
                     <ng-container  *ngFor="let paie of filteredPaie()" >
                         <tr>
-                            <!-- <td>{{paie.date}}</td> -->
+                            <td>{{month.toUpperCase()}}</td>
                             <td>{{paie.nom}}</td>
                             <td>{{paie.prenom}}</td>
                             <td>{{paie.niveau}} {{paie.filiere}}</td>

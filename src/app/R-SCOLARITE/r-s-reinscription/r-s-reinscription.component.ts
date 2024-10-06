@@ -10,40 +10,35 @@ import { Admin } from '../../Admin/Models/Admin';
 import { StudentPages } from '../../Admin/Models/Pagination-module';
 import { ClassStudentService } from '../../DGA/class-students/class-student.service';
 import { ClassRoom } from '../../Admin/Models/Classe';
+import { Niveau } from '../../Admin/Models/Niveau';
 
 @Component({
   selector: 'app-r-s-reinscription',
   templateUrl: './r-s-reinscription.component.html',
   styleUrl: './r-s-reinscription.component.css'
 })
-export class RSReinscriptionComponent  implements OnInit{
+export class RSReinscriptionComponent implements OnInit {
 
   searchTerm: string = '';
   students: Student[] = [];
-  path_url!: string
-  classRoom: ClassRoom[]=[]
-  NextClassRoom: ClassRoom[]=[]
-  isPage: boolean = false
+  studentsInscrit: Student[] = [];
+  idClasse!: any
+  classRoom: ClassRoom[] = []
+  niveau?: Niveau
+  NextClassRoom: ClassRoom[] = []
 
-  studentspage?: StudentPages;
-  page = 0;
-  size = 10;
-  filteredItems : Student[] = []
-  pages: number[] = []
-  
+  filteredItems: Student[] = []
+
   admin!: Admin
   idAnne!: number
   permission: boolean = false
   is_show: boolean = false
   update_student_form!: FormGroup
-  classeStudent: Student[]=[]
+  classeStudent: Student[] = []
   student?: Student;
-  fileName!: File
-  photoSelect!: File
-  urlImage! : string | ArrayBuffer
-  
-  constructor(private service: EtudeService,private rout: ActivatedRoute, private sideBarService: SideBarService,
-    private classeService: ClassStudentService, public icons: IconsService, private pageTitle : PageTitleService) { }
+
+  constructor(private service: EtudeService, private rout: ActivatedRoute, private sideBarService: SideBarService,
+    private classeService: ClassStudentService, public icons: IconsService, private pageTitle: PageTitleService) { }
 
   ngOnInit(): void {
     this.getPermission();
@@ -52,15 +47,15 @@ export class RSReinscriptionComponent  implements OnInit{
     this.sideBarService.currentSearchTerm.subscribe(term => {
       this.searchTerm = term;
       this.filterStudents();
-      
-    
+
+
     });
   }
-// ----------------------------------get permission
+  // ----------------------------------get permission
   getPermission(): boolean {
     const autorize = sessionStorage.getItem('scolarite');
-    if(autorize){
-     this.permission = true
+    if (autorize) {
+      this.permission = true
       return true;
     }
     return false
@@ -68,9 +63,9 @@ export class RSReinscriptionComponent  implements OnInit{
   // ------------------------------filter students
   filterStudents() {
     if (!this.searchTerm) {
-     return this.filteredItems = this.students;
+      return this.filteredItems = this.students;
     } else {
-    return  this.filteredItems = this.students.filter(student =>
+      return this.filteredItems = this.students.filter(student =>
         student.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         student.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         student.email.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
@@ -78,65 +73,27 @@ export class RSReinscriptionComponent  implements OnInit{
       );
     }
   }
- 
-  // ------------------------------next page
-  setPage(page: number): void {
-    if (page >= 0 && page < this.studentspage!.totalPages!) {
-      this.page = page;
-      // this.loadStudents();
-    }
-  }
 
-  nextPage(): void {
-    if (this.page < this.studentspage!.totalPages! - 1) {
-      this.setPage(this.page + 1);
-    }
-  }
 
-  previousPage(): void {
-    if (this.page > 0) {
-      this.setPage(this.page - 1);
-    }
-  }
-   // -----------------------load all classe 
+  // -----------------------load all classe 
 
-   load_classes(){
-    this.rout.queryParams.subscribe(param =>{
+  load_classes() {
+    this.rout.queryParams.subscribe(param => {
       this.idAnne = param['id']
     })
-    this.classeService.getAllClasse(this.idAnne).subscribe(result =>{
+    this.classeService.getAllClasse(this.idAnne).subscribe(result => {
       this.classRoom = result;
 
-      console.log(this.classRoom, "88888888888888")
+      // console.log(this.classRoom, "88888888888888")
     })
   }
 
   // ------------------------------------------------------------
-  getStudentView(student: Student){
-   const url = this.extractFileName(student.urlPhoto!);
-    student.urlPhoto = url
-    const date = new Date(student.idClasse.idAnneeScolaire!.finAnnee)!;
-    const ans = date.getFullYear();
-    console.log(student, "student 000")
-    // this.student?.idAnneeScolaire.ans = ans
+  getStudentView(student: Student) {
+    this.is_show = true
     this.student = student
-   
-    this.is_show =! this.is_show
+    console.log(this.student, "student 000")
     
-    // const navigationExtras: NavigationExtras = {
-    //   queryParams: { id: student?.idEtudiant }
-    // };
-    // const comptable = sessionStorage.getItem('comptable')
-    // const secretaire = sessionStorage.getItem('secretaire')
-    // if(comptable){
-    //   this.root.navigate(['/comptable/student-view'], navigationExtras)
-
-    // }else if(secretaire){
-    //   this.root.navigate(['/secretaire/student-view'], navigationExtras)
-    // }else{
-    //   this.root.navigate(['/r-scolarite/student-view'], navigationExtras)
-    // }
-    // this.root.navigate(['/r-scolarite/student-view'], navigationExtras)
   }
 
   extractFileName(url: string): string {
@@ -157,62 +114,63 @@ export class RSReinscriptionComponent  implements OnInit{
       }
     )
   }
- 
-  // ----------------------------------extration 
-  private extractUniqueStudents(notes: Student[]): Student[] {
-    const uniqueStudents = new Set<number>(); // Utilise un Set pour stocker les idEtudiant uniques
-    const result: Student[] = [];
-    
-    notes.forEach(item => {
-      if (!uniqueStudents.has(item.idEtudiant!)) { // Vérifie si l'idEtudiant n'est pas déjà dans le Set
-        uniqueStudents.add(item.idEtudiant!); 
-        result.push(item); // Ajoute l'étudiant au tableau résultant des étudiants uniques
-      }
-    });
-    result.forEach((student, index) => {
-      student.numero = index + 1; // Ajoute 1 pour commencer à partir de 1 (si nécessaire)
-    });
 
-    return result;
-  }
 
   // ------------------close modal
   closeModal() {
+    // this.ngOnInit();wi
+    // window.location.reload()
+    console.log("-------------------id select", this.idClasse)
     this.is_show = false;
   }
 
   // -------------------------go back
-  goBack(){
+  goBack() {
     window.history.back();
   }
-  changeClasse(event: any){
-    const idClasse = event.target.value;
-    this.load_nextClasse(idClasse);
-    this.rout.queryParams.subscribe(param=>{
+  changeClasse(event: any) {
+    // console.log("0000000000000000-----------")
+   this.idClasse = event.target.value;
+    this.load_nextClasse(this.idClasse);
+    this.rout.queryParams.subscribe(param => {
       this.idAnne = +param['id']
       // this.load_classes(idClasse);
     })
 
-    this.service.getStudentByIdAnneeAndIdClasse(this.idAnne, +idClasse, this.page, this.size).subscribe(data => {
-      this.students = data.content;
-      this.students.forEach((item : Student) => {
-        this.path_url = item.urlPhoto!
-        item.urlPhoto = `http://localhost/StudentImg/${item.urlPhoto}`;
-      })
-      this.studentspage = data;
+    this.service.getStudentListByIdAnneeAndIdClasse(this.idAnne, +this.idClasse).subscribe(data => {
+      this.students = data
+      
       this.filteredItems = this.students;
-      this.pages = Array.from({ length: data.totalPages! }, (_, i) => i);
-
-      this.extractUniqueStudents(this.students)
-      this.isPage = true
+     
       console.log(this.students, "pagenation teachers")
     });
+
   }
 
-  load_nextClasse(idClasse: number){
-    this.classeService.getNextClasseByIdPrevious(idClasse).subscribe(result =>{
-     this.NextClassRoom = result;
+  load_nextClasse(idClasse: number) {
+    this.classeService.getNextClasseByIdPrevious(idClasse).subscribe(result => {
+      this.NextClassRoom = result;
       console.log(result, "next class")
+
+      this.NextClassRoom.forEach(ncls => {
+        this.niveau = ncls.idFiliere?.idNiveau
+        this.service.getStudentListByIdAnneeAndIdClasse(ncls.idAnneeScolaire?.id! ,ncls.id!).subscribe(result => {
+          this.studentsInscrit = result
+          console.log(this.studentsInscrit, "les incrits")
+        })
+      })
     })
+
   }
+  // ----------------methode to compare liste studentInscrit and students
+  check(matricule: string) {
+    let index = this.studentsInscrit.findIndex(e => e.matricule == matricule);
+    if (index != -1) {
+      return true;
+    } else {
+      return false;
+    }
+
+  }
+
 }

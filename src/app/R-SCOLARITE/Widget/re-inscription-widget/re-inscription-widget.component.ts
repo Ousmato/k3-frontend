@@ -14,63 +14,46 @@ import { PageTitleService } from '../../../Services/page-title.service';
 })
 export class ReInscriptionWidgetComponent implements OnInit {
 
-  @Input() student?: Student 
-  @Input() nextClass?: ClassRoom[] =[]
+  @Input() student?: Student
+  @Input() nextClass?: ClassRoom[] = []
   @Output() closeModal = new EventEmitter<any>()
-  classRoom: ClassRoom [] = []
+  classRoom: ClassRoom[] = []
   class_select!: ClassRoom
-  all_annee: AnneeScolaire[]=[]
-  anneeSelect !: AnneeScolaire
-  constructor(private infoscool: SchoolService, private pageTitle: PageTitleService,
-    private classeService: ClassStudentService, private studentService: EtudeService) { }
+  constructor(private pageTitle: PageTitleService,
+     private studentService: EtudeService) { }
   ngOnInit(): void {
-      this.getAnneeScolaire();
+    console.log("bien entre dans widget add niv sup")
+    // this.getAnneeScolaire();
   }
 
- 
-  // ----------------------------get all annee scolaire
-  getAnneeScolaire(){
-    this.infoscool.getAll_annee().subscribe(data =>{
-      this.all_annee = data;
-      this.all_annee.forEach(an =>{
-        const date = new Date(an.finAnnee)
-        const ans = date.getFullYear();
-        an.ans = ans;
-      })
-    })
-  }
-  // -------------------------on select class
-  onSelect(event : any){
+  // --------------------on select class
+  onSelect(event: any) {
+    if (this.nextClass?.length === 0) {
+      this.pageTitle.showErrorToast("Aucun classe supperieur trouver")
+    }
     const idClasse = event.target.value
-    this.class_select = this.nextClass!.find(cl=> cl.id == +idClasse)!;
+    this.class_select = this.nextClass!.find(cl => cl.id == +idClasse)!;
   }
-
-  // ----------------------------on select annee
-  onSelectAnnee(event : any){
-    const idAnnee = event.target.value
-    this.anneeSelect = this.all_annee.find(ans=> ans.id == +idAnnee)!;
-
-  }
-  send(){
+  send() {
     const idStudent = this.student?.idEtudiant
 
     const idClasse = this.class_select.id!
     const { numero, modules, ...studut } = this.student!;
-    
-    console.log(idStudent, "idStudent", idClasse,"idClasse")
+
+    console.log(idStudent, "idStudent", idClasse, "idClasse")
     // return
     this.studentService.reInscriptionStudent(studut!, idClasse!).subscribe({
-      next: (result)=>{
+      next: (result) => {
         this.pageTitle.showSuccessToast(result.message)
         this.closeModal.emit()
       },
-      error: (error)=>{
+      error: (error) => {
         this.pageTitle.showErrorToast(error.error.message)
       }
     })
 
   }
-  close(){
+  close() {
     this.closeModal.emit()
   }
 }

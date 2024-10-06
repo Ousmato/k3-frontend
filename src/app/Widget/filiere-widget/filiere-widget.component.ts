@@ -78,7 +78,7 @@ export class FiliereWidgetComponent implements OnInit {
    load_filiere_form(){
     this.update_filiere_form = this.fb.group({
       id: [''],
-      nomFiliere: ['', [Validators.required, Validators.maxLength(40)]],
+      nomFiliere: ['', [Validators.required, Validators.maxLength(50)]],
       // idNiveau: ['', Validators.required]
     });
   }
@@ -179,6 +179,7 @@ export class FiliereWidgetComponent implements OnInit {
     this.closeModal.emit();
   }
   show_updated(){
+    this.loa_filiere()
     this.ishow_update = true;
     this.closeModal.emit();
   }

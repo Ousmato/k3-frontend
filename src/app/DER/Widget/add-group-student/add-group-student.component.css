@@ -10,6 +10,9 @@ a button{
 td{
     border: none;
 }
+th{
+    background-color: white;
+}
 tr{
     border-left: 1px solid var(--tertiary);
     border-right: 1px solid var(--tertiary);

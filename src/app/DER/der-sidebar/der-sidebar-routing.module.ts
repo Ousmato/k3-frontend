@@ -19,6 +19,7 @@ import { DerDocComponent } from '../der-doc/der-doc.component';
 import { AddDocComponent } from '../Widget/add-doc/add-doc.component';
 import { ProgramSoutenanceComponent } from '../Widget/program-soutenance/program-soutenance.component';
 import { ViewSoutenanceComponent } from '../Widget/view-soutenance/view-soutenance.component';
+import { StudentGroupListComponent } from '../student-group-list/student-group-list.component';
 
 const routes: Routes = [{path: '', component: DerSidebarComponent,
   children: [
@@ -36,9 +37,10 @@ const routes: Routes = [{path: '', component: DerSidebarComponent,
     {path: 'emplois-seances', component: EmploisSeanceComponent, data:{title: "EMPLOI DU TEMPS"}},
     {path: 'edit-seance', component: DerEditSeanceComponent},
     {path: 'group-student', component: AddGroupStudentComponent},
-    {path: 'affect-t-d', component: DerEDTComponent},
+    {path: 'affect-t-d', component: DerEDTComponent , data:{title: "AJOUTER SEANCE"}},
     {path: 'programmer', component: ProgramSoutenanceComponent},
     {path: 'programme-view', component: ViewSoutenanceComponent},
+    {path: 'liste-groupe', component: StudentGroupListComponent},
 
     
     // { path: 'classe-student', component: ClassStudentsComponent, data:{title: "Les Classes de Formation"} },

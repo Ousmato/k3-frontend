@@ -6,7 +6,7 @@ import { NoteDto, Notes } from '../../Models/Notes';
 import { Module } from '../../Models/Module';
 import { Response_String } from '../../Models/Response_String';
 import { Doc_Pages, NotesPages, StudentPages } from '../../Models/Pagination-module';
-import { Docum, Soutenance, StudentDoc } from '../../Models/doc';
+import { Docum, Jury, ProgramSoutenance, Soutenance, StudentDoc } from '../../Models/doc';
 
 @Injectable({
   providedIn: 'root'
@@ -75,8 +75,8 @@ addStudentImport(studentImport: Student_import) : Observable<Response_String>{
   }
   // ----------------------------------get all note of classe
   // read-all-of-semestre/
-  getAllNoteByClasse(page: number, size: number, idClasse: number): Observable<NotesPages> {
-    return this.http.get<NotesPages>(`${this.baseUrl_note}read-all-of-semestre/${idClasse}?page=${page}&size=${size}`);
+  getAllNoteByClasse(page: number, size: number, idClasse: number, idSemestre: number): Observable<NotesPages> {
+    return this.http.get<NotesPages>(`${this.baseUrl_note}read-all-of-semestre/${idClasse}/${idSemestre}?page=${page}&size=${size}`);
   }
   // -----------------------------------------desactive student by id
   desactiveStudent(id: number): Observable<Response_String>{
@@ -152,7 +152,7 @@ addStudentImport(studentImport: Student_import) : Observable<Response_String>{
     return this.http.get<Student_count>(this.baseUrl+"student-count");
   }
   // --------------programmer soutenance
-  createSoutenance(programmer: Soutenance) : Observable<Response_String>{
+  createSoutenance(programmer: ProgramSoutenance) : Observable<Response_String>{
     return this.http.post<Response_String>(this.baseUrl+"add-soutenance", programmer);
   }
   // ---------------------get all soutenance actif
@@ -168,10 +168,21 @@ addStudentImport(studentImport: Student_import) : Observable<Response_String>{
   getRapportNumber() : Observable<number>{
     return this.http.get<number>(this.baseUrl+"rapport-number");
   }
-  // ----------------------get student by id annee and id classe
-  getStudentByIdAnneeAndIdClasse(idAnnee: number, idClass: number, page: number, size: number): Observable<StudentPages> {
+  // ----------------------get page student by id annee and id classe
+  getStudentPageByIdAnneeAndIdClasse(idAnnee: number, idClass: number, page: number, size: number): Observable<StudentPages> {
     return this.http.get<StudentPages>(`${this.baseUrl}get-student-annee-and-classe/${idAnnee}/${idClass}?page=${page}&size=${size}`);
   }
 
+  getStudentListByIdAnneeAndIdClasse(idAnnee: number, idClass: number) : Observable<Student[]>{
+    return this.http.get<Student[]>(`${this.baseUrl}get-list-student-by-idAnnee-and-idClasse/${idAnnee}/${idClass}`)
+  }
+  // -----------------------annuler le programme de soutenance
+  annulerProgramme(idDoc: number):Observable<boolean>{
+    return this.http.get<boolean>(this.baseUrl+"desaprouve-doc/"+idDoc)
+  }
 
+  // ------------------ajouter soutenance note
+  addSoutenanceNote(idDoc: number, note: number) : Observable<Response_String>{
+    return this.http.post<Response_String>(this.baseUrl+"add-soutenance-note/"+idDoc, note);
+  }
 }

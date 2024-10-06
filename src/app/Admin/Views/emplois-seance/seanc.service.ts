@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Seances, Surveillance } from '../../Models/Seances';
+import { Seances} from '../../Models/Seances';
 import { Response_String } from '../../Models/Response_String';
-import { Configure_seance, Journee } from '../../Models/Configure_seance';
-import { Emplois } from '../../Models/Emplois';
+import { Journee } from '../../Models/Configure_seance';
+import { teacherConfigureDto } from '../../Models/Teachers';
 
 @Injectable({
   providedIn: 'root'
@@ -41,25 +41,15 @@ export class SeancService {
   getSeance_byId(idSeance: number) : Observable<any>{
     return this.http.get<any>(this.baseUrl+ "get-by-id/" +idSeance);
   }
-  // ------------------------------add config seance
-  addConfigureSeance(config : Configure_seance[]) : Observable<Response_String>{
-    return this.http.post<Response_String>(this.baseUrl+"add-config", config)
-  }
-  get_all_configSeance(idEmploi : number) : Observable<Configure_seance[]>{
-    return this.http.get<Configure_seance[]>(this.baseUrl+"all-config-by-id-emploi/" + idEmploi)
-  }
-
-  // -----------------------------get_config ByExam Or Session
-  get_configByExamOrSession() : Observable<Configure_seance[]>{
-    return this.http.get<Configure_seance[]>(this.baseUrl+"all-secance-config-exam-or-session")
-  }
+ 
   // ----------------------------add surveillance
 
-  addSurveillance(surveillance: Surveillance) : Observable<Response_String>{
-    return this.http.post<Response_String>(this.baseUrl+"add-surveillance", surveillance);
+  addSurveillance(surveillance: Journee[]) : Observable<Response_String>{
+    return this.http.post<Response_String>(this.baseUrl+"add-addSurveillance", surveillance);
   }
   
-  get_all_configSeance_by_id(idConfig: number) : Observable<Configure_seance>{
-    return this.http.get<Configure_seance>(this.baseUrl+"config-by-id/"+idConfig);
+   // -----------------get teacher config
+   get_teacher_configuration(idEmploi: number) : Observable<teacherConfigureDto[]>{
+    return this.http.get<teacherConfigureDto[]>(this.baseUrl+"lit-teacher-config/"+idEmploi);
   }
 }

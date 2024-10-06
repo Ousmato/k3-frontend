@@ -11,12 +11,15 @@
             <div class="chil">
                 <div class="image-column">
                     <div class="pop-img">
-                        <img  [src]="student?.urlPhoto" alt="">
+                        <img 
+                        [src]="imageUrl" 
+                        (error)="onError()" 
+                        alt="Profile Image">
                       </div>
                     <div class="inputs-box">
                         <div class="input">
                             <label for="validationDefault01" class="label-nom-prenom">Nom :</label>
-                            <input type="text" class="input-nom-prenom" formControlName="nom" id="nom" [class.is-invalid]="studentForm.get('nom')!.invalid && studentForm.get('nom')!.touched"  placeholder="Nom de l'etudiant....">
+                            <input [attr.readonly]="!isEdit ? true : null" type="text" class="input-nom-prenom" formControlName="nom" id="nom" [class.is-invalid]="studentForm.get('nom')!.invalid && studentForm.get('nom')!.touched"  placeholder="Nom de l'etudiant....">
                             <span *ngIf="studentForm.controls['nom'].invalid && studentForm.controls['nom'].touched" [ngStyle]="{color: 'red'}">
                             Champ obligatoire*
                             </span>
@@ -24,7 +27,7 @@
 
                         <div class="input">
                             <label for="validationDefault02" class="label-nom-prenom">Prenom :</label>
-                            <input type="text" formControlName="prenom" class="input-nom-prenom" id="prenom" [class.is-invalid]="studentForm.get('prenom')!.invalid && studentForm.get('prenom')!.touched"   placeholder="Prenom de l'etudiant....">
+                            <input [attr.readonly]="!isEdit ? true : null" type="text" formControlName="prenom" class="input-nom-prenom" id="prenom" [class.is-invalid]="studentForm.get('prenom')!.invalid && studentForm.get('prenom')!.touched"   placeholder="Prenom de l'etudiant....">
                             <span *ngIf="studentForm.controls['prenom'].invalid && studentForm.controls['prenom'].touched" [ngStyle]="{color: 'red'}">
                             Champ  obligatoire*
                             </span>
@@ -36,7 +39,7 @@
 
                 <div class="input">
                     <label for="validationDefault02" class="label form-label">Matricule :</label>
-                    <input type="text" formControlName="matricule" class="input-with form-control"  pattern="[a-zA-Z0-9]{1,12}" [class.is-invalid]="studentForm.get('matricule')!.invalid && studentForm.get('matricule')!.touched"  placeholder="Numero matricule....">
+                    <input [attr.readonly]="!isEdit ? true : null" type="text" formControlName="matricule" class="input-with form-control"  pattern="[a-zA-Z0-9]{1,12}" [class.is-invalid]="studentForm.get('matricule')!.invalid && studentForm.get('matricule')!.touched"  placeholder="Numero matricule....">
                     <span *ngIf="studentForm.controls['matricule'].invalid && studentForm.controls['matricule'].touched" [ngStyle]="{color: 'red'}">
                     Champ bligatoire*
                     </span>
@@ -48,7 +51,7 @@
 
                 <div class="input">
                     <label  class="label form-label">Email :</label>
-                    <input type="email" formControlName="email" class=" input-with form-control" [class.is-invalid]="studentForm.get('email')!.invalid && studentForm.get('email')!.touched" placeholder="Email...">
+                    <input [attr.readonly]="!isEdit ? true : null" type="email" formControlName="email" class=" input-with form-control" [class.is-invalid]="studentForm.get('email')!.invalid && studentForm.get('email')!.touched" placeholder="Email...">
                     <span *ngIf="studentForm.controls['email'].invalid && studentForm.controls['email'].touched" [ngStyle]="{color: 'red'}">
                     Champ bligatoire*
                     </span>
@@ -72,14 +75,14 @@
             
                 <div class="input">
                     <label for="validationDefault03" class="label form-label">Date de Naissance :</label>
-                    <input type="date" formControlName="dateNaissance" class="input-with form-control" [class.is-invalid]="studentForm.get('dateNaissance')!.invalid && studentForm.get('dateNaissance')!.touched" placeholder="Date de naissance....">
+                    <input [attr.readonly]="!isEdit ? true : null" type="date" formControlName="dateNaissance" class="input-with form-control" [class.is-invalid]="studentForm.get('dateNaissance')!.invalid && studentForm.get('dateNaissance')!.touched" placeholder="Date de naissance....">
                     <span *ngIf="studentForm.controls['dateNaissance'].invalid && studentForm.controls['dateNaissance'].touched" [ngStyle]="{color: 'red'}">
                     Ce champ obligatoire*
                     </span>
                 </div>
                 <div class="input">
                     <label for="validationDefault0" class="label form-label">Lieu de Naissance :</label>
-                    <input type="text" formControlName="lieuNaissance" class="form-control" [class.is-invalid]="studentForm.get('lieuNaissance')!.invalid && studentForm.get('lieuNaissance')!.touched" placeholder="Lieu de naissance....">
+                    <input [attr.readonly]="!isEdit ? true : null" type="text" formControlName="lieuNaissance" class="form-control" [class.is-invalid]="studentForm.get('lieuNaissance')!.invalid && studentForm.get('lieuNaissance')!.touched" placeholder="Lieu de naissance....">
                     <span *ngIf="studentForm.controls['lieuNaissance'].invalid && studentForm.controls['lieuNaissance'].touched" [ngStyle]="{color: 'red'}">
                     Ce champ obligatoire*
                     </span>
@@ -87,7 +90,7 @@
 
                 <div class="input">
                     <label for="telephone" class="label form-label">Téléphone :</label>
-                    <input type="text" formControlName="telephone" class="form-control" [class.is-invalid]="studentForm.get('telephone')!.invalid && studentForm.get('telephone')!.touched" pattern="[0-9]{1,8}" placeholder="Numero de telephone....">
+                    <input [attr.readonly]="!isEdit ? true : null" type="text" formControlName="telephone" class="form-control" [class.is-invalid]="studentForm.get('telephone')!.invalid && studentForm.get('telephone')!.touched" pattern="[0-9]{1,8}" placeholder="Numero de telephone....">
                     <span *ngIf="studentForm.controls['telephone'].hasError('required') && studentForm.controls['telephone'].touched"
                         [ngStyle]="{color: 'red'}">
                         Champ obligatoire*
@@ -102,7 +105,7 @@
             <div class="chil">
                 <div class="input">
                     <label for="validationDefault05" class="label form-label">Photo :</label>
-                    <input type="file"  accept="image/*" class="input-with form-control"  id="inputPhoto" (change)="onFileSelected($event)"  required>
+                    <input [attr.readonly]="!isEdit ? true : null" type="file"  accept="image/*" class="input-with form-control"  id="inputPhoto" (change)="onFileSelected($event)"  required>
                     <!-- <span *ngIf="studentForm.controls['urlPhoto'].invalid && studentForm.controls['urlPhoto'].touched" [ngStyle]="{color: 'red'}">
                     Champ obligatoire*
                     </span> -->
@@ -111,7 +114,7 @@
 
                 <div class="input">
                     <label for="validationDefault03" class="label form-label">Scolarité : <span>(Montant en FCFA)</span> </label>
-                    <input type="text" formControlName="scolarite" class="input-with form-control" placeholder="La scolarite...."   [class.is-invalid]="studentForm.get('scolarite')!.invalid && studentForm.get('scolarite')!.touched" pattern="[0-9]{1,7}">
+                    <input [attr.readonly]="!isEdit ? true : null" type="text" formControlName="scolarite" class="input-with form-control" placeholder="La scolarite...."   [class.is-invalid]="studentForm.get('scolarite')!.invalid && studentForm.get('scolarite')!.touched" pattern="[0-9]{1,7}">
                     <span *ngIf="studentForm.controls['scolarite'].invalid && studentForm.controls['scolarite'].touched" [ngStyle]="{color: 'red'}">
                     Champ obligatoire*
                     </span>
@@ -127,7 +130,7 @@
                     <label for="validationDefault03" class="label form-label">Classe :</label>
                     <select class="form-select" formControlName="idClasse" placeholder="Choisir une classe...."  id="select-modules-multiple"  [class.is-invalid]="studentForm.get('idClasse')!.invalid && studentForm.get('idClasse')!.touched">
                         <option  selected disabled value="">{{student?.idClasse?.idFiliere?.idNiveau?.nom}} {{student?.idClasse?.idFiliere?.idFiliere?.nomFiliere}}</option>
-                        <option *ngFor="let classe of classRoom" [value]="classe.id">{{classe.idFiliere?.idNiveau?.nom}} {{classe.idFiliere?.idFiliere?.nomFiliere}}</option>
+                        <option [ngStyle]="{ 'display': !isEdit ? 'none' : 'block' }" *ngFor="let classe of classRoom" [value]="classe.id">{{classe.idFiliere?.idNiveau?.nom}} {{classe.idFiliere?.idFiliere?.nomFiliere}}</option>
                     </select>
                     <span *ngIf="studentForm.controls['idClasse'].invalid && studentForm.controls['idClasse'].touched" [ngStyle]="{color: 'red'}">
                     Champ obligatoire*
@@ -139,12 +142,12 @@
                     <label  class="label form-label">Sexe :</label>
                     <div class="radio-button">
                         <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio1" value="Homme"  required>
+                        <input [attr.readonly]="!isEdit ? true : null" class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio1" value="Homme"  required>
                         <label class="form-check-label" for="inlineRadio1">Homme</label>
                         </div>
 
                         <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio2" value="Femme" required>
+                        <input [attr.readonly]="!isEdit ? true : null" class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio2" value="Femme" required>
                         <label class="form-check-label" for="inlineRadio2">Femme</label>
                         </div>
                     </div>
@@ -155,7 +158,15 @@
             </div>
         </div>
         <div class="col-12">
-            <button class="btn " type="submit">Enregistrer</button>
+            @if(isEdit){
+                <button  (click)="sunmit()" >Enregistrer</button>
+            }@else {
+                <button   (click)="toggle_toChageEdit()" >Modifier</button>
+            }
+          
+          
         </div>
+
+        
     </form>
 </main>

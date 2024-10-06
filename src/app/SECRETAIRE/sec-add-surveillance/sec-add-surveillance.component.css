@@ -1,189 +1,147 @@
-main{
-    padding: 10px 20px;
+.plag{
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5%;
 }
-.div-content{
-    display: flex;
-   
-   flex-direction: column;
-}
-.first-content{
-    display: flex;
-    gap: 30px;
-}
+
 .input-content{
+    cursor: pointer;
+    display: flex;
+    /* gap: 5px; */
     width: 50%;
-    
-}
-
-.head{
-    display: flex;
-    justify-content: end;
+    font-size: 12px;
     align-items: center;
-    width: 100%;
+    border: 1px solid var(--tertiary);
+    border-radius: 5px;
     padding: 5px;
-    border-radius: 4px;
-    background-color: var(--primary);
-    color: var(--secondary);
-}
-.head span{
-    padding: 5px;
-    cursor: pointer;
-}
-.head span:hover{
-    /* padding: 8px; */
-    background-color: var(--secondary);
-    color: var(--primary);
-    border-radius: 4px;
-
-}
-.input-time{
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-}
-.input-time .form-group{
-    width: 45%;
-}
-
-.form-group{
-    margin-top: 15px;
-}
-label{
-    font-weight: 500;
-    margin-bottom: 5px;
-}
-.check-val{
-    display: flex;
-    justify-content: end;
-    gap: 20px;
-}
-.button-cash button{
-    border: none;
-    display: flex;
-    gap: 8px;
-    margin-top: 8px;
-    padding: 5px 20px;
-    border-radius: 5px;
-    background-color: var(--primary);
-    color: var(--secondary);
-    cursor: pointer;
-    &:hover{
-        background-color: var(--secondary);
-        color: var(--primary);
-    }
-   
-}
-.check-val a{
-    border: none;
-    display: flex;
-    gap: 8px;
-    margin-top: 8px;
-    padding: 3px 20px;
-    border-radius: 5px;
-    background-color: var(--primary);
-    color: var(--secondary);
-    cursor: pointer;
-    &:hover{
-        background-color: var(--secondary);
-        color: var(--primary);
-    }
-   
-}
-
-.check-val .isCheck-valid{
-    border: none;
-    display: flex;
-    justify-content: center;
-    margin-top: 8px;
-    padding: 3px 20px;
-    border-radius: 5px;
-    background-color: var(--primary);
-    color: var(--secondary);
-    cursor: pointer;
-    &:hover{
-        background-color: var(--secondary);
-        color: var(--primary);
-    }
-   
-}
-
-input:focus, select:focus{
-    border-color: var(--primary);
-    outline: none;
-    box-shadow: 0 0 5px var(--primary);
-}
-
-.input-click{
-    cursor: pointer;
-}
-
-/* -----------------select jours select */
-
-  .views-add-ues{
-    width: 500px;
-    background-color: #fff;
-    position: absolute;
-    top: 20%;
-    left: 2%;
-    right: 50%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    border-radius: 5px;
-    z-index: 10001;
-   
-    }
-  .nom-class{
-    width: 100%;
-    height: 40px;
-    padding: 10px;
-    background-color: var(--primary);
-    color: var(--secondary);
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-  }
-  .formModuleMatiere{
-    padding: 20px;
-  }
-
-  .input-disabled {
-    pointer-events: none; /* Désactive les événements de souris */
-    background-color: #e9ecef; /* Optionnel : ajoute une couleur de fond grisée */
-    cursor: not-allowed; /* Optionnel : change le curseur pour indiquer que l'élément est désactivé */
-}
-
-.input{
-    display: flex;
-    justify-content: space-between;
-    padding: 8px;
-    cursor: pointer;
-    &:hover{
-        background-color: #ddd;
-        color: var(--primary);
-    }
-}
-
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: transparent; 
-    z-index: 1000; /* Assurez-vous que l'overlay est au-dessus de tout */
-  }
-
-  .back-button{
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    padding: 8px;
-    font-size: 20px;
-    margin: 10px 0;
+    transition: background-color 0.2s ease;
     &:hover{
         background-color: var(--tertiary);
         color: var(--primary);
-        border: none;
-        border-radius: 50%;
     }
+}
+.contenair-teach{
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid var(--tertiary);
+    border-radius: 5px;
+}
+.color-red{
+    background-color: red;
+}
+.plag-enseignat{
+    
+    gap: 10px;
+    margin-top: 10px;
+}
+.input-time{
+    display: flex;
+    gap: 20px;
+}
+.plage-days{
+    display: flex;
+    gap: 5%;
+    margin-top: 10px;
+}
+.group{
+    margin-top: 10px;
+}
+#type-seance{
+    width: 238px;
+}
+.input{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.form-group{
+    margin: 10px 0;
+}
+.chose_teacher{
+    font-size: 14px;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    &:hover{
+        background-color: var(--tertiary);
+        color: var(--primary);
+    }
+}
+button{
+    border: none;
+    padding: 5px;
+    background-color: var(--primary);
+    cursor: pointer;
+    color: var(--secondary);
+    margin-top: 20px;
+    border-radius: 5px;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+}
+/* ------------------modal search style */
+.modal-search{
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.views{
+    position: absolute;
+    top: 10px;
+    width: 500px;
+    border: 1px solid var(--tertiary);
+    border-radius: 5px;
+    padding: 10px;
+    transition: background-color 0.2s ease;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.15);
 
+}
+.views input{
+    padding: 5px 30px;
+    width: 100%;
+    margin-bottom: 10px;
+    border: 1px solid var(--tertiary);
+    border-radius: 4px;
+}
+.views input:focus{
+    outline: none;
+}
+.views p{
+    padding: 4px;
+    font-size: 16px;
+    margin: 0;
+    text-align: left;
+    &:hover{
+        color: var(--primary);
+        background-color: var(--tertiary);
+    }
+}
+.form-input {
+    position: relative;
+    display: flex;
+    align-items: center; 
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px; 
+    bottom: 15px;
+    pointer-events: none; 
+}
+input:focus,
+select:focus {
+    outline: none;
+    border: 1px solid var(--primary);
+    box-shadow: 0 0 5px var(--primary);
+}
+
+.is-invalid{
+    border: 1px solid red;
+    box-shadow: 0 0 5px red;
 }

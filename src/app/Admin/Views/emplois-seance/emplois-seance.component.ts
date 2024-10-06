@@ -7,7 +7,7 @@ import { ClassStudentService } from '../../../DGA/class-students/class-student.s
 import { Module } from '../../Models/Module';
 
 import { IconsService } from '../../../Services/icons.service';
-import { Teacher } from '../../Models/Teachers';
+import { Teacher, teacherConfigureDto } from '../../Models/Teachers';
 import { type_seance } from '../../Models/Seances';
 import { EnseiService } from '../enseignant/ensei.service';
 import { SeancService } from './seanc.service';
@@ -34,6 +34,7 @@ export class EmploisSeanceComponent  implements OnInit{
     emplois?: Emplois;
     hasDeleted! : Journee
     admin!: Admin
+    scolarite!: Admin
     idEmplois!: number;
     selected_seance_heure_fin! : any
     form_seance! : FormGroup;
@@ -42,6 +43,7 @@ export class EmploisSeanceComponent  implements OnInit{
 
     
     modules: Module[] = [];
+    group!: string;
     journee : Journee[] = [];
     empModule : Module[] = [];
     enseignants: Teacher[] =[];
@@ -51,11 +53,12 @@ export class EmploisSeanceComponent  implements OnInit{
 
 
     datesWithDays: { day: string, date: string ,dateDay?: string}[] = [];
-    teachersProgram: { teacher: Teacher, group: string, typeSeance: type_seance[]}[] = [];
+    // teachersProgram: { teacher: Teacher, group: string, typeSeance: type_seance[]}[] = [];
     listSalle: { salle: Salles, typeSeance: type_seance[],group: Student_group[] }[] = [];
-    sallesListe: { typeSeance: type_seance ,salle: Salles[], group: Student_group[] }[] = [];
+    // sallesListe: { typeSeance: type_seance ,salle: Salles[], group: Student_group[] }[] = [];
     test : { id: string, seanceType: string, module: string, groupe : string,date: string, heureDebut: string, heureFin: string,plageHoraire : string, nomTeacher: string, prenomTeacher: string }[] = [];
     journeeDTO : JourneeDTO [] = []
+    teacherConf : teacherConfigureDto [] = []
     deleted_modal: boolean = false;
     pause_midi: string [] = [];
     permission: boolean = false
@@ -84,6 +87,8 @@ export class EmploisSeanceComponent  implements OnInit{
     // ---------------------------------get permission
     getPermission(): boolean {
       const autorize = sessionStorage.getItem('der');
+      const scolarite = sessionStorage.getItem('secretaire');
+      this.scolarite = JSON.parse(scolarite!);
       this.admin = JSON.parse(autorize!);
       if(autorize){
         this.permission = true
@@ -102,11 +107,11 @@ export class EmploisSeanceComponent  implements OnInit{
       this.route.queryParams.subscribe(param =>{
         // console.log(param["id"],"param")
         this.idUrl = +param['id'];
-        console.log(this.idUrl,"id emplois");
+        // console.log(this.idUrl,"id emplois");
 
           this.emploisService.getEmploisByClasse2(this.idUrl).subscribe(data  =>{
             this.emplois = data;
-            console.log(this.emplois,"emplois");
+            // console.log(this.emplois,"emplois");
             const dateDebut = this.emplois.dateDebut;
             const dateFin = this.emplois.dateFin;
             // this.datesWithDaysTest = this.emploisService.getDaysBetweenDatesTest(dateDebut, dateFin)
@@ -114,8 +119,9 @@ export class EmploisSeanceComponent  implements OnInit{
             this.datesWithDays = this.emploisService.getDaysBetweenDatesAndDaysDate(dateDebut, dateFin)
             this.datesWithDays.sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime())
             this.sortDay();
-            console.log(this.datesWithDays, "yuuuuuuuuuuuuuuuuu")
+            // console.log(this.datesWithDays, "yuuuuuuuuuuuuuuuuu")
             // this.getAllSeance(this.emplois.id!);
+            this.getTeacherConf(this.emplois.id!)
             this.load_configure(this.emplois.id!);
             this.loadModulesByClass(this.idUrl);
           })
@@ -125,6 +131,7 @@ export class EmploisSeanceComponent  implements OnInit{
 
     load_configure(idEmploi: number){
       this.seanceService.getAllByEmploisId(idEmploi).subscribe(data =>{
+        console.log(data, "journee ------------")
         data.forEach(dat => {
           // const seance = dat.idSeance
         if(!this.journee.some(cf =>cf.plageHoraire == dat.plageHoraire && dat!.id == cf!.id) ){
@@ -158,40 +165,6 @@ export class EmploisSeanceComponent  implements OnInit{
                 group: [dat.idParticipant?.idStudentGroup!]
             });
           }
-
-         
-          
-          const typeSeanceExist = this.sallesListe.find(slist => slist.typeSeance == dat.seanceType);
-          // console.log(typeSeanceExist, "type seance exist")
-          if (typeSeanceExist) {
-              // Si le typeSeance existe, vérifier et ajouter la salle si elle n'est pas déjà présente
-              // console.log(typeSeanceExist.group.map(g => g.id), 'Current groups in typeSeanceExist');
-
-              // If the seance type exists, check and add the salle if it's not already present
-              if (!typeSeanceExist.salle.some(s => s.id === dat.idSalle?.id)) {
-                  typeSeanceExist.salle.push(dat.idSalle!);
-              }
-      
-              // Check and add the group if it's not already present
-              if (dat.idParticipant?.idStudentGroup) {
-                  const groupExists = typeSeanceExist.group.some(g => g.id === dat.idParticipant!.idStudentGroup.id);
-                  // console.log(`Checking group: ${dat.idParticipant.idStudentGroup.id}, exists: ${groupExists}`);
-                  
-                  if (!groupExists) {
-                      typeSeanceExist.group.push(dat.idParticipant.idStudentGroup!);
-                      // console.log(`Added group: ${dat.idParticipant.idStudentGroup.id}`);
-                  } 
-              }
-    
-          } else {
-              // Si le typeSeance n'existe pas, l'ajouter à sallesListe
-              this.sallesListe.push({
-                salle: [dat.idSalle!],
-                group: dat.idParticipant?.idStudentGroup ? [dat.idParticipant.idStudentGroup] : [],
-                typeSeance: dat.seanceType
-              });
-              console.log(this.sallesListe, "list salle")
-          }
           
         })
         this.journee.forEach(jrn =>{
@@ -215,24 +188,7 @@ export class EmploisSeanceComponent  implements OnInit{
         nomTeacher: jrn.idTeacher.nom})
         })
 
-        this.journee.forEach(jrn =>{
-          const existingteacher = this.teachersProgram.find(sl => sl.teacher.idEnseignant == jrn.idTeacher.idEnseignant);
-          // console.log(existingteacher, "teacher exist")
-        if (existingteacher) {
-            // Si la salle existe déjà, ajouter le type de séance s'il n'est pas déjà présent
-            if (!existingteacher.typeSeance.includes(jrn.seanceType)) {
-                existingteacher.typeSeance.push(jrn.seanceType);
-            }
-        } else {
-            // Si la salle n'existe pas encore dans listSalle, l'ajouter avec le type de séance
-          this.teachersProgram.push({ 
-            teacher: jrn.idTeacher!,
-            group: jrn.idParticipant?.idStudentGroup ? jrn.idParticipant.idStudentGroup.nom : ""!,
-            typeSeance: [jrn.seanceType]
-          });
-          console.log(this.teachersProgram, "teacher -- prog")
-        }
-        })
+       
       })
     }
 
@@ -297,22 +253,22 @@ export class EmploisSeanceComponent  implements OnInit{
     // this.updateWidth();
   }
  
-  // -------------------------------------------meth
-  validate_emplois(){
-    this.emploisService.validateEmplois(this.emplois?.id!).subscribe(data =>{
-      if(data === true)
-        {
-          this.toastr.success("Emplois validé avec succes!!!", "Succès");
-          console.log(data)
-        }else{
-        this.toastr.success("Emplois desactiver avec success");
-        }
-    })
-  }
+
   // -------------------------editer les seance
   to_show_button(){
     this.is_show_button =!this.is_show_button;
    
+  }
+
+  // ----------------------to list of student group
+  go_toList(idEmploi: number){
+    const navigationExtras : NavigationExtras ={
+      queryParams: {
+        id : idEmploi
+      },
+     
+    }
+    this.router.navigate(['/der/liste-groupe'], navigationExtras)
   }
   to_configure() : void{
     const navigationExtras : NavigationExtras ={
@@ -321,7 +277,12 @@ export class EmploisSeanceComponent  implements OnInit{
       },
      
     }
+    if(this.permission){
+      
     this.router.navigate(['/der/affect-t-d'], navigationExtras)
+    }else{
+      this.router.navigate(['/secretaire/affect-t-d'], navigationExtras)
+    }
      
  
   }
@@ -454,4 +415,25 @@ export class EmploisSeanceComponent  implements OnInit{
   filteredJournee(jList: Journee[]) : Journee[]{
     return jList.filter(j => j.seanceType)
   }
+
+   // -------------get teacher configuration he is class and groupe
+   getTeacherConf(idEmploi: number){
+    this.seanceService.get_teacher_configuration(idEmploi).subscribe(data=>{
+      data.forEach(d =>{
+         if(!this.teacherConf.some(tc => tc.id == d.id)){
+           this.teacherConf.push(d)
+          
+           if(d.groupe !== null)
+            this.group = d.groupe
+
+         }else{
+          this.group = ""
+         }
+
+      })  
+     
+      console.log(this.teacherConf, "teacher conf")
+    })
+  }
+
 }

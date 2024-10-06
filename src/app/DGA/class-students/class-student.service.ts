@@ -7,6 +7,7 @@ import { AddUeDto, Ue } from '../../Admin/Models/UE';
 import { ClassRoom } from '../../Admin/Models/Classe';
 import { Response_String } from '../../Admin/Models/Response_String';
 import { NivFiliere } from '../../Admin/Models/NivFiliere';
+import { Docum, TypeDoc } from '../../Admin/Models/doc';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,11 @@ export class ClassStudentService {
   // ---------------------------------------
   getAllCurrentClassOfYear(): Observable<ClassRoom[]> {
     return this.http.get<ClassRoom[]>(this.baseUrl + "list-class");
+  }
+
+  // ---------------------get all classe by type doc
+  getListClassByTypeDoc(type: number) : Observable<ClassRoom[]>{
+    return this.http.get<ClassRoom[]>(this.baseUrl+"classe-type-of-doc/"+type)
   }
   getCurrentClassOfYearWithUe(): Observable<ClassRoom[]> {
     return this.http.get<ClassRoom[]>(this.baseUrl + "current-classe-with-ue");
@@ -39,6 +45,11 @@ export class ClassStudentService {
   getAllModules(id: number): Observable<Module[]> {
     return this.http.get<Module[]>(`${this.baseUrl}all-module/${id}`);
 
+  }
+
+  // --------------------get all modules of class by idClasse and idSemestre
+  getAllModulesByClasseAndSemestre(idClasse: number, idSemestre: number): Observable<Module[]> {
+    return this.http.get<Module[]>(this.baseUrl + "all-module-by-classe-semestre/" + idClasse + "/" + idSemestre);
   }
   //  ------------------------get all module without note in classe
   getAllModulesWithoutNote(idClasse: number): Observable<Module[]> {

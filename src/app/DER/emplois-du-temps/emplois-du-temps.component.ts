@@ -29,7 +29,7 @@ export class EmploisDuTempsComponent implements OnInit {
   current!: Semestres;
   EmploisAdd!: FormGroup;
   current_emplois!: Emplois;
-  classRomId!: number;
+  classeSelect!: ClassRoom;
   plageHoraire: string[] = []
   module_fund?: Module
   classRoom: ClassRoom[] = [];
@@ -70,8 +70,8 @@ export class EmploisDuTempsComponent implements OnInit {
   goBack() {
     this.location.back();
   }
-  loadModulesByClass(idClasse: number): void {
-    this.classService.getAllModules(idClasse).subscribe((data: Module[]) => {
+  loadModulesByClass(idClasse: number, idSemestre: number): void {
+    this.classService.getAllModulesByClasseAndSemestre(idClasse, idSemestre).subscribe((data: Module[]) => {
       this.modules = data;
       console.log(this.modules, "modules");
 
@@ -87,8 +87,9 @@ export class EmploisDuTempsComponent implements OnInit {
 
       const classe = this.classRoom.find(cl => cl.id == formData.idClasse);
       const module = this.modules.find(mod => mod.id == formData.idModule);
+      // console.log("idSemestre", formData.idSemestrete)
 
-      const semestre: Semestres = this.semestre.find(sm => sm.id === formData.idSemestre)!;
+      const semestre: Semestres = this.semestre.find(sm => sm.id == formData.idSemestre)!;
       const emplois: Emplois = {
         idSemestre: semestre,
         idModule: module!,
@@ -97,6 +98,7 @@ export class EmploisDuTempsComponent implements OnInit {
         idClasse: classe!,
 
       }
+      // console.log("emplois", emplois)
       this.emploisService.addEmplois(emplois).subscribe({
         next: (result) => {
           this.pageTitle.showSuccessToast(result.message);
@@ -117,13 +119,15 @@ export class EmploisDuTempsComponent implements OnInit {
 
   // // ------------------------------module select
   classSelect(event: any) {
+    this.EmploisAdd.get("idSemestre")?.setValue("");
+    this.EmploisAdd.get("idModule")?.setValue("");
     const idClasse = event.target.value; 
 
-    this.loadModulesByClass(idClasse);
-    const classeSelect = this.classRoom.find(cl =>cl.id == idClasse);
+    // this.loadModulesByClass(idClasse);
+    this.classeSelect = this.classRoom.find(cl =>cl.id == idClasse)!;
 
      // ------------------------------------get all semestre
-     this.semestreService.getCurrentSemestresByIdNivFiliere(classeSelect?.idFiliere?.id!).subscribe((response: Semestres[]) =>{
+     this.semestreService.getCurrentSemestresByIdNivFiliere(this.classeSelect?.idFiliere?.id!).subscribe((response: Semestres[]) =>{
       response.forEach(sm =>{
         if(!this.semestre.some(s => s.id ==sm.id)){
           this.semestre.push(sm)
@@ -169,5 +173,15 @@ export class EmploisDuTempsComponent implements OnInit {
     this.closeModale.emit();
   }
 
-
+  onSemestreSelect(event: any){
+    console.log(event.target.value)
+    const idSemestre = event.target.value.trim();
+    
+    console.log(idSemestre, "idSemestre")
+    if (!idSemestre || isNaN(+idSemestre)) {
+      console.error("idSemestre is not a valid number");
+      return; // Sortir de la fonction si la valeur n'est pas valide
+  }
+    this.loadModulesByClass(this.classeSelect?.idFiliere?.id!, +idSemestre);
+  }
 }

@@ -22,7 +22,7 @@
             </a>
           </li>
          <li class="menu-link">
-            <a routerLink="/secretaire/surveillance" routerLinkActive="active">
+            <a routerLink="/secretaire/emplois-du-temps" routerLinkActive="active">
               <span><fa-icon [icon]="icons.user_surveillance"></fa-icon>Surveillence</span>
             </a>
           </li>
@@ -60,20 +60,7 @@
             </a>
           </li>
           <!-- ---------------- -->
-          <!-- <li class="menu-link">
-            <div (click)="toggleSubMenuArchive()">
-                <a routerLink="#">
-                  <span><fa-icon [icon]="icons.archive" ></fa-icon>Rapport et Memoire 
-                    <fa-icon [icon]="isSubMenuOpen.etudiants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
-                </a>
-            </div>
-            <ul class="sub-menu" *ngIf="isSubMenuOpen.archive">
-              <li><a routerLink="">2019 - 2020</a></li>
-              <li><a href="#">2021 - 2022</a></li>
-              <li><a href="#">2022 - 2023</a></li>
-            </ul>
-            
-          </li> -->
+          
         </ul>
       </div>
     </nav>
@@ -97,7 +84,7 @@
                     <input type="text" [(ngModel)]="searchTerm" (input)="onSearchChange()" placeholder="Recherche..."  class="search-input">
                  </div>
                 <div class="title-page" *ngIf="showTitle">
-                  <h5>{{title}}</h5></div>
+                  <h6>{{title}}</h6></div>
                   
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">

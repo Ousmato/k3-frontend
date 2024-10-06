@@ -5,18 +5,30 @@
           </div>
         <div class="form-input">
         <button type="submit">Valider <fa-icon [icon]="icons.circle_check"></fa-icon></button>
-            
+            <div class="form-group">
+                <input type="number" formControlName="idEncadrant" *ngIf="false">
+                <input type="text" class="form-control" formControlName="teacher" placeholder="Veillez saisir le N°...">
+                <div class="views" *ngIf="teach">
+                    @if(teacherFiltered != null){
+                    <p (click)="teacherSelect(teacherFiltered)">{{teacherFiltered!.nom}} {{teacherFiltered!.prenom}} : {{teacherFiltered!.telephone}}</p>
+
+                    }@else {
+                        <p>Aucun encadrant trouvé</p>
+                    }
+                </div>
+
+            </div>
             <div class="form form-group">
-                <select  formControlName="docType"  [class.is-invalid]="doc_form.get('docType')!.invalid && doc_form.get('docType')!.touched">
+                <select  formControlName="docType"  [class.is-invalid]="doc_form.get('docType')!.invalid && doc_form.get('docType')!.touched" (change)="changeDocType($event)">
                     <option disabled value="">Doccument</option>
                     <option *ngFor="let type of docTypes" value="{{type.value}}">{{type.key}}</option>
                 </select> 
             </div>
 
-            <div class="form form-group">
+            <div class="form form-group" *ngIf="show_classe">
                 <select  formControlName="idClasse"   (change)="changeClasse($event)" [class.is-invalid]="doc_form.get('idClasse')!.invalid && doc_form.get('idClasse')!.touched">
                     <option disabled value="">La classe</option>
-                    <option *ngFor="let cl of classRoom" value="{{cl.id}}">{{cl.idFiliere?.idNiveau?.nom}} {{cl.idFiliere?.idFiliere?.nomFiliere}}</option>
+                    <option *ngFor="let cl of classRoom" value="{{cl.id}}">{{cl.idFiliere?.idNiveau?.nom}} {{abbreviateFiliereName(cl.idFiliere?.idFiliere?.nomFiliere!)}}  {{cl.idAnneeScolaire?.ans}}</option>
                 </select> 
             </div>
            
@@ -90,4 +102,5 @@
         </div> -->
        
     </form>
+    <!-- <div class="overlay" *ngIf="teacherFiltered.length"></div> -->
 </main>

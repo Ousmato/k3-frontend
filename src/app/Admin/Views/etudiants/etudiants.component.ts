@@ -8,6 +8,8 @@ import { PageTitleService } from '../../../Services/page-title.service';
 import { StudentPages, TeacherPages } from '../../Models/Pagination-module';
 import { SideBarService } from '../../../sidebar/side-bar.service';
 import { Admin } from '../../Models/Admin';
+import { SchoolService } from '../../../Services/school.service';
+import { AnneeScolaire } from '../../Models/School-info';
 
 @Component({
   selector: 'app-etudiants',
@@ -15,43 +17,44 @@ import { Admin } from '../../Models/Admin';
   styleUrl: './etudiants.component.css'
 })
 export class EtudiantsComponent implements OnInit {
-  
+
   searchTerm: string = '';
   students: Student[] = [];
 
   studentspage?: StudentPages;
   page = 0;
-  size = 10;
-  filteredItems : Student[] = []
+  size = 20;
+  filteredItems: Student[] = []
   pages: number[] = []
-  
+
   admin!: Admin
   permission: boolean = false
-  update_student_form!: FormGroup
   student!: Student;
-  fileName!: File
-  photoSelect!: File
-  urlImage! : string | ArrayBuffer
-  
-  constructor(private service: EtudeService,private fb: FormBuilder, private sideBarService: SideBarService,
-    private root: Router, public icons: IconsService, private pageTitle : PageTitleService) { }
+  currentYear!: number
+  annees: AnneeScolaire[] = []
+
+  // urlImage!: string | ArrayBuffer
+
+  constructor(private service: EtudeService, private fb: FormBuilder, private sideBarService: SideBarService,
+    private root: Router, public icons: IconsService, private pageTitle: PageTitleService, private infoSchool: SchoolService) { }
 
   ngOnInit(): void {
     this.getPermission();
-   this.loadStudents();
-    this.load_student_form();
+    this.loadStudents();
+    this.get_annees();
+    this.currentYear = new Date().getFullYear()
     this.sideBarService.currentSearchTerm.subscribe(term => {
       this.searchTerm = term;
       this.filterStudents();
 
-    
+
     });
   }
-// ----------------------------------get permission
+  // ----------------------------------get permission
   getPermission(): boolean {
     const autorize = sessionStorage.getItem('scolarite');
-    if(autorize){
-     this.permission = true
+    if (autorize) {
+      this.permission = true
       return true;
     }
     return false
@@ -59,29 +62,32 @@ export class EtudiantsComponent implements OnInit {
   // ------------------------------filter students
   filterStudents() {
     if (!this.searchTerm) {
-     return this.filteredItems = this.students;
+      return this.filteredItems = this.students;
     } else {
-    return  this.filteredItems = this.students.filter(student =>
+      return this.filteredItems = this.students.filter(student =>
         student.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         student.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         student.email.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        student.idClasse.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase())
+        student.idClasse.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase())||
+        student.idClasse.idFiliere?.idNiveau.nom?.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     }
   }
   // ----------------------load students
+  onChange(event: any){
+
+  }
   loadStudents(): void {
     this.service.getSudents(this.page, this.size).subscribe(data => {
       this.students = data.content;
-      this.students.forEach((item : Student) => {
+      this.students.forEach((item: Student) => {
         item.urlPhoto = `http://localhost/StudentImg/${item.urlPhoto}`;
       })
       this.studentspage = data;
       this.filteredItems = this.students;
       this.pages = Array.from({ length: data.totalPages! }, (_, i) => i);
+      console.log(this.pages, "pages")
 
-      this.extractUniqueStudents(this.students)
-      // console.log(this.students, "pagenation teachers")
     });
   }
   // ------------------------------next page
@@ -103,74 +109,61 @@ export class EtudiantsComponent implements OnInit {
       this.setPage(this.page - 1);
     }
   }
-  // ----------------------------refresh page
-  refresh(){
-    this.loadStudents();
+  // ------------------------------pages visibles
+  getVisiblePages(): number[] {
+    const visiblePages: number[] = [];
+    const totalPages = this.studentspage!.totalPages!;
+
+    const startPage = Math.max(0, this.page - 1); // Une page avant la courante
+    const endPage = Math.min(totalPages - 1, this.page + 1); // Une page après la courante
+
+    for (let i = startPage; i <= endPage; i++) {
+      visiblePages.push(i);
+    }
+
+    return visiblePages;
   }
-// -----------------------------------------------load form update student
-  load_student_form(){
-    this.update_student_form = this.fb.group({
-       // id: [null], 
-       nom: ['', Validators.required],
-       prenom: ['', Validators.required],
-       sexe: ['', Validators.required],
-       email: ['', [Validators.required, Validators.email]],
-       telephone: ['', Validators.required],
-       password: ['', Validators.required],
-       urlPhoto: ['',Validators.required],
-       matricule: ['', Validators.required],
-       scolarite: ['', Validators.required],
-       // date: [''],
-       idClasse: [],
-       lieuNaissance: ['',Validators.required],
-       dateNaissance: ['',Validators.required],
-       active: [false],
-       admin: [] 
+  // ------------------------------------------------------------
+  get_annees() {
+    this.infoSchool.getAll_annee().subscribe(data => {
+      this.annees = data;
+      this.annees.forEach(ans => {
+        const annee = new Date(ans.debutAnnee)
+        const debutAnnee = annee.getFullYear()
+        ans.ans = debutAnnee
+      })
     })
   }
-  // ----------------------------------------------------
-  onPhotoSelected(event: any){
-    
-    console.log(this.fileName, "fill")
-    this.photoSelect = event.target.files[0];
-    // console.log(this.photoSelect, "photo select")
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      this.urlImage = e.target.result;
-    };
-    reader.readAsDataURL(this.photoSelect);
-  }
-  update_student(student: Student){}
   // ------------------------------------------------------------
   getStudent(student?: Student) {
-    
+
     const navigationExtras: NavigationExtras = {
       queryParams: { id: student?.idEtudiant }
     };
     const comptable = sessionStorage.getItem('comptable')
     // const scolarite = sessionStorage.getItem('scolarite')
-    if(comptable){
-      this.root.navigate(['/comptable/student-edit'], navigationExtras)
-    }else{
+    if (comptable) {
+      this.root.navigate(['/comptable/student-view'], navigationExtras)
+    } else {
       this.root.navigate(['/r-scolarite/student-edit'], navigationExtras)
     }
     // this.root.navigate(['/r-scolarite/student-edit'], navigationExtras)
   }
 
   // ------------------------------------------------------------
-  getStudentView(student: Student){
-    
+  getStudentView(student: Student) {
+
     const navigationExtras: NavigationExtras = {
       queryParams: { id: student?.idEtudiant }
     };
     const comptable = sessionStorage.getItem('comptable')
     const secretaire = sessionStorage.getItem('secretaire')
-    if(comptable){
+    if (comptable) {
       this.root.navigate(['/comptable/student-view'], navigationExtras)
 
-    }else if(secretaire){
+    } else if (secretaire) {
       this.root.navigate(['/secretaire/student-view'], navigationExtras)
-    }else{
+    } else {
       this.root.navigate(['/r-scolarite/student-view'], navigationExtras)
     }
     // this.root.navigate(['/r-scolarite/student-view'], navigationExtras)
@@ -188,22 +181,7 @@ export class EtudiantsComponent implements OnInit {
       }
     )
   }
- 
-  // ----------------------------------extration 
-  private extractUniqueStudents(notes: Student[]): Student[] {
-    const uniqueStudents = new Set<number>(); // Utilise un Set pour stocker les idEtudiant uniques
-    const result: Student[] = [];
-    
-    notes.forEach(item => {
-      if (!uniqueStudents.has(item.idEtudiant!)) { // Vérifie si l'idEtudiant n'est pas déjà dans le Set
-        uniqueStudents.add(item.idEtudiant!); 
-        result.push(item); // Ajoute l'étudiant au tableau résultant des étudiants uniques
-      }
-    });
-    result.forEach((student, index) => {
-      student.numero = index + 1; // Ajoute 1 pour commencer à partir de 1 (si nécessaire)
-    });
+  // -----------------------
 
-    return result;
-  }
+
 }

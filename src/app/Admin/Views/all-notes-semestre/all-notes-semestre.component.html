@@ -1,57 +1,79 @@
-<div (click)="goBack()" class="back-button">
-    <fa-icon [icon]="icons.back"></fa-icon>
-</div>
+
 <main>
-    
+    <div (click)="goBack()" class="back-button">
+        <fa-icon [icon]="icons.back"></fa-icon>
+    </div>
+
     <section class="head">
         <div class="logo" *ngIf="school?.urlPhoto">
-            <img [src]="school?.urlPhoto" alt="PHOTO">
+            <img src="/assets/logounivsegou.png" alt="PHOTO">
         </div>
         <div class="info">
-                <h4>Institut Universitaire de Formation Professionnelle (IUFP)</h4>
-                <p>Annee Universitaire {{anneeScolaire}}</p>
-                <p>Resultat definitifs du {{semestre?.nomSemetre?.toUpperCase()}}</p>
-                <p>Filiere : {{classe?.idFiliere?.idNiveau?.nom}} {{classe?.idFiliere?.idFiliere?.nomFiliere}}</p>
-            </div>
+            <h4>Institut Universitaire de Formation Professionnelle (IUFP)</h4>
+            <p>Annee Universitaire {{anneeScolaire}}</p>
+            <p>Resultat definitifs du :
+
+                <select (change)="onSelect($event)">
+                    <option selected disabled value="">Semestre</option>
+                    <option *ngFor="let sem of semestres" [value]="sem.id">{{sem.nomSemetre}}</option>
+                </select>
+
+            </p>
+            <p>Filiere : {{classe?.idFiliere?.idNiveau?.nom}} {{classe?.idFiliere?.idFiliere?.nomFiliere}}</p>
+        </div>
     </section>
     <!-- -------------------------------------------------- -->
-    <section class="section-table">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nom et Prenom</th>
-                <th scope="col">Date et lieu de naissance</th>
-                <ng-container *ngFor="let module of modules">
-                    <th scope='col' class='vertical-header'>{{module.nomModule}}</th>
-                </ng-container>
-                <th scope="col" class='vertical-header'>Moyenne</th>
-                <th scope="col" class='vertical-header'>Observation</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            <ng-container *ngFor="let studus of students">
-
-            
-            <!-- <ng-container *ngFor="let student of notes; trackBy: trackByIdEtudiant"> -->
-                <tr>
-                  <td>{{studus.numero}}</td>
-                  <td>{{studus.nom}} {{studus.prenom}}</td>
-                  <td>{{studus.dateNaissance | date:'dd/MM/yyyy'}}, {{studus.lieuNaissance}}</td>
+    <section class="table-container">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nom et Prénom</th>
+                        <th scope="col">Date et lieu de naissance</th>
+                        <ng-container *ngFor="let note of notes">
+                            <ng-container *ngFor="let module of note.modules">
+                                <th  class='vertical-header nom-module'>{{ module.nomModule }}</th>
+    
+    
+                            </ng-container>
+                            <th scope="col" class='vertical-header' >{{ note.nomUE }}</th>
+    
+                        </ng-container>
+                        
+                        <th scope="col" class='vertical-header'>Moyenne</th>
+                        <th scope="col" class='vertical-header'>Observation</th>
+                        
+                    </tr>
                    
-                  <ng-container *ngFor="let mod of modules">
-                    <td>
-                      {{ getStudentModuleScore(studus.idEtudiant!, mod.id!) }}
-                    </td>
-                  </ng-container> 
-          
-                  <td>{{ calculateAverage(studus) }}</td>
-                  <td>{{ determineObservation(studus) }}</td>
-                </tr>
-              <!-- </ng-container> -->
-            </ng-container>
-        </tbody>
-    </table>  
+                </thead>
+                
+    
+                <tbody>
+                    <ng-container *ngFor="let student of students; let i = index">
+                        <tr>
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ student.nom }} {{ student.prenom }}</td>
+                            <td>{{ student.date_naissance | date: 'dd/MM/yyyy' }}, {{ student.lieuNaissance }}</td>
+                
+                            <!-- Itération sur les UEs pour chaque étudiant -->
+                            <ng-container *ngFor="let ue of notes">
+                                <!-- Itération sur les modules et affichage de la note de l'UE correspondante -->
+                                <ng-container *ngFor="let module of ue.modules">
+                                    <!-- Ajoute une colonne vide pour les modules -->
+                                    <td></td>
+                                </ng-container>
+                                <!-- Colonne avec la note de l'UE correspondante -->
+                                <td>{{ ue.noteUE }}</td>
+                            </ng-container>
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+                
+            </table>
+        </div>
+       
     </section>
 </main>

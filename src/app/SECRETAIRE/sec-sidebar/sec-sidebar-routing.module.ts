@@ -10,8 +10,8 @@ import { StudentViewComponent } from '../../Admin/Component/student-view/student
 import { SecSurveillanceComponent } from '../sec-surveillance/sec-surveillance.component';
 import { DerEmploiDuTempsComponent } from '../../DER/der-emploi-du-temps-list/der-emploi-du-temps.component';
 import { EmploisSeanceComponent } from '../../Admin/Views/emplois-seance/emplois-seance.component';
-import { ConfigureSeanceComponent } from '../../DER/Widget/configure-seance/configure-seance.component';
 import { SecAddSurveillanceComponent } from '../sec-add-surveillance/sec-add-surveillance.component';
+import { DerEDTComponent } from '../../DER/EDT/der-e-d-t/der-e-d-t.component';
 
 const routes: Routes = [{path: '', component: SecSidebarComponent,
   children: [
@@ -22,10 +22,12 @@ const routes: Routes = [{path: '', component: SecSidebarComponent,
     {path: 'fiche-enseignant', component: EnseignantFichePaieComponent},
     {path: 'surveillance', component: SecSurveillanceComponent},
     {path: 'emplois-seances', component: EmploisSeanceComponent},
-    {path: 'configure-seance', component: ConfigureSeanceComponent},
     {path: 'ajouter-seance', component: SecAddSurveillanceComponent},
+    {path: 'emplois-du-temps', component: DerEmploiDuTempsComponent, data:{title: "EMPLOI DU TEMPS EN COURS"}},
+    {path: 'emplois-seances', component: EmploisSeanceComponent, data:{title: "EMPLOI DU TEMPS"}},
+    {path: 'affect-t-d', component: DerEDTComponent , data:{title: "AJOUTER SEANCE"}},
+    // {path: 'add-surveillance', component: SecAddSurveillanceComponent , data:{title: "AJOUTER SURVEILLANCE"}},
     
-    {path: 'emplois-du-temps', component: DerEmploiDuTempsComponent},
     {path: 'student-view', component: StudentViewComponent, data:{title: "Information de l'etudiant"}},
   ]
 }];

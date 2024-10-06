@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SeancService } from '../../Admin/Views/emplois-seance/seanc.service';
 import { Module } from '../../Admin/Models/Module';
 import { Teacher } from '../../Admin/Models/Teachers';
-import { Seances, Surveillance, type_seance } from '../../Admin/Models/Seances';
+import { Seances, type_seance } from '../../Admin/Models/Seances';
 import { IconsService } from '../../Services/icons.service';
 import { ServiceService } from '../emplois-du-temps/service.service';
 import { EnseiService } from '../../Admin/Views/enseignant/ensei.service';
@@ -14,8 +14,6 @@ import { ClassRoom } from '../../Admin/Models/Classe';
 import { SalleService } from '../../Services/salle.service';
 import { Salles } from '../../Admin/Models/Salles';
 import { PageTitleService } from '../../Services/page-title.service';
-import { formatDate } from '@angular/common';
-import { Configure_seance } from '../../Admin/Models/Configure_seance';
 
 @Component({
   selector: 'app-der-seances',
@@ -110,20 +108,12 @@ seanceTypeOptions: { key: string, value: string }[] = [];
   create_seance() {
 
     let list_seances: Seances[] = []; 
-    let lis_config: Configure_seance [] =[]
 
     const formData = this.form_seance.value;
     const idModule: Module = this.modules.find(mod => mod.id === +formData.idModule)!;
-    const idTeacher: Teacher = this.enseignants.find(t => t.idEnseignant === +formData.idTeacher)!;
-    const idSalle: Salles = this.salles.find(s => s.id == +formData.idSalle)!;
-
-   
-
-    // Vérifiez si dates_check contient des dates
+  
     if (this.dates_check && this.dates_check.length > 0) {
         this.dates_check.forEach(date => {
-          // const formattedDate = formatDate(date, 'yyyy-MM-dd', 'en-US');
-            // Création de l'objet Séance à partir des données du formulaire pour chaque date
             const seance: Seances = {
                 heureDebut: formData.heureDebut,
                 heureFin: formData.heureFin,
@@ -133,17 +123,6 @@ seanceTypeOptions: { key: string, value: string }[] = [];
                 // idTeacher: idTeacher,
             };
             list_seances.push(seance);
-
-             // config seance to surveillance
-            // const config : Configure_seance ={
-            //   idParticipant: null!,
-            //   heureDebut: formData.heureDebut,
-            //   heureFin: formData.heureFin,
-            //   seanceType: formData.seanceType,
-            //   idTeacher: idTeacher
-              
-            // }
-            // lis_config.push(config);
         });
     }
 

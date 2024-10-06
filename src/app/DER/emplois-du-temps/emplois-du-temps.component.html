@@ -21,9 +21,9 @@
                 <div class="input-date" *ngIf="semestre.length !== 0">
                     <div class="form form-group date">
                         <label for="password">Semestre :</label> 
-                        <select class="form-select" formControlName="idSemestre"  id="semestre"    [class.is-invalid]="EmploisAdd.get('idSemestre')!.invalid && EmploisAdd.get('idSemestre')!.touched">
+                        <select class="form-select" formControlName="idSemestre"  id="semestre"    [class.is-invalid]="EmploisAdd.get('idSemestre')!.invalid && EmploisAdd.get('idSemestre')!.touched" (change)="onSemestreSelect($event)">
                         <option  selected disabled value="">Choisir Le semestre</option>
-                        <option *ngFor="let seme of semestre" [ngValue]="seme.id">{{seme.nomSemetre}}</option>
+                        <option *ngFor="let seme of semestre" [value]="seme.id">{{seme.nomSemetre}}</option>
                         </select>         
                         <span *ngIf="EmploisAdd.controls['idSemestre'].invalid && EmploisAdd.controls['idSemestre'].touched" [ngStyle]="{color: 'red'}">
                             Champ obligatoire*
