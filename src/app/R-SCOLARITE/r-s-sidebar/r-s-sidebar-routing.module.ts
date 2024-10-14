@@ -19,15 +19,14 @@ import { RSImportComponent } from '../r-s-import/r-s-import.component';
 
 const routes: Routes = [{path: '', component: RSSidebarComponent,
   children: [
-    {path: '', component: RSHomeComponent},
-    {path: 'inscription', component: SinginComponent, data:{title: "Formulaire d'Inscription"}},
-    {path: 'etudiant', component: EtudiantsComponent},
+    {path: '', component: RSHomeComponent, data:{title: "Accueil"}},
+    {path: 'inscription', component: SinginComponent, data:{title: "INSCRIPTION"}},
+    {path: 'etudiant', component: EtudiantsComponent, data:{title: "Les Etudiants"}},
     {path: 'student-notes', component: StudentNoteComponent, data:{title: "NOTES DES ETUDIANS"}},
     {path: 're-inscription-list', component: RSReinscriptionComponent},
-    {path: 're-inscription', component: StudentReInscriptionComponent},
-    {path: 'student-re-inscription-add', component: StudentReInscriptionComponent},
+    {path: 're-inscription', component: StudentReInscriptionComponent, data:{title: "REINCRIPTION"}},
     {path: 'class-archives', component: ClassArchiveComponent},
-    {path: 'import', component: RSImportComponent},
+    {path: 'import', component: RSImportComponent, data:{title: "IMPORTER ETUDIANTS"}},
     
     {path: 'student-bulletin', component: StudentBulletinComponent, data:{title: "RELEVER DE NOTES"}},
     {path: 'all-notes', component: AllNotesSemestreComponent, data:{title: "NOTES DU SEMESTRE"}},

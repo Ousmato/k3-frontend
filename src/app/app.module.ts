@@ -86,6 +86,8 @@ import { RSImportComponent } from './R-SCOLARITE/r-s-import/r-s-import.component
 import { SpinnerComponent } from './Widget/spinner/spinner.component';
 import { SoutenanceNoteComponent } from './DER/Widget/soutenance-note/soutenance-note.component';
 import { StudentGroupListComponent } from './DER/student-group-list/student-group-list.component';
+import { AdminListComponent } from './DG/admin-list/admin-list.component';
+import { MyAccuntComponent } from './DG/my-accunt/my-accunt.component';
 
 registerLocaleData(localeFr);
 @NgModule({
@@ -163,7 +165,7 @@ registerLocaleData(localeFr);
     ClassArchiveComponent,
     RSImportComponent,
     SpinnerComponent, 
-    SoutenanceNoteComponent, StudentGroupListComponent
+    SoutenanceNoteComponent, StudentGroupListComponent, AdminListComponent, MyAccuntComponent
   ],
   imports: [
     BrowserModule,

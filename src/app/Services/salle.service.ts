@@ -4,13 +4,14 @@ import { Observable } from 'rxjs';
 import { Salles } from '../Admin/Models/Salles';
 import { Response_String } from '../Admin/Models/Response_String';
 import { teacherConfigureDto } from '../Admin/Models/Teachers';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SalleService {
 
-  private baseUrl ="http://localhost:8080/api-salle/"
+  private baseUrl = `${environment.apiUrl}api-salle/`
   constructor(private http: HttpClient) { }
 
   getAll() : Observable<Salles[]>{

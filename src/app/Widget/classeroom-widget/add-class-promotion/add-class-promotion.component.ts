@@ -107,6 +107,7 @@ export class AddClassPromotionComponent implements OnInit {
   }
 
   close_add(){
+    this.isShow_update = false
     this.isShow_add = false
     this.closeModale.emit()
   }

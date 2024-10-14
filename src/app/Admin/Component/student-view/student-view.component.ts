@@ -21,6 +21,7 @@ export class StudentViewComponent implements OnInit {
   imageUrl!: string
   update_paie_student_form!: FormGroup
   isShow: boolean = false
+  permission: boolean = false
   
   constructor(  private studentService: EtudeService, private location: Location, private fb: FormBuilder,
     private router: ActivatedRoute, private root: Router, public icons: IconsService, private pageTitle: PageTitleService){}
@@ -28,6 +29,7 @@ export class StudentViewComponent implements OnInit {
   ngOnInit(): void {
     this.imageUrl = this.student?.urlPhoto || 'assets/business-professional-icon.svg';
     this.loadStudent();
+    this.getPermission();
   }
   goBack(){
     this.location.back();
@@ -47,7 +49,7 @@ export class StudentViewComponent implements OnInit {
   getPermission(): boolean {
     const autorize = sessionStorage.getItem('comptable');
     if(autorize){
-      return true;
+      this.permission = true;
     }
     return false
   }

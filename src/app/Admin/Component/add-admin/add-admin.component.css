@@ -1,7 +1,17 @@
 main{
     width: 100%;
 }
-
+h4{
+    width: 100%;
+    margin: 0;
+    padding: 10px;
+    text-align: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-size: 18px;
+    background-color: var(--primary);
+    color: var(--secondary);
+}
 form{
     width: 100%;
     padding: 10px 20px;
@@ -26,12 +36,33 @@ form{
     border: 1px solid var(--tertiary);
     align-items: center;
 }
+
+.btn-container{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+#exit{
+    background-color: var(--secondary);
+    border: none;
+    color: var(--primary);
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover{
+        background-color: var(--primary);
+        color: var(--secondary);
+       
+    }
+}
 button{
+    width: 100%;
+    border: none;
     margin-top: 10px;
     background-color: var(--primary);
     color: var(--secondary);
-    border: var(--primary);
-    padding: 8px 20px;
+    padding: 8px;
     border-radius: 5px;
     cursor: pointer;
 

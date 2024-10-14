@@ -52,7 +52,7 @@
                         <img id="calendar" src="assets/booking-confirmed-icon.svg" alt="Logo">
                     </div>
                     <div id="cart-text" class="card-text">
-                        <h5>Emplois Actifs</h5>
+                        <h5>Emplois du temps en cours</h5>
                         <h1>{{emploisCount}}</h1>
                     <!-- </div> -->
                     
@@ -61,10 +61,21 @@
                 <div class="class-scrol">
                     <ng-container *ngFor="let classe of emplois">
                         <div class="calendar-classes-content">
-                        <p>{{classe.idClasse.idFiliere?.idNiveau?.nom}} ({{classe.idClasse.idFiliere?.idFiliere?.nomFiliere}})</p>
+                        <p>{{classe.idClasse.idFiliere?.idNiveau?.nom}} {{abrevigateNameFiliere(classe.idClasse.idFiliere?.idFiliere?.nomFiliere!)}}</p>
+                       
+                        <progress id="file" value="{{classe.progess}}" max="100"></progress>
+                        
                         <div class="date-content">
                             <p> Debuté le : {{classe.dateDebut}}</p>
                             <p> Prend fin le : <span id="span">{{classe.dateFin}}</span></p>
+                        </div>
+                        <div class="active-contente">
+                            <p > {{classe.toDay ? "En cours" : "En attente"}}
+                                 <fa-icon [ngStyle]="{color: classe.toDay ? 'green' : 'red'}" [icon]="icons.circle"></fa-icon>
+                            </p>
+                        </div>
+                        <div class="button-content">
+                            <button class="btn " (click)="gotoEmploi(classe.id!)"><fa-icon [icon]="icons.nexte"></fa-icon></button>
                         </div>
                     </div>
                     </ng-container>

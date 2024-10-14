@@ -28,6 +28,7 @@ export class EtudiantsComponent implements OnInit {
   pages: number[] = []
 
   admin!: Admin
+  secretaire!: Admin
   permission: boolean = false
   student!: Student;
   currentYear!: number
@@ -53,6 +54,8 @@ export class EtudiantsComponent implements OnInit {
   // ----------------------------------get permission
   getPermission(): boolean {
     const autorize = sessionStorage.getItem('scolarite');
+    const adminData = sessionStorage.getItem("secretaire");
+    this.secretaire = JSON.parse(adminData!);
     if (autorize) {
       this.permission = true
       return true;
@@ -156,16 +159,17 @@ export class EtudiantsComponent implements OnInit {
     const navigationExtras: NavigationExtras = {
       queryParams: { id: student?.idEtudiant }
     };
-    const comptable = sessionStorage.getItem('comptable')
-    const secretaire = sessionStorage.getItem('secretaire')
-    if (comptable) {
-      this.root.navigate(['/comptable/student-view'], navigationExtras)
+    this.root.navigate(['/secretaire/student-view'], navigationExtras)
 
-    } else if (secretaire) {
-      this.root.navigate(['/secretaire/student-view'], navigationExtras)
-    } else {
-      this.root.navigate(['/r-scolarite/student-view'], navigationExtras)
-    }
+    // const comptable = sessionStorage.getItem('comptable')
+    // const secretaire = sessionStorage.getItem('secretaire')
+    // if (comptable) {
+    //   this.root.navigate(['/comptable/student-view'], navigationExtras)
+
+    // } else if (secretaire) {
+    // } else {
+    //   this.root.navigate(['/r-scolarite/student-view'], navigationExtras)
+    // }
     // this.root.navigate(['/r-scolarite/student-view'], navigationExtras)
   }
   // ----------------------------------------------------------

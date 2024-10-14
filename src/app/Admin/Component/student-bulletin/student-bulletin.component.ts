@@ -5,13 +5,9 @@ import { EtudeService } from '../../Views/etudiants/etude.service';
 import { NoteDto, Notes } from '../../Models/Notes';
 import { ActivatedRoute } from '@angular/router';
 import { Student } from '../../Models/Students';
-import { SchoolInfo } from '../../Models/School-info';
-import { SchoolService } from '../../../Services/school.service';
 import { Semestres } from '../../Models/Semestre';
 import jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
-import { ClassStudentService } from '../../../DGA/class-students/class-student.service';
-import { AddUeDto } from '../../Models/UE';
 import { Admin } from '../../Models/Admin';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { Toast, ToastrService } from 'ngx-toastr';
@@ -29,6 +25,7 @@ export class StudentBulletinComponent implements OnInit {
   semestres: Semestres[] = [];
 
   admin!: Admin
+
 
   notes: NoteDto[] = [];
 
@@ -92,8 +89,21 @@ export class StudentBulletinComponent implements OnInit {
 
   onSelect(event: any) {
     const idSemestre = event.target.value;
+    let sum: number = 0
+    let sumCoef : number = 0
     this.studentService.getAllNoteByIdStudent(this.idStudent, idSemestre).subscribe(note => {
       this.notes = note;
+      this.notes.forEach(n =>{
+       sum += n.noteUeCoefficient
+       sumCoef += n.coefficientUe
+      
+      })
+      sumCoef = sumCoef -1
+      console.log(sum, "sum", sumCoef);
+      this.moyenneGenerale = sum / sumCoef
+      // --------round 2 number after  comma
+      this.moyenneGenerale = Math.round(this.moyenneGenerale * 100.0)/100.0
+      // this.moyenneGenerale = Math.round(this.moyenneGenerale)
       if(this.notes.length === 0){
         // this.pageTitle.showErrorToast("Auccune notes est disponible ")
         this.toast.warning("Les notes de l'étudiant sont indisponible")

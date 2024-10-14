@@ -21,15 +21,15 @@ import { animate, style, transition, trigger } from '@angular/animations';
     ])
   ]
 })
-export class DerPaiListComponent implements OnInit{
- 
+export class DerPaiListComponent implements OnInit {
+
   searchTerm: string = ''
   month: string = ''
-  filteredPai : PaieDTO[]=[]
-  paies : PaieDTO[] =[];
-  months: {value: number, name: string}[] = []
+  filteredPai: PaieDTO[] = []
+  paies: PaieDTO[] = [];
+  months: { value: number, name: string }[] = []
 
-  constructor(private teacherService: EnseiService, public icons: IconsService, private sideBarService: SideBarService){}
+  constructor(private teacherService: EnseiService, public icons: IconsService, private sideBarService: SideBarService) { }
 
   ngOnInit(): void {
     this.getAllPaie();
@@ -37,17 +37,17 @@ export class DerPaiListComponent implements OnInit{
       this.searchTerm = term;
       this.filteredPaie();
       this.initializeMonths();
-    
+
     });
 
   }
   // load all paie in month
-  getAllPaie(){
-    this.teacherService.getAllPaie().subscribe(result=>{
-     // this.paies = result;
-     console.log("resultat : ", result)
-      result.forEach(res =>{
-        if(!this.paies.some(p =>p.idTeacher == res.idTeacher)){
+  getAllPaie() {
+    this.teacherService.getAllPaie().subscribe(result => {
+      // this.paies = result;
+      console.log("resultat : ", result)
+      result.forEach(res => {
+        if (!this.paies.some(p => p.idTeacher == res.idTeacher)) {
           res.montant = res.coutHeure * res.nbreHeures
           const formatter = Intl.NumberFormat(
             'fr-FR',
@@ -59,8 +59,8 @@ export class DerPaiListComponent implements OnInit{
           res.montanFormat = formatter.format(res.montant);
           const date = new Date(res.date);
           this.month = date.toLocaleString('fr-FR', { month: 'long' });
-          
-          
+
+
           this.paies.push(res);
         }
       })
@@ -68,52 +68,52 @@ export class DerPaiListComponent implements OnInit{
     })
   }
   // -----------------------filter method
-  filteredPaie(){
-    if(!this.searchTerm){
+  filteredPaie() {
+    if (!this.searchTerm) {
       return this.filteredPai = this.paies
     }
-    return this.filteredPai = this.paies.filter(p =>p.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-    p.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()))
+    return this.filteredPai = this.paies.filter(p => p.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      p.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()))
   }
- goBack(){
+  goBack() {
     this.searchTerm = ''
     window.history.back();
-    
-   }
+
+  }
   //  ----------------------imprime button
-  imprimer() { 
+  imprimer() {
     // const buttonContent = document.getElementById('button') as HTMLElement;
     // buttonContent.style.display = "none";
     var data = document.getElementById('idTable') as HTMLElement;
-    if(data){
-      data.style.padding = '50px'; 
+    if (data) {
+      data.style.padding = '50px';
       // data.style.fontSize = "14px"  
     }
-    
+
     // Id of the table
     html2canvas(data!, { scale: 2 }).then(canvas => {
-        // Few necessary setting options
-        let imgWidth = 297; // A4 landscape width in mm
-        let imgHeight = (canvas.height * imgWidth) / canvas.width;
-        
-        const contentDataURL = canvas.toDataURL('image/png');
-        let pdf = new jsPDF('l', 'mm', 'a4'); // 'l' for landscape
-        let position = 0;
-        pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-        pdf.save('programme-de-soutenace.pdf');
-        // buttonContent.style.display = "block";
-        data.style.padding = '0px'
-        // data.style.fontSize = '16px'
+      // Few necessary setting options
+      let imgWidth = 297; // A4 landscape width in mm
+      let imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      const contentDataURL = canvas.toDataURL('image/png');
+      let pdf = new jsPDF('l', 'mm', 'a4'); // 'l' for landscape
+      let position = 0;
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+      pdf.save('programme-de-soutenace.pdf');
+      // buttonContent.style.display = "block";
+      data.style.padding = '0px'
+      // data.style.fontSize = '16px'
     });
-  } 
+  }
   // -----get all month
-  checkMonth(event: any){
+  checkMonth(event: any) {
     const month = event.target.value
     this.paies = []
     // console.log(month, "month")
-    this.teacherService.getAllPaieByMonth(month).subscribe(result=>{
-      result.forEach(res =>{
-        if(!this.paies.some(p =>p.idTeacher == res.idTeacher)){
+    this.teacherService.getAllPaieByMonth(month).subscribe(result => {
+      result.forEach(res => {
+        if (!this.paies.some(p => p.idTeacher == res.idTeacher)) {
           res.montant = res.coutHeure * res.nbreHeures
           const formatter = Intl.NumberFormat(
             'fr-FR',
@@ -134,9 +134,15 @@ export class DerPaiListComponent implements OnInit{
 
   initializeMonths() {
     for (let i = 0; i < 12; i++) {
-        const monthName = new Intl.DateTimeFormat('fr-FR', { month: 'long' }).format(new Date(2023, i));
-       this.months.push({ value: i + 1, name: monthName });
+      const monthName = new Intl.DateTimeFormat('fr-FR', { month: 'long' }).format(new Date(2023, i));
+      this.months.push({ value: i + 1, name: monthName });
     }
     // console.log(this.months, " months")
-}
+  }
+  // abrevigation
+  abrevigateName(name: string): string {
+    const splitName = name.split(' ')
+    const word = splitName.filter(wrd => wrd.length > 3).map(wrd => wrd[0].toUpperCase()).join('')
+    return word;
+  }
 }

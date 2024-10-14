@@ -1,21 +1,27 @@
-<div class="wrapper">
+<main>
+  <div class="wrapper">
     <!-- Sidebar -->
     <nav id="sidebar">
       <div class="sidebar-header ">
-        <img  [src]="school?.urlPhoto" alt="">
+        <img [src]="school?.urlPhoto" alt="">
         <!-- <h1>UAM</h1> -->
         <strong>{{school?.nomSchool}}</strong>
       </div>
       <div class="side-child">
         <ul class="list-unstyled components">
-         <div>
+          <div>
+            <li class="menu-link">
+              <a routerLink="/sidebar">
+                <span><fa-icon [icon]="icons.home"></fa-icon>Acceuil</span>
+              </a>
+            </li>
+          </div>
           <li class="menu-link">
-            <a routerLink="/sidebar">
-              <span><fa-icon [icon]="icons.home"></fa-icon>Acceuil</span>
+            <a routerLink="/sidebar/enseignants" routerLinkActive="active">
+              <span><fa-icon [icon]="icons.users"></fa-icon>Enseignants</span>
             </a>
           </li>
-         </div>
-          <li class="menu-link">
+          <!-- <li class="menu-link">
             <div (click)="toggleSubMenuEnseignant()">
               <a><span><fa-icon [icon]="icons.users"></fa-icon>Enseignants<fa-icon [icon]="isSubMenuOpen.enseignants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
                     
@@ -25,11 +31,11 @@
               <li><a routerLink="/sidebar/enseignants" routerLinkActive="active">La liste</a></li>
               <li><a routerLink="/sidebar/list-presence" routerLinkActive="active">Les emplois du temps</a></li>
               <li><a routerLink="/sidebar/archive" routerLinkActive="active">Les présences du mois</a></li>
-              <li><a routerLink="/sidebar/fiche-paie" routerLinkActive="active">Les fiches de paie</a></li>
+              <li><a routerLink="/sidebar/paiement" routerLinkActive="active">Les fiches de paie</a></li>
             
             </ul>
-          </li>
-          <li class="menu-link">
+          </li> -->
+          <!-- <li class="menu-link">
             <div (click)="toggleSubMenuStudent()">
               <a> <span><fa-icon [icon]="icons.grade"></fa-icon>Etudiants<fa-icon [icon]="isSubMenuOpen.etudiants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
               </a>
@@ -38,90 +44,106 @@
               <li><a routerLink="/sidebar/etudiant" routerLinkActive="active">Liste des Etudiants</a></li>
               <li><a routerLink="/sidebar/inscription" routerLinkActive="active">Fiche d'inscription</a></li>
             </ul>
+          </li> -->
+          <li class="menu-link">
+            <a routerLink="/sidebar/etudiants" routerLinkActive="active">
+              <span><fa-icon [icon]="icons.grade"></fa-icon>Etudiants</span>
+            </a>
           </li>
           <li class="menu-link">
-            <a routerLink="/sidebar/classe">
+            <a routerLink="/sidebar/classe" routerLinkActive="active">
               <span><fa-icon [icon]="icons.scool"></fa-icon>Classes</span>
             </a>
           </li>
-          <li class="menu-link" >
-            <a routerLink="#">
-              <!-- <img src="assets/book-shop-icon.svg" alt=""> -->
-              <span ><fa-icon [icon]="icons.book"></fa-icon> Bibliotheque</span>
-            </a>
-          <!-- <li class="menu-link">
-            <div (click)="toggleSubMenuArchive()">
-                <a routerLink="#">
-                  <span><fa-icon [icon]="icons.archive" ></fa-icon>Archives 
-                    <fa-icon [icon]="isSubMenuOpen.etudiants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
-                </a>
-            </div>
-            <ul class="sub-menu" *ngIf="isSubMenuOpen.archive">
-              <li><a routerLink="">2020 - 2021</a></li>
-              <li><a href="#">2021 - 2022</a></li>
-              <li><a href="#">2022 - 2023</a></li>
-            </ul>
-            
-          </li> -->
+
           <li class="menu-link">
-            <a routerLink="/sidebar/setting">
-              <span><fa-icon [icon]="icons.setting"></fa-icon>Paramètre</span>
+            <a routerLink="/sidebar/admin-list" routerLinkActive="active">
+              <span><fa-icon [icon]="icons.user_surveillance"></fa-icon>Administrateurs</span>
             </a>
           </li>
+
+
+
+
         </ul>
+        <ul id="components">
+          <li class="menu-link">
+            <a (click)="toggleAdminView(dataAdmin.idAdministra!)" routerLink="/sidebar/my-accunt"
+              routerLinkActive="active">
+              <span><fa-icon [icon]="icons.user"></fa-icon>Mon Compte</span>
+            </a>
+          </li>
+          <li class="menu-link" routerLinkActive="active">
+            <a (click)="show_confirm()">
+              <span><fa-icon [icon]="icons.aout"></fa-icon>Déconnexion</span>
+            </a>
+          </li>
+
+
+        </ul>
+
       </div>
     </nav>
-  
+
     <!-- Page Content -->
     <div id="content">
-      <div class="navDiv">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid nav-element">
-                <div class="btn-contenair">
-                    <button type="button" id="sidebarCollapse" class="btn btn-info" (click)="toggleSidebar()">
-                    <fa-icon [icon]="icons.menu"></fa-icon>
-                    
-                    </button>
-                     <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <fa-icon [icon]="icons.menu"></fa-icon>
-                    </button>
-                    
-                </div>
-                <div class="input-search" *ngIf="showSearchInput">
-                    <input type="text" [(ngModel)]="searchTerm" (input)="onSearchChange()" placeholder="Recherche..."  class="search-input">
-                 </div>
-                <div class="title-page" *ngIf="showTitle">
-                  <h5>{{title}}</h5></div>
-                  
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                  <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" (click)="show_adminSetting()">
-                      <fa-icon  class="my-custom-style"></fa-icon><img src="{{dataAdmin.urlPhoto}}" alt="">
-                    </a>
-                    <ul class="" *ngIf="show_admin">
-                     
-                      <div class="dropdawn-setting" > 
-                        <app-admin-setting-widget [admin]="dataAdmin" (closeModal)="close()"  ></app-admin-setting-widget>
-                         
-                      </div>
-                     
-                    </ul>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </nav>
+      <div class="nav-content">
+        <div class="btn-contenair">
+          <button type="button" class="btn btn-info" (click)="toggleSidebar()">
+            <fa-icon [icon]="icons.menu"></fa-icon>
+
+          </button>
+          <h6>{{title.toUpperCase()}}</h6>
+        </div>
+
+        <div class="title-page">
+
+        </div>
+
+        <div class="item-image">
+          <img [src]="dataAdmin.urlPhoto" (error)="onError($event)" alt="">
+          <div class="name-content">
+            <span>{{dataAdmin.nom.charAt(0)}}. {{dataAdmin.prenom.toUpperCase()}}</span>
+            <span class="text-muted small">{{dataAdmin.role.toUpperCase()}}</span>
+            <!-- <fa-icon [icon]="show_admin ? icons.sortUp : icons.sortDown" class="my-custom-style"></fa-icon> -->
+
+          </div>
+
+        </div>
+
       </div>
       <div id="layoutSidenav_content">
         <main>
-          <div class="container-fluid px-1">
-           
+          <div>
+
             <!--  -->
             <router-outlet />
           </div>
+
         </main>
       </div>
     </div>
   </div>
-  
+  <ng-container *ngIf="isConfirm">
+    <div class="views">
+      <h3 class="span">Confirmation</h3>
+      <div class="container-views">
+        <p>Êtes-vous sûr de vouloir vous déconnectez ?</p>
+        <div class="profil">
+          <img [src]="dataAdmin.urlPhoto" (error)="onError($event)" alt="">
+          <div class="info-pofil">
+            <p>{{dataAdmin.nom}} {{dataAdmin.prenom}}</p>
+            <p class="text-muted small">{{dataAdmin.role.toUpperCase()}}</p>
+          </div>
+
+        </div>
+        <div class="button-cash">
+          <a type="button" (click)="close()">Annuler</a>
+          <button type="button" (click)="singAout()">Confirmer</button>
+        </div>
+
+      </div>
+    </div>
+  </ng-container>
+  <div class="overlay" *ngIf="isConfirm"></div>
+</main>

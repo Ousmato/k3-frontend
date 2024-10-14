@@ -21,6 +21,7 @@ export interface NoteDto{
     noteUE: number;
     coefficientUe: number;
     session : number;
+    noteUeCoefficient: number;
 }
 
 export interface NoteModuleDto{

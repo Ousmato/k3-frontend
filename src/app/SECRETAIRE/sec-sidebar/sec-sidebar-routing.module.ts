@@ -15,20 +15,20 @@ import { DerEDTComponent } from '../../DER/EDT/der-e-d-t/der-e-d-t.component';
 
 const routes: Routes = [{path: '', component: SecSidebarComponent,
   children: [
-    {path: '', component: SecHomeComponent},
+    {path: '', component: SecHomeComponent, data:{title: "ACCUEIL"}},
     {path: 'etudiant', component: EtudiantsComponent},
     {path: 'enseignant-pre-detail', component: EnseignantPrDetailsComponent},
     {path: 'fiche-de-paie-component', component: FicheDePaieComponent},
     {path: 'fiche-enseignant', component: EnseignantFichePaieComponent},
     {path: 'surveillance', component: SecSurveillanceComponent},
-    {path: 'emplois-seances', component: EmploisSeanceComponent},
+    {path: 'emplois-seances', component: EmploisSeanceComponent, data:{title: "SEANCES DE L'EMPLOI DU TEMPS"}},
     {path: 'ajouter-seance', component: SecAddSurveillanceComponent},
     {path: 'emplois-du-temps', component: DerEmploiDuTempsComponent, data:{title: "EMPLOI DU TEMPS EN COURS"}},
     {path: 'emplois-seances', component: EmploisSeanceComponent, data:{title: "EMPLOI DU TEMPS"}},
     {path: 'affect-t-d', component: DerEDTComponent , data:{title: "AJOUTER SEANCE"}},
     // {path: 'add-surveillance', component: SecAddSurveillanceComponent , data:{title: "AJOUTER SURVEILLANCE"}},
     
-    {path: 'student-view', component: StudentViewComponent, data:{title: "Information de l'etudiant"}},
+    {path: 'student-view', component: StudentViewComponent, data:{title: "INFORMATIONS DE L'ETUDIANT"}},
   ]
 }];
 

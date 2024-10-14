@@ -21,18 +21,23 @@ import { FicheDePaieComponent } from '../Admin/Component/fiche-de-paie/fiche-de-
 import { EnseignantFichePaieComponent } from '../Admin/Component/enseignant-fiche-paie/enseignant-fiche-paie.component';
 import { SchoolEditWidgetComponent } from '../Widget/school-edit-widget/school-edit-widget.component';
 import { AddAdminComponent } from '../Admin/Component/add-admin/add-admin.component';
+import { DerPaiListComponent } from '../DER/der-pai-list/der-pai-list.component';
+import { AdminListComponent } from '../DG/admin-list/admin-list.component';
+import { MyAccuntComponent } from '../DG/my-accunt/my-accunt.component';
 
 const routes: Routes = [{path: "", component: SidebarComponent,
     children: [
-      { path: '', component: DasboardComponent, data:{title: "Accueil"} },
-      { path: 'classe', component: ClassStudentsComponent, data:{title: "Les Classes de Formation"} },
+      { path: '', component: DasboardComponent, data:{title: "ACCUEIL"} },
+      { path: 'classe', component: ClassStudentsComponent, data:{title: "Les Classes"} },
       {path: 'etudiant', component: EtudiantsComponent},
-      // {path: 'enseignants', component: EnseignantComponent},
+      {path: 'paiement', component: DerPaiListComponent},
+
+      {path: 'enseignants', component: EnseignantComponent},
       {path: 'student-notes', component: StudentNoteComponent},
       {path: 'etudiant-de-la-classe', component : EtudiantsDeLaClasseComponent},
       {path: 'setting', component: SettingsComponent},
       {path: 'parametre', component: SettingsComponent, data:{title: "Paramettre et Confidentialité"}},
-      // {path: 't-singin', component: TeachersSinginComponent},
+      {path: 'admin-list', component: AdminListComponent, data:{title: "Les Administrateurs"}},
       // {path: 't-edit', component: TeachersEditComponent},
       {path: 'student-bulletin', component: StudentBulletinComponent},
       {path: 'fiche-de-paie-component', component: FicheDePaieComponent},
@@ -41,8 +46,8 @@ const routes: Routes = [{path: "", component: SidebarComponent,
       {path: 'update-school', component: SchoolEditWidgetComponent, data:{title: "Information de l'Etablissement"}},
 
       {path: 'inscription', component: SinginComponent, data:{title: "Formulaire d'Inscription"}},
-      // {path: 'emplois', component: EmploisDuTempsComponent, data:{title: "Création d'Emploi du Temps"}},
-      {path: 'seance', component: EmploisSeanceComponent, data:{title: "Ajout des seances"}},
+      {path: 'my-accunt', component: MyAccuntComponent, data:{title: "informations du compte"}},
+      {path: 'emplois-seance', component: EmploisSeanceComponent, data:{title: "L'emploi du temps"}},
       {path: 'enseignant-pre-detail', component: EnseignantPrDetailsComponent},
       {path: 'all-notes', component: AllNotesSemestreComponent, data:{title: "Notes du Semestre"}},
      

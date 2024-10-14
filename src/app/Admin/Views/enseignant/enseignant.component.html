@@ -1,13 +1,13 @@
 <main>
   <div class="btn-container">
-    <button type="button" (click)="addTeacher()">Ajouter enseignant <fa-icon
+    <button type="button"  *ngIf="!permission" (click)="addTeacher()">Ajouter enseignant <fa-icon
         [icon]="icons.had_point_down"></fa-icon></button>
     <button type="button" (click)="timeWorks()">Heure éffectuer <fa-icon
         [icon]="icons.had_point_down"></fa-icon></button>
   </div>
   <div class="table-container">
 
-    <table class="table table-striped table-hover">
+    <table class="table table-hover">
       <thead>
         <tr>
           <th>N°</th>

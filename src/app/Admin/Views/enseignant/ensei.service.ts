@@ -7,7 +7,8 @@ import { Presence } from '../../Models/Teacher-presence';
 import { Paie, PaieDTO } from '../../Models/paie';
 import { Response_String } from '../../Models/Response_String';
 import { Paie_Pages, Presence_pages, Teacher_presence_pages, TeacherPages } from '../../Models/Pagination-module';
-import { Filiere } from '../../Models/Filieres';
+import { environment } from '../../../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ import { Filiere } from '../../Models/Filieres';
 export class EnseiService {
 
   constructor(private http: HttpClient) { }
-  private baseUrl = 'http://localhost:8080/api-teacher/'
+  private baseUrl = `${environment.apiUrl}api-teacher/`;
 
   // -----------------------------get all enseignants
   getAll(): Observable<Teacher[]> {

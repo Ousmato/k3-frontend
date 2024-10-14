@@ -7,7 +7,7 @@ import { AddUeDto, Ue } from '../../Admin/Models/UE';
 import { ClassRoom } from '../../Admin/Models/Classe';
 import { Response_String } from '../../Admin/Models/Response_String';
 import { NivFiliere } from '../../Admin/Models/NivFiliere';
-import { Docum, TypeDoc } from '../../Admin/Models/doc';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ import { Docum, TypeDoc } from '../../Admin/Models/doc';
 export class ClassStudentService {
 
   constructor(private http: HttpClient) { }
-  private baseUrl = "http://localhost:8080/api-class/";
+  private baseUrl = `${environment.apiUrl}api-class/`;
 
   // ---------------------------------------
   getAllCurrentClassOfYear(): Observable<ClassRoom[]> {

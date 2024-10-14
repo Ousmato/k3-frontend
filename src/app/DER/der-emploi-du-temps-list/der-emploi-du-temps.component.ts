@@ -12,9 +12,11 @@ import { IconsService } from '../../Services/icons.service';
 export class DerEmploiDuTempsComponent implements OnInit {
 
   emplois: Emplois[] = [];
+  emploiSelect!: Emplois
   @Output() refresh = new EventEmitter<any>();
   permission: boolean = false
   show_add: boolean = false
+  show_update: boolean = false
   constructor(private emploisService: ServiceService, private router: Router, public icons: IconsService) { }
 
   ngOnInit(): void {
@@ -65,7 +67,15 @@ export class DerEmploiDuTempsComponent implements OnInit {
     this.load_all_emplois_actif();
   }
 
+  close(){
+    this.show_add = false;
+    this.show_update = false;
+    
+  }
 
-  updated(idEmploi: number){}
+  updated(emploi: Emplois){
+    this.show_update = true;
+    this.emploiSelect = emploi
+  }
   deleted(idEmploi: number){}
 }

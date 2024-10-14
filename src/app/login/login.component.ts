@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
       this.authService.login(email, password).subscribe({
         next: (data) =>{
           console.log(data.role, "data connect")
-          if (data.role === Admin_role.ADMINISTRATEUR.toLocaleLowerCase()) {
+          if (data.role === Admin_role.DG.toLocaleLowerCase()) {
 
             const adminDataString = JSON.stringify(data);
             sessionStorage.setItem("admin", adminDataString);

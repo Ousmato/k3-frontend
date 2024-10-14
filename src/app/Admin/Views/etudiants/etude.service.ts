@@ -7,6 +7,7 @@ import { Module } from '../../Models/Module';
 import { Response_String } from '../../Models/Response_String';
 import { Doc_Pages, NotesPages, StudentPages } from '../../Models/Pagination-module';
 import { Docum, Jury, ProgramSoutenance, Soutenance, StudentDoc } from '../../Models/doc';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,8 @@ export class EtudeService {
 
   constructor(private http: HttpClient) { }
 
-  private baseUrl = 'http://localhost:8080/api-student/'
-  private baseUrl_note = 'http://localhost:8080/api-note/'
+  private baseUrl = `${environment.apiUrl}api-student/`;
+  private baseUrl_note = `${environment.apiUrl}api-note/`;
   getAll() : Observable<Student[]>{
     return this.http.get<Student[]>(this.baseUrl+"find-all");
   }

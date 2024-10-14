@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Niveau } from '../../Admin/Models/Niveau';
+import { Niveau, NiveauEnum } from '../../Admin/Models/Niveau';
 import { SetService } from '../../Admin/Views/settings/set.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IconsService } from '../../Services/icons.service';
@@ -22,6 +22,7 @@ export class NiveauWidgetComponent implements OnInit{
 
   formUpdate!: FormGroup
   niveauForDeleted!: Niveau 
+  niveaux_type : {key: string, value: string}[] = []
 
   constructor(private setingService: SetService, public icons: IconsService,
     private fb: FormBuilder, private pageTitle: PageTitleService,  ) { }
@@ -31,6 +32,7 @@ export class NiveauWidgetComponent implements OnInit{
     this.load_niveau();
     this.load_formAdd();
     this.load_formUpdate();
+    this.niveaux_type = this.getNiveauType();
       
   }
 
@@ -182,6 +184,13 @@ export class NiveauWidgetComponent implements OnInit{
         this.pageTitle.showErrorToast(error.error.message)
       }
      })
+  }
+
+  getNiveauType() : {key: string, value: string}[] {
+    return Object.keys(NiveauEnum).map( key =>({
+      key: key,
+      value: NiveauEnum[key as keyof typeof NiveauEnum ]
+    }))
   }
 
 }

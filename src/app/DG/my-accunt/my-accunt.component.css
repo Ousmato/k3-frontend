@@ -1,0 +1,145 @@
+main{
+    padding: 10px 20px;
+}
+#prof{
+    font-weight: bold;
+}
+.head-form{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+p{
+    margin: 0;
+}
+button{
+    width: 100px;
+    height: 30px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.head-riht .btn-edit{
+    width: 100px;
+    height: 30px;
+    padding: 5px;
+    text-decoration: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-right: 10px;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    &:hover{
+        background-color: var(--primary);
+        color: var(--secondary);
+    }
+}
+
+.btn-save{
+    border: none;
+    color: var(--primary);
+    background-color: var(--secondary);
+    &:hover{
+        background-color: var(--primary);
+        color: var(--secondary);
+    }
+}
+
+.btn-modifier-image{
+    /* text-align: center; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--secondary);
+    width: 100px;
+    height: 30px;
+    text-decoration: none;
+    border-radius: 10px;
+    cursor: pointer;
+    /* width: 150px; */
+    background-color: var(--primary);
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+}
+/* ------------------------content */
+.content-form{
+    padding-top: 20px;
+}
+
+.information-contenu{
+    width: 100%;
+    display: flex;
+    gap: 30px;
+}
+.column-f{
+    width: 50%;
+}
+.radio{
+    margin-top: 10px;
+}
+.radio .radio-content{
+
+    height: 40px;
+    display: flex;
+    width: 100%;
+    padding-left: 8px;
+    border-radius: 5px;
+    /* border: 1px solid var(--tertiary); */
+    align-items: center;
+}
+
+.information label{
+    /* display: none; */
+    margin-top: 5px;
+    margin-right: 10px;
+    font-weight: bold;
+    color: var(--primary);
+    
+}
+.input-control{
+    border: 1px solid var(--tertiary);
+    border-radius: 5px;
+    padding: 5px;
+    outline: none;
+    margin-bottom: 5px;
+    width: 100%;
+}
+
+/* 
+.input{
+    width: 100%;
+    border-bottom: 2px solid var(--primary);
+    outline: none;
+} */
+
+img{
+    margin-top: 10px;
+    height: 100px;
+    width: 100px;
+    border: 1px solid var(--tertiary);
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.img-content{
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    margin-bottom: 10px;
+}
+fa-icon{
+    color: var(--primary);
+}
+
+
+.change-password{
+    text-decoration: underline;
+    cursor: pointer;
+    /* margin-top: 10px; */
+    font-weight: bold;
+    color: var(--primary);
+    &:hover{
+        color: var(--secondary);
+    }
+}

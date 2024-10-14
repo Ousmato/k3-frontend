@@ -44,24 +44,13 @@
               <span><fa-icon [icon]="icons.archive"></fa-icon>Rapport et Memoire</span>
             </a>
           </li>
-         
-         
-          
-          <!-- ---------------- -->
-          <!-- <li class="menu-link">
-            <div (click)="toggleSubMenuArchive()">
-                <a routerLink="#">
-                  <span><fa-icon [icon]="icons.archive" ></fa-icon>Rapport et Memoire 
-                    <fa-icon [icon]="isSubMenuOpen.etudiants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
-                </a>
-            </div>
-            <ul class="sub-menu" *ngIf="isSubMenuOpen.archive">
-              <li><a routerLink="">2019 - 2020</a></li>
-              <li><a href="#">2021 - 2022</a></li>
-              <li><a href="#">2022 - 2023</a></li>
-            </ul>
-            
-          </li> -->
+        </ul>
+        <ul id="components" >
+          <li class="menu-link">
+            <a (click)="singAout()">
+              <span><fa-icon [icon]="icons.aout"></fa-icon>Déconnexion</span>
+            </a>
+          </li>
         </ul>
       </div>
     </nav>

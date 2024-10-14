@@ -85,6 +85,7 @@ ngOnInit(): void {
       const childRoute = this.route.firstChild;
       if (childRoute) {
         const componentName: any = childRoute.snapshot.component?.name; 
+        this.show_admin = false
         // console.log(componentName, "nam componenrt")
         this.showSearchInput = false; // Par défaut, masquer la barre de recherche
         for (let cn of this.component_Name) {
@@ -129,7 +130,7 @@ load_admin(){
   if(admin){
     
     this.dataAdmin = JSON.parse(admin);
-     if(this.dataAdmin.role != Admin_role.ADMINISTRATEUR){
+     if(this.dataAdmin.role != Admin_role.DG){
       this.desable_add_button  = false
     console.log("ne pas admin");
   }
@@ -153,8 +154,14 @@ load_admin(){
     // Se désabonner pour éviter les fuites de mémoire
     if (this.routerEventsSubscription) {
       this.routerEventsSubscription.unsubscribe();
+      this.show_admin = false;
     }
   }
 
+  singAout(){
+    sessionStorage.clear();
+    this.router.navigate([''])
+    
+  }
 
 }

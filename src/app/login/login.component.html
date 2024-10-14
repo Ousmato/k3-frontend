@@ -1,5 +1,37 @@
-<main>
-    <div class="main">
+<main class="bg-light">
+    <div class="login-container ">
+        <div class="login-box">
+            <div class="logo">
+                <img src="assets/logounivsegou.png" alt="Logo">
+            </div>
+            <!-- <h2>Login</h2> -->
+            <form [formGroup]="userForm" (ngSubmit)="login()">
+                <div class="form-group">
+                    <label for="username">Email</label>
+                    
+                        <input type="email"  formControlName="email" class="form-control" [class.is-invalid]="userForm.get('email')!.invalid && userForm.get('email')!.touched" placeholder="Email...">
+                        <span *ngIf="userForm.controls['email'].invalid && userForm.controls['email'].touched" [ngStyle]="{color: 'red'}">
+                        Champ bligatoire*
+                        </span>
+                   
+                </div>
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="{{ passwordVisible ? 'text' : 'password' }}" class="form-control" formControlName="password" [class.is-invalid]="userForm.get('password')!.invalid && userForm.get('password')!.touched" id="password" placeholder="Mot de passe....">
+                    <span *ngIf="userForm.controls['password'].invalid && userForm.controls['password'].touched" [ngStyle]="{color: 'red'}">
+                        Champ obligatoire*
+                    </span>
+                    <fa-icon [icon]="passwordVisible ? icons.eyeSlash : icons.eye" class="toggle-password position-absolute"  (click)="togglePasswordVisibility()"></fa-icon>
+                </div>
+                <div class="forgot-password">
+                    <a href="#">Mot de passe oublié ?</a>
+                </div>
+                <button type="submit" class="login-btn">Se Connecter</button>
+            </form>
+           
+        </div>
+    </div>
+    <!-- <div class="main">
          
         <div > 
         
@@ -8,9 +40,8 @@
                     <div class="login-card"> 
                     
                         <div class="login-card-body">
-                        <!-- <h2>Connexion</h2> -->
                         <span *ngIf="invalid" id="error">{{message}}</span> 
-                            <form [formGroup]="userForm" (ngSubmit)="login()" > 
+                            <form  > 
                                 <div class="form form-group"> 
                                     <label  class="label form-label">Email :</label>
                                     <input type="email" formControlName="email" class=" input-with form-control" [class.is-invalid]="userForm.get('email')!.invalid && userForm.get('email')!.touched" placeholder="Email...">
@@ -40,6 +71,6 @@
                 </div> 
             </div> 
         </div>
-    </div>
-    <div class="logo"></div>
+    </div> -->
+    <!-- <div class="logo"></div> -->
 </main>

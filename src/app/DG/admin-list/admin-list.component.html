@@ -1,0 +1,87 @@
+<main>
+    <div class="btn-contenair">
+        <div class="leftly">
+                <select (change)="getEtat($event)">
+                    <option disabled selected value="">Etats</option>
+                    <option *ngFor="let etat of admin_etats" [value]="etat.value">{{etat.key}}</option>
+                </select>
+    
+            <div class="input-search-class">
+                <input type="text" [(ngModel)]="searchTerm" class="search-input-class" placeholder="Rechercher...">
+                <!-- <button (click)="searchAdmin()">Rechercher</button> -->
+            </div>
+        </div>
+        
+        <div class="btn-add">
+            <button (click)="show_form()">Ajouter</button>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table class="table table-hover">
+            <thead>
+    
+                <tr>
+                     <th>Photo</th>
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th>Email</th>
+                    <th>Telephone</th>
+                    <th>Role</th>
+                    <th>Etat</th>
+                </tr>
+               
+            </thead>
+            <tbody>
+                @if(filteredAdmins().length){
+                    <tr *ngFor="let admin of filteredAdmins() let i = index">
+                        <td> <img [src]="admin.urlPhoto" (error)="onError($event)" alt=""></td>
+                        <td>{{admin.nom.charAt(0) + admin.nom.slice(1).toLowerCase()}}</td>
+                        <td>{{admin.prenom}}</td>
+                        <td>{{admin.email}}</td>
+                        <td>{{admin.telephone}}</td>
+                        <td>{{admin.role.toUpperCase()}}</td>
+                        <td [ngStyle]="{ color:admin.active ? 'green' : 'red'}"><fa-icon [icon]="icons.circle"></fa-icon>
+                            <span (click)="show_confirm(i)">{{admin.active? 'Désactiver' : 'Activer'}} </span>
+                            <span (click)="toEdit(admin.idAdministra!)">Editer <fa-icon [icon]="icons.edit"></fa-icon> </span>
+                        </td>
+
+                        <ng-container *ngIf="isConfirm && i == index">
+                            <div class="views">
+                                <h3 class="span">Confirmation</h3>
+                                <div class="container-views">
+                                    <p>Êtes-vous sûr de vouloir {{admin.active? 'Désactiver' : 'Activer'}} l'administrateur ?</p>
+                                    <div class="profil">
+                                    <img [src]="admin.urlPhoto" (error)="onError($event)" alt="">
+                                    <div class="info-pofil">
+                                        <p>{{admin.nom}} {{admin.prenom}}</p>
+                                        <p class="text-muted small">{{admin.role.toUpperCase()}}</p>
+                                    </div>
+                                           
+                                    </div>
+                                        <div class="button-cash">
+                                            <a type="button" (click)="exite()">Annuler</a>
+                                            <button type="button" (click)="changeEtat(admin.idAdministra!)">Confirmer</button>
+                                        </div>
+                                    
+                                </div>
+                            </div>
+                        </ng-container>
+                    </tr>
+
+                }@else {
+                    <tr>
+                        <td colspan="9" class="text-center">Aucun administrateur trouvé</td>
+                    </tr>
+                }
+                
+            </tbody>
+        </table>
+    </div>
+    
+
+    <div class="app" *ngIf="show_add_form">
+        <app-add-admin (closeModal)="close()"></app-add-admin>
+    </div>
+    <div class="overlay" *ngIf="overlay"></div>
+</main>

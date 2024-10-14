@@ -12,4 +12,6 @@ export interface Emplois{
     idModule: Module;
     idSemestre: Semestres;
     seances?: Seances[]
+    progess?: number
+    toDay?: boolean
 }

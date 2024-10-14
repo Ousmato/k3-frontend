@@ -1,30 +1,3 @@
-.views-delete{
-    overflow: hidden;
-    position: fixed;
-    outline: none;
-    background-color: #fff;
-    overflow: scroll;
-    /* top: -230px;
-    left: 170px; */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    /* padding: 15px; */
-    z-index: 10001;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.views-delete::-webkit-scrollbar{
-    display: none  ;
-}
-.template-vide{
-    padding: 10px;
-    width: 250px;
-
-}
-.views-delete .button-cash{
-    padding: 10px;
-}
 main{
     position: relative;
 }

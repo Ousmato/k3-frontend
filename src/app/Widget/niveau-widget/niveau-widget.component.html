@@ -39,7 +39,11 @@
                <div class="container-views">
                     <div class="form form-group"> 
                         <label for="email">Nom :</label> 
-                        <input type="text" formControlName="nom" class="form-control"  placeholder="Nom du niveau..."  [class.is-invalid]="formAdd.get('nom')!.invalid && formAdd.get('nom')!.touched"> 
+                        <select class="form-select" formControlName="nom">
+                            <option disabled selected value="">Saisir le nom du niveau</option>
+                            <option *ngFor="let niveau of niveaux_type" [value]="niveau.value">{{niveau.key}}</option>
+                        </select>
+                        <!-- <input type="text" formControlName="nom" class="form-control"  placeholder="Nom du niveau..."  [class.is-invalid]="formAdd.get('nom')!.invalid && formAdd.get('nom')!.touched">  -->
                         <div *ngIf="formAdd.get('nom')!.invalid && formAdd.get('nom')!.touched" class="invalid-feedback">
                             <div *ngIf="formAdd.get('nom')!.errors?.['required']">
                                 <span class="label-error" class="label-error">Le nom est requis.</span>

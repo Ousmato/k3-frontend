@@ -50,6 +50,9 @@ export class ProgramSoutenanceComponent implements OnInit {
 
   // --------------------------load form
   loa_form() {
+    this.root.queryParams.subscribe(param =>{
+      this.idDoc = param['id'];
+    })
     this.prog_form = this.fb.group({
       idDoc: [this.idDoc],
       date: ['', Validators.required],
@@ -79,7 +82,7 @@ export class ProgramSoutenanceComponent implements OnInit {
     const formData : any = this.prog_form.value
     const jurys = formData.jurys;
     // let teacher: Teacher
-    console.log(jurys, "farmData")
+    console.log(formData, "farmData")
    jurys.forEach((jr: any) => {
       // teacher = this.teachers.find(t => t.idEnseignant == jr.teacher)!;
       const jury: Jury = {

@@ -40,63 +40,7 @@ export class ServiceService {
   isEmploisValid(idEmplois: number): Observable<any>{
     return this.http.get<any>(`${this.baseUrl}is-valid/${idEmplois}`);
   }
-  // ------------------------------------calcule dates and get list dates between dateDebut and dateFin
-  // getDaysBetweenDatesTest(dateDebut: Date, dateFin: Date): { day: string, dates: string[] }[] {
-  //   const sDate = new Date(dateDebut);
-  //   const eDate = new Date(dateFin);
-  //   const diff = Math.round((eDate.getTime() - sDate.getTime()) / (1000 * 60 * 60 * 24));
-  //   const dayMap = ["Dimache", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
-  //   const dates: { day: string, dates: string[] }[] = [];
-
-  //   for (let i = 0; i <= diff; i++) {
-  //     // Exclure le dimanche
-  //     if (sDate.getDay() !== 0) {
-  //       let index = dates.findIndex( e => e.day == dayMap[sDate.getDay()])
-  //       if(index > -1){
-  //         dates[index].dates.push(sDate.toISOString().split('T')[0])
-  //       }else{
-  //         dates.push({
-  //           day: dayMap[sDate.getDay()],
-  //           dates: [sDate.toISOString().split('T')[0]] // Format YYYY-MM-DD
-  //         });
-  //       }
-  //     }
-  //     sDate.setDate(sDate.getDate() + 1);
-  // }
-  //    // Reorder dates to start from Monday and end on Sunday
-  //  this.sortByDay(dates)
-  //   return dates;
-  // }
-  calculatePlage(heureDebut: string, heureFin: string): string[] {
-    const plage: string[] = [];
-    const today = new Date().toISOString().split('T')[0]; // Format YYYY-MM-DD
-
-    let debut = new Date(`${today}T${heureDebut}`);
-    const fin = new Date(`${today}T${heureFin}`);
-    while (debut < fin) {
-        // Calculer la prochaine heure de début en ajoutant 2 heures
-        const prochainHeureDebut = new Date(debut);
-        prochainHeureDebut.setHours(prochainHeureDebut.getHours() + 2);
-
-        // Si la prochaine heure de début dépasse l'heure de fin, ajuster à l'heure de fin
-        if (prochainHeureDebut > fin) {
-            prochainHeureDebut.setTime(fin.getTime());
-        }
-
-        // Ajouter la plage horaire au tableau
-        plage.push(this.formatTime(debut) + " - " + this.formatTime(prochainHeureDebut));
-        
-        // Mettre à jour 'debut' pour la prochaine itération
-        debut = prochainHeureDebut;
-    }
-
-    return plage;
-}
-
-// Méthode auxiliaire pour formater les heures en chaîne (HH:MM)
-  private formatTime(date: Date): string {
-      return date.toTimeString().substring(0, 5);
-  }
+ 
 
   getDaysBetweenDates(dateDebut: Date, dateFin: Date): { day: string, date: string }[] {
     const sDate = new Date(dateDebut);

@@ -6,15 +6,23 @@ main{
     transform: translateY(20px); /* Déplacer légèrement vers le bas */
 
 }
-
+.head-content{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 10px;
+}
+.logo img{
+    width: 100px;
+    height: auto;
+}
 .back-button{
     width: 30px;
     height: 30px;
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     padding: 8px;
     font-size: 20px;
-    margin: 10px 0;
     &:hover{
         background-color: var(--tertiary);
         color: var(--primary);
@@ -29,7 +37,6 @@ button{
     background-color: transparent;
     cursor: pointer;
     color: var(--primary);
-    margin-bottom: 10px;
     border-radius: 5px;
     &:hover{
         background-color: var(--secondary);

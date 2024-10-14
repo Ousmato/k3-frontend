@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AnneeScolaire, SchoolInfo } from '../Admin/Models/School-info';
 import { Response_String } from '../Admin/Models/Response_String';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SchoolService {
-  private baseUrl = 'http://localhost:8080/Auth/'; 
+  private baseUrl = `${environment.apiUrl}Auth/`; 
 
   constructor(private http: HttpClient) { }
   getSchools() :Observable<SchoolInfo>{

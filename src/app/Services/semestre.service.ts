@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Semestres } from '../Admin/Models/Semestre';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { Semestres } from '../Admin/Models/Semestre';
 export class SemestreService {
 
   constructor(private http: HttpClient) { }
-  private baseUrl = 'http://localhost:8080/api-semestre/';
+  private baseUrl = `${environment.apiUrl}api-semestre/`;
 
   getCurentSemestre() : Observable<Semestres>{
     return this.http.get<any>(this.baseUrl + 'current');

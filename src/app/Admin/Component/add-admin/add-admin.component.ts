@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Admin, Admin_role } from '../../Models/Admin';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IconsService } from '../../../Services/icons.service';
@@ -17,7 +17,7 @@ export class AddAdminComponent implements OnInit{
   // show_add_form: boolean = true
   add_admin_form!: FormGroup
   fileName!: File
-  // @Output() closeModal = new EventEmitter<any>();
+  @Output() closeModal = new EventEmitter<any>();
 
   adminStatusOptions:{ key: string, value: string }[] = [];
 
@@ -74,10 +74,12 @@ export class AddAdminComponent implements OnInit{
         role: formData.role
       }
       console.log(admin, "admin")
+      // return
       this.adminService.add_admin(admin, this.fileName).subscribe({
         next: (response)=>{
           this.pageTitle.showSuccessToast(response.message);
           this.add_admin_form.reset();
+          this.closeModal.emit();
         },
         error: (erreur) =>{
           this.pageTitle.showErrorToast(erreur.error.message);
@@ -89,4 +91,9 @@ export class AddAdminComponent implements OnInit{
     // this.closeModal.emit();
   }
 
+  // exit
+  close_modal(){
+    // this.overlay = false
+    this.closeModal.emit();
+  }
 }

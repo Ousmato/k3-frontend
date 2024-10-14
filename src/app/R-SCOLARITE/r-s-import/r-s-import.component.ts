@@ -20,6 +20,7 @@ export class RSImportComponent implements OnInit {
 
   students: Student[] = []
   classes: ClassRoom[] =[]
+  show_add: boolean = false
   formAdd!: FormGroup
   promotion?: any
   annees: AnneeScolaire []= []
@@ -40,6 +41,7 @@ export class RSImportComponent implements OnInit {
     fileReader.onload = (e: any) => {
       const arrayBuffer = e.target.result;
       this.parseExcel(arrayBuffer);
+      this.show_add = true
     };
 
     fileReader.readAsArrayBuffer(file);
@@ -126,6 +128,7 @@ export class RSImportComponent implements OnInit {
       next: (res) =>{
         this.pageTitle.showSuccessToast(res.message);
         this.students = []
+        this.show_add = false 
 
       },
       error : (erreur) =>{

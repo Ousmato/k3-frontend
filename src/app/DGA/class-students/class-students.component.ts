@@ -11,6 +11,8 @@ import { NavigationExtras, Route, Router } from '@angular/router';
 import { IconsService } from '../../Services/icons.service';
 import { ToastrService } from 'ngx-toastr';
 import { SideBarService } from '../../sidebar/side-bar.service';
+import { AnneeScolaire } from '../../Admin/Models/School-info';
+import { SchoolService } from '../../Services/school.service';
 
 @Component({
   selector: 'app-class-students',
@@ -24,6 +26,7 @@ export class ClassStudentsComponent implements OnInit {
   classesArchives: ClassRoom[] = [];
   filteredClasse: ClassRoom[] = [];
   idNivFiliere!: number;
+  annees: AnneeScolaire [] = []
 
   classeSelect!: ClassRoom | null 
 
@@ -41,13 +44,14 @@ export class ClassStudentsComponent implements OnInit {
   permission: boolean = false
 
   constructor(private service: ClassStudentService, private sideBarService: SideBarService,
-    private toastr: ToastrService,
+    private toastr: ToastrService, private infoSchool: SchoolService,
     private router: Router, public icons: IconsService) {
 
   }
   ngOnInit() {
     this.getPermission();
     this.loadClasses();
+    this.get_annees();
     const formGroupControls: any = {};
     this.ueList.forEach(ue => {
       formGroupControls[ue.id] = new FormControl(false);
@@ -57,6 +61,7 @@ export class ClassStudentsComponent implements OnInit {
 
     this.sideBarService.currentSearchTerm.subscribe(term => {
       this.searchTerm = term;
+      console.log(this.searchTerm, "search")
       this.filterClasse_L1();
       this.filterClasse_L2();
       this.filterClasse_L3();
@@ -88,36 +93,34 @@ export class ClassStudentsComponent implements OnInit {
       console.log(classRoms, "classroom")
 
       this.classes_L1 = classRoms.filter(clr => clr.idFiliere?.idNiveau.nom === "LICENCE 1");
+      console.log(this.classes_L1, "L1")
       this.classes_L2 = classRoms.filter(clr => clr.idFiliere?.idNiveau.nom === "LICENCE 2");
       this.classes_L3 = classRoms.filter(clr => clr.idFiliere?.idNiveau.nom === "LICENCE 3");
 
     });
   }
   // ----------------------------------------add module in classRoom
-  createClassModule(classe: any) {
+  // createClassModule(classe: any) {
+  //   const idClass: ClassRoom = this.classRoms.find(cl => cl.id === classe.id)!;
+  //   const ues: ClassModules = {
+  //     idStudentClasse: idClass,
+  //     idUE: this.list_checked,
 
-    const idClass: ClassRoom = this.classRoms.find(cl => cl.id === classe.id)!;
+  //   }
+  //   this.service.createClassModule(ues).subscribe({
+  //     next: (response) => {
+  //       this.isShow_add_module = false
+  //       this.isShow_link_modal = true
+  //       this.list_checked = [];
+  //       this.toastr.success(response.message, "Succès");
+  //     },
+  //     error: (erreur) => {
+  //       this.toastr.error(erreur.error.message, "Erreur");
+  //     }
+  //   })
+  //   console.log(ues, "object --liste")
 
-
-    const ues: ClassModules = {
-      idStudentClasse: idClass,
-      idUE: this.list_checked,
-
-    }
-    this.service.createClassModule(ues).subscribe({
-      next: (response) => {
-        this.isShow_add_module = false
-        this.isShow_link_modal = true
-        this.list_checked = [];
-        this.toastr.success(response.message, "Succès");
-      },
-      error: (erreur) => {
-        this.toastr.error(erreur.error.message, "Erreur");
-      }
-    })
-    console.log(ues, "object --liste")
-
-  }
+  // }
   // ------------------------------------------get all ue by class id
   getAll_ues(classe: ClassRoom) {
     this.isShow_add_module = true;
@@ -237,14 +240,14 @@ export class ClassStudentsComponent implements OnInit {
     if (!this.searchTerm) {
       return this.filteredClasse = this.classes_L2;
     }
-    return this.filteredClasse = this.classes_L1.filter(clf => clf.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+    return this.filteredClasse = this.classes_L2.filter(clf => clf.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
       clf.idFiliere?.idNiveau.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()))
   }
   filterClasse_L3() {
     if (!this.searchTerm) {
       return this.filteredClasse = this.classes_L3;
     }
-    return this.filteredClasse = this.classes_L1.filter(clf => clf.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+    return this.filteredClasse = this.classes_L3.filter(clf => clf.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
       clf.idFiliere?.idNiveau.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()))
   }
 
@@ -255,4 +258,31 @@ export class ClassStudentsComponent implements OnInit {
     return word;
     
   }
+   // -------------------------get annees
+   get_annees(){
+    this.infoSchool.getAll_annee().subscribe(data =>{
+      this.annees = data;
+      this.annees.forEach(ans=>{
+        const annee = new Date(ans.debutAnnee)
+        const debutAnnee = annee.getFullYear()
+        ans.ans = debutAnnee
+      })
+    })
+  }
+
+  promoSelect(event: any){
+    
+    const idAnnee = event.target.value
+
+    this.service.getAllClasse(idAnnee).subscribe(classRoms =>{
+      this.classRoms = []
+      this.classRoms = classRoms;
+      console.log(this.classRoms, "is class selectm list")
+
+      this.classes_L1 = classRoms.filter(clr => clr.idFiliere?.idNiveau.nom === "LICENCE 1");
+      this.classes_L2 = classRoms.filter(clr => clr.idFiliere?.idNiveau.nom === "LICENCE 2");
+      this.classes_L3 = classRoms.filter(clr => clr.idFiliere?.idNiveau.nom === "LICENCE 3");
+    })
+  }
+
 }

@@ -23,8 +23,8 @@ export class EnseignantComponent implements OnInit {
   pages: number[] = []
 
   profiles: ProfilDto[] = []
-  // profiles: ProfilDto[] = []
   current_enseignat_create!: Teacher;
+  permission: boolean = false
 
 
 
@@ -33,7 +33,7 @@ export class EnseignantComponent implements OnInit {
   ngOnInit(): void {
     // this.load_enseignants();
     this.loadTeachers();
-
+    this.getPermission();
     this.sideBareService.currentSearchTerm.subscribe(term => {
       this.searchTerm = term;
       this.filterTeachers();
@@ -100,10 +100,13 @@ export class EnseignantComponent implements OnInit {
   }
 
   timeWorks() {
-    this.searchTerm = ''
-    this.ngOnInit()
-    this.root.navigate(['/der/paiement']);
-  }
+    this.searchTerm = '';
+    if (this.getPermission()) {
+        this.root.navigate(['/sidebar/paiement']);
+    } else {
+        this.root.navigate(['/der/paiement']);
+    }
+}
 
   addTeacher() {
     this.root.navigate(['/der/t-singin']);
@@ -136,5 +139,16 @@ export class EnseignantComponent implements OnInit {
     }
 
     return visiblePages;
+  }
+
+  getPermission() : boolean{
+    console.log("admin")
+    const admin = sessionStorage.getItem('admin')
+    console.log( admin, "-----------------------")
+    if(admin){
+      this.permission = true;
+      return true
+    }
+    return false;
   }
 }

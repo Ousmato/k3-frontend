@@ -1,7 +1,7 @@
 
 main{width: 100%;
 
-    padding-top: 20px;
+    padding-top: 10px;
 }
 a button{
     margin-bottom: 30px;
@@ -13,6 +13,12 @@ th {
 
 }
 
+.content-head{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 10px;
+}
 .table-container{
     height: 400px;
     position: relative;

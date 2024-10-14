@@ -1,81 +1,96 @@
-.button-cash button{
-    border: none;
-    display: flex;
-    gap: 8px;
-    margin-top: 8px;
-    padding: 5px;
-    border-radius: 5px;
-    /* background-color: var(--primary); */
-    color: var(--secondary);
-    cursor: pointer;
-    &:hover{
-        background-color: var(--secondary);
-        color: var(--primary);
-    }
-   
+.button-cash button {
+  border: none;
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 5px;
+  border-radius: 5px;
+  /* background-color: var(--primary); */
+  color: var(--secondary);
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--secondary);
+    color: var(--primary);
+  }
+
 }
 
-  .button-cash a{
-    text-decoration: none;
-     border: none;
-     margin-top: 8px;
-     padding: 5px;
-     border-radius: 5px;
-     background-color: var(--primary);
-     color: var(--secondary);
-     cursor: pointer;
-     &:hover{
-         
-     background-color: var(--secondary);
-         color: var(--primary);
-     }
-    
+.container-views {
+  padding: 10px;
+}
+
+.span {
+  background-color: var(--primary);
+  color: var(--secondary);
+  font-size: 16px;
+  padding: 10px;
+  width: 100%;
+  text-align: center;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.button-cash a {
+  text-decoration: none;
+  border: none;
+  margin-top: 8px;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: var(--primary);
+  color: var(--secondary);
+  cursor: pointer;
+
+  &:hover {
+
+    background-color: var(--secondary);
+    color: var(--primary);
   }
- 
 
-  .views{
-    background-color: #fff;
-    position: absolute;
-    top: 20%;
-    right: 30%;
-    width: 50%;
-    /* padding: 20px; */
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    z-index: 10001;
-    &:hover{
-        border: var(--primary);
-    }
-    }
-   
-    .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 1000; /* Assurez-vous que l'overlay est au-dessus de tout */
-      }
+}
 
-      .head-views{
-        height: 50px;
-        background-color: var(--primary);
-        width: 100%;
-        color: var(--secondary);
-        
-        display: flex;
-        align-items: center;
-        padding: 10px;
-      }
 
-      .button-cash{
-        display: flex;
-        gap: 20px;
-        justify-content: end;
-        
-       
-    }
-    .form-update-emplois{
-        padding: 20px;
-    }
+.views {
+  background-color: #fff;
+  position: absolute;
+  top: 20%;
+  right: 40%;
+  width: 34%;
+  /* padding: 20px; */
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  z-index: 10001;
+
+  &:hover {
+    border: var(--primary);
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  /* Assurez-vous que l'overlay est au-dessus de tout */
+}
+
+.button-cash {
+  display: flex;
+  gap: 20px;
+  justify-content: end;
+
+
+}
+
+.form-update-emplois {
+  padding: 20px;
+}
+
+.input-date {
+  width: 100%;
+  justify-content: space-between;
+  display: flex;
+}

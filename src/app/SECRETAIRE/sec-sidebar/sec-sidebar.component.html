@@ -26,41 +26,14 @@
               <span><fa-icon [icon]="icons.user_surveillance"></fa-icon>Surveillence</span>
             </a>
           </li>
-          <!-- ------------------------------- -->
-           <!-- <li class="menu-link">
-            <div (click)="toggleSubMenuEnseignant()">
-              <a><span><fa-icon [icon]="icons.users"></fa-icon>Enseignants<fa-icon [icon]="isSubMenuOpen.enseignants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
-                    
-              </a>
-            </div>
-            <ul class="sub-menu" *ngIf="isSubMenuOpen.enseignants">
-              <li><a routerLink="/der/enseignants" routerLinkActive="active">Liste des enseignant</a></li>
-              <li><a routerLink="/der/ajouter-emplois" routerLinkActive="active">Programmer EDT</a></li>
-              <li><a routerLink="/der/ajouter-seance" routerLinkActive="active">Programmer seances</a></li>
-              <li><a routerLink="/der/emplois-du-temps" routerLinkActive="active">Les emplois du temps</a></li>
-             
-            </ul>
-          </li> -->
-          <!-- 
+          
+        </ul>
+        <ul id="components" >
           <li class="menu-link">
-            <div (click)="toggleSubMenuStudent()">
-              <a> <span><fa-icon [icon]="icons.grade"></fa-icon>Etudiants<fa-icon [icon]="isSubMenuOpen.etudiants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
-              </a>
-            </div>
-            <ul class="sub-menu" *ngIf="isSubMenuOpen.etudiants">
-              <li><a routerLink="/sidebar/etudiant" routerLinkActive="active">Liste des Etudiants</a></li>
-              <li><a routerLink="/sidebar/inscription" routerLinkActive="active">Fiche d'inscription</a></li>
-            </ul>
-          </li> -->
-         
-         
-          <li class="menu-link">
-            <a routerLink="/secretaire/fiche-paie" routerLinkActive="active">
-              <span><fa-icon [icon]="icons.credit_card"></fa-icon>Enseignants payé</span>
+            <a (click)="singAout()">
+              <span><fa-icon [icon]="icons.aout"></fa-icon>Déconnexion</span>
             </a>
           </li>
-          <!-- ---------------- -->
-          
         </ul>
       </div>
     </nav>
@@ -87,10 +60,10 @@
                   <h6>{{title}}</h6></div>
                   
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <ul class="navbar-nav ">
                   <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" (click)="show_adminSetting()">
-                      <fa-icon  class="my-custom-style"></fa-icon><img src="{{dataAdmin.urlPhoto}}" alt="">
+                    <a class="nav-link" id="navbarDropdown"  (click)="show_adminSetting()">
+                      <img src="{{dataAdmin.urlPhoto}}" alt=""><fa-icon [icon]="show_admin ? icons.sortUp : icons.sortDown" class="my-custom-style"></fa-icon>
                     </a>
                     <ul class="" *ngIf="show_admin">
                      

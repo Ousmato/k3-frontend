@@ -133,7 +133,7 @@ load_admin(){
   if(admin){
     
     this.dataAdmin = JSON.parse(admin);
-     if(this.dataAdmin.role != Admin_role.ADMINISTRATEUR){
+     if(this.dataAdmin.role != Admin_role.DG){
       this.desable_add_button  = false
     console.log("ne pas admin");
   }
@@ -160,4 +160,9 @@ load_admin(){
     }
   }
 
+  singAout(){
+    sessionStorage.clear();
+    this.router.navigate(['']);
+   
+  }
 }

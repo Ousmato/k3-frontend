@@ -4,12 +4,13 @@ import { Student } from '../../Models/Students';
 import { Observable } from 'rxjs';
 import { ClassRoom } from '../../Models/Classe';
 import { Response_String } from '../../Models/Response_String';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SinginServiceService {
-  private baseUrl = 'http://localhost:8080/api-student/add';
+  private baseUrl = `${environment.apiUrl}api-student/add`;
   constructor(private http: HttpClient) { }
 
   singIn(student: Student, photoFile: File): Observable<Response_String> {

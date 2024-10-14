@@ -1,11 +1,23 @@
 
   <main>
-    <!-- <select (change)="onChange($event)">
-      <option id="default" selected disabled value="">Promotion {{currentYear}}</option>
-      <option *ngFor="let annee of annees" [value]="annee.id">Promotion {{annee.ans}}</option>
-  </select> -->
+    <div class="content-head">
+      <select (change)="onChange($event)">
+        <option id="default" selected disabled value="">Promotion {{currentYear}}</option>
+        <option *ngFor="let annee of annees" [value]="annee.id">Promotion {{annee.ans}}</option>
+      </select>
+      <!-- ------------ -->
+      <select (change)="onChange($event)">
+        <option id="default" selected disabled value="">Etats</option>
+        <option *ngFor="let annee of annees" [value]="annee.id">Promotion {{annee.ans}}</option>
+      </select>
+      <!-- ----------------- -->
+      <div class="input-search" >
+        <input type="text" [(ngModel)]="searchTerm"  placeholder="Recherche..."  class="search-input">
+      </div>
+    </div>
+    
   <div class="table-container">
-    <table class="table table-striped table-hover">
+    <table class="table table-hover">
       <thead>
           <tr>
             <th>N° D'ordre</th>
@@ -42,8 +54,8 @@
               <td>
                   <div class="btn-contenaire">
                     
-                      <a (click)="getStudent(studens)" ><fa-icon [icon]="permission ? icons.eye : icons.userCheck"></fa-icon><span>{{permission ? 'Details' : 'Valider'}}</span></a>
-                      <!-- <a *ngIf="permission" (click)="getStudent(studens)"><fa-icon [icon]="icons.edit"></fa-icon><span>Modifier</span></a> -->
+                      <a (click)="getStudent(studens)" *ngIf="!secretaire" ><fa-icon [icon]="permission ? icons.eye : icons.userCheck"></fa-icon><span>{{permission ? 'Details' : 'Valider'}}</span></a>
+                      <a *ngIf="secretaire" (click)="getStudentView(studens)"><fa-icon [icon]="icons.eye"></fa-icon><span>Details</span></a>
                       
                   </div>
               </td>

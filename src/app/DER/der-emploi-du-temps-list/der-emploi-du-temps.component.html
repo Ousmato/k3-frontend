@@ -5,10 +5,13 @@
     
     <div class="btn-contenair">
         <div class="tab-head">
-            <p>Les emplois du temps en cours</p>
+            <!-- <p>Les emplois du temps en cours</p> -->
         </div>
         <div class="app" *ngIf="show_add">
-            <app-emplois-du-temps (closeModale)="nouveau()"></app-emplois-du-temps>
+            <app-emplois-du-temps (closeModale)="close()"></app-emplois-du-temps>
+        </div>
+        <div class="app-update" *ngIf="show_update">
+            <app-emplois-widget [emplois]="emploiSelect" (closeUpdateModal)="close()"></app-emplois-widget>
         </div>
        
         <button *ngIf="permission" type="button"  (click)="nouveau()"> Nouveau</button>
@@ -31,9 +34,10 @@
                         <td>{{eploi.dateFin}}</td>
                         <td>{{eploi.idSemestre.nomSemetre}}</td>
                         <td >{{eploi.idClasse.idFiliere?.idNiveau?.nom}} {{eploi.idClasse.idFiliere?.idFiliere?.nomFiliere}} </td>
-                        <td class="next-col second-child"> <a *ngIf="permission" (click)="deleted(eploi.id!)" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> Supprimer</a>
+                        <td class="next-col second-child"> 
+                            <a *ngIf="permission" (click)="deleted(eploi.id!)" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> Supprimer</a>
                         
-                            <a *ngIf="permission" (click)="updated(eploi.id!)" ><fa-icon [icon]="icons.edit"></fa-icon>Modifier</a>
+                            <a *ngIf="permission" (click)="updated(eploi)" ><fa-icon [icon]="icons.edit"></fa-icon>Modifier</a>
                             <a (click)="toggle_toSeance(eploi.id!)"><fa-icon [icon]="icons.eye"></fa-icon>Consulter</a></td>
                     </tr>
                 </ng-container>

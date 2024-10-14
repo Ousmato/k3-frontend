@@ -1,0 +1,142 @@
+<main>
+    <form [formGroup]="update_form" (ngSubmit)="update()">
+        <div class="head-form">
+            <div class="head-left">
+                <p id="prof">Profil</p>
+                <p class="text-muted small">Dernière mises à jour : {{admin.updateDate}}</p>
+            </div>
+            <div class="head-riht">
+                <a class="btn-edit" *ngIf="!isEdit" (click)="show_edit()">Editer <fa-icon [icon]="icons.edit"></fa-icon></a>
+                <a class="btn-edit" *ngIf="isEdit" (click)="annuler()">Annuler</a>
+                
+                <button class="btn-save" type="submit" *ngIf="isEdit">Enregistrer </button>
+            </div>
+        </div>
+        <div class="content-form">
+            <div class="profil-img">
+                <p><fa-icon [icon]="icons.image"></fa-icon> Photo de profil  </p>
+                <div class="img-content">
+                    <img *ngIf="!urlImage" [src]="admin.urlPhoto" (error)="onError($event)" alt="photo">
+                    <img *ngIf="urlImage" [src]="urlImage" alt="">
+                    
+                    <label for="fileInput" *ngIf="!isEdit" class="btn-modifier-image">Selectionner</label>
+                    <a *ngIf="urlImage" (click)="sendImage()" class="btn-modifier-image">valider</a>
+          
+                    <input type="file"  id="fileInput" class="input-file"  style="display: none;" (change)="onPhotoSelected($event)">
+
+                    <!-- <div class="btn-modifier-image">
+                        <label  class="custom-button">Choisir un fichier</label>
+                    </div> -->
+                </div>
+               
+            </div>
+            <div class="information">
+                <p><fa-icon [icon]="icons.user"></fa-icon> Informations personnelle</p>
+                <div class="information-contenu">
+                    <div class="column-f">
+                        <div class="input">
+                            <label for="validationDefault01" class="label form-label">Nom :</label>
+                            <input [attr.readonly]="!isEdit ? true : null" type="text" class="input-with input-control" formControlName="nom" id="nom" [class.is-invalid]="update_form.get('nom')!.invalid && update_form.get('nom')!.touched"  placeholder="Nom....">
+                            <span class="small" *ngIf="update_form.controls['nom'].invalid && update_form.controls['nom'].touched" [ngStyle]="{color: 'red'}">
+                            Champ obligatoire*
+                            </span>
+                            <div *ngIf="update_form.controls['nom']!.errors?.['maxlength']">
+                                <span [ngStyle]="{color: 'red', 'font-size': '12px'}">Le nom  ne doit pas dépasser 20 caractères.</span>
+                            </div>
+                        </div>
+                
+                        <div class="input">
+                            <label for="validationDefault02" class="label form-label">Prenom :</label>
+                            <input [attr.readonly]="!isEdit ? true : null" type="text" formControlName="prenom" class="input-with input-control" id="prenom" [class.is-invalid]="update_form.get('prenom')!.invalid && update_form.get('prenom')!.touched"   placeholder="Prenom....">
+                            <span class="small" *ngIf="update_form.controls['prenom'].invalid && update_form.controls['prenom'].touched" [ngStyle]="{color: 'red'}">
+                            Champ  obligatoire*
+                            </span>
+                            <div *ngIf="update_form.controls['prenom']!.errors?.['maxlength']">
+                                <span [ngStyle]="{color: 'red', 'font-size': '12px'}">Le prenom ne doit pas dépasser 20 caractères.</span>
+                            </div>
+                        </div>
+                
+                        <div class="input">
+                            <label  class="label form-label">Email :</label>
+                            <input [attr.readonly]="!isEdit ? true : null" type="email" formControlName="email" class=" input-with input-control" [class.is-invalid]="update_form.get('email')!.invalid && update_form.get('email')!.touched" placeholder="Email...">
+                            <span class="small" *ngIf="update_form.controls['email'].invalid && update_form.controls['email'].touched" [ngStyle]="{color: 'red'}">
+                            Champ bligatoire*
+                            </span>
+                            
+                        </div>
+                
+                        <!-- <div class="input">
+                            <label for="validationDefault02" class="label form-label">Mot de Passe :</label>
+                            <div class="pass-chec position-relative">
+                                <input type="{{ passwordVisible ? 'text' : 'password' }}" class="input-control" formControlName="password" [class.is-invalid]="update_form.get('password')!.invalid && update_form.get('password')!.touched" id="password" placeholder="Mot de passe....">
+                                <span *ngIf="update_form.controls['password'].invalid && update_form.controls['password'].touched" [ngStyle]="{color: 'red'}">
+                                    Champ obligatoire*
+                                </span>
+                                <fa-icon [icon]="passwordVisible ? icons.eyeSlash : icons.eye" class="toggle-password position-absolute" id="togglePassword" [ngStyle]="{cursor: 'pointer', right: '10px', top: '50%', transform: 'translateY(-50%)'}" (click)="togglePasswordVisibility()"></fa-icon>
+                            </div>
+                        </div> -->
+                        
+                    </div>
+                    <div class="column-f">
+                        
+                        <div class="input">
+                            <label for="telephone" class="label form-label">Téléphone :</label>
+                            <input [attr.readonly]="!isEdit ? true : null" type="text" formControlName="telephone" class="input-control" [class.is-invalid]="update_form.get('telephone')!.invalid && update_form.get('telephone')!.touched" pattern="[0-9]{1,8}" placeholder="Numero de telephone....">
+                            <span class="small" *ngIf="update_form.controls['telephone'].hasError('required') && update_form.controls['telephone'].touched"
+                                [ngStyle]="{color: 'red'}">
+                                Champ obligatoire*
+                            </span>
+                            <span class="small" *ngIf="update_form.controls['telephone'].hasError('pattern') && !update_form.controls['telephone'].hasError('required')"
+                                [ngStyle]="{color: 'red'}">
+                                Maximum 8 chiffres autorisés*
+                            </span>
+                        </div>
+            
+                        <!-- button radio sexe start -->
+                        
+            
+                        <div class="input">
+                        <label class="label form-label" >Role : <span class="text-muted small" *ngIf="isEdit">Non modifiable</span> </label> 
+                        <!-- <p *ngIf="!isEdit">{{admin.role.toUpperCase()}}</p> -->
+                        <input [attr.readonly]="admin.role ? true : null" type="text" class="input-control" value="{{admin.role.toUpperCase()}}">
+                            <!-- <select class="input-control"  formControlName="role"  id="select" placeholder="role"   [class.is-invalid]="update_form.get('role')!.invalid && update_form.get('role')!.touched" *ngIf="isEdit">
+                            <option  selected disabled value="">Choisir Le status</option>
+                            <option *ngFor="let status of adminStatusOptions" [value]="status.value" >{{status.key}}</option>
+                            </select> 
+                            <span class="small" *ngIf="update_form.controls['role'].invalid && update_form.controls['role'].touched" [ngStyle]="{color: 'red'}">
+                                Champ obligatoire*
+                            </span> -->
+                        </div>
+            
+                        
+            
+                        <div class="radio input">
+                            <label for="">Sexe : <span class="text-muted small" *ngIf="isEdit">Non modifiable</span> </label>
+                             <input [attr.readonly]="admin.role ? true : null" type="text" class="input-control" value="{{admin.sexe.toUpperCase()}}">
+
+                            <!-- <div class="radio-content input-control" *ngIf="!isEdit">
+                                <div class="form-check form-check-inline">
+                                    <input [attr.readonly]="!isEdit ? true : null" class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio1" value="Homme" required>
+                                    <label class="form-check-label" for="inlineRadio1">Homme</label>
+                                </div>
+            
+                                <div class="form-check form-check-inline">
+                                    <input [attr.readonly]="!isEdit ? true : null" class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio2" value="Femme" required>
+                                    <label class="form-check-label" for="inlineRadio2">Femme</label>
+                                </div>
+                            </div> -->
+                            
+                            
+                        </div>
+                        
+                    </div>
+            
+                </div>
+
+            </div>
+        </div>
+    </form>
+    <div class="change-password" *ngIf="!isEdit">
+        <a (click)="changePass(admin.idAdministra!)">Changer le mot de passe</a>
+    </div>
+</main>

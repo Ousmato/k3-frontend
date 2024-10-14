@@ -21,7 +21,7 @@
           <option class="option" value="">Annee</option>
           <option *ngFor="let annee of annees"  [value]="annee.id">Promotion {{annee.ans}}</option>
       </select>
-      <button type="submit">Enregistrer</button>
+      <button *ngIf="show_add" type="submit">Enregistrer</button>
     </form>
     
     </div>

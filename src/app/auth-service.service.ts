@@ -1,8 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
-import { Niveau } from './Admin/Models/Niveau';
-import { User } from './Admin/Models/Auth';
+import { environment } from '../environments/environment';
 import { Admin } from './Admin/Models/Admin';
 
 @Injectable({
@@ -12,7 +11,9 @@ export class AuthServiceService {
 
 
   
-  private authUrl = 'http://localhost:8080/Auth/login';
+  // private authUrl = 'http://localhost:8080/Auth/login';
+  private authUrl = `${environment.apiUrl}Auth/login`;
+
 
   constructor(
     private http : HttpClient
@@ -49,10 +50,10 @@ export class AuthServiceService {
 
   // Méthode pour vérifier si l'utilisateur est actuellement authentifié
   isLoggedIn(): boolean {
-    // Logique pour vérifier si l'utilisateur a un jeton d'authentification valide
-    // Retourne true si l'utilisateur est authentifié, sinon false
     console.log( sessionStorage.getItem('r-scolarite') != null)
     return sessionStorage.getItem('admin') != null || sessionStorage.getItem('der') != null || sessionStorage.getItem('dga') != null || sessionStorage.getItem('dg') != null
      || sessionStorage.getItem('comptable') != null || sessionStorage.getItem('scolarite') != null || sessionStorage.getItem('secretaire') != null; // Exemple : vérifie si un jeton est présent dans le stockage local
   }
+
+  
 }

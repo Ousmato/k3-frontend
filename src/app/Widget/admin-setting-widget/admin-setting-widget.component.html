@@ -6,9 +6,9 @@
             <img src="{{admin.urlPhoto}}" alt="photo">
             
         </div>
-        <div class="icon">
+        <!-- <div class="icon">
             <fa-icon [icon]="icons.edit"></fa-icon>
-        </div>
+        </div> -->
     </div>
     <div class="info">
         <p>{{admin.nom}} {{admin.prenom}}</p>
@@ -29,7 +29,7 @@
         </div>
         <ng-template #logOut>
             <div class="contenair-flex">
-                <p>Déconnexion</p>
+                <p (click)="disconnect()">Déconnexion</p>
                 <fa-icon [icon]="icons.aout"></fa-icon>
             </div>
         </ng-template>

@@ -1,100 +1,89 @@
-main{
+main {
     padding: 20px;
     width: 100%;
 }
-.content{
-    position: relative;
-    /* display: flex; */
-    /* gap: 20px; */
-}
-.position-realive{
+
+.content {
     position: relative;
 }
 
-span{
+.position-realive {
+    position: relative;
+}
+
+span {
     font-size: 12px;
 }
-.configure-form p{
+
+.configure-form p {
     color: var(--secondary);
     cursor: pointer;
-    &:hover{
+
+    &:hover {
         color: var(--primary);
     }
 
 }
-.entete-content{
+
+.entete-content {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin: 10px 0;
 }
-.children h4{
+
+.children h4 {
     font-size: 16px;
 }
+
 /* --------------------------------------- */
-.month-contenaire{
+.month-contenaire {
     display: flex;
     gap: 20px;
     align-items: center;
     justify-content: center;
 }
-.month-contenaire p{
+
+.month-contenaire p {
     color: var(--secondary);
     margin: 0;
     font-size: 14px;
 }
 
-table td{
+table td {
     font-size: 14px;
 }
-.refresh{
-   
-    margin-top: 15px; 
-}
-.refresh span{
-    font-size: 16px;
-    padding: 8px;
-    cursor: pointer;
-    background-color: var(--primary);
-    color: var(--secondary);
-    border-radius: 5px;
-    &:hover{
-        color: var(--primary);
-        background-color: var(--secondary);
-    }
-}
 
-.childre-1{
+.childre-1 {
     padding: 8px;
     text-align: left;
 }
-.seance-content{
+
+.seance-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
     /* border-bottom: 1px solid var(--tertiary); */
-    
-    
-    
 }
-.childre-2{
+
+.childre-2 {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: end;
     gap: 20px;
-    
+
 }
-.childre-2 span{
+
+.childre-2 span {
     color: var(--secondary);
 }
-/* .text-left{
-    display: none;
-} */
-.horaire{
+
+.horaire {
     display: none;
 }
-.section-head{
+
+.section-head {
     padding-bottom: 20px;
     width: 100%;
     display: flex;
@@ -103,61 +92,75 @@ table td{
     border-bottom: 4px solid;
 
 }
-.pdf-icon{
+
+.pdf-icon {
     color: red;
 }
+
 /* ---------------------------footer style */
-.footer-content{
+.footer-content {
     width: 100%;
     display: flex;
     justify-content: space-between;
 }
-.footer{
+
+.footer {
     display: flex;
     align-items: baseline;
 }
-.salle-row{
+
+.salle-row {
     display: flex;
 
 }
+
 .type-footer {
     margin-left: 8px;
     font-size: 12px
 }
-.salle-row, .group, .salle{
+
+.salle-row,
+.group,
+.salle {
     margin-left: 5px;
     font-size: 14px;
 }
-.footer-group{
+
+.footer-group {
     font-size: 12px;
 }
-.f-contenair{
+
+.f-contenair {
     display: flex;
     flex-direction: column;
- 
+
 }
-.signature{
+
+.signature {
     padding-right: 20px;
     display: flex;
     flex-direction: column;
     gap: 80px;
 }
-.signature p{
+
+.signature p {
     font-size: 14px;
 }
+
 /* ------------------------------------- */
-p{
+p {
     font-size: 16px;
     font-weight: 500;
 }
 
- .btn{
+.btn {
     margin-left: 20px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
- }
- #btn-submit{
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#btn-submit {
     margin-top: 10px;
- }
+}
 
 .btn-cont button {
     border: none;
@@ -165,75 +168,61 @@ p{
     margin-left: 10px;
     height: 30px;
     width: auto;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
- }
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 .btn-cont strong {
     margin-left: 10px;
     height: 30px;
-    
- }
- /* ----------------------form style */
 
-.input-time{
+}
+
+/* ----------------------form style */
+
+.input-time {
     display: flex;
     justify-content: space-between;
 }
-.hidden{
+
+.hidden {
     display: none;
-   }
-  
-  section{
+}
+
+section {
     border: none;
-  }
+}
 
 /* ------------------------------------------------------- */
-.container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px; /* Adjust the value as needed for the spacing between stacked elements */
-  }
 
-
-  .empModuleName {
-    font-size: 12px;
-    font-weight: normal;
-  }
-.icon-edit{
-    color: var(--primary);
-    &:hover{
-        color: var(--secondary);
-    }
-}
-  .button-cash{
+.button-cash {
     display: flex;
     gap: 20px;
     justify-content: end;
-    
-   
 }
-.btn-valid-emplois{
+
+.btn-valid-emplois {
     padding: 5px 10px;
     color: var(--secondary);
     cursor: pointer;
-    /* background-color: var(--primary); */
-    &:hover{
+    &:hover {
         background-color: var(--secondary);
         color: var(--primary);
     }
 }
 
-.btn-show-form{
+.btn-show-form {
     padding: 5px 10px;
     color: var(--secondary);
     cursor: pointer;
+
     /* background-color: var(--primary); */
-    &:hover{
+    &:hover {
         background-color: var(--secondary);
         color: var(--primary);
     }
 }
 
-.button-cash button{
+.button-cash button {
     border: none;
     display: flex;
     gap: 8px;
@@ -243,42 +232,35 @@ p{
     /* background-color: var(--primary); */
     color: var(--secondary);
     cursor: pointer;
-    &:hover{
+
+    &:hover {
         background-color: var(--secondary);
         color: var(--primary);
     }
-   
+
 }
 
-  .button-cash a{
+.button-cash a {
     text-decoration: none;
-     border: none;
-     margin-top: 8px;
-     padding: 5px;
-     border-radius: 5px;
-     background-color: var(--primary);
-     color: var(--secondary);
-     cursor: pointer;
-     &:hover{
-         
-     background-color: var(--secondary);
-         color: var(--primary);
-     }
-    
-  }
+    border: none;
+    margin-top: 8px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: var(--primary);
+    color: var(--secondary);
+    cursor: pointer;
 
-  /* -----------------------------views style */
-  .views.form-up{
-    gap: 14px;
-    display: flex;
-    flex-direction: column;
-    /* padding: 10px; */
-}
-.form-up{
-    padding: 10px;
+    &:hover {
+
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+
 }
 
-  .views{
+/* -----------------------------views style */
+
+.views {
     background-color: #fff;
     position: absolute;
     top: 10%;
@@ -287,98 +269,87 @@ p{
     border-radius: 4px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     z-index: 10001;
-    &:hover{
+
+    &:hover {
         border: var(--primary);
     }
-    }
-    .views .content button{
-        margin: 10px 0;
-        padding: 8px;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer; 
-        text-align: center;
-        font-weight: 500;
-        /* background-color: var(--primary); */
-        /* color: var(--primary); */
-        &:hover{
-            background-color: var(--secondary);
-            color: var(--primary);
-            
-           
-        }
-    }
-    .views h4{
-        width: 100%;
-        padding: 8px;
-        font-size: 16px;
-        font-weight: 500;
-        border-top-left-radius: 4px;
-        border-top-right-radius: 4px;
-        background-color: var(--primary);
-        color: var(--secondary);
-    }
-    .views .content{
-        
-        display: flex;
-        flex-direction: column;
-        padding: 10px 10px 0 10px;
-    }
-    .views .button-cash button{
-        margin: 0;
-        width: 150px;
+}
+
+.views .content button {
+    margin: 10px 0;
+    padding: 8px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: 500;
+
+    /* background-color: var(--primary); */
+    /* color: var(--primary); */
+    &:hover {
         background-color: var(--secondary);
         color: var(--primary);
-        font-size: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+
+
     }
-    
-  .overlay {
+}
+
+.views h4 {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    background-color: var(--primary);
+    color: var(--secondary);
+}
+
+.views .content {
+
+    display: flex;
+    flex-direction: column;
+    padding: 10px 10px 0 10px;
+}
+
+.views .button-cash button {
+    margin: 0;
+    width: 150px;
+    background-color: var(--secondary);
+    color: var(--primary);
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 1000; /* Assurez-vous que l'overlay est au-dessus de tout */
-  }
+    z-index: 1000;
+    /* Assurez-vous que l'overlay est au-dessus de tout */
+}
 
-  /* calendar.component.css */
-.calendar {
-    width: 100%;
-  }
-  
-  .table {
+/* calendar.component.css */
+
+.table {
     width: 100%;
     border-collapse: collapse;
-  }
-  
-  .table th, .table td {
+}
+
+.table th,
+.table td {
     border: 1px solid #ccc;
     padding: 8px;
     text-align: center;
-  }
- .delete-modal h4{
-    font-size: 16px;
-    font-weight: 500;
-    text-align: center;
-    background-color: var(--primary);
-    color: var(--secondary);
- }
+}
 
-
- .delete-modal {
-    background-color: rgb(110, 5, 5);
-    color: white;
- }
- .delete-modal .content, .button-cash{
-
-    padding: 10px;
- }
- /* --------------style back button */
- .back-button{
+/* --------------style back button */
+.back-button {
     width: 30px;
     height: 30px;
     display: flex;
@@ -386,7 +357,8 @@ p{
     padding: 8px;
     font-size: 20px;
     margin: 10px 0;
-    &:hover{
+
+    &:hover {
         background-color: var(--tertiary);
         color: var(--primary);
         border: none;
@@ -395,20 +367,11 @@ p{
 
 }
 
-.h4{
+.h4 {
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     background-color: var(--primary);
     color: var(--secondary);
     font-size: 16px;
     padding: 10px;
-}
-.div-content{
-    padding: 15px;
-    gap: 10px;
-}
-.text-right{
-    width: 100%;
-    display: flex;
-    justify-content: end;
 }

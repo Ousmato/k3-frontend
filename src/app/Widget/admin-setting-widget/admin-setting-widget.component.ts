@@ -23,7 +23,7 @@ export class AdminSettingWidgetComponent implements OnInit{
   }
 
   load_admin(){
-    if(this.admin.role != Admin_role.ADMINISTRATEUR.toLocaleLowerCase()){
+    if(this.admin.role != Admin_role.DG.toLocaleLowerCase()){
       // console.log(this.admin.role, "666776")
       this.desable_add_button = false
     }else{
@@ -31,6 +31,12 @@ export class AdminSettingWidgetComponent implements OnInit{
     }
   //  
   
+  }
+
+  disconnect(){
+    
+    sessionStorage.clear();
+    this.router.navigate(['/']);
   }
 
   toggle_toAdd_admin(){
