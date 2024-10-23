@@ -36,3 +36,32 @@ export interface AdminDto{
     telephone:number;
 
 }
+
+export interface validatePassworConfirmCode{
+    box1:   string;
+    box2: string
+    box3: string;
+    box4: string
+
+    
+}
+
+// Implémentation de l'interface
+class PasswordConfirmCode  {
+    box1: string;
+    box2: string;
+    box3: string;
+    box4: string;
+
+    constructor(box1: string, box2: string, box3: string, box4: string) {
+        this.box1 = box1;
+        this.box2 = box2;
+        this.box3 = box3;
+        this.box4 = box4;
+    }
+
+    // Méthode qui concatène les valeurs
+    getResult(): string {
+        return this.box1 + this.box2 + this.box3 + this.box4; // "6215"
+    }
+}

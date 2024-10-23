@@ -1,65 +1,73 @@
 <main>
-    <div class="head-content">
-        <div class="file-check">
-            <input type="file" id="fileUpload" (change)="onFileChange($event)" >
-            <label for="fileUpload">Importer <fa-icon [icon]="icons.had_point_down"></fa-icon></label>
-        </div>
-    
-    <form [formGroup]="formAdd" (ngSubmit)="submit()">
-      @if(classes.length !== 0){
-        <select formControlName="idClasse" [class.is-invalid]="formAdd.get('idClasse')!.invalid && formAdd.get('idClasse')!.touched" >
-          <option class="option" value="">Classe</option>
-          
-            <option  *ngFor="let cl of classes"  [value]="cl.id">{{cl.idFiliere?.idNiveau?.nom}} {{cl.idFiliere?.idFiliere?.nomFiliere}}</option>
-        </select>
-      }
-     
-     
-      
-      
-      <select formControlName="idAnnee" [class.is-invalid]="formAdd.get('idAnnee')!.invalid && formAdd.get('idAnnee')!.touched" (change)="onSelect($event)">
-          <option class="option" value="">Annee</option>
-          <option *ngFor="let annee of annees"  [value]="annee.id">Promotion {{annee.ans}}</option>
-      </select>
-      <button *ngIf="show_add" type="submit">Enregistrer</button>
-    </form>
-    
+  <div class="head-content">
+    <div class="file-check">
+      <input type="file" id="fileUpload" (change)="onFileChange($event)">
+      <label for="fileUpload">Importer <fa-icon [icon]="icons.had_point_down"></fa-icon></label>
     </div>
 
+    <form [formGroup]="formAdd" (ngSubmit)="submit()">
+      <div [ngClass]="{'select': classes.length !== 0}">
+        @if(classes.length !== 0){
+        <select formControlName="idClasse"
+          [class.is-invalid]="formAdd.get('idClasse')!.invalid && formAdd.get('idClasse')!.touched">
+          <option class="option" value="">Classes</option>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-              <th>Nom</th>
-              <th>Prenom</th>
-              
-              <th>matricule</th>
-              <th>email</th>
-              <th>password</th>
-  
-              <th>Telephone</th>
-              <th>lieuNaissance</th>
-              <th>dateNaissance</th>
-              <th>Status</th>
-              <th>sexe</th>
-  
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let student of students">
-                <td>{{student.nom}}</td>
-              <td>{{student.prenom}}</td>
-              <td>{{student.matricule}}</td>
-              <td>{{student.email}}</td>
-              <td>{{student.password}}</td>
-              <td>{{student.telephone}}</td>
-              <td>{{student.lieuNaissance}}</td>
-              <td>{{student.dateNaissance}}</td>
-              <td>{{student.status}}</td>
-              <td>{{student.sexe}}</td>
-            </tr>
-              
+          <option *ngFor="let cl of classes" [value]="cl.id">{{cl.idFiliere?.idNiveau?.nom}}
+            {{abrevigateFiliereName(cl.idFiliere?.idFiliere?.nomFiliere!)}}</option>
+        </select>
+        }
+      </div>
 
-          </tbody>
+      <div class="select">
+        <select formControlName="idAnnee"
+          [class.is-invalid]="formAdd.get('idAnnee')!.invalid && formAdd.get('idAnnee')!.touched"
+          (change)="onSelect($event)">
+          <option class="option" value="">Promotions</option>
+          <option *ngFor="let annee of annees" [value]="annee.id">Promotion {{annee.ans}}</option>
+        </select>
+      </div>
+
+      <button *ngIf="show_add" type="submit">Enregistrer</button>
+    </form>
+
+  </div>
+
+  <div class="table-container">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Prenom</th>
+  
+          <th>matricule</th>
+          <th>email</th>
+          <th>password</th>
+  
+          <th>Telephone</th>
+          <th>lieuNaissance</th>
+          <th>dateNaissance</th>
+          <th>Status</th>
+          <th>sexe</th>
+  
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let student of students">
+          <td>{{student.nom}}</td>
+          <td>{{student.prenom}}</td>
+          <td>{{student.matricule}}</td>
+          <td>{{student.email}}</td>
+          <td>{{student.password}}</td>
+          <td>{{student.telephone}}</td>
+          <td>{{student.lieuNaissance}}</td>
+          <td>{{student.dateNaissance}}</td>
+          <td>{{student.status}}</td>
+          <td>{{student.sexe}}</td>
+        </tr>
+  
+  
+      </tbody>
     </table>
+  </div>
+  
 </main>

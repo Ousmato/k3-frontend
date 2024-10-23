@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { authGuard } from './auth.guard';
+import { ForgotPasswordComponent } from './Password/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './Password/reset-password/reset-password.component';
+import { SetNewPasswordComponent } from './Password/set-new-password/set-new-password.component';
 
 const routes: Routes = [
   {path:'',component: LoginComponent},
@@ -31,7 +34,11 @@ const routes: Routes = [
   {path: 'secretaire', 
     loadChildren: () => import('./SECRETAIRE/sec-sidebar/sec-sidebar.module').then(m=>m.SecSidebarModule),
     canActivate: [authGuard]
-  }
+  },
+  
+    {path: 'forgot-password', component: ForgotPasswordComponent},
+    {path: 'reset-password', component: ResetPasswordComponent},
+    {path: 'set-new-password', component: SetNewPasswordComponent},
   
 ];
 

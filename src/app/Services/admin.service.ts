@@ -15,7 +15,7 @@ export class AdminService {
 
   add_admin(admin: Admin, file: File) : Observable<Response_String>{
     const formData = new FormData();
-    formData.append('admin', JSON.stringify(admin).toLowerCase());
+    formData.append('admin', JSON.stringify(admin));
     formData.append('file', file);
     return this.http.post<Response_String>(this.baseUrl+"add", formData);
 
@@ -47,5 +47,21 @@ export class AdminService {
   // --------------------update
   updateAdmin(admin: AdminDto) : Observable<Admin>{
     return this.http.put<Admin>(`${this.baseUrl}update-admin`, admin);
+  }
+
+  forgotPassword(email: any) : Observable<any[]>{
+    return this.http.post<any[]>(`${this.baseUrl}forgot-password`, email);
+  }
+
+  // ------------------validate token
+  validateToken(token: string): Observable<boolean>{
+    console.log("token", token)
+    const body = { token };
+    return this.http.post<boolean>(`${this.baseUrl}validate-token`, body, {withCredentials:true});
+  }
+
+  // ----------------set new password
+  setNewPassword(newPasse: number): Observable<boolean>{
+    return this.http.post<boolean>(`${this.baseUrl}set-new-password`, newPasse);
   }
 }

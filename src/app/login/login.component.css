@@ -1,13 +1,11 @@
-/* Reset des styles de base */
+
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
 main {
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(180deg, #8B0000, #f4f4f4);
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -20,18 +18,62 @@ main {
     align-items: center;
     width: 100%;
     height: 100%;
+    
 }
 
 .login-box {
     background-color: #FFFFFF;
-    padding: 40px;
-    border-radius: 10px;
+   
+    border-radius: 5px;
+    z-index: 100;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
+    max-width: 700px;
+    max-height: 460px;
     width: 100%;
+    display: flex;
     text-align: center;
 }
-
+.in-left{
+    flex-wrap: wrap;
+    width: 50%;
+    padding: 20px;
+}
+.in-left h4{
+    font-weight: bold;
+}
+.in-right{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+    gap: 40px;
+    padding: 20px;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px ;
+    /* background-color: var(--primary); */
+    background-image: url("/assets/recta.png");
+    background-size: cover; /* S'adapte à la taille de l'élément */
+    background-position: center;
+}
+.img-box img{
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+.text-box{
+    color: white;
+    font-size: 14px;
+    padding-left: 30px;
+}
+ .text-box h6{
+    font-weight: bold;
+    color: var(--secondary);
+    margin-bottom: 10px;
+}
+.text-box h6, p{
+    letter-spacing: 1px;
+}
 .logo img {
     padding: 5px;
     border-radius: 45%;
@@ -39,58 +81,83 @@ main {
     object-fit: cover;
     width: auto;
     margin-bottom: 20px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 
 }
 
-h2 {
-    color: #8B0000;
-    margin-bottom: 20px;
-}
 
-.input-group {
-    margin-bottom: 20px;
-    text-align: left;
-}
-.form-group{
+
+.input-groupe {
     display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-    align-items: flex-start;
-    justify-content: left;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--tertiary);
+    /* padding: 5px; */
+   border-radius: 5px;
+   
 }
-
-.form-group label {
-    display: block;
-    color: #8B0000;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.form-group input {
+.input-groupe input{
+    border: none;
+    outline: none;
+    background-color: transparent !important;
     padding: 10px;
-    border-radius: 5px;
+    height: 34px;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
     width: 100%;
 }
+#password{
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
 
+}
+
+.form-grouppe label {
+    display: block;
+    color: var(--primary);
+    font-weight: bold;
+    margin: 15px 8px 0;
+    text-align: left;
+}
+.form-grouppe{
+    text-align: left;
+}
+
+.prefix-icon{
+    background-color: var(--primo-light);
+    color: var(--primary);
+    padding: 5px 10px;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    height: 100%;
+}
+.suffix-icon{
+    background-color: var(--primo-light);
+    color: var(--primary);
+    padding: 5px 10px;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    height: 100%;
+    cursor: pointer;
+}
 .forgot-password {
     text-align: right;
     margin-bottom: 20px;
 }
 
 .forgot-password a {
-    color: #008000;
+    cursor: pointer;
+    color: var(--primary);
     text-decoration: none;
     &:hover{
-        color: #8B0000;
+        color: var(--secondary);
         text-decoration: underline;
     }
 }
 
 .login-btn {
-    background-color: #8B0000;
-    color: #FFFFFF;
-    padding: 10px 0;
+    background-color: var(--primary);
+    color: var(--secondary);
+    padding: 5px 0;
     border: none;
     border-radius: 5px;
     width: 100%;
@@ -100,8 +167,8 @@ h2 {
 }
 
 .login-btn:hover {
-    background-color: #FFD700;
-    color: #8B0000;
+    background-color: var(--secondary);
+    color: var(--primary);
 }
 
 .signup-link {
@@ -109,29 +176,12 @@ h2 {
     margin-top: 20px;
 }
 
-.signup-link a {
-    color: #008000;
-    text-decoration: none;
+
+.toggle-password {
+    cursor: pointer;
 }
 
-.position-relative {
-    position: relative;
-}
 
-.position-absolute {
-    position: absolute;
-}
-input:focus{
-    border-color: var(--tertiary) ;
-    outline: none;
-    box-shadow: none;
-}
-
-input{
-    border-color: var(--tertiary);
-    border-radius: 4px;
-    height: 40px;
-}
 .login-box .toggle-password{
     cursor: pointer;
    

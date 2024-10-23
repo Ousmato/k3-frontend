@@ -42,15 +42,15 @@ export class ReInscriptionWidgetComponent implements OnInit {
 
     console.log(idStudent, "idStudent", idClasse, "idClasse")
     // return
-    this.studentService.reInscriptionStudent(studut!, idClasse!).subscribe({
-      next: (result) => {
-        this.pageTitle.showSuccessToast(result.message)
-        this.closeModal.emit()
-      },
-      error: (error) => {
-        this.pageTitle.showErrorToast(error.error.message)
-      }
-    })
+    // this.studentService.reInscriptionStudent(studut!, idClasse!).subscribe({
+    //   next: (result) => {
+    //     this.pageTitle.showSuccessToast(result.message)
+    //     this.closeModal.emit()
+    //   },
+    //   error: (error) => {
+    //     this.pageTitle.showErrorToast(error.error.message)
+    //   }
+    // })
 
   }
   close() {

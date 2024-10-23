@@ -12,11 +12,12 @@ import { DerEmploiDuTempsComponent } from '../../DER/der-emploi-du-temps-list/de
 import { EmploisSeanceComponent } from '../../Admin/Views/emplois-seance/emplois-seance.component';
 import { SecAddSurveillanceComponent } from '../sec-add-surveillance/sec-add-surveillance.component';
 import { DerEDTComponent } from '../../DER/EDT/der-e-d-t/der-e-d-t.component';
+import { MyAccuntComponent } from '../../DG/my-accunt/my-accunt.component';
 
 const routes: Routes = [{path: '', component: SecSidebarComponent,
   children: [
     {path: '', component: SecHomeComponent, data:{title: "ACCUEIL"}},
-    {path: 'etudiant', component: EtudiantsComponent},
+    {path: 'etudiant', component: EtudiantsComponent, data:{title: "Les etudiants"}},
     {path: 'enseignant-pre-detail', component: EnseignantPrDetailsComponent},
     {path: 'fiche-de-paie-component', component: FicheDePaieComponent},
     {path: 'fiche-enseignant', component: EnseignantFichePaieComponent},
@@ -26,6 +27,7 @@ const routes: Routes = [{path: '', component: SecSidebarComponent,
     {path: 'emplois-du-temps', component: DerEmploiDuTempsComponent, data:{title: "EMPLOI DU TEMPS EN COURS"}},
     {path: 'emplois-seances', component: EmploisSeanceComponent, data:{title: "EMPLOI DU TEMPS"}},
     {path: 'affect-t-d', component: DerEDTComponent , data:{title: "AJOUTER SEANCE"}},
+    {path: 'my-accunt', component: MyAccuntComponent , data:{title: "Mon compte"}},
     // {path: 'add-surveillance', component: SecAddSurveillanceComponent , data:{title: "AJOUTER SURVEILLANCE"}},
     
     {path: 'student-view', component: StudentViewComponent, data:{title: "INFORMATIONS DE L'ETUDIANT"}},

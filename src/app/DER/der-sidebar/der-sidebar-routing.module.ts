@@ -20,13 +20,14 @@ import { AddDocComponent } from '../Widget/add-doc/add-doc.component';
 import { ProgramSoutenanceComponent } from '../Widget/program-soutenance/program-soutenance.component';
 import { ViewSoutenanceComponent } from '../Widget/view-soutenance/view-soutenance.component';
 import { StudentGroupListComponent } from '../student-group-list/student-group-list.component';
+import { MyAccuntComponent } from '../../DG/my-accunt/my-accunt.component';
 
 const routes: Routes = [{path: '', component: DerSidebarComponent,
   children: [
     {path: '', component: DerHomeComponent, data:{title: "ACCUEIL"}},
-    {path: 'salles', component: DerSallesComponent},
+    {path: 'salles', component: DerSallesComponent, data:{title: "Les salles"}},
     {path: 'paiement', component: DerPaiListComponent},
-    {path: 'enseignants', component: EnseignantComponent},
+    {path: 'enseignants', component: EnseignantComponent, data:{title: "Les enseignants"}},
     {path: 't-singin', component: TeachersSinginComponent, data:{title: "AJOUTER ENSEIGNANT"}},
     {path: 'doc', component: DerDocComponent, data:{title: "RAPPORTS ET MEMOIRES"}},
     {path: 'add-doc', component: AddDocComponent},
@@ -41,6 +42,7 @@ const routes: Routes = [{path: '', component: DerSidebarComponent,
     {path: 'programmer', component: ProgramSoutenanceComponent},
     {path: 'programme-view', component: ViewSoutenanceComponent},
     {path: 'liste-groupe', component: StudentGroupListComponent},
+    {path: 'my-accunt', component: MyAccuntComponent, data:{title: "Mon compte"} },
 
     
     // { path: 'classe-student', component: ClassStudentsComponent, data:{title: "Les Classes de Formation"} },

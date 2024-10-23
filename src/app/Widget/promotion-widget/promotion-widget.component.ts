@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IconsService } from '../../Services/icons.service';
 import { SchoolService } from '../../Services/school.service';
 import { PageTitleService } from '../../Services/page-title.service';
+import { Admin } from '../../Admin/Models/Admin';
 
 @Component({
   selector: 'app-promotion-widget',
@@ -23,6 +24,7 @@ export class PromotionWidgetComponent implements OnInit {
   ishow_delete: boolean = false
   isDelete: boolean = false
   anneForDelete!: AnneeScolaire
+  admin!: Admin
 
 
   constructor(private fb: FormBuilder, public icons: IconsService, 
@@ -33,9 +35,18 @@ export class PromotionWidgetComponent implements OnInit {
     this.load_form();
     this.get_annees();
     this.load_edit_form();
+    this.getAdmin();
       
   }
 
+  // ------------------------get admin
+  getAdmin(){
+    const adminData = sessionStorage.getItem("dga");
+    if(adminData){
+       this.admin = JSON.parse(adminData);
+      
+    }
+  }
   // --------------------load form 
   load_form(){
     this.form_annee = this.fb.group({
@@ -55,7 +66,8 @@ export class PromotionWidgetComponent implements OnInit {
     const formData = this.form_annee.value
     const annee: AnneeScolaire = {
       debutAnnee: formData.debutAnnee,
-      finAnnee: formData.finAnnee
+      finAnnee: formData.finAnnee,
+      idAdmin: this.admin
     }
     console.log(annee, "promotion");
     // return
@@ -138,9 +150,11 @@ export class PromotionWidgetComponent implements OnInit {
         this.pageTile.showSuccessToast(result.message);
         this.get_annees();
         this.isConfirm = false
+        this.closeModal.emit();
       },
       error: (erreur) =>{
         this.pageTile.showErrorToast(erreur.error.message);
+        this.ngOnInit();
       }
     })
     
@@ -175,6 +189,5 @@ export class PromotionWidgetComponent implements OnInit {
   nextToConfirm(){
     this.ishow_delete = false
     this.isConfirm = true;
-    this.closeModal.emit();
   }
 }

@@ -15,10 +15,11 @@ import { DgaArchivesComponent } from '../dga-archives/dga-archives.component';
 import { SchoolEditWidgetComponent } from '../../Widget/school-edit-widget/school-edit-widget.component';
 import { ViewUeComponent } from '../../Widget/ue-widget/view-ue/view-ue.component';
 import { ClassArchiveComponent } from '../class-students/class-archive/class-archive.component';
+import { MyAccuntComponent } from '../../DG/my-accunt/my-accunt.component';
 
 const routes: Routes = [{path: '', component: DgaSidebarComponent,
   children: [
-    {path: '', component: DgaHomeComponent},
+    {path: '', component: DgaHomeComponent, data:{title: "Accueil"}},
     {path: 'mentions-liste', component: ClassStudentsComponent},
     {path: 'setting', component: SettingsComponent, data:{title: "PARAMETRE ET CONFIDENTIALITE"}},
     {path: 'etudiant', component: EtudiantsComponent},
@@ -32,6 +33,7 @@ const routes: Routes = [{path: '', component: DgaSidebarComponent,
     {path: 'class-archives', component: ClassArchiveComponent},
     {path: 'view-ues', component: ViewUeComponent, data:{title: "LES UNITES D'ENSEIGNEMENT"}},
     {path: 'all-notes', component: AllNotesSemestreComponent, data:{title: "NOTES DU SEMESTRE"}},
+    {path: 'my-accunt', component: MyAccuntComponent, data:{title: "Mon Compte"}},
     
     {path: 'emplois-seances', component: EmploisSeanceComponent},
     {path: 'emplois-du-temps', component: DerEmploiDuTempsComponent, data:{title: "LES EMPLOIS DU TEMPS ENCOURS"}},

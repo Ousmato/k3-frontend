@@ -7,6 +7,7 @@ import { SchoolService } from '../../Services/school.service';
 import { SideBarService } from '../../sidebar/side-bar.service';
 import { filter, Subscription } from 'rxjs';
 import { SchoolInfo } from '../../Admin/Models/School-info';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-r-s-sidebar',
@@ -97,8 +98,7 @@ setTitle(): void {
 }
 load_school_info(){
   this.schoolService.getSchools().subscribe(data => {
-    this.school = data
-    this.school.urlPhoto = "http://localhost/StudentImg/"+this.school.urlPhoto
+    this.school = data    
     // console.log(data, "----------------------------");
   })
 }
@@ -106,12 +106,11 @@ load_school_info(){
 load_admin(){
   const admin = sessionStorage.getItem('scolarite');
  
+ 
   if(admin){
     
-    const dataAdmin = JSON.parse(admin);
-    dataAdmin.urlPhoto = "http://localhost/StudentImg/"+dataAdmin.urlPhoto
-    // dataAdmin.prenom.charAt(0).toUpperCase() + dataAdmin.prenom.slice(1).toLowerCase()
-    this.dataAdmin = dataAdmin;
+    this.dataAdmin = JSON.parse(admin);
+    this.dataAdmin.urlPhoto = `${environment.urlPhoto}${this.dataAdmin.urlPhoto}`
 
   }
 }
@@ -139,7 +138,9 @@ load_admin(){
     }
   }
 
-
+  toAccunt(){
+    this.router.navigate(['/r-scolarite/my-accunt'], {queryParams:{id: this.dataAdmin.idAdministra}})
+  }
   // ---------------
   singAout(){
     sessionStorage.clear();

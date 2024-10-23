@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Participant, Student, Student_count, Student_group, Student_import, Student_reinscription } from '../../Models/Students';
+import { Inscription, Participant, Student, Student_count, Student_group, Student_import, Student_reinscription } from '../../Models/Students';
 import { NoteDto, Notes } from '../../Models/Notes';
 import { Module } from '../../Models/Module';
 import { Response_String } from '../../Models/Response_String';
@@ -27,7 +27,7 @@ export class EtudeService {
     return this.http.post<Response_String>(this.baseUrl+"add-doc" , doc);
   }
 // --------------------add studens import excel file 
-addStudentImport(studentImport: Student_import) : Observable<Response_String>{
+addStudentImport(studentImport: Inscription[]) : Observable<Response_String>{
   return this.http.post<Response_String>(this.baseUrl+"students-import", studentImport);
 }
   // ---------------------------get all docs(memoir/rapport)
@@ -87,6 +87,9 @@ addStudentImport(studentImport: Student_import) : Observable<Response_String>{
   getStudent_by_id(idStudent: number) : Observable<Student>{
     return this.http.get<Student>(this.baseUrl+"student-by-id/"+idStudent)
   }
+  getInscriptionById(idInscription: number) : Observable<Inscription>{
+    return this.http.get<Inscription>(this.baseUrl+"inscription-by-id/"+idInscription)
+  }
   // ---------------------update student
   updateStudent(student: Student, file?: File): Observable<Response_String> {
     const formData = new FormData();
@@ -94,13 +97,13 @@ addStudentImport(studentImport: Student_import) : Observable<Response_String>{
     formData.append('file', file!);
     return this.http.put<Response_String>(this.baseUrl + 'update', formData);
   }
-  reInscriptionStudent(student: Student, idClasse: number): Observable<Response_String> {
-    const url = `${this.baseUrl}re-inscription/${idClasse}`;
+  reInscriptionStudent(student: Inscription, idClasse: number, idAdmin: number): Observable<Response_String> {
+    const url = `${this.baseUrl}re-inscription/${idClasse}/${idAdmin}`;
     return this.http.post<Response_String>(url, student);
 }
   // -----------------------update scolarite
-  update_student_scolarite(idEtudiant: number, scolarite: number): Observable<Response_String> {
-    const url = `${this.baseUrl}update-scolarite/${idEtudiant}`;
+  update_student_scolarite(idInscription: number, idAdmin: number, scolarite: number): Observable<Response_String> {
+    const url = `${this.baseUrl}update-scolarite/${idInscription}/${idAdmin}`;
     return this.http.put<Response_String>(url, { scolarite });
   }
   // ----------------------------------lad teacher by pagination
@@ -174,8 +177,8 @@ addStudentImport(studentImport: Student_import) : Observable<Response_String>{
     return this.http.get<StudentPages>(`${this.baseUrl}get-student-annee-and-classe/${idAnnee}/${idClass}?page=${page}&size=${size}`);
   }
 
-  getStudentListByIdAnneeAndIdClasse(idAnnee: number, idClass: number) : Observable<Student[]>{
-    return this.http.get<Student[]>(`${this.baseUrl}get-list-student-by-idAnnee-and-idClasse/${idAnnee}/${idClass}`)
+  getStudentListByIdAnneeAndIdClasse(idAnnee: number, idClass: number) : Observable<Inscription[]>{
+    return this.http.get<Inscription[]>(`${this.baseUrl}get-list-student-by-idAnnee-and-idClasse/${idAnnee}/${idClass}`)
   }
   // -----------------------annuler le programme de soutenance
   annulerProgramme(idDoc: number):Observable<boolean>{
@@ -185,5 +188,13 @@ addStudentImport(studentImport: Student_import) : Observable<Response_String>{
   // ------------------ajouter soutenance note
   addSoutenanceNote(idDoc: number, note: number) : Observable<Response_String>{
     return this.http.post<Response_String>(this.baseUrl+"add-soutenance-note/"+idDoc, note);
+  }
+  // -------------------------get student by etats
+  getByEtat(value: number, page: number, size: number): Observable<StudentPages> {
+    return this.http.get<StudentPages>(`${this.baseUrl}get-student-by-etats/${value}?page=${page}&size=${size}`);
+  }
+  // -----------change state inscription
+  changeStateStudentInscription(idInscription: number, idClasse: number): Observable<Response_String>{
+    return this.http.get<Response_String>(`${this.baseUrl}change-state-inscription/${idInscription}/${idClasse}`)
   }
 }

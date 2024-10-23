@@ -40,7 +40,6 @@ export class DasboardComponent implements OnInit {
       // date: [''],
       idAdmin: [''],
       titre: ['']
-      // idTeacher: ['']
 
     })
     this.countStudents()
@@ -75,11 +74,14 @@ export class DasboardComponent implements OnInit {
     return this.emploisService.getAllEmploisActifs().subscribe(res => {
       this.emploisCount = res.length;
       this.emplois = res
+      const toDay = new Date();
+      
+      console.log(toDay.toLocaleDateString(), "toDay")
       res.forEach(item => {
         this.classes.push(item.idClasse)
-       item.progess = this.calculateDiff(item.dateDebut, item.dateFin);
+       item.progess = this.calculateDiff(toDay, item.dateFin);
        item.toDay = this.isDateInRange(item.dateDebut, item.dateFin)
-        // console.log(item.toDay, "------------k-k-k-k-k-kk--");
+        // console.log(item.progess, "------------k-k-k-k-k-kk--");
       })
       // console.log(res);
     });

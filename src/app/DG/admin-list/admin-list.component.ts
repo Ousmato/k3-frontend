@@ -6,6 +6,7 @@ import { IconsService } from '../../Services/icons.service';
 import { PageTitleService } from '../../Services/page-title.service';
 import { Router } from '@angular/router';
 import { getActionCache } from '@angular/core/primitives/event-dispatch';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-admin-list',
@@ -40,13 +41,7 @@ export class AdminListComponent implements OnInit {
   // load all admin
   getAllAdminActif() {
     this.adminService.getAllAdminActifs().subscribe(admins => {
-      this.admins = admins;
-      console.log(admins, "liste admin")
-      admins.forEach(ad => {
-        ad.urlPhoto = `http://localhost/StudentImg/${ad.urlPhoto}`
-        ad.nom = ad.nom.charAt(0).toUpperCase() + ad.nom.slice(1).toLowerCase(); // Majuscule pour le nom
-        ad.prenom = ad.prenom.charAt(0).toUpperCase() + ad.prenom.slice(1).toLowerCase();
-      })
+     this.formatedData(admins)
     this.adminFiltered = this.admins
 
     })
@@ -70,12 +65,7 @@ export class AdminListComponent implements OnInit {
   getEtat(event: any) {
     const value = event.target.value
     this.adminService.getAllByEtat(value).subscribe(adm =>{
-      this.admins = adm
-      adm.forEach(ad => {
-        ad.urlPhoto = `http://localhost/StudentImg/${ad.urlPhoto}`
-        ad.nom = ad.nom.charAt(0).toUpperCase() + ad.nom.slice(1).toLowerCase(); // Majuscule pour le nom
-        ad.prenom = ad.prenom.charAt(0).toUpperCase() + ad.prenom.slice(1).toLowerCase();
-      })
+     this.formatedData(adm);
     this.adminFiltered = this.admins
     })
   }
@@ -131,4 +121,13 @@ export class AdminListComponent implements OnInit {
     this.overlay = false
   }
 
+  formatedData(admins: Admin[]){
+    this.admins = admins
+    admins.forEach(ad => {
+      ad.urlPhoto = `${environment.urlPhoto}${ad.urlPhoto}`
+
+      ad.nom = ad.nom.charAt(0).toUpperCase() + ad.nom.slice(1).toLowerCase(); // Majuscule pour le nom
+      ad.prenom = ad.prenom.charAt(0).toUpperCase() + ad.prenom.slice(1).toLowerCase();
+    })
+  }
 }

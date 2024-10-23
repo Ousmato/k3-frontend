@@ -99,28 +99,7 @@ export class ClassStudentsComponent implements OnInit {
 
     });
   }
-  // ----------------------------------------add module in classRoom
-  // createClassModule(classe: any) {
-  //   const idClass: ClassRoom = this.classRoms.find(cl => cl.id === classe.id)!;
-  //   const ues: ClassModules = {
-  //     idStudentClasse: idClass,
-  //     idUE: this.list_checked,
-
-  //   }
-  //   this.service.createClassModule(ues).subscribe({
-  //     next: (response) => {
-  //       this.isShow_add_module = false
-  //       this.isShow_link_modal = true
-  //       this.list_checked = [];
-  //       this.toastr.success(response.message, "Succès");
-  //     },
-  //     error: (erreur) => {
-  //       this.toastr.error(erreur.error.message, "Erreur");
-  //     }
-  //   })
-  //   console.log(ues, "object --liste")
-
-  // }
+  
   // ------------------------------------------get all ue by class id
   getAll_ues(classe: ClassRoom) {
     this.isShow_add_module = true;
@@ -234,21 +213,28 @@ export class ClassStudentsComponent implements OnInit {
       return this.filteredClasse = this.classes_L1;
     }
     return this.filteredClasse = this.classes_L1.filter(clf => clf.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      clf.idFiliere?.idNiveau.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()))
+      clf.idFiliere?.idNiveau.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      this.abreviateFiliereName(clf.idFiliere?.idFiliere.nomFiliere.toLowerCase()!).toLowerCase().includes(this.searchTerm.toLowerCase())
+    )
+      
   }
   filterClasse_L2() {
     if (!this.searchTerm) {
       return this.filteredClasse = this.classes_L2;
     }
     return this.filteredClasse = this.classes_L2.filter(clf => clf.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      clf.idFiliere?.idNiveau.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()))
+      clf.idFiliere?.idNiveau.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      this.abreviateFiliereName(clf.idFiliere?.idFiliere.nomFiliere.toLowerCase()!).toLowerCase().includes(this.searchTerm.toLowerCase())
+    )
   }
   filterClasse_L3() {
     if (!this.searchTerm) {
       return this.filteredClasse = this.classes_L3;
     }
     return this.filteredClasse = this.classes_L3.filter(clf => clf.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      clf.idFiliere?.idNiveau.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()))
+      clf.idFiliere?.idNiveau.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      this.abreviateFiliereName(clf.idFiliere?.idFiliere.nomFiliere.toLowerCase()!).toLowerCase().includes(this.searchTerm.toLowerCase())
+    )
   }
 
   // ------------------methode to abrevigate

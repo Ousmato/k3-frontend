@@ -5,10 +5,11 @@ import { SemestreService } from '../../Services/semestre.service';
 import { Semestres } from '../../Admin/Models/Semestre';
 import { EtudeService } from '../../Admin/Views/etudiants/etude.service';
 import { Module } from '../../Admin/Models/Module';
-import { Student } from '../../Admin/Models/Students';
+import { Inscription, Student } from '../../Admin/Models/Students';
 import { Notes } from '../../Admin/Models/Notes';
 import { max } from 'rxjs';
 import { PageTitleService } from '../../Services/page-title.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-add-note-widget',
@@ -16,10 +17,10 @@ import { PageTitleService } from '../../Services/page-title.service';
   styleUrl: './add-note-widget.component.css'
 })
 export class AddNoteWidgetComponent implements OnInit {
-  @Input() idClasse!: number;
-  @Input() student!: Student;
-  @Input() modules: Module[] = []
-  @Output() closeAddNoteModal = new EventEmitter<any>();
+  idClasse!: number;
+   inscrit!: Inscription;
+   modules: Module[] = []
+  // @Output() closeAddNoteModal = new EventEmitter<any>();
 
   moduleForm!: FormGroup;
   semestres: Semestres[] = [];
@@ -29,18 +30,20 @@ export class AddNoteWidgetComponent implements OnInit {
   isShow_add_note: boolean = true
   isOverlay: boolean = true
 
-  constructor(private fb: FormBuilder, private studentService: EtudeService, private pageTitle: PageTitleService,
+  constructor(private fb: FormBuilder, private studentService: EtudeService, 
+    private pageTitle: PageTitleService, private root: ActivatedRoute,
     public icons: IconsService, private semestreService: SemestreService) { }
   ngOnInit(): void {
     this.load_form();
     // this.load_module();
+    this.getStudent();
     this.loadSemestre();
 
   }
 
   // ---------------------load semestre
   loadSemestre() {
-    this.semestreService.getCurrentSemestresByIdNivFiliere(this.student.idClasse.idFiliere?.id!).subscribe(data => {
+    this.semestreService.getCurrentSemestresByIdNivFiliere(this.inscrit.idClasse.idFiliere?.id!).subscribe(data => {
       data.forEach(sem => {
         if (!this.semestres.some(s => s.id == sem.id)) {
           this.semestres.push(sem);
@@ -62,9 +65,9 @@ export class AddNoteWidgetComponent implements OnInit {
   }
   // -------------------------------load module
   load_module() {
-    console.log(this.student, "student select")
+    console.log(this.inscrit, "student select")
     this.modules =[]
-    this.studentService.getAllModulesWithoutNoteFilter(this.student.idEtudiant!, this.student.idClasse.idFiliere?.id!, this.semestreSelect.id!).subscribe(
+    this.studentService.getAllModulesWithoutNoteFilter(this.inscrit.idEtudiant.idEtudiant!, this.inscrit.idClasse.idFiliere?.id!, this.semestreSelect.id!).subscribe(
       data => {
         this.modules = data
         console.log(this.modules, "modules")
@@ -80,13 +83,7 @@ export class AddNoteWidgetComponent implements OnInit {
       this.showFormId = id; // Afficher le formulaire pour le module avec l'ID spécifié
     }
   }
-  // maxValueValidator(max: number) {
-  //   console.log(max, "max")
-  //   return (control: AbstractControl): { [key: string]: any } | null => {
-  //     return control.value > max ? { 'maxValue': { value: control.value } } : null;
-  //   };
-  // }
-  // ----------------------sumit method
+// --------------------sumit method
   onSubmit(student: Student, module: Module) {
     // Ajouter une nouvelle note pour le module et l'étudiant
     const {numero,...studentSelect} = student
@@ -119,7 +116,7 @@ export class AddNoteWidgetComponent implements OnInit {
   }
   // ----------------------close modal
   close_modal() {
-    this.closeAddNoteModal.emit();
+    // this.closeAddNoteModal.emit();
     this.isShow_add_note = false;
     this.isOverlay = false;
   }
@@ -128,6 +125,17 @@ export class AddNoteWidgetComponent implements OnInit {
     this.semestreSelect = this.semestres.find(sem => sem.id == idSemestre)!;
 
     this.load_module();
+  }
+
+  // ----------------get student by id
+  getStudent(){
+    this.root.queryParams.subscribe(param =>{
+      const id = +param['id'];
+      this.studentService.getInscriptionById(id).subscribe(data => {
+        this.inscrit = data;
+        // this.load_module();
+      })
+    })
   }
   
 }

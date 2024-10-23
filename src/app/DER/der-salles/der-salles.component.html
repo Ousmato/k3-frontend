@@ -1,103 +1,139 @@
-<main>
-    <div class="col-12">
-        <div class="col">
+<main >
+    <div class="head" *ngIf="salles.length !== 0">
+        <!-- <div class="col"> -->
             <button (click)="toggle_form_add()" class="btn">Ajouter salle</button>
             <div class="app">
                 <ng-container *ngIf="show_add_form">
                     <app-der-salles-add (closeModal)="toggle_form_add()"> </app-der-salles-add>
                 </ng-container>
-            </div>
+            <!-- </div> -->
         </div>
-        
+
+        <div class="input-search">
+            <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..." class="search-input">
+          </div>
         <!-- <button (click)="refreshe()" class="btn"><fa-icon [icon]="icons.actualise"></fa-icon> Actualiser</button> -->
     </div>
     @if (salles.length == 0) {
-        <h2 id="h4">Aucun elements trouvé</h2>
-    }@else {
-        <h4><p>Etage 1</p></h4>
-        <div class="grid-container">
-            <div class="grid-item" *ngFor="let salle of filteredSalles()">
-                <div class="section-folder">
-                    <div class="class-folder" [ngClass]="isSalleOccupee(salle.id!) ? 'contour-o' : 'contour-d'">
-                        <div class="icon-folder">
-                            <fa-icon [icon]="icons.folder" class="icons-style"></fa-icon>
-                        </div>
-                        <div class="info-folder">
-                            <h2 class="title">Nom : {{salle.nom}}</h2>
-                            <p class="title">Place : {{salle.nombrePlace}}</p>
-                            <span [ngClass]="isSalleOccupee(salle.id!) ? 'occupe' : 'disponible'">
-                                {{isSalleOccupee(salle.id!) ? 'Occupé' : 'Disponible'}}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="empty-content">
+        <h5> Aucun elements trouvé</h5>
+        <button (click)="toggle_form_add()" class="btn">Ajouter salle</button>
+        <div class="add-modal">
+            <ng-container *ngIf="show_add_form">
+                <app-der-salles-add (closeModal)="toggle_form_add()"> </app-der-salles-add>
+            </ng-container>
         </div>
-        <h4><p>Etage 2</p></h4>
-        <div class="grid-container">
-            
-            <div class="grid-item" *ngFor="let salle of filteredSallesE2()">
-                <div class="section-folder">
-                    <div class="class-folder" [ngClass]="isSalleOccupee(salle.id!) ? 'contour-o' : 'contour-d'">
-                        <div class="icon-folder">
-                            <fa-icon [icon]="icons.folder" class="icons-style"></fa-icon>
-                        </div>
-                        <div class="info-folder">
-                            <h2 class="title">Nom : {{salle.nom}}</h2>
-                            <p class="title">Place : {{salle.nombrePlace}}</p>
-                            <span [ngClass]="isSalleOccupee(salle.id!) ? 'occupe' : 'disponible'">
-                                {{isSalleOccupee(salle.id!) ? 'Occupé' : 'Disponible'}}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <h4><p>Etage 3</p></h4>
-        <div class="grid-container">
-            
-            <div class="grid-item" *ngFor="let salle of filteredSallesE3()">
-                <div class="section-folder">
-                    <div class="class-folder" [ngClass]="isSalleOccupee(salle.id!) ? 'contour-o' : 'contour-d'">
-                        <div class="icon-folder">
-                            <fa-icon [icon]="icons.folder" class="icons-style"></fa-icon>
-                        </div>
-                        <div class="info-folder">
-                            <h2 class="title">Nom : {{salle.nom}}</h2>
-                            <p class="title">Place : {{salle.nombrePlace}}</p>
-                            <span [ngClass]="isSalleOccupee(salle.id!) ? 'occupe' : 'disponible'">
-                                {{isSalleOccupee(salle.id!) ? 'Occupé' : 'Disponible'}}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <h4><p>Autres</p></h4>
-        <div class="grid-container">
-            
-            <div class="grid-item" *ngFor="let salle of filteredSallesR()">
-                <div class="section-folder">
-                    <div class="class-folder" [ngClass]="isSalleOccupee(salle.id!) ? 'contour-o' : 'contour-d'">
-                        <div class="icon-folder">
-                            <fa-icon [icon]="icons.folder" class="icons-style"></fa-icon>
-                        </div>
-                        <div class="info-folder">
-                            <h2 class="title">Nom : {{salle.nom}}</h2>
-                            <p class="title">Place : {{salle.nombrePlace}}</p>
-                            <span [ngClass]="isSalleOccupee(salle.id!) ? 'occupe' : 'disponible'">
-                                {{isSalleOccupee(salle.id!) ? 'Occupé' : 'Disponible'}}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-   
-    
-    
 
+    </div>
+    }@else {
+    <div class="main-contente">
+        <ng-container *ngIf="filteredSalles().length !== 0">
+            <h4>
+                <p>Etage 1</p>
+            </h4>
+            <div class="grid-container">
+                <div class="grid-item" *ngFor="let salle of filteredSalles()">
+                    <div class="section-folder">
+                        <div class="class-folder" [ngClass]="isSalleOccupee(salle.id!) ? 'contour-o' : 'contour-d'">
+                            <div class="icon-folder">
+                                <fa-icon [icon]="icons.folder" class="icons-style"></fa-icon>
+                            </div>
+                            <div class="info-folder">
+                                <h2 class="title">Nom : {{salle.nom}}</h2>
+                                <p class="title">Place : {{salle.nombrePlace}}</p>
+                                <span  [ngClass]="isSalleOccupee(salle.id!) ? 'occupe' : 'disponible'">
+                                    {{isSalleOccupee(salle.id!) ? 'Occupé' : 'Disponible'}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
     
-<div class="overlay" *ngIf="overlay"></div>
+        <ng-container *ngIf="filteredSallesE2().length !== 0">
+            <h4>
+                <p>Etage 2</p>
+            </h4>
+            <div class="grid-container">
+    
+                <div class="grid-item" *ngFor="let salle of filteredSallesE2()">
+                    <div class="section-folder">
+                        <div class="class-folder" [ngClass]="isSalleOccupee(salle.id!) ? 'contour-o' : 'contour-d'">
+                            <div class="icon-folder">
+                                <fa-icon [icon]="icons.folder" class="icons-style"></fa-icon>
+                            </div>
+                            <div class="info-folder">
+                                <h2 class="title">Nom : {{salle.nom}}</h2>
+                                <p class="title">Place : {{salle.nombrePlace}}</p>
+                                <span [ngClass]="isSalleOccupee(salle.id!) ? 'occupe' : 'disponible'">
+                                    {{isSalleOccupee(salle.id!) ? 'Occupé' : 'Disponible'}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    
+        <ng-container *ngIf="filteredSallesE3().length !== 0">
+            <h4>
+                <p>Etage 3</p>
+            </h4>
+            <div class="grid-container">
+    
+                <div class="grid-item" *ngFor="let salle of filteredSallesE3()">
+                    <div class="section-folder">
+                        <div class="class-folder" [ngClass]="isSalleOccupee(salle.id!) ? 'contour-o' : 'contour-d'">
+                            <div class="icon-folder">
+                                <fa-icon [icon]="icons.folder" class="icons-style"></fa-icon>
+                            </div>
+                            <div class="info-folder">
+                                <h2 class="title">Nom : {{salle.nom}}</h2>
+                                <p class="title">Place : {{salle.nombrePlace}}</p>
+                                <span [ngClass]="isSalleOccupee(salle.id!) ? 'occupe' : 'disponible'">
+                                    {{isSalleOccupee(salle.id!) ? 'Occupé' : 'Disponible'}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    
+    
+        <ng-container *ngIf="filteredSallesR().length !== 0">
+            <h4>
+                <p>Autres</p>
+            </h4>
+            <div class="grid-container">
+    
+                <div class="grid-item" *ngFor="let salle of filteredSallesR()">
+                    <div class="section-folder">
+                        <div class="class-folder" [ngClass]="isSalleOccupee(salle.id!) ? 'contour-o' : 'contour-d'">
+                            <div class="icon-folder">
+                                <fa-icon [icon]="icons.folder" class="icons-style"></fa-icon>
+                            </div>
+                            <div class="info-folder">
+                                <h2 class="title">Nom : {{salle.nom}}</h2>
+                                <p class="title">Place : {{salle.nombrePlace}}</p>
+                                <span [ngClass]="isSalleOccupee(salle.id!) ? 'occupe' : 'disponible'">
+                                    {{isSalleOccupee(salle.id!) ? 'Occupé' : 'Disponible'}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+   
+
+    }
+
+
+
+
+
+    <div class="overlay" *ngIf="overlay"></div>
 </main>

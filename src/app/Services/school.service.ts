@@ -24,7 +24,7 @@ export class SchoolService {
   }
   // -----------------------------add annee scolaire
   addAnnee(annee: AnneeScolaire) : Observable<Response_String>{
-    return this.http.post<Response_String>(this.baseUrl+"add-annee-scolaire", annee);
+    return this.http.post<Response_String>(`${this.baseUrl}add-annee-scolaire`, annee);
   }
   // -------------------------------get all annee scolaire
   getAll_annee() : Observable<AnneeScolaire[]>{

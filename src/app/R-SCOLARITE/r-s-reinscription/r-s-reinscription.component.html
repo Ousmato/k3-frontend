@@ -1,77 +1,102 @@
 <main>
+  <div (click)="goBack()" class="back-button">
+    <fa-icon [icon]="icons.back"></fa-icon>
+  </div>
+
   <div class="head-content">
-    <div (click)="goBack()" class="back-button">
-      <fa-icon [icon]="icons.back"></fa-icon>
-    </div>
-    
+
     <div class="left">
-      
       <div class="form form-group">
-      
         <select (change)="changeClasse($event)">
-          <option class="option" selected disabled value="">Encien classe</option>
+          <option class="option" selected disabled value="">Ancien classe</option>
           <option *ngFor="let cl of classRoom" value="{{cl.id}}">{{cl.idFiliere?.idNiveau?.nom}}
-            {{cl.idFiliere?.idFiliere?.nomFiliere}} </option>
+            {{abrevigateFiliere(cl.idFiliere?.idFiliere?.nomFiliere!)}} </option>
         </select>
       </div>
     </div>
-    
-  </div>
 
+    <div class="right">
+      <div class="input-search">
+        <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..." class="search-input">
+      </div>
+    </div>
+  </div>
 
   <div class="table-container">
     <div class="views" *ngIf="is_show">
+      <h3 class="span">Confirmation de réinscription</h3>
+      <div class="container-views">
+        <p>Êtes-vous sûr de vouloir {{ check(inscrit?.idEtudiant?.idEtudiant!, inscrit?.active!) ? "Annuler l'inscription de": "Réinscrit" }} l'étudiant dans cette classe,
+          <span> {{NextClass.idFiliere?.idNiveau?.nom}}
+            {{abrevigateFiliere(NextClass.idFiliere?.idFiliere?.nomFiliere!)}}?</span>
+        </p>
+        <div class="profil">
+          <img [src]="inscrit?.idEtudiant?.urlPhoto" (error)="onError($event)" alt="photo">
+          <p>
+            {{inscrit?.idEtudiant?.nom}} {{inscrit?.idEtudiant?.prenom}}<br>
+            <span>{{inscrit?.idEtudiant?.status?.toUpperCase()}}</span>
+          </p>
+        </div>
+
+        <div class="button-cash">
+          <a type="button" (click)="exitConfirm()">Annuler</a>
+          <button type="button" (click)="confirmInscription(inscrit!, NextClass.id!)">Confirmer</button>
+        </div>
+
+      </div>
+    </div>
+    <!-- <div class="views" *ngIf="is_show">
+
       <app-re-inscription-widget [student]="student!" (closeModal)="closeModal()"
         [nextClass]="NextClassRoom"></app-re-inscription-widget>
-    </div>
+    </div> -->
 
-    <table class="table table-striped table-hover">
+    <table class="table table-hover">
       <thead>
         <tr>
           <th>N° D'ordre</th>
-          <!-- <th>Photo</th> -->
           <th>Nom</th>
           <th>Prenom</th>
-
           <th>Niveau</th>
           <th>Filiere</th>
-
-          <!-- <th>Telephone</th> -->
           <th>Status</th>
-          <!-- <th>Etat</th> -->
+          <th>Inscrit</th>
           <th>Action</th>
 
         </tr>
       </thead>
       <tbody>
         <ng-container *ngIf="filterStudents().length ; else noResults">
-          <tr *ngFor="let studens of filterStudents(); let i = index">
+          <tr *ngFor="let inscrit of filterStudents(); let i = index">
             <td>{{i + 1}}</td>
-            <!-- <td><img src="{{studens.urlPhoto}}" alt=""></td> -->
-            <td>{{studens.nom}}</td>
-            <td>{{studens.prenom}}</td>
+            <td>{{inscrit.idEtudiant.nom}}</td>
+            <td>{{inscrit.idEtudiant.prenom}}</td>
 
-            <td class="class-name" title="{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}">
-              {{studens.idClasse.idFiliere?.idNiveau?.nom}}</td>
-            <td class="class-name" title="{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}">
-              {{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}</td>
+            <td class="class-name" title="{{inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}">
+              {{inscrit.idClasse.idFiliere?.idNiveau?.nom}}</td>
+            <td class="class-name" title="{{inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}">
+              {{abrevigateFiliere(inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere!)}}</td>
 
-            <!-- <td>{{studens.telephone}}</td> -->
-            <td>{{studens.status}}</td>
-            <!-- <td>
-                <a >
-                <fa-icon [icon]="studens.payer ? icons.active : icons.desactive " [ngStyle]="{ color: studens.payer ? 'green' : 'red' }"></fa-icon><span >{{ studens.payer ? 'Inscrit' : 'Non inscrit' }}</span></a>
-              </td> -->
+            <td>{{inscrit.idEtudiant.status}}</td>
             <td>
-              <div class="btn-contenaire">
+              <a>
+                <fa-icon [icon]="inscrit.payer ? icons.circle : icons.circle"
+                  [ngStyle]="{ color: check(inscrit.idEtudiant.idEtudiant!, inscrit?.active!)  ? 'green' : 'red' }"></fa-icon>
+                <span class="text-muted small">{{ check(inscrit.idEtudiant.idEtudiant!, inscrit?.active!) ? 'inscrit(e)' : 'Non Inscrit(e)' }}</span>
+              </a>
+            </td>
 
-                <a (click)="getStudentView(studens) "  [class.disabled]="check(studens.matricule)">{{ check(studens.matricule) ? "Déjà Inscrit  en " + niveau!.nom!: "Réinscrit"  }}</a>
-                <!-- <a (click)="!check(studens.matricule) ? getStudentView(studens) : null" [class.disabled]="check(studens.matricule)">
-                  <p ></p>
-                </a> -->
-                <!-- <a *ngIf="permission" (click)="getStudent(studens)"><fa-icon [icon]="icons.edit"></fa-icon><span>Modifier</span></a> -->
+            <td>
+              <!-- <div class="btn-contenaire"> -->
+                @if(!check(inscrit.idEtudiant.idEtudiant!, inscrit?.active!)){
+                <button class="reinscrit" (click)="getStudentView(inscrit) ">Réinscrit</button>
 
-              </div>
+                }@else {
+                <button id="annuler" (click)="getStudentView(inscrit) ">Annuler</button>
+
+                }
+
+              <!-- </div> -->
             </td>
 
           </tr>
@@ -86,5 +111,5 @@
     </table>
   </div>
 
-  <div class="overlay" *ngIf="is_show"></div>
+  <!-- <div class="overlay" ></div> -->
 </main>

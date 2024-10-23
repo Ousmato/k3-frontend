@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { EtudeService } from '../etudiants/etude.service';
 import { ClassStudentService } from '../../../DGA/class-students/class-student.service';
 import { IconsService } from '../../../Services/icons.service';
-import { Student } from '../../Models/Students';
+import { Inscription, Student } from '../../Models/Students';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { StudentPages } from '../../Models/Pagination-module';
 import { SideBarService } from '../../../sidebar/side-bar.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-etudiants-de-la-classe',
@@ -15,15 +16,15 @@ import { SideBarService } from '../../../sidebar/side-bar.service';
 export class EtudiantsDeLaClasseComponent implements OnInit{
   
   searchTerm: string = '';
-  students: Student[] = [];
+  inscrits: Inscription[] = [];
   // students!: Student [];
   student!: Student;
   idClasse !: number
 
   studentspage?: StudentPages;
   page = 0;
-  size = 10;
-  filteredItems : Student[] = []
+  size = 20;
+  filteredItems : Inscription[] = []
   pages: number[] = []
   permission : boolean =false
   
@@ -47,29 +48,28 @@ export class EtudiantsDeLaClasseComponent implements OnInit{
           this.idClasse = param['id']
         })
     this.service.getStudent_ByIdClasse(this.page, this.size, this.idClasse).subscribe(data => {
-      this.students = data.content;
+      this.inscrits = data.content;
       // console.log(this.students, "student of classe")
-      this.students.forEach((item : Student) => {
-        item.urlPhoto = `http://localhost/StudentImg/${item.urlPhoto}`;
+      this.inscrits.forEach((item : Inscription) => {
+        item.idEtudiant.urlPhoto = `${environment.urlPhoto}${item.idEtudiant.urlPhoto}`;
       })
       this.studentspage = data;
-      this.filteredItems = this.students;
+      this.filteredItems = this.inscrits;
       this.pages = Array.from({ length: data.totalPages! }, (_, i) => i);
 
       // console.log(this.students, "pagenation teachers")
-      this.extractUniqueStudents(this.students)
     });
   }
 
   // --------------------------filter methode
   filterStudents() {
     if (!this.searchTerm) {
-     return this.filteredItems = this.students;
+     return this.filteredItems = this.inscrits;
     } else {
-    return  this.filteredItems = this.students.filter(student =>
-        student.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        student.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        student.email.toLowerCase().includes(this.searchTerm.toLowerCase())
+    return  this.filteredItems = this.inscrits.filter(inst =>
+        inst.idEtudiant.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        inst.idEtudiant.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        inst.idEtudiant.email.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     }
   }
@@ -102,23 +102,6 @@ export class EtudiantsDeLaClasseComponent implements OnInit{
       
    
     }
-// -------------------------methode to cunt student order number
-  private extractUniqueStudents(notes: Student[]): Student[] {
-    const uniqueStudents = new Set<number>(); // Utilise un Set pour stocker les idEtudiant uniques
-    const result: Student[] = [];
-    
-    notes.forEach(item => {
-      if (!uniqueStudents.has(item.idEtudiant!)) { // Vérifie si l'idEtudiant n'est pas déjà dans le Set
-        uniqueStudents.add(item.idEtudiant!); 
-        result.push(item); // Ajoute l'étudiant au tableau résultant des étudiants uniques
-      }
-    });
-    result.forEach((student, index) => {
-      student.numero = index + 1; // Ajoute 1 pour commencer à partir de 1 (si nécessaire)
-    });
-
-    return result;
-  }
   // --------------------------------buttons pagination
   setPage(page: number): void {
     if (page >= 0 && page < this.studentspage!.totalPages!) {
@@ -137,5 +120,24 @@ export class EtudiantsDeLaClasseComponent implements OnInit{
     if (this.page > 0) {
       this.setPage(this.page - 1);
     }
+  }
+
+  getVisiblePages(): number[] {
+    const visiblePages: number[] = [];
+    const totalPages = this.studentspage!.totalPages!;
+
+    const startPage = Math.max(0, this.page - 1); // Une page avant la courante
+    const endPage = Math.min(totalPages - 1, this.page + 1); // Une page après la courante
+
+    for (let i = startPage; i <= endPage; i++) {
+      visiblePages.push(i);
+    }
+
+    return visiblePages;
+  }
+  // -------------abrevigate name filiere
+  abrevigateFiliereName(name: string): string{
+    const nameSplit = name.split(' ');
+    return nameSplit.filter(word =>word.length > 3).map(w =>w[0].toUpperCase()).join('');
   }
 }

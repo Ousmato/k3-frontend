@@ -6,8 +6,9 @@ import { IconsService } from '../../Services/icons.service';
 import { SchoolService } from '../../Services/school.service';
 import { SideBarService } from '../../sidebar/side-bar.service';
 import { SchoolInfo } from '../../Admin/Models/School-info';
-import { Subscription } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
 import { ClassRoom } from '../../Admin/Models/Classe';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-dga-sidebar',
@@ -17,9 +18,7 @@ import { ClassRoom } from '../../Admin/Models/Classe';
 export class DgaSidebarComponent implements OnInit, OnDestroy {
 
   
-  
   title!: string;
-  
   isSidebarCollapsed = false;
   isSubmenuCollapsed = false;
   desable_add_button = true;
@@ -27,15 +26,10 @@ export class DgaSidebarComponent implements OnInit, OnDestroy {
   showTitle: boolean = false
 
   show_admin: boolean = false
-  show_add_form: boolean = false
+  isConfirm: boolean = false
 
   routerEventsSubscription!: Subscription;
 
-  component_Name: string [] = ['_EnseignantComponent',  
-    '_EtudiantsComponent', '_TeachersPresenceComponent', 
-    '_FichePaieComponent', '_ArchivesComponent', "_ClassStudentsComponent"
-  ]
- 
 
   searchTerm: string = '';
 
@@ -83,61 +77,42 @@ toggleSubMenuArchive(){
   
 ngOnInit(): void {
 
-  this.routerEventsSubscription = this.router.events.subscribe(event => {
-    if (event instanceof NavigationEnd) {
-      // Vérifier la route active
-      const childRoute = this.route.firstChild;
-      if (childRoute) {
-        const componentName: any = childRoute.snapshot.component?.name; 
-        // console.log(componentName, "nam componenrt")
-        this.showSearchInput = false; // Par défaut, masquer la barre de recherche
-        for (let cn of this.component_Name) {
-          if (cn === componentName) {
-            this.showSearchInput = true;
-          
-            break;
-          } else{
-            this.showTitle = true
-          }
-        }
-      } 
-    }
+  this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
+    this.setTitle();
   });
 
+  this.setTitle();
    this.load_school_info();
    this.load_admin();
-   this.loa_page_title();
 }
 
+setTitle(): void {
+  let route = this.route.firstChild;
 
-refresh(){
-  window.location.reload();
+  while (route?.firstChild) {
+    route = route.firstChild;
+  }
+
+  // Retrieve the title from the route data if it exists
+  this.title = route?.snapshot.data['title'] || '';
+  console.log(this.title, "le titre")
 }
 load_school_info(){
   this.schoolService.getSchools().subscribe(data => {
-    this.school = data
-    this.school.urlPhoto = "http://localhost/StudentImg/"+this.school.urlPhoto
+    this.school = data    
     // console.log(data, "----------------------------");
   })
-}
-loa_page_title(){
-  this.pageTitle.title$.subscribe(title => {
-    this.title = title;
-    console.log(this.title, "sid tit")
-  });
 }
 // ------------------------------------------load current admin
 load_admin(){
   const admin = sessionStorage.getItem('dga');
  
+ 
   if(admin){
     
     this.dataAdmin = JSON.parse(admin);
-     if(this.dataAdmin.role != Admin_role.DG){
-      this.desable_add_button  = false
-    console.log("ne pas admin");
-  }
-    this.dataAdmin.urlPhoto = "http://localhost/StudentImg/"+this.dataAdmin.urlPhoto
+    this.dataAdmin.urlPhoto = `${environment.urlPhoto}${this.dataAdmin.urlPhoto}`
+
   }
 }
 // --------------------------------shearch 
@@ -145,12 +120,16 @@ load_admin(){
     this.sidebarService.changeSearchTerm(this.searchTerm);
   }
 
-  show_adminSetting(){
-    this.show_admin =! this.show_admin
+  onError(event: Event) {
+    const target = event.target as HTMLImageElement;
+    target.src = 'assets/business-professional-icon.svg';
+  }
+  show_confirm(){
+    this.isConfirm = true
    
   }
  close(){
-  this.show_admin = false
+  this.isConfirm = false;
  }
 
   ngOnDestroy() {
@@ -160,9 +139,12 @@ load_admin(){
     }
   }
 
+  toAccunt(){
+    this.router.navigate(['/dga/my-accunt'], {queryParams:{id: this.dataAdmin.idAdministra}})
+  }
+  // ---------------
   singAout(){
     sessionStorage.clear();
     this.router.navigate(['']);
-   
   }
 }

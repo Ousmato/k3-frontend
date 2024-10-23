@@ -1,3 +1,5 @@
+import { Admin } from "./Admin";
+
 export interface SchoolInfo{
     id?: number;
     nomSchool: string;
@@ -14,4 +16,5 @@ export interface AnneeScolaire{
     debutAnnee: Date
     finAnnee: Date;
     ans?: number
+    idAdmin?: Admin
 }

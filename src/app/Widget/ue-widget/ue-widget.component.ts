@@ -9,6 +9,7 @@ import { ClassRoom } from '../../Admin/Models/Classe';
 import { ClassStudentService } from '../../DGA/class-students/class-student.service';
 import { SemestreService } from '../../Services/semestre.service';
 import { Semestres } from '../../Admin/Models/Semestre';
+import { Admin } from '../../Admin/Models/Admin';
 
 @Component({
   selector: 'app-ue-widget',
@@ -29,6 +30,7 @@ export class UeWidgetComponent implements OnInit {
   isOldUe: boolean = false;
   isConfirm: boolean = false;
   ueForDeleted!: Ue
+  admin!: Admin 
   oldUes: Ue [] = [];
   classes: ClassRoom[] = []
 
@@ -39,6 +41,7 @@ export class UeWidgetComponent implements OnInit {
   ngOnInit(): void {
     // this.load_formAdd();
     this.load_formUpdate();
+    this.getAdmin();
   }
 
   // -------------------load form
@@ -71,14 +74,19 @@ load(){
     })
   
   }
- 
+ getAdmin(){
+  const dataAdmin = sessionStorage.getItem("scolarite");
+  this.admin = JSON.parse(dataAdmin!);
+ }
   // -------------------------------------------create ue ----------------------------------------
   update_ue(){
     const formData = this.update_ue_form.value;
     // console.log(formData, "fffff", id)
     const ue : Ue ={
       id: formData.id,
-      nomUE: formData.nomUE
+      nomUE: formData.nomUE,
+      idAdmin: this.admin
+      
     }
     if(this.update_ue_form.valid){
         this.setService.updateUe(ue).subscribe({

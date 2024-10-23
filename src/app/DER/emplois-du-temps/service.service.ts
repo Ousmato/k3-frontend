@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Emplois } from '../../Admin/Models/Emplois';
 import { Observable } from 'rxjs';
 import { Response_String } from '../../Admin/Models/Response_String';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { Response_String } from '../../Admin/Models/Response_String';
 export class ServiceService {
 
   constructor(private http: HttpClient) { }
-  private baseUrl = 'http://localhost:8080/api-emplois/';
+  private baseUrl = `${environment.apiUrl}api-emplois/`;
 
   // -------------------------------add emplois
   addEmplois(emplois: Emplois): Observable<Response_String>{

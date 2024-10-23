@@ -5,7 +5,7 @@
                 <p id="prof">Profil</p>
                 <p class="text-muted small">Dernière mises à jour : {{admin.updateDate}}</p>
             </div>
-            <div class="head-riht">
+            <div class="head-riht" *ngIf="permission">
                 <a class="btn-edit" *ngIf="!isEdit" (click)="show_edit()">Editer <fa-icon [icon]="icons.edit"></fa-icon></a>
                 <a class="btn-edit" *ngIf="isEdit" (click)="annuler()">Annuler</a>
                 
@@ -16,17 +16,13 @@
             <div class="profil-img">
                 <p><fa-icon [icon]="icons.image"></fa-icon> Photo de profil  </p>
                 <div class="img-content">
-                    <img *ngIf="!urlImage" [src]="admin.urlPhoto" (error)="onError($event)" alt="photo">
+                    <img *ngIf="!urlImage" [src]="admin.urlPhoto"  alt="photo">
                     <img *ngIf="urlImage" [src]="urlImage" alt="">
                     
-                    <label for="fileInput" *ngIf="!isEdit" class="btn-modifier-image">Selectionner</label>
+                    <label for="fileInput" *ngIf="!isEdit" class="btn-modifier-image">Modifier</label>
                     <a *ngIf="urlImage" (click)="sendImage()" class="btn-modifier-image">valider</a>
           
                     <input type="file"  id="fileInput" class="input-file"  style="display: none;" (change)="onPhotoSelected($event)">
-
-                    <!-- <div class="btn-modifier-image">
-                        <label  class="custom-button">Choisir un fichier</label>
-                    </div> -->
                 </div>
                
             </div>
@@ -49,7 +45,7 @@
                             <label for="validationDefault02" class="label form-label">Prenom :</label>
                             <input [attr.readonly]="!isEdit ? true : null" type="text" formControlName="prenom" class="input-with input-control" id="prenom" [class.is-invalid]="update_form.get('prenom')!.invalid && update_form.get('prenom')!.touched"   placeholder="Prenom....">
                             <span class="small" *ngIf="update_form.controls['prenom'].invalid && update_form.controls['prenom'].touched" [ngStyle]="{color: 'red'}">
-                            Champ  obligatoire*
+                            Champ obligatoire*
                             </span>
                             <div *ngIf="update_form.controls['prenom']!.errors?.['maxlength']">
                                 <span [ngStyle]="{color: 'red', 'font-size': '12px'}">Le prenom ne doit pas dépasser 20 caractères.</span>
@@ -137,6 +133,6 @@
         </div>
     </form>
     <div class="change-password" *ngIf="!isEdit">
-        <a (click)="changePass(admin.idAdministra!)">Changer le mot de passe</a>
+        <a *ngIf="permission" (click)="changePass(admin.idAdministra!)">Changer le mot de passe</a>
     </div>
 </main>

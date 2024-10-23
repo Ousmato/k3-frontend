@@ -12,8 +12,8 @@
                 <div class="image-column">
                     <div class="pop-img">
                         <img 
-                        [src]="imageUrl" 
-                        (error)="onError()" 
+                        [src]="inscrit?.idEtudiant?.urlPhoto" 
+                        (error)="onError($event!)" 
                         alt="Profile Image">
                         <!-- <img [src]="student?.urlPhoto ? student?.urlPhoto : 'assets/business-professional-icon.svg'" alt="Profile Image"> -->
 
@@ -21,12 +21,12 @@
                     <div class="inputs-box">
                         <div class="input">
                             <label for="validationDefault01" class="label-nom-prenom">Nom :</label>
-                            <input type="text" value="{{student?.nom}}" class="form-control" readonly>
+                            <input type="text" value="{{inscrit?.idEtudiant?.nom}}" class="form-control" readonly>
                         </div>
 
                         <div class="input">
                             <label for="validationDefault02" class="label-nom-prenom">Prenom :</label>
-                            <input type="text"  value="{{student?.prenom}}" class="form-control" readonly>
+                            <input type="text"  value="{{inscrit?.idEtudiant?.prenom}}" class="form-control" readonly>
                         </div>
                     </div>
                     
@@ -35,12 +35,12 @@
 
                 <div class="input">
                     <label for="validationDefault02" class="label form-label">Matricule :</label>
-                    <input type="text" value="{{student?.matricule}}"  class="form-control" readonly>
+                    <input type="text" value="{{inscrit?.idEtudiant?.matricule}}"  class="form-control" readonly>
                 </div>
 
                 <div class="input">
                     <label  class="label form-label">Email :</label>
-                    <input type="text" value="{{student?.email}}"  class="form-control" readonly>
+                    <input type="text" value="{{inscrit?.idEtudiant?.email}}"  class="form-control" readonly>
                 </div>
             </div>
         <!-- ----------------------secon column----------- -->
@@ -48,22 +48,22 @@
 
                 <div class="input">
                     <label for="validationDefault03" class="label form-label">Date de Naissance :</label>
-                    <input type="text" value="{{student?.dateNaissance}}"  class="form-control" readonly>
+                    <input type="text" value="{{inscrit?.idEtudiant?.dateNaissance}}"  class="form-control" readonly>
                 </div>
                 <div class="input">
                     <label for="validationDefault0" class="label form-label">Lieu de Naissance :</label>
-                    <input type="text" value="{{student?.lieuNaissance}}" class="form-control" readonly>
+                    <input type="text" value="{{inscrit?.idEtudiant?.lieuNaissance}}" class="form-control" readonly>
                    
                 </div>
 
                 <div class="input">
                     <label for="telephone" class="label form-label">Téléphone :</label>
-                    <input type="text" value="{{student?.telephone}}"  class="form-control" readonly>
+                    <input type="text" value="{{inscrit?.idEtudiant?.telephone}}"  class="form-control" readonly>
                     
                 </div>
                 <div class="input">
                     <label  class="label form-label">Statut :</label>
-                    <input type="text" value="{{student?.status}}"  class="form-control" readonly>
+                    <input type="text" value="{{inscrit?.idEtudiant?.status}}"  class="form-control" readonly>
                     
                 </div>
             </div>
@@ -73,7 +73,7 @@
                 <div class="input">
                     <div class="is-scolarite">
                         <label for="validationDefault03" class="label form-label">{{getLabel()}} : <span>(Montant en FCFA)</span> </label>
-                        <input type="text" value="{{student?.scolarite}} FCFA"  class="input-with form-control" readonly>
+                        <input type="text" value="{{inscrit?.scolarite}} FCFA"  class="input-with form-control" readonly>
                     
                     </div>
                     
@@ -83,19 +83,19 @@
             
                 <div class="input">
                     <label for="validationDefault03" class="label form-label">Classe :</label>
-                    <input  type="text" value="{{student?.idClasse?.idFiliere?.idNiveau?.nom}} {{student?.idClasse?.idFiliere?.idFiliere?.nomFiliere}}" class="form-control" readonly>
+                    <input  type="text" value="{{inscrit?.idClasse?.idFiliere?.idNiveau?.nom}} {{inscrit!.idClasse.idFiliere?.idFiliere?.nomFiliere}}" class="form-control" readonly>
                                     
                 </div>
 
                 <!-- button radio sexe start -->
                  <div class="input">
                     <label  class="label form-label">Sexe :</label>
-                    <input type="text" value="{{student?.sexe}}" class="form-control" readonly>
+                    <input type="text" value="{{inscrit?.idEtudiant?.sexe}}" class="form-control" readonly>
                  </div>
 
                  <div class="input">
                     <label  class="label form-label">Date inscription :</label>
-                    <input type="text" value="{{student?.date}}" class="form-control" readonly>
+                    <input type="text" value="{{inscrit?.date}}" class="form-control" readonly>
                  </div>
              
 
@@ -113,17 +113,21 @@
               </ng-container>
                 <div class="float-end"><p *ngIf="montantRestant > 0" (click)="payer()">Payer</p>
                     <div class="views" *ngIf="isShow">
-                        <form  [formGroup]="update_paie_student_form" (ngSubmit)="update_paie_student(student!)">
-                           <input type="number" formControlName="idEtudiant" *ngIf="false">
+                        <form  [formGroup]="update_paie_student_form" (ngSubmit)="update_paie_student(inscrit!)">
+                           <!-- <input type="number" formControlName="idEtudiant" *ngIf="false"> -->
                             <div class="input">
                                 <label for="validationDefault03" class="label form-label">Scolarité : <span>(Montant en FCFA)</span> </label>
                                 <input type="text" formControlName="scolarite" class="scolarite-input form-control" placeholder="La scolarite...."   [class.is-invalid]="update_paie_student_form.get('scolarite')!.invalid && update_paie_student_form.get('scolarite')!.touched" pattern="[0-9]{1,7}">
                                 <span *ngIf="update_paie_student_form.controls['scolarite'].invalid && update_paie_student_form.controls['scolarite'].touched" [ngStyle]="{color: 'red'}">
                                 Champ obligatoire*
                                 </span>
-                                <span *ngIf="update_paie_student_form.controls['scolarite'].hasError('pattern') && !update_paie_student_form.controls['scolarite'].hasError('required')"
+                                <span class="small" *ngIf="update_paie_student_form.controls['scolarite'].hasError('pattern') && !update_paie_student_form.controls['scolarite'].hasError('required')"
                                 [ngStyle]="{color: 'red'}">
                                 Maximum 7 chiffres autorisés*
+                            </span>
+                            <span class="small" *ngIf="update_paie_student_form.get('scolarite')?.value > 6000 && inscrit?.idEtudiant?.status?.toString()?.toLowerCase() === 'régulier'"
+                                [ngStyle]="{color: 'red'}">
+                               Frais invalide*
                             </span>
                             </div>
                             

@@ -20,6 +20,9 @@
                     <span class="small" *ngIf="add_admin_form.controls['prenom'].invalid && add_admin_form.controls['prenom'].touched" [ngStyle]="{color: 'red'}">
                     Champ obligatoire*
                     </span>
+                    <div *ngIf="add_admin_form.controls['prenom']!.errors?.['maxlength']">
+                        <span [ngStyle]="{color: 'red', 'font-size': '12px'}">Le nom  ne doit pas dépasser 20 caractères.</span>
+                    </div>
                 </div>
         
                 <div class="input">
@@ -38,6 +41,9 @@
                         <span class="small" *ngIf="add_admin_form.controls['password'].invalid && add_admin_form.controls['password'].touched" [ngStyle]="{color: 'red'}">
                             Champ obligatoire*
                         </span>
+                        <!-- <span class="small" *ngIf="add_admin_form.controls['password'].errors?.['pattern'] && add_admin_form.controls['password'].touched" [ngStyle]="{color: 'red'}">
+                            Au moins 8 caractères, une majuscule, une minuscule et un symbole
+                        </span> -->
                         <fa-icon [icon]="passwordVisible ? icons.eyeSlash : icons.eye" class="toggle-password position-absolute" id="togglePassword" [ngStyle]="{cursor: 'pointer', right: '10px', top: '50%', transform: 'translateY(-50%)'}" (click)="togglePasswordVisibility()"></fa-icon>
                     </div>
                 </div>

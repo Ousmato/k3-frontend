@@ -1,112 +1,106 @@
-
-  <main>
-    <div class="content-head">
+<main>
+  <div class="content-head">
+    <div class="head-left">
       <select (change)="onChange($event)">
-        <option id="default" selected disabled value="">Promotion {{currentYear}}</option>
+        <option selected disabled value="">Promotion {{currentYear}}</option>
         <option *ngFor="let annee of annees" [value]="annee.id">Promotion {{annee.ans}}</option>
       </select>
       <!-- ------------ -->
-      <select (change)="onChange($event)">
-        <option id="default" selected disabled value="">Etats</option>
-        <option *ngFor="let annee of annees" [value]="annee.id">Promotion {{annee.ans}}</option>
+      <select (change)="getEtat($event)">
+        <option disabled selected value="">Tout</option>
+        <option *ngFor="let etat of student_etats" [value]="etat.value">{{etat.key}}</option>
       </select>
-      <!-- ----------------- -->
-      <div class="input-search" >
-        <input type="text" [(ngModel)]="searchTerm"  placeholder="Recherche..."  class="search-input">
-      </div>
+
     </div>
-    
+
+    <!-- ----------------- -->
+    <div class="input-search">
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..." class="search-input">
+    </div>
+  </div>
+
   <div class="table-container">
     <table class="table table-hover">
       <thead>
-          <tr>
-            <th>N° D'ordre</th>
-            <!-- <th>Photo</th> -->
-            <th>Nom</th>
-            <th>Prenom</th>
-            
-            <th>Niveau</th>
-            <th>Filiere</th>
+        <tr>
+          <th>N° D'ordre</th>
+          <!-- <th>Photo</th> -->
+          <th>Nom</th>
+          <th>Prenom</th>
 
-            <th>Telephone</th>
-            <th>Status</th>
-            <th>Etat</th>
-            <th>Action</th>
+          <th>Niveau</th>
+          <th>Filiere</th>
 
-          </tr>
-        </thead>
-        <tbody>
-          <ng-container *ngIf="filterStudents().length ; else noResults">
-          <tr *ngFor="let studens of filterStudents()  let i = index" >
+          <th>Telephone</th>
+          <th>Status</th>
+          <th>Sexe</th>
+
+          <th>Etat</th>
+          <th>Action</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngIf="filterStudents().length ; else noResults">
+          <tr *ngFor="let inscrit of filterStudents()  let i = index">
             <td class="numerotation-clumn">{{i+1}}</td>
             <!-- <td><img src="{{studens.urlPhoto}}" alt=""></td> -->
-            <td>{{studens.nom}}</td>
-            <td >{{studens.prenom}}</td>
-            
-            <td class="class-name"  title="{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}">{{studens.idClasse.idFiliere?.idNiveau?.nom}}</td>
-            <td class="class-name"  title="{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}">{{studens.idClasse.idFiliere?.idFiliere?.nomFiliere}}</td>
-            
-            <td>{{studens.telephone}}</td>
-            <td>{{studens.status}}</td>
-            <td><a >
-              <fa-icon [icon]="studens.payer ? icons.active : icons.desactive " [ngStyle]="{ color: studens.payer ? 'green' : 'red' }"></fa-icon><span >{{ studens.payer ? 'Valider' : 'Non Valider' }}</span></a>
+            <td>{{inscrit.idEtudiant.nom}}</td>
+            <td>{{inscrit.idEtudiant.prenom}}</td>
+
+            <td class="class-name" title="{{inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}">
+              {{inscrit.idClasse.idFiliere?.idNiveau?.nom}}</td>
+            <td class="class-name" title="{{inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}">
+              {{abreviateFiliereName(inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere!)}}</td>
+
+            <td>{{inscrit.idEtudiant.telephone}}</td>
+            <td>{{inscrit.idEtudiant.status}}</td>
+            <td>{{inscrit.idEtudiant.sexe.charAt(0)}}</td>
+            <td title="{{ inscrit.payer ? 'Valider' : 'Non Valider' }}"><a>
+                <fa-icon [icon]="inscrit.payer ? icons.circle : icons.circle "
+                  [ngStyle]="{ color: inscrit.payer ? 'green' : 'red' }"></fa-icon><span></span></a>
             </td>
-              <td>
-                  <div class="btn-contenaire">
-                    
-                      <a (click)="getStudent(studens)" *ngIf="!secretaire" ><fa-icon [icon]="permission ? icons.eye : icons.userCheck"></fa-icon><span>{{permission ? 'Details' : 'Valider'}}</span></a>
-                      <a *ngIf="secretaire" (click)="getStudentView(studens)"><fa-icon [icon]="icons.eye"></fa-icon><span>Details</span></a>
-                      
-                  </div>
-              </td>
-           <!-- -------------------------------------detail etudiants----------------------------------------- -->
-           
-            <!-- ------------------------------------------delete etudians-------------------- -->
-            <div class="modal fade"  [id]="'studentDelete_' +studens.idEtudiant" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation de Suppression</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    Atteintion vous ete sur le point de supprimer les informations de l'etudiants
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Non</button>
-                    <a  name="btn-delete" (click)="deleted_student(studens.idEtudiant!)" class="btn btn-primary">Oui</a>
-                    <!-- <button type="button" class="btn btn-primary">Oui</button> -->
-                  </div>
-                </div>
+            <td>
+              <div class="btn-contenaire">
+
+                <a (click)="getStudent(inscrit.idEtudiant)" *ngIf="!secretaire"><fa-icon
+                    [icon]="permission ? icons.eye : icons.userCheck"></fa-icon><span>{{permission ? 'Details' :
+                    'Valider'}}</span></a>
+                <a *ngIf="secretaire" (click)="getStudentView(inscrit.id!)">Details</a>
+
               </div>
-            </div>
-          <!---------------------------------------------modaledit student----------------------------------------------------  -->
-          
-        </tr>
-      </ng-container>
+            </td>
+
+          </tr>
+        </ng-container>
         <ng-template #noResults>
           <tr>
-              <td colspan="9" class="text-center">Aucun résultat trouvé</td>
+            <td colspan="9" class="text-center">Aucun résultat trouvé</td>
           </tr>
-      </ng-template>
-          
-        </tbody>
-  </table>
+        </ng-template>
+
+      </tbody>
+    </table>
   </div>
+  <div class="footer">
+    <div class="button-navigation">
+      <div class="pagination" *ngIf="inscrits.length !== 0">
+        <button (click)="previousPage()" [disabled]="page === 0">
+          <fa-icon [icon]="icons.previous"></fa-icon>
+        </button>
+
+        <button *ngFor="let p of getVisiblePages()" (click)="setPage(p)" [class.active]="p === page">
+          {{ p + 1 }}
+        </button>
+
+        <button (click)="nextPage()" [disabled]="page === studentspage!.totalPages! - 1">
+          <fa-icon [icon]="icons.nexte"></fa-icon>
+        </button>
+      </div>
+    </div>
     
-  <div class="pagination">
-    <button (click)="previousPage()" [disabled]="page === 0">
-      <fa-icon [icon]="icons.previous"></fa-icon>
-    </button>
-    
-    <button *ngFor="let p of getVisiblePages()" (click)="setPage(p)" [class.active]="p === page">
-      {{ p + 1 }}
-    </button>
-    
-    <button (click)="nextPage()" [disabled]="page === studentspage!.totalPages! - 1">
-      <fa-icon [icon]="icons.nexte"></fa-icon>
-    </button>
+    <p >page : {{page + 1}}/{{ studentspage!.totalPages }}</p>
   </div>
   
-  </main>
+
+</main>

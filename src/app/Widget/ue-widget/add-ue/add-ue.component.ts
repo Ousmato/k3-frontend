@@ -9,6 +9,7 @@ import { PageTitleService } from '../../../Services/page-title.service';
 import { SemestreService } from '../../../Services/semestre.service';
 import { IconsService } from '../../../Services/icons.service';
 import { FiliereNiveau } from '../../../Admin/Models/Filieres';
+import { Admin } from '../../../Admin/Models/Admin';
 
 @Component({
   selector: 'app-add-ue',
@@ -18,6 +19,7 @@ import { FiliereNiveau } from '../../../Admin/Models/Filieres';
 export class AddUeComponent implements OnInit {
 
   addUe!: FormGroup
+  admin!: Admin
   classes: ClassRoom[] = []
   semestres: Semestres[] = []
   oldUes: Ue[] = []
@@ -39,6 +41,7 @@ export class AddUeComponent implements OnInit {
   ngOnInit() {
     this.load_formAdd();
     this.load();
+    this.getAdmin();
   }
 
   load_formAdd() {
@@ -68,7 +71,8 @@ export class AddUeComponent implements OnInit {
     const semestre = this.semestres.find(sem => sem.id == formData.idSemestre)
 
     const ue: Ue = {
-      nomUE: formData.nomUE
+      nomUE: formData.nomUE,
+      idAdmin: this.admin
     }
     const dto: AddUeDto = {
       idClasse: formData.idClasse!,
@@ -123,7 +127,12 @@ export class AddUeComponent implements OnInit {
     errorr.style.display = "none";
   }
 
+  // -------------------get admin
+  getAdmin() {
+    const dataAdmin = sessionStorage.getItem("scolarite");
+    this.admin = JSON.parse(dataAdmin!);
 
+  }
   getAllUeByIdClasse(id: number) {
     this.classService.getAllUeByIdClasse(id).subscribe(result => {
       this.oldUes = result
@@ -137,7 +146,7 @@ export class AddUeComponent implements OnInit {
       result.forEach(sem => {
         // Vérifier si le semestre n'est pas déjà dans la liste
         if (!this.semestres.some(s => s.id === sem.id)) {
-          
+
           // Filtrer les semestres en fonction du niveau de la classe
           if (this.classe.idFiliere?.idNiveau.nom === FiliereNiveau.L1.toString()) {
             // L1 correspond à S1 et S2
@@ -157,10 +166,10 @@ export class AddUeComponent implements OnInit {
           }
         }
       });
-      
+
       console.log(this.semestres, "semestre");
     });
-    
+
 
   }
 

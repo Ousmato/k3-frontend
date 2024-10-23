@@ -9,6 +9,7 @@ import { Emplois } from '../../Admin/Models/Emplois';
 import { DatePipe, Location } from '@angular/common';
 import { PageTitleService } from '../../Services/page-title.service';
 import { Module } from '../../Admin/Models/Module';
+import { Admin } from '../../Admin/Models/Admin';
 
 @Component({
   selector: 'app-emplois-widget',
@@ -22,6 +23,7 @@ export class EmploisWidgetComponent  {
   updateEmplois!: FormGroup
   semestre: Semestres[] = [];
   semestreSelect!: Semestres
+  admin!: Admin
   @Input() emplois?: Emplois
   classerom !: ClassRoom
   formattedDateFin!: string
@@ -36,9 +38,6 @@ export class EmploisWidgetComponent  {
 
   ngOnInit(): void {
     
-    
-    // this.load_semestre();
-    // this.load_classe();
       this.load_update_form();
       this.loadModules();
   }
@@ -68,7 +67,7 @@ export class EmploisWidgetComponent  {
     this.emplois = {
       id: this.emplois?.id,
       dateDebut: formData.dateDebut,
-    
+      idAdmin: this.admin,
       dateFin: formData.dateFin,
       idClasse: this.emplois?.idClasse!,
       idModule: module!,
@@ -95,7 +94,6 @@ export class EmploisWidgetComponent  {
     }
     
 
-
   }
 
   // ----------------module select
@@ -113,5 +111,10 @@ export class EmploisWidgetComponent  {
   close_update(){
     this.isOverlay = false;
     this.closeUpdateModal.emit();
+  }
+  // ------------------get admin
+  getAdmin(){
+    const dataAdmin = sessionStorage.getItem('der');
+    this.admin = JSON.parse(dataAdmin!);
   }
 }

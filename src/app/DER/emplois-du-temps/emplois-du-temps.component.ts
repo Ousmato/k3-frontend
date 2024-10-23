@@ -11,6 +11,7 @@ import { ServiceService } from './service.service';
 import { DatePipe, Location } from '@angular/common';
 import { PageTitleService } from '../../Services/page-title.service';
 import { Module } from '../../Admin/Models/Module';
+import { Admin } from '../../Admin/Models/Admin';
 
 @Component({
   selector: 'app-emplois-du-temps',
@@ -22,7 +23,7 @@ export class EmploisDuTempsComponent implements OnInit {
   semestre: Semestres[] = [];
   days: string[] = [];
   modules: Module[] = [];
-  // currentEmploi?: DtoEmploi
+  admin!: Admin
   isShow: boolean = false;
 
   @Output() closeModale = new EventEmitter<any>()
@@ -44,7 +45,7 @@ export class EmploisDuTempsComponent implements OnInit {
     private fb: FormBuilder, private emploisService: ServiceService, private pageTitle: PageTitleService, private location: Location) { }
   // -------------------------------------------ngOinit
   ngOnInit(): void {
-    // this.getStatusOptions()
+    this.getAdmin();
     this.load_form();
 
     this.classService.getCurrentClassOfYearWithUe().subscribe(data => {
@@ -78,6 +79,13 @@ export class EmploisDuTempsComponent implements OnInit {
     })
 
   }
+  // ----------------get admin 
+  getAdmin(){
+    const adminData = sessionStorage.getItem('der');
+    if (adminData) {
+     this.admin = JSON.parse(adminData);
+    }
+  }
   // --------------------------------add emplois
   addEmplois() {
     if (this.EmploisAdd.valid) {
@@ -96,6 +104,7 @@ export class EmploisDuTempsComponent implements OnInit {
         dateDebut: formData.dateDebut,
         dateFin: this.formattedDateFin,
         idClasse: classe!,
+        idAdmin: this.admin
 
       }
       // console.log("emplois", emplois)

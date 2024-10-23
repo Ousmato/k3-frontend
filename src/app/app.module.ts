@@ -8,7 +8,6 @@ import { DasboardComponent } from './Admin/Views/dasboard/dasboard.component';
 import { EtudiantsComponent } from './Admin/Views/etudiants/etudiants.component';
 import { LoginComponent } from './login/login.component';
 import {  provideHttpClient } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SinginComponent } from './Admin/Component/singin/singin.component';
 import { ClassStudentsComponent } from './DGA/class-students/class-students.component'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -17,7 +16,6 @@ import { EmploisDuTempsComponent } from './DER/emplois-du-temps/emplois-du-temps
 import { EmploisSeanceComponent } from './Admin/Views/emplois-seance/emplois-seance.component';
 import { EnseignantComponent } from './Admin/Views/enseignant/enseignant.component';
 import { DatePipe, registerLocaleData } from '@angular/common';
-import { ToastrModule, provideToastr } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { }
 
@@ -88,6 +86,11 @@ import { SoutenanceNoteComponent } from './DER/Widget/soutenance-note/soutenance
 import { StudentGroupListComponent } from './DER/student-group-list/student-group-list.component';
 import { AdminListComponent } from './DG/admin-list/admin-list.component';
 import { MyAccuntComponent } from './DG/my-accunt/my-accunt.component';
+import { ForgotPasswordComponent } from './Password/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './Password/reset-password/reset-password.component';
+import { SetNewPasswordComponent } from './Password/set-new-password/set-new-password.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { provideToastr, ToastrModule } from 'ngx-toastr';
 
 registerLocaleData(localeFr);
 @NgModule({
@@ -165,7 +168,7 @@ registerLocaleData(localeFr);
     ClassArchiveComponent,
     RSImportComponent,
     SpinnerComponent, 
-    SoutenanceNoteComponent, StudentGroupListComponent, AdminListComponent, MyAccuntComponent
+    SoutenanceNoteComponent, StudentGroupListComponent, AdminListComponent, MyAccuntComponent, ForgotPasswordComponent, ResetPasswordComponent, SetNewPasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -174,7 +177,8 @@ registerLocaleData(localeFr);
     ReactiveFormsModule,
     FontAwesomeModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+
   ],
   providers: [provideHttpClient(),
     DatePipe,

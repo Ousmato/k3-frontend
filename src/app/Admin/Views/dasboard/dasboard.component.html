@@ -63,7 +63,7 @@
                         <div class="calendar-classes-content">
                         <p>{{classe.idClasse.idFiliere?.idNiveau?.nom}} {{abrevigateNameFiliere(classe.idClasse.idFiliere?.idFiliere?.nomFiliere!)}}</p>
                        
-                        <progress id="file" value="{{classe.progess}}" max="100"></progress>
+                        <progress id="file" [value]="classe.progess" max="100"></progress>
                         
                         <div class="date-content">
                             <p> Debuté le : {{classe.dateDebut}}</p>

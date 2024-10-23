@@ -16,7 +16,54 @@
        
         <button *ngIf="permission" type="button"  (click)="nouveau()"> Nouveau</button>
    </div>
-    <table class="table table-bordered">
+   <div class="contente">
+    <div class="grid-container">
+        <div class="grid-item" *ngFor="let eploi of emplois">
+            <!-- <div class="section-folder"> -->
+                <div class="emploi-item" >
+                  
+                    <div class="info-folder">
+                        <h6 class="title">Date de début</h6>
+                        <p class="small">{{eploi.dateDebut}}</p>
+                        
+                    </div>
+                    <div class="info-folder">
+                        <h6 class="title">Date de fin</h6>
+                        <p class="small">{{eploi.dateFin}}</p>
+                        
+                    </div>
+                    <div class="info-folder">
+                        <h6 class="title">Semestre</h6>
+                        <p class="small">{{eploi.idSemestre.nomSemetre}}</p>
+                        
+                    </div>
+                    <div class="info-folder">
+                        <h6 class="title">Mention</h6>
+                        <p class="small">{{eploi.idClasse.idFiliere?.idNiveau?.nom}} {{eploi.idClasse.idFiliere?.idFiliere?.nomFiliere}}</p>
+                        
+                    </div>
+                    <!-- <div class="active-contente"> -->
+                        <p > {{eploi.toDay ? "En cours" : "En attente"}}
+                             <fa-icon [ngStyle]="{color: eploi.toDay ? 'green' : 'red'}" [icon]="icons.circle"></fa-icon>
+                        </p>
+                    <!-- </div> -->
+                    <div class="next-col second-child"> 
+                        <a *ngIf="permission" (click)="deleted(eploi.id!)" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> Supprimer</a>
+                    
+                        <a *ngIf="permission" (click)="updated(eploi)" ><fa-icon [icon]="icons.edit"></fa-icon>Modifier</a>
+                        <div class="button-content">
+                            <button class="btn " (click)="toggle_toSeance(eploi.id!)"><fa-icon [icon]="icons.nexte"></fa-icon></button>
+                        </div>
+                        <!-- <a (click)="toggle_toSeance(eploi.id!)"><fa-icon [icon]="icons.eye"></fa-icon>Consulter</a> -->
+                    </div>
+                    
+                    
+                </div>
+            <!-- </div> -->
+        </div>
+    </div>
+   </div>
+    <!-- <table class="table">
         <thead>
             <tr>
                 <th>Date de début</th>
@@ -29,6 +76,7 @@
         <tbody>
             <ng-container *ngIf="emplois.length; else notFund">
                 <ng-container  *ngFor="let eploi of emplois" >
+                   
                     <tr>
                         <td>{{eploi.dateDebut}}</td>
                         <td>{{eploi.dateFin}}</td>
@@ -50,5 +98,5 @@
             </ng-template>
             
         </tbody>
-    </table>
+    </table> -->
 </main>

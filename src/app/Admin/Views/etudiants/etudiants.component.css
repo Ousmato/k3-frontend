@@ -14,6 +14,8 @@ th {
 }
 
 .content-head{
+    /* width: 60%; */
+    padding: 0 10px;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -33,48 +35,94 @@ th {
     display: none;
 }
 
+a fa-icon {
+    margin: 0;
+}
 .btn-contenaire{
     display: flex;
     justify-content: space-between;
-    gap: 20px;
+    gap: 10px;
 }
-.btn-contenaire a{
+
+span{
+    margin-left: 5px;
+    font-size: 10px;
+    color: var(--primary);
+}
+.class-name{
     cursor: pointer;
+}
+img{
+    border-radius: 100%;
+    border: 1px solid #ccc;
+    height: 50px;
+    width: auto;
+}
+
+span{
+    margin-left: 5px;
+    font-size: 10px;
+    color: var(--primary);
+}
+.class-name{
+    cursor: pointer;
+}
+img{
+    border-radius: 100%;
+    border: 1px solid #ccc;
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+}
+
+select {
+    height: 35px;
+    width: 100px;
+    margin-right: 10px;
+    background-color: var(--primary);
+    color: var(--secondary);
+    border-radius: 8px;
+    padding: 0 5px;
+    outline: none;
+    border: none;
+  }
+  .btn-contenaire a{
+    width: 80px;
+    margin-left: 10px;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
+    border: 1px solid var(--primary);
+    /* background-color: var(--primary); */
+    color: var(--primary);
+    transition: color 0.2s ease;
     &:hover{
-        color: var(--secondary);
+        border-color: var(--secondary);
+        background-color: var(--secondary);
+        color: var(--primary);
     }
 }
-span{
-    margin-left: 5px;
-    font-size: 10px;
-    color: var(--primary);
-}
-.class-name{
-    cursor: pointer;
-}
-img{
-    border-radius: 100%;
-    border: 1px solid #ccc;
-    height: 50px;
-    width: auto;
-}
-
-span{
-    margin-left: 5px;
-    font-size: 10px;
-    color: var(--primary);
-}
-.class-name{
-    cursor: pointer;
-}
-img{
-    border-radius: 100%;
-    border: 1px solid #ccc;
-    height: 50px;
-    width: auto;
-}
-
+  
 /* ----------------------------------pagination  buttons style */
+.footer{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 10px;
+
+}
+.button-navigation{
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+
+}
+.footer p{
+    color: var(--primary);
+    margin-right: 10px;
+}
 .pagination {
     display: flex;
     justify-content: center;

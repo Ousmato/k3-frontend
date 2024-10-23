@@ -1,3 +1,4 @@
+import { Admin } from "./Admin";
 import { ClassModules } from "./ClassModule";
 import { ClassRoom } from "./Classe";
 import { Module } from "./Module";
@@ -14,4 +15,5 @@ export interface Emplois{
     seances?: Seances[]
     progess?: number
     toDay?: boolean
+    idAdmin: Admin
 }

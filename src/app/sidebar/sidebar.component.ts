@@ -9,6 +9,7 @@ import { ActivatedRoute, NavigationEnd, NavigationExtras, Router } from '@angula
 import { filter, Subscription } from 'rxjs';
 import { MyAccuntComponent } from '../DG/my-accunt/my-accunt.component';
 import { EventServiceService } from '../Services/event-service.service';
+import { environment } from '../../environments/environment';
 
 
 @Component({
@@ -68,7 +69,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(private pageTitle: PageTitleService, private schoolService: SchoolService, private sidebarService: SideBarService, private eventService: EventServiceService,
+  constructor(private pageTitle: PageTitleService, private schoolService: SchoolService, private sidebarService: SideBarService, 
+    private eventService: EventServiceService,
     private router: Router, public icons: IconsService, private route: ActivatedRoute) { }
 
 
@@ -112,7 +114,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   load_school_info() {
     this.schoolService.getSchools().subscribe(data => {
       this.school = data
-      this.school.urlPhoto = "http://localhost/StudentImg/" + this.school.urlPhoto
+      this.school.urlPhoto = `${environment.urlPhoto}${this.school.urlPhoto}`
       // console.log(data, "----------------------------");
     })
   }
@@ -129,7 +131,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     if (admin) {
 
       this.dataAdmin = JSON.parse(admin);
-      this.dataAdmin.urlPhoto = `http://localhost/StudentImg/${this.dataAdmin.urlPhoto}`
+      this.dataAdmin.urlPhoto = `${environment.urlPhoto}${this.dataAdmin.urlPhoto}`
     }
   }
   // --------------------------------shearch 
@@ -152,7 +154,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
     }
   }
 
-
   // --------------sing aout
   singAout() {
     const admin = sessionStorage.clear();
@@ -166,6 +167,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     if (admin.role === Admin_role.DG) {
       const adminDataString = JSON.stringify(admin)
       sessionStorage.setItem("admin", adminDataString);
+      return
     }
     sessionStorage.clear();
 

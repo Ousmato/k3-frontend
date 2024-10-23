@@ -10,7 +10,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     /* padding: 15px; */
-    z-index: 10001;
+    z-index: 2;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
@@ -121,7 +121,7 @@ label{
     border: 1px solid #ddd;
     top: -430%;
     border-radius: 4px;
-    z-index: 10001;
+    z-index: 2;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15);
     /* transition: 0.5s; */
    

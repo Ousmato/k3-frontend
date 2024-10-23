@@ -76,7 +76,7 @@ export class StudentBulletinComponent implements OnInit {
   }
   load_semestre() {
 
-    this.semestreService.getCurrentSemestresByIdNivFiliere(this.students.idClasse.idFiliere?.id!).subscribe(result => {
+    this.semestreService.getCurrentSemestresByIdNivFiliere(this.students.idClasse?.idFiliere?.id!).subscribe(result => {
       result.forEach(res => {
         if (!this.semestres.some(sem => sem.id == res.id)) {
           this.semestres.push(res)

@@ -21,7 +21,7 @@ export interface Student {
     date?: string; 
     lieuNaissance: string;
     dateNaissance: string; 
-    idClasse : ClassRoom;
+    idClasse ?: ClassRoom;
     idAdmin?: Admin;
     modules?: Module[]
     status: Type_status;
@@ -36,7 +36,6 @@ export interface Student_reinscription{
 export enum Type_status{
     REG = 'régulier',
     PROFESSIONNEL = 'professionnel',
-    LIBRE = 'libre'
 }
 
 export interface Student_group{
@@ -60,5 +59,25 @@ export interface Student_count{
 export interface Student_import {
     idClasse: number;
     idAnnee: number;
+    scolarite?: number
     students: Student[]
+}
+
+export enum StudentEtat{
+    Inscrits = 1,
+    Non_inscrit = 0,
+    Tout = "tout"
+}
+
+export interface Inscription{
+    id?: number;
+    idEtudiant: Student
+    idClasse: ClassRoom
+    idAdmin: Admin
+    date?: Date
+    active?: boolean;
+    payer?: boolean
+    scolarite?: number
+    adminPaye?: boolean
+
 }

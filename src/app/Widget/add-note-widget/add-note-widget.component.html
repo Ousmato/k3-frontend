@@ -2,7 +2,7 @@
     
     <div class="form-container" *ngIf="isShow_add_note">
         <div class="head-form"><span>Ajouter des notes</span><br>
-           <p>{{student.nom}} {{student.prenom}}</p></div>
+           <p>{{inscrit.idEtudiant.nom}} {{inscrit.idEtudiant.prenom}}</p></div>
         <div class="content">
             <div class="form-content">
                 <div class="form form-group">
@@ -21,7 +21,7 @@
                             <label id="label" class="label" value="" [for]="'module_' + module.id" (click)="show_form(module.id!)"><strong></strong>
                                 {{ module.nomModule }} (Coef {{ module.coefficient }}) :</label>
                            <ng-container *ngIf="showFormId === module.id" >
-                            <form [formGroup]="moduleForm" (ngSubmit)="onSubmit(student, module)">
+                            <form [formGroup]="moduleForm" (ngSubmit)="onSubmit(inscrit.idEtudiant, module)">
                                 <div class="input-content">
                                     <div class="exam-note">
                                         <p >Note exam</p>

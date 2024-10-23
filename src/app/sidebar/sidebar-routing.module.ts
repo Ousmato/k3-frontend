@@ -24,8 +24,10 @@ import { AddAdminComponent } from '../Admin/Component/add-admin/add-admin.compon
 import { DerPaiListComponent } from '../DER/der-pai-list/der-pai-list.component';
 import { AdminListComponent } from '../DG/admin-list/admin-list.component';
 import { MyAccuntComponent } from '../DG/my-accunt/my-accunt.component';
+import { ForgotPasswordComponent } from '../Password/forgot-password/forgot-password.component';
 
 const routes: Routes = [{path: "", component: SidebarComponent,
+    
     children: [
       { path: '', component: DasboardComponent, data:{title: "ACCUEIL"} },
       { path: 'classe', component: ClassStudentsComponent, data:{title: "Les Classes"} },
@@ -54,8 +56,9 @@ const routes: Routes = [{path: "", component: SidebarComponent,
      
     ]
 
+
   },
-  
+
  
 ]
   

@@ -3,7 +3,7 @@
   <!-- Sidebar -->
   <nav id="sidebar">
     <div class="sidebar-header ">
-      <img [src]="school?.urlPhoto" alt="">
+      <img src="assets/logounivsegou.png" alt="">
       <!-- <h1>UAM</h1> -->
       <strong>{{school?.nomSchool}}</strong>
     </div>
@@ -48,6 +48,11 @@
     </div>
     <ul id="components">
       <li class="menu-link">
+        <a (click)="toAccunt()" routerLink="/r-scolarite/my-accunt" routerLinkActive="active">
+          <span><fa-icon [icon]="icons.user"></fa-icon>Mon Compte</span>
+        </a>
+      </li>
+      <li class="menu-link">
         <a (click)="show_confirm()">
           <span><fa-icon [icon]="icons.aout"></fa-icon>Déconnexion</span>
         </a>
@@ -71,7 +76,7 @@
       </div>
 
       <div class="item-image">
-        <img [src]="dataAdmin.urlPhoto" (error)="onError($event)" alt="">
+        <img [src]="dataAdmin!.urlPhoto" (error)="onError($event)" alt="">
         <div class="name-content">
           <span>{{dataAdmin.nom.charAt(0).toUpperCase()}}. {{dataAdmin.prenom.toUpperCase()}}</span>
           <span class="text-muted small">{{dataAdmin.role.toUpperCase()}}</span>

@@ -1,14 +1,11 @@
 
-<div class="container-fluid" >
+<div class="container-fluide" >
     <app-login *ngIf="isLoginPage()"></app-login>
     <div *ngIf="!isLoginPage()" class="main-layout">
       <!-- <app-sidebar *ngIf="isAdminPage()"></app-sidebar> -->
       <!-- <app-student-sidebar *ngIf="isStudentPage()"></app-student-sidebar> -->
       <div id="layoutSidenav_content">
-        
-                <router-outlet />
-          
-        
+          <router-outlet />
       </div>
     </div>
   </div>

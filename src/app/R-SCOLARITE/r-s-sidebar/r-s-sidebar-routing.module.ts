@@ -16,6 +16,8 @@ import { StudentReInscriptionComponent } from '../student-re-inscription/student
 import { ViewUeComponent } from '../../Widget/ue-widget/view-ue/view-ue.component';
 import { ClassArchiveComponent } from '../../DGA/class-students/class-archive/class-archive.component';
 import { RSImportComponent } from '../r-s-import/r-s-import.component';
+import { MyAccuntComponent } from '../../DG/my-accunt/my-accunt.component';
+import { AddNoteWidgetComponent } from '../../Widget/add-note-widget/add-note-widget.component';
 
 const routes: Routes = [{path: '', component: RSSidebarComponent,
   children: [
@@ -23,10 +25,12 @@ const routes: Routes = [{path: '', component: RSSidebarComponent,
     {path: 'inscription', component: SinginComponent, data:{title: "INSCRIPTION"}},
     {path: 'etudiant', component: EtudiantsComponent, data:{title: "Les Etudiants"}},
     {path: 'student-notes', component: StudentNoteComponent, data:{title: "NOTES DES ETUDIANS"}},
-    {path: 're-inscription-list', component: RSReinscriptionComponent},
+    {path: 're-inscription-list', component: RSReinscriptionComponent, data:{title: "REINCRIPTION"}},
     {path: 're-inscription', component: StudentReInscriptionComponent, data:{title: "REINCRIPTION"}},
-    {path: 'class-archives', component: ClassArchiveComponent},
+    {path: 'class-archives', component: ClassArchiveComponent, data:{title: "Archives"}},
     {path: 'import', component: RSImportComponent, data:{title: "IMPORTER ETUDIANTS"}},
+    {path: 'my-accunt', component: MyAccuntComponent, data:{title: "Compte"}},
+    {path: 'add-note-student', component: AddNoteWidgetComponent, data:{title: "AJout des notes"}},
     
     {path: 'student-bulletin', component: StudentBulletinComponent, data:{title: "RELEVER DE NOTES"}},
     {path: 'all-notes', component: AllNotesSemestreComponent, data:{title: "NOTES DU SEMESTRE"}},

@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { EtudeService } from './etude.service';
-import { Student } from '../../Models/Students';
+import { Inscription, Student, StudentEtat } from '../../Models/Students';
 import { IconsService } from '../../../Services/icons.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Route, Router } from '@angular/router';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { StudentPages, TeacherPages } from '../../Models/Pagination-module';
 import { SideBarService } from '../../../sidebar/side-bar.service';
-import { Admin } from '../../Models/Admin';
+import { Admin, adminEtat } from '../../Models/Admin';
 import { SchoolService } from '../../../Services/school.service';
 import { AnneeScolaire } from '../../Models/School-info';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-etudiants',
@@ -19,21 +20,24 @@ import { AnneeScolaire } from '../../Models/School-info';
 export class EtudiantsComponent implements OnInit {
 
   searchTerm: string = '';
-  students: Student[] = [];
+  inscrits: Inscription[] = [];
 
   studentspage?: StudentPages;
   page = 0;
   size = 20;
-  filteredItems: Student[] = []
+  filteredItems: Inscription[] = []
   pages: number[] = []
 
   admin!: Admin
   secretaire!: Admin
   permission: boolean = false
+  event_toSetPage: boolean = false
   student!: Student;
   currentYear!: number
+  idAnnee!: number
+  value_toEvent: any = 0
   annees: AnneeScolaire[] = []
-
+  student_etats: {key: string, value: any}[] = []
   // urlImage!: string | ArrayBuffer
 
   constructor(private service: EtudeService, private fb: FormBuilder, private sideBarService: SideBarService,
@@ -43,6 +47,7 @@ export class EtudiantsComponent implements OnInit {
     this.getPermission();
     this.loadStudents();
     this.get_annees();
+    this.student_etats = this.getStudentEtat();
     this.currentYear = new Date().getFullYear()
     this.sideBarService.currentSearchTerm.subscribe(term => {
       this.searchTerm = term;
@@ -65,31 +70,31 @@ export class EtudiantsComponent implements OnInit {
   // ------------------------------filter students
   filterStudents() {
     if (!this.searchTerm) {
-      return this.filteredItems = this.students;
+      return this.filteredItems = this.inscrits;
     } else {
-      return this.filteredItems = this.students.filter(student =>
-        student.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        student.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        student.email.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        student.idClasse.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase())||
-        student.idClasse.idFiliere?.idNiveau.nom?.toLowerCase().includes(this.searchTerm.toLowerCase())
+      return this.filteredItems = this.inscrits.filter(inst =>
+        inst.idEtudiant.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        inst.idEtudiant.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        inst.idEtudiant.email.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        inst.idEtudiant.idClasse?.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase())||
+        inst.idEtudiant.idClasse?.idFiliere?.idNiveau.nom?.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     }
   }
   // ----------------------load students
   onChange(event: any){
+    this.event_toSetPage = true
+    this.inscrits = []
+    this.page = 0
+   this.idAnnee = event.target.value
+    this.service.getAll_by_idAnnee(this.idAnnee, this.page, this.size).subscribe(data => {
+     this.formatedDataStudent(data);
 
+    });
   }
   loadStudents(): void {
     this.service.getSudents(this.page, this.size).subscribe(data => {
-      this.students = data.content;
-      this.students.forEach((item: Student) => {
-        item.urlPhoto = `http://localhost/StudentImg/${item.urlPhoto}`;
-      })
-      this.studentspage = data;
-      this.filteredItems = this.students;
-      this.pages = Array.from({ length: data.totalPages! }, (_, i) => i);
-      console.log(this.pages, "pages")
+    this.formatedDataStudent(data);
 
     });
   }
@@ -97,7 +102,26 @@ export class EtudiantsComponent implements OnInit {
   setPage(page: number): void {
     if (page >= 0 && page < this.studentspage!.totalPages!) {
       this.page = page;
-      this.loadStudents();
+      if(this.event_toSetPage){
+        this.service.getAll_by_idAnnee(this.idAnnee, this.page, this.size).subscribe(data => {
+          this.formatedDataStudent(data);
+     
+         });
+         this.event_toSetPage = false;
+         return
+      }
+
+      if(this.value_toEvent === 0 || this.value_toEvent === StudentEtat.Tout){
+        console.log("la page selectionner", page)
+        this.loadStudents();
+      
+      }else{
+        this.service.getByEtat(this.value_toEvent, this.page, this.size).subscribe(data =>{
+          this.formatedDataStudent(data)
+          })
+       
+      }
+      
     }
   }
 
@@ -154,23 +178,12 @@ export class EtudiantsComponent implements OnInit {
   }
 
   // ------------------------------------------------------------
-  getStudentView(student: Student) {
+  getStudentView(idInscription: number) {
 
     const navigationExtras: NavigationExtras = {
-      queryParams: { id: student?.idEtudiant }
+      queryParams: { id: idInscription }
     };
     this.root.navigate(['/secretaire/student-view'], navigationExtras)
-
-    // const comptable = sessionStorage.getItem('comptable')
-    // const secretaire = sessionStorage.getItem('secretaire')
-    // if (comptable) {
-    //   this.root.navigate(['/comptable/student-view'], navigationExtras)
-
-    // } else if (secretaire) {
-    // } else {
-    //   this.root.navigate(['/r-scolarite/student-view'], navigationExtras)
-    // }
-    // this.root.navigate(['/r-scolarite/student-view'], navigationExtras)
   }
   // ----------------------------------------------------------
   deleted_student(id: number) {
@@ -186,6 +199,47 @@ export class EtudiantsComponent implements OnInit {
     )
   }
   // -----------------------
+  getStudentEtat(): { key: string, value: any }[] {
+    return Object.keys(StudentEtat)
+    .filter(key => isNaN(Number(key))) // Filtrer pour obtenir seulement les clés
+    .map(key => ({
+        key: key, // La clé (nom de l'état)
+        value: StudentEtat[key as keyof typeof StudentEtat] // La valeur correspondante
+    }));
+  }
 
+  getEtat(event: any){
+    this.inscrits = []
+    this.value_toEvent = event.target.value;
+    if(this.value_toEvent === StudentEtat.Tout){
+      this.loadStudents();
+    }else{
+      this.page = 0
+      // console.log(this.value_toEvent, "value",  this.page, "page",  this.size, "size")
+      this.service.getByEtat(this.value_toEvent, this.page, this.size).subscribe(data =>{
+      this.formatedDataStudent(data)
+      })
+      
+    }
 
+    
+  }
+
+  // --------------
+  formatedDataStudent(data: StudentPages){
+    this.inscrits = data.content;
+    this.inscrits.forEach((item: Inscription) => {
+      item.idEtudiant.urlPhoto = `${environment.urlPhoto}${item.idEtudiant.urlPhoto}`;
+    })
+    this.studentspage = data;
+    this.filteredItems = this.inscrits;
+    this.pages = Array.from({ length: data.totalPages! }, (_, i) => i);
+    console.log(this.pages, "pages")
+  }
+  // ----------------------abrevigate filiere name
+  abreviateFiliereName(filiere: string) : string{
+    const nameWord = filiere.split(' ');
+    const word = nameWord.filter(wd => wd.length > 3).map(word => word[0].toUpperCase()).join('')
+    return word;
+  }
 }

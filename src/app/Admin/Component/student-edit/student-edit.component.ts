@@ -121,7 +121,7 @@ export class StudentEditComponent implements OnInit {
       this.studentForm.get('dateNaissance')?.setValue(this.student!.dateNaissance);
       this.studentForm.get('matricule')?.setValue(this.student!.matricule);
       this.studentForm.get('scolarite')?.setValue(this.student!.scolarite);
-      this.studentForm.get('idClasse')?.setValue(this.student!.idClasse.id);
+      this.studentForm.get('idClasse')?.setValue(this.student!.idClasse?.id);
 
     })
   }

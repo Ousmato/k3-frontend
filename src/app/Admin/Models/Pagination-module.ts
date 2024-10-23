@@ -2,7 +2,7 @@ import { Docum, StudentDoc } from "./doc";
 import { Notes, StudentsNotesDto } from "./Notes";
 import { Teacher_presence } from "./objectPresence";
 import { Paie } from "./paie";
-import { Student } from "./Students";
+import { Inscription, Student } from "./Students";
 import { Presence } from "./Teacher-presence";
 import { ProfilDto, Teacher } from "./Teachers";
 
@@ -15,7 +15,7 @@ export interface TeacherPages{
 }
 
 export interface StudentPages{
-    content: Student[];
+    content: Inscription[];
     totalElements: number;
     totalPages?: number;
     size: number;

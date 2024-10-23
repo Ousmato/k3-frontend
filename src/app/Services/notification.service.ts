@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Notifications_gestion } from '../Admin/Models/Notifications-gestion';
 import { Observable, catchError, map } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { Observable, catchError, map } from 'rxjs';
 export class NotificationService {
 
   constructor(private http: HttpClient) { }
-  private baseUrl = 'http://localhost:8080/api-notification/';
+  private baseUrl = `${environment.apiUrl}api-notification/`;
   // const searchTerm = 'Harry Potter';
 private apiUrl = `https://openlibrary.org/search?q=`;
   // -------------------------------add notification

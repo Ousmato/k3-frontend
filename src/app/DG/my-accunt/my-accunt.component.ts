@@ -7,6 +7,7 @@ import { PageTitleService } from '../../Services/page-title.service';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { SidebarComponent } from '../../sidebar/sidebar.component';
 import { EventServiceService } from '../../Services/event-service.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-my-accunt',
@@ -16,14 +17,15 @@ import { EventServiceService } from '../../Services/event-service.service';
 export class MyAccuntComponent implements OnInit {
   admin!: Admin
   update_form!: FormGroup
-  adminStatusOptions: {key: string, value: string}[] = []
+  adminStatusOptions: { key: string, value: string }[] = []
   passwordVisible: boolean = false
   isEdit: boolean = false
+  permission: boolean = false
   fileName!: File
-  urlImage!: string | ArrayBuffer |null
+  urlImage!: string | ArrayBuffer | null
   photoSelect!: File
   idAdmin!: number
- 
+
 
 
   constructor(public icons: IconsService, private router: Router, private root: ActivatedRoute, private eventService: EventServiceService,
@@ -33,23 +35,32 @@ export class MyAccuntComponent implements OnInit {
     this.load_add_form();
   }
 
-  load_admin(){
-    this.root.queryParams.subscribe(param =>{
+  load_admin() {
+    this.root.queryParams.subscribe(param => {
       const idAdmin = param['id']
       this.idAdmin = idAdmin
-      this.adminService.getAdminById(idAdmin).subscribe(admin =>{
+      this.adminService.getAdminById(idAdmin).subscribe(admin => {
         console.log(admin, "aaaa")
-       this.admin = admin
-       this.admin.urlPhoto = `http://localhost/StudentImg/${admin.urlPhoto}`
-       this.update_form.get('nom')?.setValue(admin.nom);
+        this.admin = admin
+        this.admin.urlPhoto = `${environment.urlPhoto}${admin.urlPhoto}`
+      
+        // this.admin.urlPhoto = `${environment.apiUrl}StudentImg/${this.admin.urlPhoto}`
+
+        this.update_form.get('nom')?.setValue(admin.nom);
         this.update_form.get('prenom')?.setValue(admin.prenom);
         this.update_form.get('email')?.setValue(admin.email);
         this.update_form.get('telephone')?.setValue(admin.telephone);
         this.update_form.get('sexe')?.setValue(admin.sexe);
+        if (this.admin.role == Admin_role.DG.toString()) {
+          console.log(this.admin.role)
+          this.permission = true
+        }
+
       })
-    
+
+
     })
-   
+
   }
 
   // ------------onErro
@@ -59,66 +70,66 @@ export class MyAccuntComponent implements OnInit {
   }
 
   // -----------------show edit
-  show_edit(){
+  show_edit() {
     const elements = document.querySelectorAll('.input-control');
     const bordeNone = document.querySelectorAll('.input');
-   
+
     // Parcourt chaque élément et applique un style de bordure
     elements.forEach((element) => {
-        (element as HTMLElement).style.border = "1px solid gray";
-        (element as HTMLElement).style.borderRadius = "5px";
-        (element as HTMLElement).style.padding = "5px";
-        (element as HTMLElement).style.outline = "none";
-        (element as HTMLElement).style.width = "100%";
+      (element as HTMLElement).style.border = "1px solid gray";
+      (element as HTMLElement).style.borderRadius = "5px";
+      (element as HTMLElement).style.padding = "5px";
+      (element as HTMLElement).style.outline = "none";
+      (element as HTMLElement).style.width = "100%";
     });
-    bordeNone.forEach((elements) =>{
+    bordeNone.forEach((elements) => {
       (elements as HTMLElement).style.borderBottom = "none"
     })
     this.isEdit = true
   }
-  
 
-  load_add_form(){
+
+  load_add_form() {
     this.update_form = this.fb.group({
       nom: ['', [Validators.required, Validators.maxLength(20)]],
       prenom: ['', [Validators.required, Validators.maxLength(20)]],
       email: ['', Validators.required],
       sexe: ['', Validators.required],
       telephone: ['', Validators.required],
-     
+
     })
     this.adminStatusOptions = this.getStatusOptions();
-   
+
   }
 
-    togglePasswordVisibility(): void {
-      this.passwordVisible = !this.passwordVisible;
+  togglePasswordVisibility(): void {
+    this.passwordVisible = !this.passwordVisible;
   }
 
 
-  
+
   getStatusOptions(): { key: string, value: string }[] {
     return Object.keys(Admin_role).map(key => ({
       key: key,
-      value: Admin_role[key as keyof typeof Admin_role] 
+      value: Admin_role[key as keyof typeof Admin_role]
     }));
   }
   // ------------------------------add admin
-  update(){
+  update() {
     const formData = this.update_form.value;
-    if(this.update_form.valid){
-      const admin: AdminDto ={
+    if (this.update_form.valid) {
+      const admin: AdminDto = {
         idAdministra: this.idAdmin,
         nom: formData.nom,
         prenom: formData.prenom,
         email: formData.email,
         telephone: formData.telephone,
       }
-      
+
       console.log(admin, "admin")
       // return
       this.adminService.updateAdmin(admin).subscribe({
-        next: (response)=>{
+        next: (response) => {
           this.pageTitle.showSuccessToast("Mises à jour éffectué avec succès");
           this.update_form.reset();
           this.load_add_form();
@@ -126,11 +137,11 @@ export class MyAccuntComponent implements OnInit {
           this.load_admin();
           this.eventService.emitEvent(response)
         },
-        error: (erreur) =>{
+        error: (erreur) => {
           this.pageTitle.showErrorToast(erreur.error.message);
         }
       })
-    }else{
+    } else {
       this.update_form.markAllAsTouched();
       console.log("invalid", this.update_form.value);
     }
@@ -138,8 +149,8 @@ export class MyAccuntComponent implements OnInit {
   }
 
   // --------------------change password
-  changePass(idAdmin: number){
-    const navigationExtras : NavigationExtras = {
+  changePass(idAdmin: number) {
+    const navigationExtras: NavigationExtras = {
       queryParams: {
         id: idAdmin
       }
@@ -147,7 +158,7 @@ export class MyAccuntComponent implements OnInit {
     this.router.navigate(['/sidebar/change-password'], navigationExtras)
   }
 
-  annuler(){
+  annuler() {
     this.isEdit = false;
     this.update_form.reset();
     this.load_add_form();
@@ -166,27 +177,27 @@ export class MyAccuntComponent implements OnInit {
         this.urlImage = e.target.result; // Stocker l'URL de l'image
       };
       reader.readAsDataURL(this.photoSelect);
+    }
+
   }
- 
-}
-// --------------send image
-  sendImage(){
-    if(this.urlImage){
+  // --------------send image
+  sendImage() {
+    if (this.urlImage) {
       console.log(this.photoSelect, "la photo selectionner")
       // return
       this.adminService.changeProfilImage(this.idAdmin, this.photoSelect).subscribe({
-        next: (response)=>{
+        next: (response) => {
           this.pageTitle.showSuccessToast("Mises à jour effectué avec succès");
           this.eventService.emitEvent(response)
           this.urlImage = null
           this.load_admin();
         },
-        error: (erreur) =>{
+        error: (erreur) => {
           this.pageTitle.showErrorToast(erreur.error.message);
         }
       })
     }
   }
 
-  
+
 }

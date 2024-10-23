@@ -32,11 +32,15 @@ export class AddAdminComponent implements OnInit{
   load_add_form(){
     this.add_admin_form = this.fb.group({
       // idEnseignant: ['', Validators.required],
-      nom: ['', Validators.required],
-      prenom: ['', Validators.required],
+      nom: ['', [Validators.required, Validators.maxLength(20)]],
+      prenom: ['', [Validators.required, Validators.maxLength(20)]],
       email: ['', Validators.required],
       sexe: ['', Validators.required],
-      password: ['', Validators.required],
+      password: ['', [
+       
+    Validators.required,
+    Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}$/),
+      ]],
       telephone: ['', Validators.required],
       role: ['', Validators.required]
     })

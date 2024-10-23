@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Student } from '../../Admin/Models/Students';
+import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Inscription, Student } from '../../Admin/Models/Students';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EtudeService } from '../../Admin/Views/etudiants/etude.service';
@@ -11,6 +11,7 @@ import { StudentPages } from '../../Admin/Models/Pagination-module';
 import { ClassStudentService } from '../../DGA/class-students/class-student.service';
 import { ClassRoom } from '../../Admin/Models/Classe';
 import { Niveau } from '../../Admin/Models/Niveau';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-r-s-reinscription',
@@ -20,14 +21,16 @@ import { Niveau } from '../../Admin/Models/Niveau';
 export class RSReinscriptionComponent implements OnInit {
 
   searchTerm: string = '';
-  students: Student[] = [];
-  studentsInscrit: Student[] = [];
+  inscription: Inscription[] = [];
+  studentsInscrit: Inscription[] = [];
   idClasse!: any
   classRoom: ClassRoom[] = []
   niveau?: Niveau
   NextClassRoom: ClassRoom[] = []
+  NextClass!: ClassRoom
+  newEvent = new EventEmitter<any>();
 
-  filteredItems: Student[] = []
+  filteredItems: Inscription[] = []
 
   admin!: Admin
   idAnne!: number
@@ -35,10 +38,11 @@ export class RSReinscriptionComponent implements OnInit {
   is_show: boolean = false
   update_student_form!: FormGroup
   classeStudent: Student[] = []
-  student?: Student;
+  inscrit?: Inscription;
 
   constructor(private service: EtudeService, private rout: ActivatedRoute, private sideBarService: SideBarService,
-    private classeService: ClassStudentService, public icons: IconsService, private pageTitle: PageTitleService) { }
+    private classeService: ClassStudentService, public icons: IconsService, private router: Router,
+    private pageTitle: PageTitleService) { }
 
   ngOnInit(): void {
     this.getPermission();
@@ -54,6 +58,7 @@ export class RSReinscriptionComponent implements OnInit {
   // ----------------------------------get permission
   getPermission(): boolean {
     const autorize = sessionStorage.getItem('scolarite');
+    this.admin = JSON.parse(autorize!)
     if (autorize) {
       this.permission = true
       return true;
@@ -63,13 +68,13 @@ export class RSReinscriptionComponent implements OnInit {
   // ------------------------------filter students
   filterStudents() {
     if (!this.searchTerm) {
-      return this.filteredItems = this.students;
+      return this.filteredItems = this.inscription;
     } else {
-      return this.filteredItems = this.students.filter(student =>
-        student.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        student.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        student.email.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        student.idClasse.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase())
+      return this.filteredItems = this.inscription.filter(inscrit =>
+        inscrit.idEtudiant.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        inscrit.idEtudiant.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+       
+        inscrit.idClasse.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     }
   }
@@ -83,23 +88,33 @@ export class RSReinscriptionComponent implements OnInit {
     })
     this.classeService.getAllClasse(this.idAnne).subscribe(result => {
       this.classRoom = result;
-
-      // console.log(this.classRoom, "88888888888888")
     })
   }
 
   // ------------------------------------------------------------
-  getStudentView(student: Student) {
+  getStudentView(inscrit: Inscription) {
     this.is_show = true
-    this.student = student
-    console.log(this.student, "student 000")
+    this.inscrit = inscrit
+    this.inscrit.idEtudiant.urlPhoto = `${environment.urlPhoto}${inscrit.idEtudiant.urlPhoto}`
+    console.log(this.inscrit, "student 000")
     
   }
 
-  extractFileName(url: string): string {
-    const urlObj = new URL(url);
-    const path = urlObj.pathname;
-    return path.substring(path.lastIndexOf('/') + 1);
+ 
+  // -------------------reinscription
+  confirmInscription(student: Inscription, idClasse: number){
+    console.log(student, "innn------------------------")
+    // return
+    this.service.reInscriptionStudent(student!, idClasse!, this.admin.idAdministra!).subscribe({
+      next: (result) => {
+        this.pageTitle.showSuccessToast(result.message)
+        // this.changeClasse(idClasse);
+        
+      },
+      error: (error) => {
+        this.pageTitle.showErrorToast(error.error.message)
+      }
+    })
   }
   // ----------------------------------------------------------
   deleted_student(id: number) {
@@ -117,7 +132,7 @@ export class RSReinscriptionComponent implements OnInit {
 
 
   // ------------------close modal
-  closeModal() {
+  exitConfirm() {
     // this.ngOnInit();wi
     // window.location.reload()
     console.log("-------------------id select", this.idClasse)
@@ -128,31 +143,33 @@ export class RSReinscriptionComponent implements OnInit {
   goBack() {
     window.history.back();
   }
-  changeClasse(event: any) {
-    // console.log("0000000000000000-----------")
-   this.idClasse = event.target.value;
-    this.load_nextClasse(this.idClasse);
+  changeClasse(eventOrIdClasse: any) {
+   
+      // Si c'est directement l'ID de la classe
+      this.idClasse = eventOrIdClasse.target.value;
+ 
     this.rout.queryParams.subscribe(param => {
       this.idAnne = +param['id']
-      // this.load_classes(idClasse);
     })
-
     this.service.getStudentListByIdAnneeAndIdClasse(this.idAnne, +this.idClasse).subscribe(data => {
-      this.students = data
+      this.inscription = data
       
-      this.filteredItems = this.students;
+      this.filteredItems = data;
      
-      console.log(this.students, "pagenation teachers")
+      // console.log(this.inscription, "students")
     });
+    this.load_nextClasse(this.idClasse);
 
   }
 
   load_nextClasse(idClasse: number) {
     this.classeService.getNextClasseByIdPrevious(idClasse).subscribe(result => {
       this.NextClassRoom = result;
+
       console.log(result, "next class")
 
       this.NextClassRoom.forEach(ncls => {
+        this.NextClass = ncls
         this.niveau = ncls.idFiliere?.idNiveau
         this.service.getStudentListByIdAnneeAndIdClasse(ncls.idAnneeScolaire?.id! ,ncls.id!).subscribe(result => {
           this.studentsInscrit = result
@@ -163,14 +180,34 @@ export class RSReinscriptionComponent implements OnInit {
 
   }
   // ----------------methode to compare liste studentInscrit and students
-  check(matricule: string) {
-    let index = this.studentsInscrit.findIndex(e => e.matricule == matricule);
-    if (index != -1) {
-      return true;
-    } else {
-      return false;
-    }
-
+  check(idInscription: number, active: boolean) {
+    return this.studentsInscrit.some(e => e.idEtudiant.idEtudiant == idInscription && e.active == active);
+    
   }
 
+  // -----------------change state
+  changeState(idEtudiant: number, idClasse: number) {
+   const idInscription = this.studentsInscrit.find(si =>si.idEtudiant.idEtudiant == idEtudiant);
+    this.service.changeStateStudentInscription(idInscription?.id!, idClasse).subscribe({
+      next: (result) => {
+        this.pageTitle.showSuccessToast(result.message)
+        this.load_classes();
+      },
+      error: (error) => {
+        this.pageTitle.showErrorToast(error.error.message)
+      }
+    })
+
+  }
+  // ---------------abrevigate
+  abrevigateFiliere(name: string) : string{
+    const wordAbreviate = name.split(' ');
+    const word = wordAbreviate.filter(word =>word.length > 3).map(word => word[0].toUpperCase()).join('');
+    return word;
+  }
+
+  onError(event: Event) {
+    const target = event.target as HTMLImageElement;
+    target.src = 'assets/business-professional-icon.svg';
+  }
 }

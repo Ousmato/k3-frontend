@@ -1,6 +1,6 @@
 import { AfterContentInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Notes } from '../../Models/Notes';
-import { Student } from '../../Models/Students';
+import { Inscription, Student } from '../../Models/Students';
 import { IconsService } from '../../../Services/icons.service';
 import { EtudeService } from '../etudiants/etude.service';
 import { ActivatedRoute, NavigationExtras, NavigationStart, Router } from '@angular/router';
@@ -15,6 +15,7 @@ import { Location } from '@angular/common';
 import { NotesPages, StudentPages } from '../../Models/Pagination-module';
 import { SideBarService } from '../../../sidebar/side-bar.service';
 import { PageTitleService } from '../../../Services/page-title.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-student-note',
@@ -23,7 +24,7 @@ import { PageTitleService } from '../../../Services/page-title.service';
 })
 export class StudentNoteComponent implements OnInit {
   searchTerm: string = '';
-  students: Student [] = [];
+  inscrits: Inscription [] = [];
   studentSelect!: Student
   notes: Notes[] = [];
   idUrl! : number;
@@ -44,7 +45,7 @@ export class StudentNoteComponent implements OnInit {
   studentPages?: StudentPages;
   page = 0;
   size = 10;
-  filteredItems : Student[] = []
+  filteredItems : Inscription[] = []
   pages: number[] = []
 
   show_widget_add_note: boolean = false;
@@ -79,16 +80,16 @@ export class StudentNoteComponent implements OnInit {
     this.route.queryParams.subscribe(data =>{
      this.idUrl = data['id'];
      this.studentService.getStudent_ByIdClasse(this.page, this.size, this.idUrl).subscribe(data => {
-      this.students = data.content;
-      this.students.forEach((item, index) => {
-        item.numero = index + 1
-        item.urlPhoto = `http://localhost/StudentImg/${item.urlPhoto}`;
+      this.inscrits = data.content;
+      this.inscrits.forEach((item, index) => {
+       
+        item.idEtudiant.urlPhoto = `${environment.urlPhoto}${item.idEtudiant.urlPhoto}`;
       })
       this.studentPages = data;
-      this.filteredItems = this.students;
+      this.filteredItems = this.inscrits;
       this.pages = Array.from({ length: data.totalPages! }, (_, i) => i);
 
-      console.log(this.students, "pagenation teachers")
+      console.log(this.inscrits, "pagenation teachers")
     });
     
    })
@@ -98,6 +99,7 @@ export class StudentNoteComponent implements OnInit {
     load_module_without_note(student: Student){
       this.show_widget_add_note = ! this.show_widget_add_note
       this.studentSelect = student!
+      this.root.navigate(['/r-scolarite/add-note-student'], {queryParams:{id: student.idEtudiant}})
      
     }
     // ----------------------close widget add note modal
@@ -121,12 +123,11 @@ export class StudentNoteComponent implements OnInit {
 // --------------------------------------------------------------------------method filter
 filterStudents() {
   if (!this.searchTerm) {
-   return this.filteredItems = this.students;
+   return this.filteredItems = this.inscrits;
   } else {
-  return  this.filteredItems = this.students.filter(student =>
-      student.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      student.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      student.email.toLowerCase().includes(this.searchTerm.toLowerCase())
+  return  this.filteredItems = this.inscrits.filter(inscrit =>
+      inscrit.idEtudiant.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      inscrit.idEtudiant.prenom.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
 }

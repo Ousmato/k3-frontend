@@ -5,32 +5,29 @@ import { IconsService } from '../../Services/icons.service';
 import { PageTitleService } from '../../Services/page-title.service';
 import { SchoolService } from '../../Services/school.service';
 import { SideBarService } from '../../sidebar/side-bar.service';
-import { Subscription } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
 import { SchoolInfo } from '../../Admin/Models/School-info';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-sec-sidebar',
   templateUrl: './sec-sidebar.component.html',
   styleUrl: './sec-sidebar.component.css'
 })
-export class SecSidebarComponent  implements OnInit , OnDestroy{
-
-  
-  
+export class SecSidebarComponent  implements OnInit , OnDestroy{  
   
   title!: string;
   isSidebarCollapsed = false;
   isSubmenuCollapsed = false;
   desable_add_button = true;
   showSearchInput: boolean = false
-  showTitle: boolean = false
+  isConfirm: boolean = false
 
   show_admin: boolean = false
   show_add_form: boolean = false
 
   routerEventsSubscription!: Subscription;
 
-  component_Name: string [] = ['_EnseignantComponent',  '_EtudiantsComponent', '_TeachersPresenceComponent', '_FichePaieComponent', '_ArchivesComponent']
  
 
   searchTerm: string = '';
@@ -76,92 +73,76 @@ toggleSubMenuArchive(){
   constructor(private pageTitle: PageTitleService, private schoolService: SchoolService, private sidebarService: SideBarService,
      private router: Router, public icons: IconsService, private route: ActivatedRoute){}
 
-  
-ngOnInit(): void {
-
-  this.routerEventsSubscription = this.router.events.subscribe(event => {
-    if (event instanceof NavigationEnd) {
-      // Vérifier la route active
-      const childRoute = this.route.firstChild;
-      if (childRoute) {
-        const componentName: any = childRoute.snapshot.component?.name; 
-        this.show_admin = false
-        // console.log(componentName, "nam componenrt")
-        this.showSearchInput = false; // Par défaut, masquer la barre de recherche
-        for (let cn of this.component_Name) {
-          if (cn === componentName) {
-            this.showSearchInput = true;
-          
-            break;
-          } else{
-            this.showTitle = true
-          }
-        }
-      } 
-    }
-  });
-
-   this.load_school_info();
-   this.load_admin();
-   this.loa_page_title();
-}
-
-
-refresh(){
-  window.location.reload();
-}
-load_school_info(){
-  this.schoolService.getSchools().subscribe(data => {
-    this.school = data
-    this.school.urlPhoto = "http://localhost/StudentImg/"+this.school.urlPhoto
-    // console.log(data, "----------------------------");
-  })
-}
-loa_page_title(){
-  this.pageTitle.title$.subscribe(title => {
-    this.title = title;
-    console.log(this.title, "sid tit")
-  });
-}
-// ------------------------------------------load current admin
-load_admin(){
-  const admin = sessionStorage.getItem('secretaire');
  
-  if(admin){
+     ngOnInit(): void {
+
+      this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
+        this.setTitle();
+      });
     
-    this.dataAdmin = JSON.parse(admin);
-     if(this.dataAdmin.role != Admin_role.DG){
-      this.desable_add_button  = false
-    console.log("ne pas admin");
-  }
-    this.dataAdmin.urlPhoto = "http://localhost/StudentImg/"+this.dataAdmin.urlPhoto
-  }
-}
-// --------------------------------shearch 
-  onSearchChange() {
-    this.sidebarService.changeSearchTerm(this.searchTerm);
-  }
-
-  show_adminSetting(){
-    this.show_admin =! this.show_admin
-   
-  }
- close(){
-  this.show_admin = false
- }
-
-  ngOnDestroy() {
-    // Se désabonner pour éviter les fuites de mémoire
-    if (this.routerEventsSubscription) {
-      this.routerEventsSubscription.unsubscribe();
-      this.show_admin = false;
+      this.setTitle();
+       this.load_school_info();
+       this.load_admin();
     }
-  }
-
-  singAout(){
-    sessionStorage.clear();
-    this.router.navigate([''])
     
-  }
-
+    setTitle(): void {
+      let route = this.route.firstChild;
+    
+      while (route?.firstChild) {
+        route = route.firstChild;
+      }
+    
+      // Retrieve the title from the route data if it exists
+      this.title = route?.snapshot.data['title'] || '';
+      console.log(this.title, "le titre")
+    }
+    load_school_info(){
+      this.schoolService.getSchools().subscribe(data => {
+        this.school! = data    
+        // console.log(data, "----------------------------");
+      })
+    }
+    // ------------------------------------------load current admin
+    load_admin(){
+      const admin = sessionStorage.getItem('secretaire');
+     
+      if(admin){
+        
+        this.dataAdmin = JSON.parse(admin);
+        this.dataAdmin.urlPhoto = `${environment.urlPhoto}${this.dataAdmin.urlPhoto}`
+    
+      }
+    }
+    // --------------------------------shearch 
+      onSearchChange() {
+        this.sidebarService.changeSearchTerm(this.searchTerm);
+      }
+    
+      onError(event: Event) {
+        const target = event.target as HTMLImageElement;
+        target.src = 'assets/business-professional-icon.svg';
+      }
+      show_confirm(){
+        this.isConfirm = true
+       
+      }
+     close(){
+      this.isConfirm = false;
+     }
+    
+      ngOnDestroy() {
+        // Se désabonner pour éviter les fuites de mémoire
+        if (this.routerEventsSubscription) {
+          this.routerEventsSubscription.unsubscribe();
+        }
+      }
+    
+      toAccunt(){
+        this.router.navigate(['/secretaire/my-accunt'], {queryParams:{id: this.dataAdmin.idAdministra}})
+      }
+      // ---------------
+      singAout(){
+        sessionStorage.clear();
+        this.router.navigate(['']);
+      }
 }

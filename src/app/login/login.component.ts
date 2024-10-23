@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
   teacher!: Teacher;
   passwordVisible: boolean = false
   invalid : boolean = false
-  message: any;
+  errorMessage: any;
 
 
   constructor(private authService: AuthServiceService, public icons:IconsService, private toastr: ToastrService,
@@ -95,7 +95,7 @@ export class LoginComponent implements OnInit {
           if(erreur.status == 0){
             this.toastr.error("Verifier la connexion a votre base de données", "Erreur");
           }
-        this.message = erreur.error.message;
+        this.errorMessage = erreur.error.message;
         this.invalid =! this.invalid;
           // this.pageTitle.showErrorToast(erreur.error.message)
         },
@@ -109,6 +109,10 @@ export class LoginComponent implements OnInit {
   // --------------------------------method password visible
   togglePasswordVisibility(): void {
     this.passwordVisible = !this.passwordVisible;
+}
+
+to_forgotPassword(){
+  this.route.navigate(['/forgot-password']);
 }
 }
 

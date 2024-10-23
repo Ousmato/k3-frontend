@@ -1,8 +1,9 @@
-<div class="wrapper">
+<main>
+  <div class="wrapper">
     <!-- Sidebar -->
     <nav id="sidebar">
       <div class="sidebar-header ">
-        <img  [src]="school?.urlPhoto" alt="">
+        <img  src="assets/logounivsegou.png" alt="">
         <!-- <h1>UAM</h1> -->
         <strong>{{school?.nomSchool}}</strong>
       </div>
@@ -28,66 +29,85 @@
           </li>
           
         </ul>
-        <ul id="components" >
-          <li class="menu-link">
-            <a (click)="singAout()">
-              <span><fa-icon [icon]="icons.aout"></fa-icon>Déconnexion</span>
-            </a>
-          </li>
-        </ul>
+        
       </div>
+      <ul id="components">
+        <li class="menu-link">
+          <a (click)="toAccunt()" routerLink="/secretaire/my-accunt" routerLinkActive="active">
+            <span><fa-icon [icon]="icons.user"></fa-icon>Mon Compte</span>
+          </a>
+        </li>
+        <li class="menu-link">
+          <a (click)="show_confirm()">
+            <span><fa-icon [icon]="icons.aout"></fa-icon>Déconnexion</span>
+          </a>
+        </li>
+      </ul>
     </nav>
   
     <!-- Page Content -->
     <div id="content">
-      <div class="navDiv">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid nav-element">
-                <div class="btn-contenair">
-                    <button type="button" id="sidebarCollapse" class="btn btn-info" (click)="toggleSidebar()">
-                    <fa-icon [icon]="icons.menu"></fa-icon>
-                    
-                    </button>
-                     <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <fa-icon [icon]="icons.menu"></fa-icon>
-                    </button>
-                    
-                </div>
-                <div class="input-search" *ngIf="showSearchInput">
-                    <input type="text" [(ngModel)]="searchTerm" (input)="onSearchChange()" placeholder="Recherche..."  class="search-input">
-                 </div>
-                <div class="title-page" *ngIf="showTitle">
-                  <h6>{{title}}</h6></div>
-                  
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ">
-                  <li class="nav-item dropdown">
-                    <a class="nav-link" id="navbarDropdown"  (click)="show_adminSetting()">
-                      <img src="{{dataAdmin.urlPhoto}}" alt=""><fa-icon [icon]="show_admin ? icons.sortUp : icons.sortDown" class="my-custom-style"></fa-icon>
-                    </a>
-                    <ul class="" *ngIf="show_admin">
-                     
-                      <div class="dropdawn-setting" > 
-                        <app-admin-setting-widget [admin]="dataAdmin" (closeModal)="close()"  ></app-admin-setting-widget>
-                         
-                      </div>
-                     
-                    </ul>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </nav>
+      <div class="nav-content">
+        <div class="btn-contenair">
+          <button type="button" class="btn btn-info" (click)="toggleSidebar()">
+            <fa-icon [icon]="icons.menu"></fa-icon>
+  
+          </button>
+          <h6>{{title.toUpperCase()}}</h6>
+        </div>
+  
+        <div class="title-page">
+  
+        </div>
+  
+        <div class="item-image">
+          <img [src]="dataAdmin!.urlPhoto" (error)="onError($event)" alt="">
+          <div class="name-content">
+            <span>{{dataAdmin.nom.charAt(0).toUpperCase()}}. {{dataAdmin.prenom.toUpperCase()}}</span>
+            <span class="text-muted small">{{dataAdmin.role.toUpperCase()}}</span>
+            <!-- <fa-icon [icon]="show_admin ? icons.sortUp : icons.sortDown" class="my-custom-style"></fa-icon> -->
+  
+          </div>
+  
+        </div>
+  
       </div>
       <div id="layoutSidenav_content">
         <main>
-          <div class="container-fluid px-1">
-           
+          <div>
+  
             <!--  -->
             <router-outlet />
           </div>
+  
         </main>
       </div>
     </div>
   </div>
   
+    <!-- ------------------disconnect modal -->
+     
+    <ng-container *ngIf="isConfirm">
+      <div class="views">
+        <h3 class="span">Confirmation</h3>
+        <div class="container-views">
+          <p>Êtes-vous sûr de vouloir vous déconnectez ?</p>
+          <div class="profil">
+            <img [src]="dataAdmin.urlPhoto" (error)="onError($event)" alt="">
+            <div class="info-pofil">
+              <p>{{dataAdmin.nom}} {{dataAdmin.prenom}}</p>
+              <p class="text-muted small">{{dataAdmin.role.toUpperCase()}}</p>
+            </div>
+    
+          </div>
+          <div class="button-cash">
+            <a type="button" (click)="close()">Annuler</a>
+            <button type="button" (click)="singAout()">Confirmer</button>
+          </div>
+    
+        </div>
+      </div>
+    </ng-container>
+    <div class="overlay" *ngIf="isConfirm"></div>
+  
+</main>

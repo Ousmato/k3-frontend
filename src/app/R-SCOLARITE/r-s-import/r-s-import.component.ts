@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import * as ExcelJS from 'exceljs';
-import { Student, Student_import } from '../../Admin/Models/Students';
+import { Inscription, Student, Student_import } from '../../Admin/Models/Students';
 import { ClassRoom } from '../../Admin/Models/Classe';
 import { ClassStudentService } from '../../DGA/class-students/class-student.service';
 import { SchoolService } from '../../Services/school.service';
@@ -10,6 +10,7 @@ import { IconsService } from '../../Services/icons.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EtudeService } from '../../Admin/Views/etudiants/etude.service';
 import { PageTitleService } from '../../Services/page-title.service';
+import { Admin } from '../../Admin/Models/Admin';
 
 @Component({
   selector: 'app-r-s-import',
@@ -19,19 +20,23 @@ import { PageTitleService } from '../../Services/page-title.service';
 export class RSImportComponent implements OnInit {
 
   students: Student[] = []
-  classes: ClassRoom[] =[]
+  incrits: Inscription[] = []
+  classes: ClassRoom[] = []
+  classe!: ClassRoom
   show_add: boolean = false
   formAdd!: FormGroup
   promotion?: any
-  annees: AnneeScolaire []= []
+  admin!: Admin
+  annees: AnneeScolaire[] = []
   constructor(private datePipe: DatePipe, private pageTitle: PageTitleService,
     public icons: IconsService, private fb: FormBuilder,
     private classService: ClassStudentService, private infoSchool: SchoolService, private studentService: EtudeService) { }
 
-  
+
   ngOnInit(): void {
     this.get_annees();
     this.load_form();
+    this.getAdmin();
   }
 
   onFileChange(event: any): void {
@@ -47,8 +52,8 @@ export class RSImportComponent implements OnInit {
     fileReader.readAsArrayBuffer(file);
   }
 
-// --------------------------load form
-  load_form(){
+  // --------------------------load form
+  load_form() {
     this.formAdd = this.fb.group({
       idAnnee: ['', Validators.required],
       idClasse: ['', Validators.required]
@@ -59,7 +64,7 @@ export class RSImportComponent implements OnInit {
 
     const workbook = new ExcelJS.Workbook();
     workbook.xlsx.load(arrayBuffer).then((workbook) => {
-      
+
       workbook.eachSheet((worksheet, sheetId) => {
         worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
           let rowData: any = {};
@@ -104,60 +109,89 @@ export class RSImportComponent implements OnInit {
                 break;
             }
           });
-         this.students.push(rowData);
+          // Traitement de rowData pour ne pas inclure scolarite dans students
+          const { scolarite, ...newStudents } = rowData;
+          Number(newStudents.telephone); // Conversion du téléphone
+          Number(scolarite); // Conversion de la scolarité si besoin
+
+          // Ajouter à this.students sans scolarite
+          this.students.push(newStudents);
+
+          // Créer une inscription
+          const inscrit = {
+            idAdmin: this.admin,
+            idClasse: this.classe,
+            idEtudiant: newStudents, 
+            scolarite: scolarite 
+          };
+
+          // Vérifier si l'étudiant est déjà inscrit
+          if (!this.incrits.some(i => i.idEtudiant.telephone === newStudents.telephone)) {
+            this.incrits.push(inscrit);
+          }
 
         });
+
       });
-  
-      console.log(this.students);
+
       this.students.shift();
+
     });
   }
-  
-  submit(){
-   const formData = this.formAdd.value
-   console.log(formData, "formData")
-   const student : Student_import ={
-    idAnnee: formData.idAnnee,
-    idClasse: formData.idClasse,
-    students: this.students
 
-   }
-   if(this.formAdd.valid){
-    this.studentService.addStudentImport(student).subscribe({
-      next: (res) =>{
-        this.pageTitle.showSuccessToast(res.message);
-        this.students = []
-        this.show_add = false 
+  submit() {
 
-      },
-      error : (erreur) =>{
-        this.pageTitle.showErrorToast(erreur.error.message);
-      }
+    const formData = this.formAdd.value
+    this.classe = this.classes.find(c => c.id == +formData.idClasse)!;
 
+    this.incrits.forEach(i => {
+      i.idClasse = this.classe
     })
-   }
-   console.log(student, "object---------")
+    console.log(this.incrits, "student ----------------nscrit")
+    // return
+    if (this.formAdd.valid) {
+      this.studentService.addStudentImport(this.incrits).subscribe({
+        next: (res) => {
+          this.pageTitle.showSuccessToast(res.message);
+          this.students = []
+          this.show_add = false
+
+        },
+        error: (erreur) => {
+          this.pageTitle.showErrorToast(erreur.error.message);
+        }
+
+      })
+    }
   }
 
-     // -------------------------get annees
-     get_annees(){
-      this.infoSchool.getAll_annee().subscribe(data =>{
-        this.annees = data;
-        this.annees.forEach(ans=>{
-          const annee = new Date(ans.debutAnnee)
-          const debutAnnee = annee.getFullYear()
-          ans.ans = debutAnnee
-        })
+  getAdmin() {
+    const dataAdmin = sessionStorage.getItem("scolarite");
+    this.admin = JSON.parse(dataAdmin!);
+  }
+  // -------------------------get annees
+  get_annees() {
+    this.infoSchool.getAll_annee().subscribe(data => {
+      this.annees = data;
+      this.annees.forEach(ans => {
+        const annee = new Date(ans.debutAnnee)
+        const debutAnnee = annee.getFullYear()
+        ans.ans = debutAnnee
       })
-    }
-  
-    onSelect(event: any){
-      const idAnne = event.target.value
-      this.classService.getAllClasse(idAnne).subscribe(result =>{
-        this.classes = result;
-        // console.log(this.classes, "class");
-      })
-    }
+    })
+  }
 
+  onSelect(event: any) {
+    const idAnne = event.target.value
+    this.classService.getAllClasse(idAnne).subscribe(result => {
+      this.classes = result;
+      // console.log(this.classes, "class");
+    })
+  }
+
+  // ----------------abrevigate filiere name
+  abrevigateFiliereName(name: string) : string{
+    const nameSplite = name.split(' ');
+    return nameSplite.filter(word =>word.length > 3).map(w =>w[0].toUpperCase()).join('');
+  }
 }

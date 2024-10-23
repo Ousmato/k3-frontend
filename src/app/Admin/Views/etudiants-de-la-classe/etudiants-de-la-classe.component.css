@@ -21,18 +21,7 @@ tr td{
     font-size: 16px;
     text-overflow: ellipsis;
 }
-.search-icon {
-    position: absolute;
-    transform: translateY(50%);
-    color: var(--secondary);
-    pointer-events: none;
-    right: 544px;
-    background-color: var(--primary-light);
-    bottom: 25px;
-    border-radius: 3px;
-    padding: 8px;
-    font-size: 1.2rem;
-}
+
 span{
     margin-left: 5px;
     font-size: 10px;
@@ -47,29 +36,7 @@ img{
     height: 50px;
     width: auto;
 }
-.input-search {
-    position: relative;
-    width: 100%;
-    display: flex;
-    /* justify-content: center; */
-    /* margin: 20px 0; */
-}
 
-.search-input {
-    width: 50%;
-    padding: 10px 15px;
-    font-size: 16px;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.search-input:focus {
-    border-color: var(--primary-light);
-    /* box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3); */
-    outline: none;
-}
 .back-button{
     width: 30px;
     height: 30px;
@@ -103,23 +70,47 @@ img{
 .table-container::-webkit-scrollbar{
     display: none;
 }
+.head{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+}
 /* -----------------------------------------------pagination style */
+.footer{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 10px;
+    width: 100%;
+
+}
+.button-navigation{
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+
+}
+.footer p{
+    color: var(--primary);
+    margin-right: 10px;
+}
 .pagination {
     display: flex;
-    justify-content: end;
+    justify-content: center;
+    align-items: center;
     margin-top: 10px;
-    width: 100%;
   }
   
   .pagination button {
     margin: 0 5px;
-    font-size: 10px;
-    padding: 2px 5px;
-    /* background-color: #007bff; */
+    font-size: 12px;
+    /* padding: 3px 8px; */
+    background-color: transparent;
     color: var(--secondary);
     cursor: pointer;
-    border: none;
-    border-radius: 20px;
+    border: 1px solid var(--secondary);
+    border-radius: 50%;
   }
   
   .pagination button.disabled, .pagination button[disabled] {
@@ -129,10 +120,11 @@ img{
   
   .pagination button.active {
     background-color: var(--primary);
+    color: white;
   }
   
   .pagination button:hover:not(.disabled):not(.active) {
     background-color: var(--secondary);
     color: var(--primary);
-    border: none;
   }
+  
