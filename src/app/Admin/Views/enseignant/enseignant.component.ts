@@ -6,6 +6,7 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { TeacherPages } from '../../Models/Pagination-module';
 import { SideBarService } from '../../../sidebar/side-bar.service';
 import { Filiere } from '../../Models/Filieres';
+import { Admin } from '../../Models/Admin';
 
 @Component({
   selector: 'app-enseignant',
@@ -18,20 +19,21 @@ export class EnseignantComponent implements OnInit {
 
   teachersPage!: TeacherPages;
   page = 0;
-  size = 10;
+  size = 20;
   filteredItems: Teacher[] = []
   pages: number[] = []
-
+  admin!: Admin
+  
   profiles: ProfilDto[] = []
+  profilesItem: ProfilDto[] = []
   current_enseignat_create!: Teacher;
   permission: boolean = false
-
-
 
   constructor(public icons: IconsService, private root: Router, private sideBareService: SideBarService,
     private enseignantService: EnseiService) { }
   ngOnInit(): void {
     // this.load_enseignants();
+    this.load_admin();
     this.loadTeachers();
     this.getPermission();
     this.sideBareService.currentSearchTerm.subscribe(term => {
@@ -43,12 +45,13 @@ export class EnseignantComponent implements OnInit {
 
   filterTeachers() {
     if (!this.searchTerm) {
-      return this.filteredItems = this.enseignants;
+      return this.profilesItem = this.profiles;
     } else {
-      return this.filteredItems = this.enseignants.filter(enseignant =>
-        enseignant.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        enseignant.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        enseignant.email.toLowerCase().includes(this.searchTerm.toLowerCase())
+      return this.profilesItem = this.profiles.filter(p =>
+        p.teachers.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        p.teachers.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        p.filieres.some(pf => 
+          this.abbreviateFiliereName(pf.nomFiliere).toLowerCase().includes(this.searchTerm.toLowerCase()))
       );
     }
   }
@@ -58,7 +61,26 @@ export class EnseignantComponent implements OnInit {
     const navigationExtras: NavigationExtras = {
       queryParams: { id: idEnseignant }
     };
-    this.root.navigate(['/der/t-edit'], navigationExtras)
+    const der = sessionStorage.getItem("der")
+    if(this.permission){
+       this.root.navigate(['/der/t-edit'], navigationExtras)
+    }else if(der){
+      this.root.navigate(['/der/t-edit'], navigationExtras)
+
+    }else{
+      this.root.navigate(['/sidebar/t-edit'], navigationExtras)
+    }
+   
+  }
+
+  load_admin() {
+    const admin = sessionStorage.getItem('admin');
+    console.log("admin :", admin)
+    if (admin) {
+      console.log(JSON.parse(admin), "admin parse")
+      // this.dataAdmin = JSON.parse(admin);
+      // this.dataAdmin.urlPhoto = `${environment.urlPhoto}${this.dataAdmin.urlPhoto}`
+    }
   }
   // -----------------------------load teacher by pages
   loadTeachers(): void {
@@ -74,7 +96,7 @@ export class EnseignantComponent implements OnInit {
       
       this.teachersPage = data;
       console.log(this.teachersPage, "teacher")
-      this.filteredItems = this.enseignants;
+      this.profilesItem = this.profiles;
       this.pages = Array.from({ length: data.totalPages! }, (_, i) => i);
       console.log(this.pages, "pages")
     });
@@ -144,6 +166,7 @@ export class EnseignantComponent implements OnInit {
   getPermission() : boolean{
     console.log("admin")
     const admin = sessionStorage.getItem('admin')
+    this.admin = JSON.parse(admin!);
     console.log( admin, "-----------------------")
     if(admin){
       this.permission = true;

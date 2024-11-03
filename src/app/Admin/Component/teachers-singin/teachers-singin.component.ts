@@ -7,6 +7,7 @@ import { PageTitleService } from '../../../Services/page-title.service';
 import { SetService } from '../../Views/settings/set.service';
 import { Ue } from '../../Models/UE';
 import { Filiere } from '../../Models/Filieres';
+import { Admin } from '../../Models/Admin';
 
 @Component({
   selector: 'app-teachers-singin',
@@ -23,6 +24,7 @@ export class TeachersSinginComponent implements OnInit {
   filiereNumbers: number[] = [1];
   listFilieresSelect: Filiere[] = []
   count: number = 1
+  admin!: Admin
   passwordVisible: boolean = false
 
   constructor(private enseignantService: EnseiService, private pageTitle: PageTitleService,
@@ -32,6 +34,7 @@ export class TeachersSinginComponent implements OnInit {
     this.loa_teacher_form();
     this.load_filieres();
     this.getStatusOptions();
+    this.getAdmin();
 
   }
   // -------------------------load teacher add form
@@ -91,6 +94,7 @@ export class TeachersSinginComponent implements OnInit {
     }
 
     const dto: ProfilDto = {
+      idAdmin: this.admin,
       teachers: teacher,
       filieres: filiere
     }
@@ -111,6 +115,8 @@ export class TeachersSinginComponent implements OnInit {
             this.pageTitle.showSuccessToast(data.message);
             this.teacher_form.reset();
             this.loa_teacher_form();
+           this.filiereNumbers = [1];
+           this.count = 1
           },
           error: (erreur) => {
             this.pageTitle.showErrorToast(erreur.error.message);
@@ -171,5 +177,12 @@ export class TeachersSinginComponent implements OnInit {
   //  -------------------------------back button
   goBack() {
     window.history.back();
+  }
+  // ----------------get admin
+  getAdmin(){
+    const adminData = sessionStorage.getItem('der');
+    if (adminData) {
+      this.admin = JSON.parse(adminData);
+    }
   }
 }

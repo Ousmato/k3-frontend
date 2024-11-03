@@ -1,24 +1,24 @@
-<main>
+<main class="emplois-main-contente" >
     <!-- <div (click)="goBack()" class="back-button" *ngIf="!permission">
         <fa-icon [icon]="icons.back"></fa-icon>
     </div> -->
     
-    <div class="btn-contenair">
-        <div class="tab-head">
-            <!-- <p>Les emplois du temps en cours</p> -->
-        </div>
+    <div class="btn-contenaire">
+        <button *ngIf="permission" type="button"  (click)="nouveau()"><fa-icon [icon]="icons.plus"></fa-icon> Nouveau</button>
+        
         <div class="app" *ngIf="show_add">
             <app-emplois-du-temps (closeModale)="close()"></app-emplois-du-temps>
         </div>
         <div class="app-update" *ngIf="show_update">
             <app-emplois-widget [emplois]="emploiSelect" (closeUpdateModal)="close()"></app-emplois-widget>
         </div>
-       
-        <button *ngIf="permission" type="button"  (click)="nouveau()"> Nouveau</button>
+        <div class="input-search">
+            <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..." class="search-input">
+          </div>
    </div>
-   <div class="contente">
+   <div class="emplois-contente">
     <div class="grid-container">
-        <div class="grid-item" *ngFor="let eploi of emplois">
+        <div class="grid-item" *ngFor="let eploi of filteredEmplois()">
             <!-- <div class="section-folder"> -->
                 <div class="emploi-item" >
                   
@@ -30,6 +30,11 @@
                     <div class="info-folder">
                         <h6 class="title">Date de fin</h6>
                         <p class="small">{{eploi.dateFin}}</p>
+                        
+                    </div>
+                    <div class="info-folder">
+                        <h6 class="title">Module</h6>
+                        <p class="small" id="module">{{eploi.idModule.nomModule}}</p>
                         
                     </div>
                     <div class="info-folder">
@@ -63,40 +68,5 @@
         </div>
     </div>
    </div>
-    <!-- <table class="table">
-        <thead>
-            <tr>
-                <th>Date de début</th>
-                <th>Date de fin</th>
-                <th>Semestre</th>
-                <th>Mensions</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <ng-container *ngIf="emplois.length; else notFund">
-                <ng-container  *ngFor="let eploi of emplois" >
-                   
-                    <tr>
-                        <td>{{eploi.dateDebut}}</td>
-                        <td>{{eploi.dateFin}}</td>
-                        <td>{{eploi.idSemestre.nomSemetre}}</td>
-                        <td >{{eploi.idClasse.idFiliere?.idNiveau?.nom}} {{eploi.idClasse.idFiliere?.idFiliere?.nomFiliere}} </td>
-                        <td class="next-col second-child"> 
-                            <a *ngIf="permission" (click)="deleted(eploi.id!)" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> Supprimer</a>
-                        
-                            <a *ngIf="permission" (click)="updated(eploi)" ><fa-icon [icon]="icons.edit"></fa-icon>Modifier</a>
-                            <a (click)="toggle_toSeance(eploi.id!)"><fa-icon [icon]="icons.eye"></fa-icon>Consulter</a></td>
-                    </tr>
-                </ng-container>
-                
-            </ng-container>
-            <ng-template #notFund>
-                <tr>
-                    <td colspan="9" class="text-center">Aucun résultat trouvé</td>
-                </tr>
-            </ng-template>
-            
-        </tbody>
-    </table> -->
+    
 </main>

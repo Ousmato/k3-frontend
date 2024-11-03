@@ -26,6 +26,7 @@
     "gestion-scolaire": "file:",
     "jquery": "^3.7.1",
     "jspdf": "^2.5.1",
+    "ngx-spinner": "^17.0.0",
     "ngx-toastr": "^19.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

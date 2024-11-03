@@ -1,49 +1,57 @@
-main{
+main {
     width: 100%;
     display: flex;
     flex-direction: column;
-    
-   align-items: center;
-   
+
+    align-items: center;
+
 }
 
-.form-group{
+.form-group {
     padding: 10px;
 }
-.submit-button{
+
+.submit-button {
     padding: 10px;
     width: 100%;
 }
 
-p{
+p {
     text-align: left;
     font-size: 18px;
 }
-.input-cont{
+
+.input-cont {
     /* width: 80%; */
     display: flex;
     justify-content: space-between;
 }
-.btn-con{
+
+.btn-con {
     margin-top: 40px;
 }
-.date{
+
+.date {
     width: 50%;
 }
-button{
+
+button {
     border: none;
     cursor: pointer;
     padding: 5px 15px;
     border-radius: 5px;
     background-color: var(--primary);
     color: var(--secondary);
-    &:hover{
+
+    &:hover {
         background-color: var(--secondary);
         color: var(--primary);
     }
+
     /* margin-top: 20px; */
 }
-.btn-contenair{
+
+.btn-contenair {
     width: 100%;
     margin-top: 20px;
     padding-right: 10px;
@@ -52,58 +60,74 @@ button{
     justify-content: space-between;
 }
 
-.views{
+.views {
     background-color: white;
     position: absolute;
-    border: 1px solid #ddd;
+    /* border: 1px solid #ddd; */
     /* top: -236%; */
-    width: 390px;
-    right: 23px;
+    top: 23%;
+    left: 19%;
     border-radius: 4px;
-    z-index: 1000;
+    z-index: 1010;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15);
     /* transition: 0.5s; */
-   
-    }
 
-input:focus, select:focus{
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1001;
+}
+
+input:focus,
+select:focus {
     border-color: var(--primary);
     outline: none;
     box-shadow: 0 0 5px var(--primary);
 }
 
-.input-click{
+.input-click {
     cursor: pointer;
     text-align: left;
-    &:hover{
+
+    &:hover {
         background-color: var(--tertiary);
     }
 }
-.tab-head p{
+
+.tab-head p {
     margin: 0;
     font-size: 18px;
     font-weight: 500;
 }
-.tab-head{
+
+.tab-head {
     width: 57%;
     display: flex;
     justify-content: end;
 }
-.input-date{
+
+.input-date {
     width: 100%;
     display: flex;
     gap: 20px;
 }
 
-.button-cash{
+.button-cash {
     display: flex;
     gap: 20px;
     padding: 10px;
     justify-content: end;
-    
-   
+
+
 }
-.span{
+
+.span {
     background-color: var(--primary);
     color: var(--secondary);
     font-size: 14px;
@@ -114,7 +138,7 @@ input:focus, select:focus{
     border-top-right-radius: 4px;
 }
 
-.button-cash button{
+.button-cash button {
     border: none;
     display: flex;
     gap: 8px;
@@ -124,26 +148,28 @@ input:focus, select:focus{
     /* background-color: var(--primary); */
     color: var(--secondary);
     cursor: pointer;
-    &:hover{
+
+    &:hover {
         background-color: var(--secondary);
         color: var(--primary);
     }
-   
+
 }
 
 
-.button-cash a{
-   text-decoration: none;
+.button-cash a {
+    text-decoration: none;
     border: none;
     margin-top: 8px;
     padding: 5px;
     border-radius: 5px;
     background-color: var(--secondary);
     cursor: pointer;
-    &:hover{
-        
-    background-color: var(--secondary);
+
+    &:hover {
+
+        background-color: var(--secondary);
         color: var(--primary);
     }
-    
+
 }

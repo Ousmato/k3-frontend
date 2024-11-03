@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { finalize, map, Observable } from 'rxjs';
 import { ClassModules } from '../../Admin/Models/ClassModule';
 import { Module } from '../../Admin/Models/Module';
 import { AddUeDto, Ue } from '../../Admin/Models/UE';
@@ -8,18 +8,27 @@ import { ClassRoom } from '../../Admin/Models/Classe';
 import { Response_String } from '../../Admin/Models/Response_String';
 import { NivFiliere } from '../../Admin/Models/NivFiliere';
 import { environment } from '../../../environments/environment';
+import { AddNoteDto } from '../../Admin/Models/Notes';
+import { LoaderService } from '../../Services/loader.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClassStudentService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private loadingService: LoaderService) { }
   private baseUrl = `${environment.apiUrl}api-class/`;
 
   // ---------------------------------------
   getAllCurrentClassOfYear(): Observable<ClassRoom[]> {
-    return this.http.get<ClassRoom[]>(this.baseUrl + "list-class");
+    this.loadingService.loading();
+    return this.http.get<ClassRoom[]>(this.baseUrl + "list-class").pipe(
+      map(response => response),
+      finalize(() => {
+        // Arrêter le loader lorsque la requête est terminée
+        this.loadingService.stopLoading(); 
+      }),
+    );
   }
 
   // ---------------------get all classe by type doc
@@ -67,6 +76,9 @@ export class ClassStudentService {
   //  -----------------------get all ue by classe id
   getAll_ue(idClasseNivFil: number, idSemestre: number): Observable<AddUeDto[]> {
     return this.http.get<AddUeDto[]>(`${this.baseUrl}list-ue/${idClasseNivFil}/${idSemestre}`);
+  }
+  getAll_ue_toAddNote(idClasseNivFil: number, idSemestre: number, idStudent: number): Observable<AddNoteDto[]> {
+    return this.http.get<AddNoteDto[]>(`${this.baseUrl}list-ue/${idClasseNivFil}/${idSemestre}/${idStudent}`);
   }
   getAllUeByIdClasse(idClasse: number): Observable<Ue[]> {
     return this.http.get<Ue[]>(this.baseUrl + "all-ue-by-idClasse/" + idClasse)

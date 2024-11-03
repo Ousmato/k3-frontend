@@ -13,7 +13,7 @@
 }
 
 .table-container{
-    height: 400px;
+    height: 70%;
     position: relative;
     overflow-y: auto;
 }
@@ -23,6 +23,7 @@
 
 }
 .table thead {
+  background-color: white;
     position: sticky;
     top: 0;
     z-index: 1;

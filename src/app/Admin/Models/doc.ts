@@ -1,7 +1,7 @@
 import { Admin } from "./Admin";
 import { ClassRoom } from "./Classe";
 import { Salles } from "./Salles";
-import { Student } from "./Students";
+import { Inscription, Student } from "./Students";
 import { Teacher } from "./Teachers";
 
 export enum TypeDoc{
@@ -14,6 +14,7 @@ export interface Docum {
     docType: TypeDoc
     date?: Date
     soutenue?: boolean
+    deleted?: boolean
     programmer?: boolean
     idEncadrant: Teacher
     
@@ -23,8 +24,9 @@ export interface Soutenance{
     id?: number
     heureDebut: string
     heureFin: string
-    students?: Student[]
+    inscriptions?: Inscription[]
     idDoc: Docum
+    idAdmin: number
     filiere?: string
     niveaux?: string
     idSalle: Salles
@@ -50,7 +52,8 @@ export enum Jury_role{
 export interface StudentDoc{
     id?: number
     idDocument: Docum
-    idEtudiant: Student[]
+    idInscription: Inscription[]
+    idAdmin: Admin
     telephone? : number;
     nom ?: string;
     prenom? : string;

@@ -4,12 +4,17 @@ import { IconsService } from '../../Services/icons.service';
 import { SemestreService } from '../../Services/semestre.service';
 import { Semestres } from '../../Admin/Models/Semestre';
 import { EtudeService } from '../../Admin/Views/etudiants/etude.service';
-import { Module } from '../../Admin/Models/Module';
+import { Ecue, Module } from '../../Admin/Models/Module';
 import { Inscription, Student } from '../../Admin/Models/Students';
-import { Notes } from '../../Admin/Models/Notes';
+import { AddNoteDto, Notes } from '../../Admin/Models/Notes';
 import { max } from 'rxjs';
 import { PageTitleService } from '../../Services/page-title.service';
 import { ActivatedRoute } from '@angular/router';
+import { ClassStudentService } from '../../DGA/class-students/class-student.service';
+import { AddUeDto } from '../../Admin/Models/UE';
+import { InscriptionService } from '../../Services/inscription.service';
+import { environment } from '../../../environments/environment';
+import { Admin } from '../../Admin/Models/Admin';
 
 @Component({
   selector: 'app-add-note-widget',
@@ -17,125 +22,169 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './add-note-widget.component.css'
 })
 export class AddNoteWidgetComponent implements OnInit {
-  idClasse!: number;
-   inscrit!: Inscription;
-   modules: Module[] = []
+  idClasseNivFil!: number;
+  inscrit?: Inscription;
+  searchTerm: string = ""
+  ues: AddUeDto[] = []
+  modules: Ecue[] = []
+  uesWithNote: AddNoteDto[] = []
+  empty: number[] = [1, 2, 3]
   // @Output() closeAddNoteModal = new EventEmitter<any>();
 
-  moduleForm!: FormGroup;
+  noteForm!: FormGroup;
+  noteForms: { [key: number]: FormGroup } = {};
   semestres: Semestres[] = [];
   semestreSelect!: Semestres
+  admin!: Admin;
 
-  showFormId: number | null = null;
-  isShow_add_note: boolean = true
-  isOverlay: boolean = true
+  idInscription!: number;
+  idSemestre!: number;
 
-  constructor(private fb: FormBuilder, private studentService: EtudeService, 
-    private pageTitle: PageTitleService, private root: ActivatedRoute,
+  constructor(private fb: FormBuilder, private studentService: EtudeService, private inscriptionService: InscriptionService,
+    private pageTitle: PageTitleService, private root: ActivatedRoute, private classService: ClassStudentService,
     public icons: IconsService, private semestreService: SemestreService) { }
   ngOnInit(): void {
-    this.load_form();
-    // this.load_module();
-    this.getStudent();
+    // this.load_form();
     this.loadSemestre();
+    this.loadInscription();
+    const r_scolarite = sessionStorage.getItem("scolarite");
+    this.admin = JSON.parse(r_scolarite!);
+
+    // this.ues.forEach(ue => {
+    //   const ueForm = this.fb.group({
+    //     examNote: [''],
+    //     classeNote: [''],
+    //     // Ajoutez d'autres champs si nécessaire
+    //   });
+    //   this.noteForms.push(ueForm);
+    //   console.log(this.noteForms, "---------------noteform")
+    // });
 
   }
 
-  // ---------------------load semestre
-  loadSemestre() {
-    this.semestreService.getCurrentSemestresByIdNivFiliere(this.inscrit.idClasse.idFiliere?.id!).subscribe(data => {
-      data.forEach(sem => {
-        if (!this.semestres.some(s => s.id == sem.id)) {
-          this.semestres.push(sem);
-        }
+  // load form add
+  load_form(notes: AddNoteDto[]) {
+    // console.log(notes, "ues dans form")
+
+    this.noteForms = {};
+    notes.forEach((note) => {
+      this.noteForms[note.idModule] = this.fb.group({
+        examNote: [note.noteExam, [Validators.required, Validators.min(0), Validators.max(20)]],
+        classeNote: [note.noteClasse, [Validators.required, Validators.min(0), Validators.max(20)]],
+        idModule: [note.idModule]
+
       });
+      // console.log(this.noteForms[note.idModule].value, "value form");
+    })
 
-      // this.moduleForm.get('idSemestre')?.setValue(this.semestres.nomSemetre);
+  }
+
+  // sumit method
+  onSubmit(id: any) {
+    console.log(id, "index - foi")
+    const formData = this.noteForms[id].value;
+    const module = this.modules.find(m => m.id == id);
+    this.semestreSelect = this.semestres.find(sem => sem.id == this.idSemestre)!;
+    // const formData = this.noteForms.find(form => form.get('idModule')?.value == id);
+
+    if (formData) {
+      const formValue = formData.value
+      // console.log(formData, "note dans le console");
+      const note: Notes = {
+        examNote: formData.examNote,
+        classeNote: formData.classeNote,
+        idInscription: this.inscrit!,
+        idModule: module!,
+        idSemestre: this.semestreSelect,
+        idAdmin: this.admin
+      }
+      console.log(note, "note")
+// return
+      if (this.noteForms[id].valid) {
+        this.studentService.add_note(note).subscribe({
+          next: () => {
+            this.get_ues_to_add_note(this.idSemestre)
+          },
+          error: (err) => {
+            this.pageTitle.showErrorToast(err.error.message)
+          }
+
+        })
+
+      } else {
+        this.noteForms[id].markAllAsTouched();
+        console.log(this.noteForms[id].value, "form invalide")
+      }
+    } else {
+      console.error('Form not found for module ID:', id);
+    }
+
+
+    return
+
+
+  }
+
+  // get inscription by id
+  loadInscription() {
+    this.root.queryParams.subscribe(param => {
+      this.idInscription = param['id'];
+    })
+    this.inscriptionService.getInscriptionById(this.idInscription).subscribe(result => {
+      this.inscrit = result;
+      this.inscrit.idEtudiant.urlPhoto = `${environment.urlPhoto}${this.inscrit.idEtudiant.urlPhoto}`
+      // console.log(this.inscrit, "inscrit")
     })
   }
-  // ------------------------------load form add
-  load_form() {
-    this.moduleForm = this.fb.group({
-      // idStudents: [this.student.idEtudiant, Validators.required],
-      examNote: ['', [Validators.required, Validators.min(0), Validators.max(20)]],
-      classeNote: ['', [Validators.required, Validators.min(0), Validators.max(20)]],
-      // idModule: [''],
-      // idSemestre: ['', Validators.required]
-    });
-  }
-  // -------------------------------load module
-  load_module() {
-    console.log(this.inscrit, "student select")
-    this.modules =[]
-    this.studentService.getAllModulesWithoutNoteFilter(this.inscrit.idEtudiant.idEtudiant!, this.inscrit.idClasse.idFiliere?.id!, this.semestreSelect.id!).subscribe(
-      data => {
-        this.modules = data
-        console.log(this.modules, "modules")
-      })
-     
-
-  }
-  // -----------------------------------show form
-  show_form(id: number) {
-    if (this.showFormId === id) {
-      this.showFormId = null; // Cliquez à nouveau sur le même label pour fermer le formulaire
-    } else {
-      this.showFormId = id; // Afficher le formulaire pour le module avec l'ID spécifié
-    }
-  }
-// --------------------sumit method
-  onSubmit(student: Student, module: Module) {
-    // Ajouter une nouvelle note pour le module et l'étudiant
-    const {numero,...studentSelect} = student
-    const note: Notes = {
-      idStudents: studentSelect,
-      classeNote: this.moduleForm.value.classeNote,
-      examNote: this.moduleForm.value.examNote,
-      idModule: module,
-      idSemestre: this.semestreSelect!
-    }
-    console.log(note, "notes-----------")
-    if (this.moduleForm.valid) {
-      this.studentService.add_note(note).subscribe({
-        next: (reponse) => {
-          this.pageTitle.showSuccessToast(reponse.message);
-          this.moduleForm.reset();
-          this.load_module();
-        },
-        error: (erreur) => {
-          this.pageTitle.showErrorToast(erreur.error.message);
-        }
-
+  loadSemestre() {
+    this.root.queryParams.subscribe(param => {
+      this.idClasseNivFil = param['idClasse'];
+      this.semestreService.getCurrentSemestresByIdNivFiliere(this.idClasseNivFil).subscribe(result => {
+        result.forEach(res => {
+          if (!this.semestres.some(sem => sem.id == res.id)) {
+            this.semestres.push(res)
+          }
+        })
+        // console.log(this.semestres, "semestre")
       })
 
-    } else {
-      this.moduleForm.markAllAsTouched();
-      console.log(this.moduleForm.value, "form invalide")
-    }
 
-  }
-  // ----------------------close modal
-  close_modal() {
-    // this.closeAddNoteModal.emit();
-    this.isShow_add_note = false;
-    this.isOverlay = false;
-  }
-  onSelect(event: any){
-    const idSemestre = event.target.value;
-    this.semestreSelect = this.semestres.find(sem => sem.id == idSemestre)!;
-
-    this.load_module();
-  }
-
-  // ----------------get student by id
-  getStudent(){
-    this.root.queryParams.subscribe(param =>{
-      const id = +param['id'];
-      this.studentService.getInscriptionById(id).subscribe(data => {
-        this.inscrit = data;
-        // this.load_module();
-      })
     })
+
   }
+  // ---------------load all semestre oc classe
+
+  onSelect(event: any) {
+    this.idSemestre = event.target.value;
+
+    this.get_ues_to_add_note(this.idSemestre);
+
+  }
+
+  // get all ues to add note
+  get_ues_to_add_note(idSemestre: number) {
+    this.classService.getAll_ue_toAddNote(this.idClasseNivFil, idSemestre, this.idInscription).subscribe(result => {
+      this.uesWithNote = result;
+      console.log(result, "result---------")
+      this.load_form(this.uesWithNote);
+      
+      result.forEach(rlt => {
+          if (!this.ues.some(ue => ue.idUe.id === rlt.addUeDto.idUe.id)) {
+              this.ues.push(rlt.addUeDto);
+          }
   
+          rlt.addUeDto.modules.forEach((m, index) => {
+              if (!this.modules.some(mod => mod.id === m.id)) {
+                  this.modules.push(m);
+              }
+          });
+      });
+  });
+  
+
+  }
+
+  goBack(){
+    window.history.back()
+  }
 }

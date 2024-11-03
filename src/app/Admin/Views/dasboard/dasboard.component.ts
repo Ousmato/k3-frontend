@@ -54,7 +54,6 @@ export class DasboardComponent implements OnInit {
       this.studentsCount = res.length;
       // console.log(this.studentsCount);
     });
-
   }
   // -----------------------------count number of classe
   countClasses() {

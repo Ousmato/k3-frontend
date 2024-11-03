@@ -1,6 +1,6 @@
 
 main{width: 100%;
-
+    height: 80vh;
     padding-top: 10px;
 }
 a button{
@@ -22,7 +22,7 @@ th {
     margin-bottom: 10px;
 }
 .table-container{
-    height: 400px;
+    height: 83%;
     position: relative;
     overflow-y: auto;
 }
@@ -85,6 +85,9 @@ select {
     padding: 0 5px;
     outline: none;
     border: none;
+  }
+  #promo-seclect{
+    width: 150px;
   }
   .btn-contenaire a{
     width: 80px;

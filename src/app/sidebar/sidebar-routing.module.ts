@@ -31,16 +31,18 @@ const routes: Routes = [{path: "", component: SidebarComponent,
     children: [
       { path: '', component: DasboardComponent, data:{title: "ACCUEIL"} },
       { path: 'classe', component: ClassStudentsComponent, data:{title: "Les Classes"} },
-      {path: 'etudiant', component: EtudiantsComponent},
+      {path: 'etudiants', component: EtudiantsComponent, data:{title: "Les Etudiants"}},
+
       {path: 'paiement', component: DerPaiListComponent},
 
       {path: 'enseignants', component: EnseignantComponent},
       {path: 'student-notes', component: StudentNoteComponent},
-      {path: 'etudiant-de-la-classe', component : EtudiantsDeLaClasseComponent},
+      {path: 'etudiant-de-la-classe', component : EtudiantsDeLaClasseComponent,  data:{title: "Etudiants de la classe"}},
       {path: 'setting', component: SettingsComponent},
       {path: 'parametre', component: SettingsComponent, data:{title: "Paramettre et Confidentialité"}},
       {path: 'admin-list', component: AdminListComponent, data:{title: "Les Administrateurs"}},
-      // {path: 't-edit', component: TeachersEditComponent},
+      {path: 't-edit', component: TeachersEditComponent, data:{title: "INFORMATIONS DE L'ENSEIGNANT"}},
+
       {path: 'student-bulletin', component: StudentBulletinComponent},
       {path: 'fiche-de-paie-component', component: FicheDePaieComponent},
       {path: 'fiche-enseignant', component: EnseignantFichePaieComponent},

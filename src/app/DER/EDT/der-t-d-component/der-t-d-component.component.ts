@@ -77,10 +77,10 @@ export class DerTDComponentComponent implements OnInit {
   load_form() {
     this.form_config = this.fb.group({
       idParticipant: [''],
-      idSalle1: ['', Validators.required],
-      idSalle2: ['', Validators.required],
-      seanceType1: ['', Validators.required],
-      seanceType2: ['', Validators.required],
+      idSalle1: [''],
+      idSalle2: [''],
+      seanceType1: [''],
+      seanceType2: [''],
       heureDebut: ['', Validators.required],
       heureFin: ['', Validators.required],
     })
@@ -97,15 +97,15 @@ export class DerTDComponentComponent implements OnInit {
   }
 
   // -------------------------------load all participation by idEmploi
-  load_participation_by_classe(idClass: number) {
-    this.studentService.getParticipantsByEmploiId(idClass).subscribe((data) => {
+  load_participation_by_emploi(idEmploi: number) {
+    this.studentService.getParticipantsByEmploiId(idEmploi).subscribe((data) => {
       data.forEach(part => {
         if (!this.participants.some(d => d.idStudentGroup.id == part.idStudentGroup.id)) {
           this.participants.push(part)
         }
       })
 
-      // console.log(this.participants, "participations");
+      console.log(this.participants, "participations");
     })
   }
 
@@ -114,7 +114,7 @@ export class DerTDComponentComponent implements OnInit {
     const teacher_fund = this.enseignants.find(t => t.idEnseignant == idTeacher);
     const emploi = this.currentEmploi;
 
-    this.load_participation_by_classe(emploi.idClasse.id!);
+    this.load_participation_by_emploi(emploi.id!);
     if (teacher_fund) {
       if (!this.list_enseignant_checked.some(teacher => teacher.idEnseignant == idTeacher) ) {
         if(this.list_enseignant_checked.length >= 2){
@@ -175,7 +175,7 @@ onRoomChange(idEnseignant: number, event: any) {
   // load salle
 
   load_salles() {
-    this.salleService.getAll_non_occuper().subscribe(data => {
+    this.salleService.getAll().subscribe(data => {
       this.salles = data;
       // console.log(this.salles, "sales")
     })

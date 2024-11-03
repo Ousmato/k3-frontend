@@ -1,143 +1,146 @@
-<main>
+<main class="setting">
     <!-- <h2>Paramettre et Confidentialité</h2> -->
     <!-- school information section--------------------- -->
-    <section class="contenaire">
-        <div class="first-child">
-
-            <div class="child">
-                <div class="logo">
-                    <img src="assets/logounivsegou.png" alt="">
-                    <h4>INFORMATION DE L'ECOLE</h4>
-                </div>
-                <p>NB : Ici vous pouvez modifier les informations de l'etablissement</p>
-
-                <ng-container *ngIf="isshow_school_detail">
-                    <div class="views">
-                        <div class="view-school">
-                            <p><strong>Nom de l'école :</strong> {{school?.nomSchool}}</p>
-                            <p><strong>Email :</strong> {{school?.email}}</p>
-                            <p><strong>Téléphone :</strong> {{school?.telephone}}</p>
-                            <p><strong>Début de l'année : </strong>{{school?.anneeScolaire?.debutAnnee}}</p>
-                            <p><strong>Fin de l'année : </strong>{{school?.anneeScolaire?.finAnnee}}</p>
-                            <p><strong>Localité : </strong>{{school?.localite}}</p>
-                        </div>
-                        <div class="button-cash">
-                            <a (click)="annuler()" class="submit"><span>Annuler</span></a>
-                        </div>
+     <div class="setting-contente">
+        <section class="contenaire">
+            <div class="first-child">
+    
+                <div class="child">
+                    <div class="logo">
+                        <img src="assets/logounivsegou.png" alt="">
+                        <h4>INFORMATION DE L'ECOLE</h4>
                     </div>
-                </ng-container>
-            </div>
-        </div>
-        <div class="second-child">
-            <a (click)="show_school_detail()"><fa-icon [icon]="icons.eye"></fa-icon><span>Details</span></a>
-            <a (click)="toggle_to_update_school()"><fa-icon [icon]="icons.edit"></fa-icon><span>Modifier</span></a>
-
-
-        </div>
-    </section>
-    <!-- -----------------------------------Filiere informations---------------------- -->
-
-    <section class="contenaire">
-        <div class="first-child">
-            <div class="child">
-                <div class="logo">
-                    <img id="idFiliere" src="assets/book-open-icon.svg" alt="">
-                    <h4>INFORMATIONS SUR LES FILIERES</h4>
+                    <p>NB : Ici vous pouvez modifier les informations de l'etablissement</p>
+    
+                    <ng-container *ngIf="isshow_school_detail">
+                        <div class="views">
+                            <div class="view-school">
+                                <p><strong>Nom de l'école :</strong> {{school?.nomSchool}}</p>
+                                <p><strong>Email :</strong> {{school?.email}}</p>
+                                <p><strong>Téléphone :</strong> {{school?.telephone}}</p>
+                                <p><strong>Début de l'année : </strong>{{school?.anneeScolaire?.debutAnnee}}</p>
+                                <p><strong>Fin de l'année : </strong>{{school?.anneeScolaire?.finAnnee}}</p>
+                                <p><strong>Localité : </strong>{{school?.localite}}</p>
+                            </div>
+                            <div class="button-cash">
+                                <a (click)="annuler()" class="submit"><span>Annuler</span></a>
+                            </div>
+                        </div>
+                    </ng-container>
                 </div>
-                <p>NB : Ici vous pouvez modifier les informations des semestres</p>
-
             </div>
-        </div>
-        <div class="second-child">
-            <app-filiere-widget (closeModal)="closeNiveau()"></app-filiere-widget>
-        </div>
-    </section>
-    <!-- -----------------------------------classe section-------------------- -->
-    <section class="contenaire">
-        <div class="first-child">
-            <div class="child">
-                <div class="logo">
-                    <img src="assets/school-admission-icon.svg" alt="">
-                    <h4>INFORMATIONS SUR LES MENTIONS</h4>
+            <div class="second-child">
+                <!-- <a (click)="show_school_detail()"><fa-icon [icon]="icons.eye"></fa-icon><span>Details</span></a> -->
+                <a (click)="toggle_to_update_school()"><fa-icon [icon]="icons.edit"></fa-icon><span>Modifier</span></a>
+    
+    
+            </div>
+        </section>
+        <!-- -----------------------------------Filiere informations---------------------- -->
+    
+        <section class="contenaire">
+            <div class="first-child">
+                <div class="child">
+                    <div class="logo">
+                        <img id="idFiliere" src="assets/book-open-icon.svg" alt="">
+                        <h4>INFORMATIONS SUR LES FILIERES</h4>
+                    </div>
+                    <p>NB : Ici vous pouvez modifier les informations des semestres</p>
+    
                 </div>
-                <p>NB : Ici vous pouvez modifier les informations sur les mentions</p>
-
             </div>
-
-        </div>
-        <div class="second-child">
-            <app-classeroom-widget (closeModal)="closeNiveau()"></app-classeroom-widget>
-        </div>
-
-
-    </section>
-
-    <!-- ----------------------- niveaux------------------------ -->
-    <section class="contenaire">
-        <div class="first-child">
-            <div class="child">
-                <div class="logo">
-                    <img src="assets/school-graduation-icon.svg" alt="">
-                    <h4>INFORMATION SUR LES NIVEAUX</h4>
+            <div class="second-child">
+                <app-filiere-widget (closeModal)="closeNiveau()"></app-filiere-widget>
+            </div>
+        </section>
+        <!-- -----------------------------------classe section-------------------- -->
+        <section class="contenaire">
+            <div class="first-child">
+                <div class="child">
+                    <div class="logo">
+                        <img src="assets/school-admission-icon.svg" alt="">
+                        <h4>INFORMATIONS SUR LES MENTIONS</h4>
+                    </div>
+                    <p>NB : Ici vous pouvez modifier les informations sur les mentions</p>
+    
                 </div>
-                <p>NB : Ici vous pouvez modifier les information sur les niveaux</p>
+    
             </div>
-        </div>
-        <div class="second-child">
-            <app-niveau-widget (closeModal)="closeNiveau()"></app-niveau-widget>
-        </div>
-    </section>
-    <!-- -----------------------------------semestre informations---------------------- -->
-    <section class="contenaire">
-        <div class="first-child">
-            <div class="child">
-                <div class="logo">
-                    <img src="assets/time-period-icon.svg" alt="">
-                    <h4>INFORMATION SUR LES SEMESTRES</h4>
+            <div class="second-child">
+                <app-classeroom-widget (closeModal)="closeNiveau()"></app-classeroom-widget>
+            </div>
+    
+    
+        </section>
+    
+        <!-- ----------------------- niveaux------------------------ -->
+        <section class="contenaire">
+            <div class="first-child">
+                <div class="child">
+                    <div class="logo">
+                        <img src="assets/school-graduation-icon.svg" alt="">
+                        <h4>INFORMATION SUR LES NIVEAUX</h4>
+                    </div>
+                    <p>NB : Ici vous pouvez modifier les information sur les niveaux</p>
                 </div>
-                <p>NB : Ici vous pouvez modifier les informations des semestres</p>
-
-
             </div>
-
-        </div>
-        <div class="second-child">
-            <app-semestre-widget (closeModal)="closeNiveau()"></app-semestre-widget>
-        </div>
-    </section>
-    <!-- ---------------------promotion-------------------- -->
-    <section class="contenaire">
-        <div class="first-child">
-            <div class="child">
-                <div class="logo">
-                    <img src="assets/school-graduation-icon.svg" alt="">
-                    <h4>INFORMATION SUR LES PROMOTION</h4>
+            <div class="second-child">
+                <app-niveau-widget (closeModal)="closeNiveau()"></app-niveau-widget>
+            </div>
+        </section>
+        <!-- -----------------------------------semestre informations---------------------- -->
+        <section class="contenaire">
+            <div class="first-child">
+                <div class="child">
+                    <div class="logo">
+                        <img src="assets/time-period-icon.svg" alt="">
+                        <h4>INFORMATION SUR LES SEMESTRES</h4>
+                    </div>
+                    <p>NB : Ici vous pouvez modifier les informations des semestres</p>
+    
+    
                 </div>
-                <p>NB : Ici vous pouvez modifier les information sur les promotions</p>
+    
             </div>
-        </div>
-        <div class="second-child">
-            <app-promotion-widget (closeModal)="closeNiveau()"></app-promotion-widget>
-        </div>
-    </section>
-    <!-- ----------------------------class promotion------------------ -->
-    <section class="contenaire">
-        <div class="first-child">
-            <div class="child">
-                <div class="logo">
-                    <img src="assets/school-graduation-icon.svg" alt="">
-                    <h4>INFORMATION SUR LES PRO-CLASSES</h4>
+            <div class="second-child">
+                <app-semestre-widget (closeModal)="closeNiveau()"></app-semestre-widget>
+            </div>
+        </section>
+        <!-- ---------------------promotion-------------------- -->
+        <section class="contenaire">
+            <div class="first-child">
+                <div class="child">
+                    <div class="logo">
+                        <img src="assets/school-graduation-icon.svg" alt="">
+                        <h4>INFORMATION SUR LES PROMOTION</h4>
+                    </div>
+                    <p>NB : Ici vous pouvez modifier les information sur les promotions</p>
                 </div>
-                <p>NB : Ici vous pouvez modifier les information sur les promotions des classes</p>
             </div>
-        </div>
-        <div class="second-child">
-            <app-add-class-promotion (closeModale)="closeNiveau()"></app-add-class-promotion>
-        </div>
-    </section>
-
-    <div class="overlay" *ngIf="isshow_school_detail" (click)="preventClick($event)"></div>
-    <div class="overlay" *ngIf="isshow_school_update" (click)="preventClick($event)"></div>
-    <div class="overlay" *ngIf="isOverlay"></div>
+            <div class="second-child">
+                <app-promotion-widget (closeModal)="closeNiveau()"></app-promotion-widget>
+            </div>
+        </section>
+        <!-- ----------------------------class promotion------------------ -->
+        <section class="contenaire">
+            <div class="first-child">
+                <div class="child">
+                    <div class="logo">
+                        <img src="assets/school-graduation-icon.svg" alt="">
+                        <h4>INFORMATION SUR LES PRO-CLASSES</h4>
+                    </div>
+                    <p>NB : Ici vous pouvez modifier les information sur les promotions des classes</p>
+                </div>
+            </div>
+            <div class="second-child">
+                <app-add-class-promotion (closeModale)="closeNiveau()"></app-add-class-promotion>
+            </div>
+        </section>
+    
+        <div class="overlay" *ngIf="isshow_school_detail" (click)="preventClick($event)"></div>
+        <div class="overlay" *ngIf="isshow_school_update" (click)="preventClick($event)"></div>
+        <div class="overlay" *ngIf="isOverlay"></div>
+     </div>
+    
 
 </main>

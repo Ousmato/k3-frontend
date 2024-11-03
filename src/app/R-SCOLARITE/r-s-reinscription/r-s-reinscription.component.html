@@ -68,7 +68,7 @@
       <tbody>
         <ng-container *ngIf="filterStudents().length ; else noResults">
           <tr *ngFor="let inscrit of filterStudents(); let i = index">
-            <td>{{i + 1}}</td>
+            <td class="numerotation-clumn">{{i + 1}}</td>
             <td>{{inscrit.idEtudiant.nom}}</td>
             <td>{{inscrit.idEtudiant.prenom}}</td>
 

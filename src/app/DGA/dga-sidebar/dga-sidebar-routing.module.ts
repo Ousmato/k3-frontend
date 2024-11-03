@@ -20,13 +20,13 @@ import { MyAccuntComponent } from '../../DG/my-accunt/my-accunt.component';
 const routes: Routes = [{path: '', component: DgaSidebarComponent,
   children: [
     {path: '', component: DgaHomeComponent, data:{title: "Accueil"}},
-    {path: 'mentions-liste', component: ClassStudentsComponent},
+    {path: 'mentions-liste', component: ClassStudentsComponent,  data:{title: "Les classes"}},
     {path: 'setting', component: SettingsComponent, data:{title: "PARAMETRE ET CONFIDENTIALITE"}},
     {path: 'etudiant', component: EtudiantsComponent},
     {path: 'student-notes', component: StudentNoteComponent},
     {path: 'archive-scolaire', component: DgaArchivesComponent},
     // {path: 'all-notes', component: AllNotesSemestreComponent, data:{title: "Notes du Semestre"}},
-    {path: 'etudiant-de-la-classe', component : EtudiantsDeLaClasseComponent},
+    {path: 'etudiant-de-la-classe', component : EtudiantsDeLaClasseComponent, data:{title: "Etudiants de la classe"}},
     {path: 'student-bulletin', component: StudentBulletinComponent},
     {path: 'update-school', component: SchoolEditWidgetComponent, data:{title: "Information de l'Etablissement"}},
 

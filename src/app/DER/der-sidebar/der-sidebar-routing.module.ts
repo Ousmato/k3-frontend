@@ -21,6 +21,7 @@ import { ProgramSoutenanceComponent } from '../Widget/program-soutenance/program
 import { ViewSoutenanceComponent } from '../Widget/view-soutenance/view-soutenance.component';
 import { StudentGroupListComponent } from '../student-group-list/student-group-list.component';
 import { MyAccuntComponent } from '../../DG/my-accunt/my-accunt.component';
+import { EtudiantsComponent } from '../../Admin/Views/etudiants/etudiants.component';
 
 const routes: Routes = [{path: '', component: DerSidebarComponent,
   children: [
@@ -30,7 +31,7 @@ const routes: Routes = [{path: '', component: DerSidebarComponent,
     {path: 'enseignants', component: EnseignantComponent, data:{title: "Les enseignants"}},
     {path: 't-singin', component: TeachersSinginComponent, data:{title: "AJOUTER ENSEIGNANT"}},
     {path: 'doc', component: DerDocComponent, data:{title: "RAPPORTS ET MEMOIRES"}},
-    {path: 'add-doc', component: AddDocComponent},
+    {path: 'add-doc', component: AddDocComponent, data:{title: "Deposer documment"}},
     {path: 't-edit', component: TeachersEditComponent, data:{title: "INFORMATIONS DE L'ENSEIGNANT"}},
     {path: 'fiche-enseignant', component: EnseignantFichePaieComponent},
     {path: 'ajouter-seance', component: DerSeancesComponent},
@@ -39,8 +40,8 @@ const routes: Routes = [{path: '', component: DerSidebarComponent,
     {path: 'edit-seance', component: DerEditSeanceComponent},
     {path: 'group-student', component: AddGroupStudentComponent},
     {path: 'affect-t-d', component: DerEDTComponent , data:{title: "AJOUTER SEANCE"}},
-    {path: 'programmer', component: ProgramSoutenanceComponent},
-    {path: 'programme-view', component: ViewSoutenanceComponent},
+    {path: 'programmer', component: ProgramSoutenanceComponent, data:{title: "Programmer soutenance"}},
+    {path: 'programme-view', component: ViewSoutenanceComponent, data:{title: "SOutenances programmer"}},
     {path: 'liste-groupe', component: StudentGroupListComponent},
     {path: 'my-accunt', component: MyAccuntComponent, data:{title: "Mon compte"} },
 

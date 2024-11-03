@@ -16,3 +16,5 @@ export interface AddUeDto{
     idUe: Ue
     modules: Ecue[];
 }
+
+

@@ -47,7 +47,8 @@ export interface Student_group{
 export interface Participant{
     id?: number;
     idStudentGroup: Student_group;
-    idStudent: Student
+    idInscription: Inscription
+    idAdmin: Admin
 
 }
 

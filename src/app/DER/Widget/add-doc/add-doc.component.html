@@ -1,106 +1,120 @@
 <main>
-    <form [formGroup]="doc_form" (ngSubmit)="submit()">
-        <div (click)="goBack()" class="back-button">
-            <fa-icon [icon]="icons.back"></fa-icon>
-          </div>
-        <div class="form-input">
-        <button type="submit">Valider <fa-icon [icon]="icons.circle_check"></fa-icon></button>
+    <div (click)="goBack()" class="back-button">
+        <fa-icon [icon]="icons.back"></fa-icon>
+    </div>
+    <div class="form-input">
+        <form [formGroup]="doc_form" (ngSubmit)="submit()">
+
+            <!-- <div > -->
+
+            <div class="form form-group">
+                <select formControlName="docType"
+                    [class.is-invalid]="doc_form.get('docType')!.invalid && doc_form.get('docType')!.touched"
+                    (change)="changeDocType($event)">
+                    <option disabled value="">Doccument</option>
+                    <option *ngFor="let type of docTypes" value="{{type.value}}">{{type.key}}</option>
+                </select>
+            </div>
+            <div class="form form-group" *ngIf="show_classe">
+                <select id="classe" formControlName="idClasse" (change)="changeClasse($event)"
+                    [class.is-invalid]="doc_form.get('idClasse')!.invalid && doc_form.get('idClasse')!.touched">
+                    <option disabled value="">Choisir la classe</option>
+                    <option *ngFor="let cl of classRoom" value="{{cl.id}}">{{cl.idFiliere?.idNiveau?.nom}}
+                        {{abbreviateFiliereName(cl.idFiliere?.idFiliere?.nomFiliere!)}} {{cl.idAnneeScolaire?.ans}}
+                    </option>
+                </select>
+            </div>
+
+            <button *ngIf="isShow_add_student && inscriptions.length" type="submit">Valider <fa-icon
+                    [icon]="icons.circle_check"></fa-icon></button>
+
             <div class="form-group">
                 <input type="number" formControlName="idEncadrant" *ngIf="false">
-                <input type="text" class="form-control" formControlName="teacher" placeholder="Veillez saisir le N°...">
+                <input type="text" class="form-control" formControlName="teacher" placeholder="Veillez saisir le N°..."
+                    [class.is-invalid]="doc_form.get('teacher')?.invalid && doc_form.get('teacher')?.touched">
                 <div class="views" *ngIf="teach">
                     @if(teacherFiltered != null){
-                    <p (click)="teacherSelect(teacherFiltered)">{{teacherFiltered!.nom}} {{teacherFiltered!.prenom}} : {{teacherFiltered!.telephone}}</p>
+                    <p (click)="teacherSelect(teacherFiltered)">{{teacherFiltered!.nom}} {{teacherFiltered!.prenom}} :
+                        {{teacherFiltered!.telephone}}</p>
 
                     }@else {
-                        <p>Aucun encadrant trouvé</p>
+                    <p>Aucun encadrant trouvé</p>
                     }
                 </div>
 
             </div>
-            <div class="form form-group">
-                <select  formControlName="docType"  [class.is-invalid]="doc_form.get('docType')!.invalid && doc_form.get('docType')!.touched" (change)="changeDocType($event)">
-                    <option disabled value="">Doccument</option>
-                    <option *ngFor="let type of docTypes" value="{{type.value}}">{{type.key}}</option>
-                </select> 
-            </div>
-
-            <div class="form form-group" *ngIf="show_classe">
-                <select  formControlName="idClasse"   (change)="changeClasse($event)" [class.is-invalid]="doc_form.get('idClasse')!.invalid && doc_form.get('idClasse')!.touched">
-                    <option disabled value="">La classe</option>
-                    <option *ngFor="let cl of classRoom" value="{{cl.id}}">{{cl.idFiliere?.idNiveau?.nom}} {{abbreviateFiliereName(cl.idFiliere?.idFiliere?.nomFiliere!)}}  {{cl.idAnneeScolaire?.ans}}</option>
-                </select> 
-            </div>
-           
+            <!-- </div> -->
+        </form>
+        <div class="input-search">
+            <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..." class="search-input">
         </div>
-       
-        <div class="table-container">
-            <table class="table table-striped table-hover">
-              <thead>
-                  <tr>
+    </div>
+
+    <div class="table-container">
+        <table class="table table-hover">
+            <thead>
+                <tr>
                     <th>Selection</th>
                     <th>Nom</th>
                     <th>Prenom</th>
-                    
+
                     <th>Niveau</th>
                     <th>Filiere</th>
-        
+
                     <th>Telephone</th>
                     <th>Doccument</th>
-        
-                  </tr>
-                </thead>
-                <tbody>
-                    <ng-container *ngIf="students.length ; else noResults">
-                        <tr *ngFor="let studens of students">
-                            <td><input type="checkbox" (change)="student_check(studens.idEtudiant!, $event)" 
-                                [checked]="isChecked(studens.idEtudiant!)" 
-                                [disabled]="disabledStudentIds.includes(studens.idEtudiant!)">
-                          
 
-                            </td>
-                            <td>{{studens.nom}}</td>
-                            <td >{{studens.prenom}}</td>
-                            
-                            <td class="class-name"  title="{{studens.idClasse?.idFiliere?.idFiliere?.nomFiliere}}">{{studens.idClasse?.idFiliere?.idNiveau?.nom}}</td>
-                            <td class="class-name"  title="{{studens.idClasse?.idFiliere?.idFiliere?.nomFiliere}}">{{studens.idClasse?.idFiliere?.idFiliere?.nomFiliere}}</td>
-                            
-                            <td>{{studens.telephone}}</td>
-                            <td>
-                                @if(disabledStudentIds.includes(studens.idEtudiant!)){
-                                    <p>Déposer</p>
-                                }@else {
-                                    <p>---</p>
-                                }
-                            </td>
-                        </tr>
-                    </ng-container>
-                    <ng-template #noResults>
-                        <tr>
-                            <td colspan="9" class="text-center">Aucun document trouvé</td>
-                        </tr>
-                    </ng-template>
-                    
-                </tbody>
-            </table>
-        </div>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngIf="filteredInscriptions().length ; else noResults">
+                    <tr *ngFor="let inscrit of filteredInscriptions();  let i = index">
 
-        <!-- <div class="student-container" >
-            <div class="views-add-ues" *ngIf="students.length > 0">
-                <div class="formModuleMatiere" *ngIf="isShow_add_student"> 
-                    <ng-container *ngFor="let student of students">
-                        <div class="input">
-                            <label >{{student.nom}}  {{student.prenom}}</label>
-                            <input type="checkbox"  (change)="student_check(student.idEtudiant!, $event)" [checked]="isChecked(student.idEtudiant!)">
-                        </div>
-                    </ng-container>
-                    
-                </div> 
-            </div>
+                        <td class="numerotation-clumn"><input type="checkbox"
+                                (change)="student_check(inscrit.id!, $event)" [checked]="isChecked(inscrit.id!)"
+                                [disabled]="disabledStudentIds.includes(inscrit.id!)">
 
-            
-        </div> -->
-       
-    </form>
+
+                        </td>
+                        <td>{{inscrit.idEtudiant.nom}}</td>
+                        <td>{{inscrit.idEtudiant.prenom}}</td>
+
+                        <td title="{{inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}">
+                            {{inscrit.idClasse.idFiliere?.idNiveau?.nom}}</td>
+                        <td title="{{inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}">
+                            {{abbreviateFiliereName(inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere!)}}</td>
+
+                        <td>{{inscrit.idEtudiant.telephone}}</td>
+                        <td>
+                            @if(disabledStudentIds.includes(inscrit.id!)){
+                            <a id="annuler" (click)="annuler(i)">Annuler</a>
+                            <div class="views-confirmed" *ngIf="isConfirm && i === indexSelect">
+                                <h3 class="span">Confirmation</h3>
+                                <div class="container-views">
+                                    <p>Êtes-vous sûr de vouloir annuler le <br> depot de ce document </p>
+
+                                    <div class="button-cash">
+                                        <a  type="button" (click)="exitconfirm()">Non</a>
+                                        <button type="button" (click)="confirm(inscrit.id!)">Oui</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                            }@else {
+                            <p>---</p>
+                            }
+                        </td>
+                    </tr>
+                </ng-container>
+                <ng-template #noResults>
+                    <tr>
+                        <td colspan="9" class="text-center">Aucun document trouvé</td>
+                    </tr>
+                </ng-template>
+
+            </tbody>
+        </table>
+    </div>
+
     <!-- <div class="overlay" *ngIf="teacherFiltered.length"></div> -->
 </main>

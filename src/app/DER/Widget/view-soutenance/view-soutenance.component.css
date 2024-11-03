@@ -1,4 +1,10 @@
+main{
+    height: 80vh;
+    width: 100%;
+}
+
 /* ----------------------back button style */
+
 .back-button{
     width: 30px;
     height: 30px;
@@ -16,9 +22,31 @@
 
 }
 .content{
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    padding: 20px;
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); */
+    padding: 10px;
+    overflow: hidden;
+    overflow-y: auto;
+    height:89%;
 }
+.content::-webkit-scrollbar {
+    width: 5px;
+    /* display: none; */
+}
+  
+  .content::-webkit-scrollbar-track {
+    background: white; /* Couleur de l'arrière-plan de la piste */
+    border-radius: 10px; /* Coins arrondis de la piste */
+  }
+  
+  .content::-webkit-scrollbar-thumb {
+    background: var(--tertiary); /* Couleur de la barre de défilement */
+    border-radius: 10px; /* Coins arrondis de la barre */
+  }
+  
+  .content::-webkit-scrollbar-thumb:hover {
+    background: var(--primary); /* Couleur de la barre au survol */
+  }
+  
 .conten-head{
     display: flex;
     width: 100%;
@@ -26,7 +54,7 @@
     align-items: center;
 }
 .img-content img{
-    width: 150px;
+    width: 100px;
     height: auto;
 }
 p{
@@ -55,7 +83,7 @@ p{
     display: flex;
     align-items: center;
     flex-direction: column;
-    gap: 70px;
+    gap: 50px;
 
 }
 .italic{

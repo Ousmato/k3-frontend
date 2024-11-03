@@ -5,25 +5,28 @@
             </button>
             <button (click)="toggle_toView()" class="btn">Programme <fa-icon [icon]="icons.had_point_down"></fa-icon>
             </button>
-
+            <div class="form-group">
+                <select (change)="onChange($event)">
+                    <option id="default" selected disabled value="">Promotion {{currentYear}}</option>
+                    <option *ngFor="let annee of annees" [value]="annee.id">Promotion {{annee.ans}}</option>
+                </select>
+            </div>
         </div>
 
-        <div class="form-group">
-            <select (change)="onChange($event)">
-                <option id="default" selected disabled value="">Promotion {{currentYear}}</option>
-                <option *ngFor="let annee of annees" [value]="annee.id">Promotion {{annee.ans}}</option>
-            </select>
-        </div>
+       <!-- ----------------- -->
+    <div class="input-search">
+        <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..." class="search-input">
+      </div>
 
     </div>
 
 
 
     <div class="table-container">
-        <table class="table table-striped table-hover">
+        <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>N° D'ordre</th>
+                    <th>N°</th>
                     <th>Dates</th>
                     <th>Document</th>
                     <th>Nom</th>
@@ -31,43 +34,45 @@
                     <th>Telephone</th>
                     <th>Niveau</th>
                     <th>Filiere</th>
-
-
-                    <!-- <th>Etat</th> -->
+                    <th>Promotion</th>
                     <th>Action</th>
 
 
                 </tr>
             </thead>
             <tbody>
-                <ng-container *ngIf="docs.length ; else noResults">
-                    <tr *ngFor="let doc of docs , let i = index">
-                        <td>{{i + 1 }}</td>
+                <ng-container *ngIf="filterDocs().length ; else noResults">
+                    <tr *ngFor="let doc of filterDocs() , let i = index">
+                        <td class="numerotation-clumn">{{i + 1 }}</td>
                         <td>{{doc.idDocument.date}}</td>
                         <td>{{doc.idDocument.docType}}</td>
 
                         <!-- Supposons que doc.idEtudiant soit une liste d'étudiants -->
                         <!-- <ng-container *ngFor="let student of doc.idEtudiant"> -->
                         <td>
-                            @for (item of doc.idEtudiant; track $index) {
-                            {{item.nom}} <br>
+                            @for (item of doc.idInscription; track $index) {
+                            {{item.idEtudiant.nom}} <br>
                             }
                         </td>
                         <td>
-                            @for (item of doc.idEtudiant; track $index) {
-                            {{item.prenom}} <br>
+                            @for (item of doc.idInscription; track $index) {
+                            {{item.idEtudiant.prenom}} <br>
                             }
                         </td>
                         <td>
-                            @for (item of doc.idEtudiant; track $index) {
-                            {{item.telephone}} <br>
+                            @for (item of doc.idInscription; track $index) {
+                            {{item.idEtudiant.telephone}} <br>
                             }
                         </td>
                         <td class="class-name" title="{{doc.niveau}}">{{doc.niveau}}</td>
-                        <td class="class-name" title="{{doc.filiere}}">{{doc.filiere}}</td>
+                        <td class="class-name" title="{{doc.filiere}}">{{abrevigateFiliereName(doc.filiere!)}}</td>
 
                         <!-- </ng-container> -->
-
+                        <td>
+                            @for (item of doc.idInscription; track $index) {
+                            {{getFullYear(item.idClasse.idAnneeScolaire?.debutAnnee!)}} <br>
+                            }
+                        </td>
                         <td>
                             <ng-container *ngIf="doc.idDocument.programmer">
                                 <div class="isProgram">
@@ -78,7 +83,7 @@
                                 </div>
                             </ng-container>
                             <ng-container *ngIf="!doc.idDocument.programmer">
-                                <span (click)="programer(doc.idDocument.id!)">Programmer</span>
+                                <span (click)="programer(doc.id!)">Programmer</span>
                             </ng-container>
                         </td>
                     </tr>
@@ -109,14 +114,24 @@
             
         </div>
     </div>
-    <div class="pagination">
-        <button (click)="previousPage()" [disabled]="page === 0"><fa-icon [icon]="icons.previous"></fa-icon></button>
-        <button *ngFor="let p of pages" (click)="setPage(p)" [class.active]="p === page">
-            {{ p + 1 }}
-        </button>
-        <button (click)="nextPage()" [disabled]="page === docPage!.totalPages! - 1"><fa-icon
-                [icon]="icons.nexte"></fa-icon></button>
-    </div>
-
+    <div class="footer" *ngIf="docs.length !== 0">
+        <div class="button-navigation">
+          <div class="pagination" >
+            <button (click)="previousPage()" [disabled]="page === 0">
+              <fa-icon [icon]="icons.previous"></fa-icon>
+            </button>
+    
+            <button *ngFor="let p of getVisiblePages()" (click)="setPage(p)" [class.active]="p === page">
+              {{ p + 1 }}
+            </button>
+    
+            <button (click)="nextPage()" [disabled]="page === docPage!.totalPages! - 1">
+              <fa-icon [icon]="icons.nexte"></fa-icon>
+            </button>
+          </div>
+        </div>
+        
+        <p >page : {{page + 1}}/{{ docPage!.totalPages }}</p>
+      </div>
     <div class="overlay" *ngIf="overlay"></div>
 </main>

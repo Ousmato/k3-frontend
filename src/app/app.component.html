@@ -1,10 +1,12 @@
-
+<ngx-spinner>
+  <p class="text-white">Loading....</p>
+</ngx-spinner>
 <div class="container-fluide" >
     <app-login *ngIf="isLoginPage()"></app-login>
     <div *ngIf="!isLoginPage()" class="main-layout">
       <!-- <app-sidebar *ngIf="isAdminPage()"></app-sidebar> -->
       <!-- <app-student-sidebar *ngIf="isStudentPage()"></app-student-sidebar> -->
-      <div id="layoutSidenav_content">
+      <div id="layou_content">
           <router-outlet />
       </div>
     </div>

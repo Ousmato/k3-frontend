@@ -1,6 +1,7 @@
 main {
   padding-top: 10px;
   background-color: #fff;
+  height: 80vh;
 }
 
 .span {
@@ -15,10 +16,28 @@ main {
   overflow: hidden;
   flex-grow: 1;
   position: relative;
-  height: 100%;
+  height: 88%;
   overflow-y: auto;
 }
 
+/* Personnalisation de la barre de défilement */
+.main-content::-webkit-scrollbar {
+  width: 5px; /* Largeur de la barre de défilement */
+}
+
+.main-content::-webkit-scrollbar-track {
+  background: white; /* Couleur de l'arrière-plan de la piste */
+  border-radius: 10px; /* Coins arrondis de la piste */
+}
+
+.main-content::-webkit-scrollbar-thumb {
+  background: var(--tertiary); /* Couleur de la barre de défilement */
+  border-radius: 10px; /* Coins arrondis de la barre */
+}
+
+.main-content::-webkit-scrollbar-thumb:hover {
+  background: var(--primary); /* Couleur de la barre au survol */
+}
 .main-head{
   display: flex;
   padding:  10px;

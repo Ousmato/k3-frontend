@@ -24,7 +24,7 @@ export class EmploisDuTempsComponent implements OnInit {
   days: string[] = [];
   modules: Module[] = [];
   admin!: Admin
-  isShow: boolean = false;
+  isShow: boolean = true;
 
   @Output() closeModale = new EventEmitter<any>()
   current!: Semestres;
@@ -113,7 +113,8 @@ export class EmploisDuTempsComponent implements OnInit {
           this.pageTitle.showSuccessToast(result.message);
           this.EmploisAdd.reset();
           this.ngOnInit();
-          // this.is_showJour = false;
+          this.isShow = false;
+          this.closeModale.emit()
 
         },
         error: (err) => {
@@ -180,6 +181,7 @@ export class EmploisDuTempsComponent implements OnInit {
   
   close(){
     this.closeModale.emit();
+    this.isShow = false;
   }
 
   onSemestreSelect(event: any){

@@ -5,15 +5,15 @@
     </div>
     <form  [formGroup]="studentForm" (ngSubmit)="update()" enctype="multipart/form-data">
        
-        <input *ngIf="false" type="number" formControlName="idEtudiant">
+        <input *ngIf="false" type="number" formControlName="id">
                    
         <div class="contenaires">
             <div class="chil">
                 <div class="image-column">
                     <div class="pop-img">
                         <img 
-                        [src]="imageUrl" 
-                        (error)="onError()" 
+                        [src]="inscrit?.idEtudiant?.urlPhoto" 
+                        (error)="onError($event)" 
                         alt="Profile Image">
                       </div>
                     <div class="inputs-box">
@@ -112,7 +112,7 @@
                     <!-- [class.is-invalid]="studentForm.get('urlPhoto')!.invalid && studentForm.get('urlPhoto')!.touched" -->
                 </div>
 
-                <div class="input">
+                <!-- <div class="input">
                     <label for="validationDefault03" class="label form-label">Scolarité : <span>(Montant en FCFA)</span> </label>
                     <input [attr.readonly]="!isEdit ? true : null" type="text" formControlName="scolarite" class="input-with form-control" placeholder="La scolarite...."   [class.is-invalid]="studentForm.get('scolarite')!.invalid && studentForm.get('scolarite')!.touched" pattern="[0-9]{1,7}">
                     <span *ngIf="studentForm.controls['scolarite'].invalid && studentForm.controls['scolarite'].touched" [ngStyle]="{color: 'red'}">
@@ -122,14 +122,14 @@
                     [ngStyle]="{color: 'red'}">
                     Maximum 7 chiffres autorisés*
                 </span>
-                </div>
+                </div> -->
             
             
             
                 <div class="input">
                     <label for="validationDefault03" class="label form-label">Classe :</label>
                     <select class="form-select" formControlName="idClasse" placeholder="Choisir une classe...."  id="select-modules-multiple"  [class.is-invalid]="studentForm.get('idClasse')!.invalid && studentForm.get('idClasse')!.touched">
-                        <option  selected disabled value="">{{student?.idClasse?.idFiliere?.idNiveau?.nom}} {{student?.idClasse?.idFiliere?.idFiliere?.nomFiliere}}</option>
+                        <option  selected disabled value="">{{inscrit?.idClasse?.idFiliere?.idNiveau?.nom}} {{inscrit?.idClasse?.idFiliere?.idFiliere?.nomFiliere}}</option>
                         <option [ngStyle]="{ 'display': !isEdit ? 'none' : 'block' }" *ngFor="let classe of classRoom" [value]="classe.id">{{classe.idFiliere?.idNiveau?.nom}} {{classe.idFiliere?.idFiliere?.nomFiliere}}</option>
                     </select>
                     <span *ngIf="studentForm.controls['idClasse'].invalid && studentForm.controls['idClasse'].touched" [ngStyle]="{color: 'red'}">

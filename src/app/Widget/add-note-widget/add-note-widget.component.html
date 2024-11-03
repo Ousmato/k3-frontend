@@ -1,67 +1,105 @@
 <main>
-    
-    <div class="form-container" *ngIf="isShow_add_note">
-        <div class="head-form"><span>Ajouter des notes</span><br>
-           <p>{{inscrit.idEtudiant.nom}} {{inscrit.idEtudiant.prenom}}</p></div>
-        <div class="content">
-            <div class="form-content">
-                <div class="form form-group">
-                    <label for="select-semestre" class="label form-label">Semestre :</label>
-                    <!-- <input type="text" class="form-control input" > -->
-                    <select class="form-select" (change)="onSelect($event)" >
-                        <option selected disabled [value]="">Choisir semestre </option>
-
-                        <option *ngFor="let sem of semestres" [value]="sem.id">{{ sem.nomSemetre }}</option>
-                    </select>
+    <div (click)="goBack()" class="back-button">
+        <fa-icon [icon]="icons.back"></fa-icon>
+      </div>
+    <div class="btn-contenaire">
+        <div class="left">
+            <select (change)="onSelect($event)">
+                <option selected disabled value="">Choisir le semestre</option>
+                <option *ngFor="let seme of semestres" [value]="seme.id">{{seme.nomSemetre}}</option>
+            </select>
+            <div class="profil">
+                <div class="mage">
+                    <img [src]="inscrit?.idEtudiant!.urlPhoto" alt="">
                 </div>
-                <ng-container *ngIf="modules.length > 0; else noModules">
-                    <div *ngFor="let module of modules">
-                        
-                        <div class="flex-container">
-                            <label id="label" class="label" value="" [for]="'module_' + module.id" (click)="show_form(module.id!)"><strong></strong>
-                                {{ module.nomModule }} (Coef {{ module.coefficient }}) :</label>
-                           <ng-container *ngIf="showFormId === module.id" >
-                            <form [formGroup]="moduleForm" (ngSubmit)="onSubmit(inscrit.idEtudiant, module)">
-                                <div class="input-content">
-                                    <div class="exam-note">
-                                        <p >Note exam</p>
-                                        <input type="number" [id]="'module_' + module.id + '_examNote'" formControlName="examNote" placeholder="Exam Note" [class.is-invalid]="moduleForm.get('examNote')!.invalid && moduleForm.get('examNote')!.touched">
-                                        <div *ngIf="moduleForm.get('examNote')!.invalid && moduleForm.get('examNote')!.touched" class="invalid-feedback">
-                                           <span class="label-error">Entre 0 et 20.</span>
-                                        </div>
-                                    </div>
-                                    <div class="class-note">
-                                        <p >Note de classe</p>
-                                        <input type="number" [id]="'module_' + module.id+ '_classNote'" formControlName="classeNote" placeholder="Class Note" [class.is-invalid]="moduleForm.get('classeNote')!.invalid && moduleForm.get('classeNote')!.touched">
-                                        <div *ngIf="moduleForm.get('classeNote')!.invalid && moduleForm.get('classeNote')!.touched" class="invalid-feedback">
-                                           <span class="label-error">Etre entre 0 et 20.</span> 
-                                        </div>
-                                    </div>
-                                
+                <div class="info">
+                    <p>{{inscrit?.idEtudiant!.nom}}</p>
+                    <p>{{inscrit?.idEtudiant!.prenom}}</p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="input-search">
+            <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..." class="search-input">
+        </div>
+    </div>
+    <div class="emplois-contente">
+        @if(ues.length !== 0){
+        <div class="grid-container">
+            <div class="grid-item" *ngFor="let ue of ues">
+
+                    <div class="info-folder">
+                        <h6 class="title">UE</h6>
+                        <p class="small">{{ue.idUe.nomUE}}</p>
+
+                    </div>
+
+                    <div class="form-content">
+                        <div class="modules-contente" *ngFor="let mod of ue.modules;  let i = index">
+                            <form [formGroup]="noteForms[mod.id!]">
+    
+                                <input type="number" formControlName="idModule" *ngIf="false">
+                                <div class="module-name">
+                                    <h6 *ngIf="i == 0" class="title">Modules</h6>
+                                    <p class="small">{{mod.nomModule}}</p>
                                 </div>
-                
-   
-                                <button  type="submit">Soumettre</button>
+    
+                                <div class="rows coef">
+                                    <h6 class="title" *ngIf="i == 0">Coef</h6>
+                                    <p class="small">{{mod.coefficient}}</p>
+    
+                                </div>
+    
+                                <div class="rows">
+                                    <h6 class="title" *ngIf="i == 0">Note Examen</h6>
+                                    <p class="small subtitle">
+                                        <input (change)="onSubmit(mod.id)" type="number"
+                                               [class.is-invalid]="(noteForms[mod.id!].get('examNote')?.invalid && noteForms[mod.id!].get('examNote')?.touched)"
+                                               formControlName="examNote">
+                                        <span *ngIf="noteForms[mod.id!].get('examNote')?.errors?.['min'] || noteForms[mod.id!].get('examNote')?.errors?.['max']" [ngStyle]="{'color': 'red'}">0 à 20.</span>
+                                        <span *ngIf="noteForms[mod.id!].get('examNote')?.errors?.['required']" [ngStyle]="{'color': 'red'}">
+                                            requise
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="rows">
+                                    <h6 class="title" *ngIf="i == 0">Note Classe</h6>
+                                    <p class="small">
+                                        <input (change)="onSubmit(mod.id)" type="number"
+                                               [class.is-invalid]="(noteForms[mod.id!].get('classeNote')?.invalid && noteForms[mod.id!].get('classeNote')?.touched)"
+                                               formControlName="classeNote">
+                                        <span *ngIf="noteForms[mod.id!].get('classeNote')?.errors?.['min'] || noteForms[mod.id!].get('classeNote')?.errors?.['max']" [ngStyle]="{'color': 'red'}">0 à 20.</span>
+                                        <span *ngIf="noteForms[mod.id!].get('classeNote')?.errors?.['required']" [ngStyle]="{'color': 'red'}">
+                                            requise
+                                        </span>
+                                    </p>
+                                </div>
+    
                             </form>
-                           </ng-container>
-                                
                         </div>
                     </div>
-                
-                </ng-container>
+
+                <!-- </div> -->
+
+
             </div>
-        
-    <div class="btn-contenaire">
-        <button (click)="close_modal()">Annuler</button>
-    </div>
-    
-</div>
-    <ng-template #noModules>
-        <div class="no-module-template">
-            <p><fa-icon [icon]="icons.notFound"></fa-icon> Aucun module disponible</p>
         </div>
-    </ng-template>
+        }@else {
+        <div class="grid-container">
+            <div class="empty-grid-item" *ngFor="let ue of empty">
+
+                <div class="empty-emploi-item">
+
+                    <div class="empty-info-folder">
+                        <h6 class="title"></h6>
+                        <p class="small"></p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
     </div>
+
 </main>
-<!--  (click)="preventClick($event)" -->
-<div class="overlay" *ngIf="isOverlay" ></div>

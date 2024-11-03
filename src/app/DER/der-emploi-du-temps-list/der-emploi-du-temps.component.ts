@@ -3,6 +3,7 @@ import { ServiceService } from '../emplois-du-temps/service.service';
 import { Emplois } from '../../Admin/Models/Emplois';
 import { NavigationExtras, Router } from '@angular/router';
 import { IconsService } from '../../Services/icons.service';
+import { SideBarService } from '../../sidebar/side-bar.service';
 
 @Component({
   selector: 'app-der-emploi-du-temps',
@@ -11,24 +12,35 @@ import { IconsService } from '../../Services/icons.service';
 })
 export class DerEmploiDuTempsComponent implements OnInit {
 
+  searchTerm: string = '';
   emplois: Emplois[] = [];
+  filteredItem: Emplois[] = [];
   emploiSelect!: Emplois
   @Output() refresh = new EventEmitter<any>();
   permission: boolean = false
   show_add: boolean = false
   show_update: boolean = false
-  constructor(private emploisService: ServiceService, private router: Router, public icons: IconsService) { }
+  constructor(private emploisService: ServiceService, private sideBarService: SideBarService,
+    private router: Router, public icons: IconsService) { }
 
   ngOnInit(): void {
     this.getPermission()
-   
       this.load_all_emplois_actif();
+      this.sideBarService.currentSearchTerm.subscribe(term => {
+        this.searchTerm = term;
+        this.filteredEmplois();
+  
+  
+      });
    
   }
 
   load_all_emplois_actif() {
     this.emploisService.getAllEmploisActifs().subscribe(data => {
       this.emplois = data;
+      this.emplois.forEach(emp =>{
+        emp.toDay = this.isDateInRange(emp.dateDebut, emp.dateFin)
+      })
 
     })
   }
@@ -68,6 +80,7 @@ export class DerEmploiDuTempsComponent implements OnInit {
   }
 
   close(){
+    this.load_all_emplois_actif();
     this.show_add = false;
     this.show_update = false;
     
@@ -78,4 +91,30 @@ export class DerEmploiDuTempsComponent implements OnInit {
     this.emploiSelect = emploi
   }
   deleted(idEmploi: number){}
+
+  // --------------comapare date
+  isDateInRange(dateDebut: Date, dateFin: Date): boolean {
+    const today = new Date(); 
+    const dateDebutParsed = new Date(dateDebut);
+    const dateFinParsed = new Date(dateFin);
+    // Réinitialiser l'heure pour comparer uniquement les dates
+    today.setHours(0, 0, 0, 0);
+    dateDebutParsed.setHours(0, 0, 0, 0);
+    dateFinParsed.setHours(0, 0, 0, 0);
+
+    // Vérifie si aujourd'hui est dans l'intervalle
+    return today >= dateDebutParsed && today <= dateFinParsed;
+}
+
+  // -----------------search
+  filteredEmplois(){
+    if(!this.searchTerm){
+      return this.filteredItem = this.emplois
+    }
+    return this.filteredItem = this.emplois.filter(emp =>emp.idClasse.idFiliere?.idNiveau.nom?.toLowerCase().includes(this.searchTerm) ||
+    emp.idClasse.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm) ||
+    emp.idModule.nomModule.toLowerCase().includes(this.searchTerm)
+  )
+   
+  }
 }

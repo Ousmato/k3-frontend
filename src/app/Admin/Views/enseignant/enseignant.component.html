@@ -1,9 +1,16 @@
 <main>
-  <div class="btn-container">
-    <button type="button"  *ngIf="!permission" (click)="addTeacher()">Ajouter enseignant <fa-icon
+  
+  <div class="btn-containere">
+    <div class="right">
+      <button type="button"  *ngIf="permission" (click)="addTeacher()">Ajouter enseignant <fa-icon
         [icon]="icons.had_point_down"></fa-icon></button>
-    <button type="button" (click)="timeWorks()">Heure éffectuer <fa-icon
+    <button type="button" *ngIf="permission" (click)="timeWorks()">Heure éffectuer <fa-icon
         [icon]="icons.had_point_down"></fa-icon></button>
+    </div>
+    <div class="input-search">
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..." class="search-input">
+    </div>
+    
   </div>
   <div class="table-container">
 
@@ -14,7 +21,7 @@
           <!-- <th>Photo</th> -->
           <th>Nom</th>
           <th>Prenom</th>
-          <!-- <th>Email</th> -->
+          <th>Email</th>
           <th>Telephone</th>
           <th>Status</th>
           <th>Spécialité </th>
@@ -24,17 +31,17 @@
       </thead>
       <tbody>
         <ng-container *ngIf="filterTeachers().length ; else noResults">
-          <tr *ngFor="let pr of profiles let i = index">
+          <tr *ngFor="let pr of filterTeachers() let i = index">
             <td class="numerotation-clumn">{{i+1}}</td>
             <!-- <td><img [src]="enseign.urlPhoto || icons.user" alt=""></td> -->
             <td>{{pr.teachers.nom}}</td>
             <td>{{pr.teachers.prenom}}</td>
-            <!-- <td>{{pr.teachers.email}}</td> -->
+            <td>{{pr.teachers.email}}</td>
 
             <td>{{pr.teachers.telephone}}</td>
             <td>{{pr.teachers.status}}</td>
             <td> @for (item of pr.filieres; track $index) {
-              <span>{{abbreviateFiliereName(item.nomFiliere)}}, </span>
+              <span class="span">{{abbreviateFiliereName(item.nomFiliere)}}, </span>
               
               }
             </td>
@@ -58,7 +65,7 @@
     </table>
   </div>
 
-  <div class="pagination">
+  <div class="pagination" *ngIf="enseignants.length !== 0">
     <button (click)="previousPage()" [disabled]="page === 0">
       <fa-icon [icon]="icons.previous"></fa-icon>
     </button>

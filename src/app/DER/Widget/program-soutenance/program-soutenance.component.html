@@ -11,16 +11,7 @@
                 <label for="password">Date :</label>
                 <input type="date" class="form-control" formControlName="date" placeholder="La date">
             </div>
-            <!-- <div class="form">
-                <label >Encadrant :</label> 
-                <select class="form-select" formControlName="idTeacher"   [class.is-invalid]="prog_form.get('idTeacher')!.invalid && prog_form.get('idTeacher')!.touched">
-                    <option  selected disabled value="">Choisir L'encadrant</option>
-                    <option *ngFor="let teacher of teachers" [ngValue]="teacher.idEnseignant">{{teacher.nom}}</option>
-                </select>         
-                <span *ngIf="prog_form.controls['idTeacher'].invalid && prog_form.controls['idTeacher'].touched" [ngStyle]="{color: 'red'}">
-                    Champ obligatoire*
-                    </span>              
-            </div> -->
+
             <div class="form">
                 <label>Salles : <span id="salle-nom">{{salle ? salle.nom : "Acunne salle trouver"}}</span></label>
                

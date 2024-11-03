@@ -46,7 +46,7 @@
             </ul>
           </li> -->
           <li class="menu-link">
-            <a routerLink="/sidebar/etudiants" routerLinkActive="active">
+            <a  [routerLink]="['/sidebar/etudiants']" [queryParams]="{id: dataAdmin.idAdministra}"   routerLinkActive="active">
               <span><fa-icon [icon]="icons.grade"></fa-icon>Etudiants</span>
             </a>
           </li>
@@ -112,13 +112,13 @@
         </div>
 
       </div>
-      <div id="layoutSidenav_content">
+      <div >
         <main>
-          <div>
+          <!-- <div> -->
 
             <!--  -->
             <router-outlet />
-          </div>
+          <!-- </div> -->
 
         </main>
       </div>

@@ -1,18 +1,40 @@
 /* Général */
-body {
-    background-color: #f9f9f9;
-    color: #333;
-    margin: 0;
-    padding: 20px;
-}
-
-main{
+.setting-contente{
+    overflow: hidden;
+    position: relative;
+    overflow-y: auto;
+    /* width: 100%; */
     display: grid;
     grid-template-columns: 3fr 3fr;
-    column-gap: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
+    gap: 20px;
+    height: 90%;
+    padding-left: 20px;
+    padding-right: 20px;
+
+
+}
+/* Personnalisation de la barre de défilement */
+.setting-contente::-webkit-scrollbar {
+    width: 5px; /* Largeur de la barre de défilement */
+  }
+  
+  .setting-contente::-webkit-scrollbar-track {
+    background: white; /* Couleur de l'arrière-plan de la piste */
+    border-radius: 10px; /* Coins arrondis de la piste */
+  }
+  
+  .setting-contente::-webkit-scrollbar-thumb {
+    background: var(--tertiary); /* Couleur de la barre de défilement */
+    border-radius: 10px; /* Coins arrondis de la barre */
+  }
+  
+  .setting-contente::-webkit-scrollbar-thumb:hover {
+    background: var(--primary); /* Couleur de la barre au survol */
+  }
+main{
+    width: 100%;
     margin-top: 20px;
+    height: 80vh;
 }
 h2 {
     color: #444;
@@ -21,7 +43,7 @@ h2 {
 }
 
 /* Conteneur principal */
-.contenaire {
+.setting .contenaire {
     width: 100%;
     background-color: #fff;
     border: 1px solid #e0e0e0;

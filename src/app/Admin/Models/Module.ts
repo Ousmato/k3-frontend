@@ -9,6 +9,7 @@ export interface  Module{
 }
 
 export interface Ecue{
+    id?: number
     nomModule: string;
     coefficient: number;
 }

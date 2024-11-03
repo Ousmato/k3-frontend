@@ -1,7 +1,7 @@
 <main>
   <div class="content-head">
     <div class="head-left">
-      <select (change)="onChange($event)">
+      <select id="promo-seclect" (change)="onChange($event)">
         <option selected disabled value="">Promotion {{currentYear}}</option>
         <option *ngFor="let annee of annees" [value]="annee.id">Promotion {{annee.ans}}</option>
       </select>
@@ -36,7 +36,7 @@
           <th>Sexe</th>
 
           <th>Etat</th>
-          <th>Action</th>
+          <th *ngIf="!idDg  && !secretaire">Action</th>
 
         </tr>
       </thead>
@@ -60,13 +60,13 @@
                 <fa-icon [icon]="inscrit.payer ? icons.circle : icons.circle "
                   [ngStyle]="{ color: inscrit.payer ? 'green' : 'red' }"></fa-icon><span></span></a>
             </td>
-            <td>
+            <td *ngIf="!idDg && ! secretaire">
               <div class="btn-contenaire">
 
-                <a (click)="getStudent(inscrit.idEtudiant)" *ngIf="!secretaire"><fa-icon
+                <a (click)="getStudent(inscrit)" *ngIf="!secretaire"><fa-icon
                     [icon]="permission ? icons.eye : icons.userCheck"></fa-icon><span>{{permission ? 'Details' :
                     'Valider'}}</span></a>
-                <a *ngIf="secretaire" (click)="getStudentView(inscrit.id!)">Details</a>
+                <!-- <a *ngIf="secretaire" (click)="getStudentView(inscrit.id!)">Details</a> -->
 
               </div>
             </td>

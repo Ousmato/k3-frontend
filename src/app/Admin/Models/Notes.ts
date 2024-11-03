@@ -1,13 +1,16 @@
-import { Module } from "./Module";
+import { Admin } from "./Admin";
+import { Ecue, Module } from "./Module";
 import { Semestres } from "./Semestre";
-import { Student } from "./Students";
+import { Inscription, Student } from "./Students";
+import { AddUeDto } from "./UE";
 
 export interface Notes{
     id?: number;
     classeNote: number;
     examNote: number;
-    idStudents: Student;
-    idModule: Module;
+    idInscription: Inscription;
+    idAdmin: Admin
+    idModule: Ecue;
     idSemestre: Semestres;
     moyenne?: number;
     rang?: number;
@@ -38,4 +41,12 @@ export interface StudentsNotesDto{
     prenom: string;
     lieuNaissance: string;
     date_naissance: Date;
+}
+
+export interface AddNoteDto{
+    idNote: number;
+    idModule: number
+    noteExam: number;
+    noteClasse: number;
+    addUeDto: AddUeDto;
 }

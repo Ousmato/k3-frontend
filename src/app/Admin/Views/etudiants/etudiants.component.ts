@@ -28,7 +28,8 @@ export class EtudiantsComponent implements OnInit {
   filteredItems: Inscription[] = []
   pages: number[] = []
 
-  admin!: Admin
+  // admin!: Admin
+  idDg!: number
   secretaire!: Admin
   permission: boolean = false
   event_toSetPage: boolean = false
@@ -40,13 +41,16 @@ export class EtudiantsComponent implements OnInit {
   student_etats: {key: string, value: any}[] = []
   // urlImage!: string | ArrayBuffer
 
-  constructor(private service: EtudeService, private fb: FormBuilder, private sideBarService: SideBarService,
+  constructor(private service: EtudeService, private sideBarService: SideBarService, private route: ActivatedRoute,
     private root: Router, public icons: IconsService, private pageTitle: PageTitleService, private infoSchool: SchoolService) { }
 
   ngOnInit(): void {
     this.getPermission();
     this.loadStudents();
     this.get_annees();
+    this.route.queryParams.subscribe(param =>{
+      this.idDg = param['id']
+    })
     this.student_etats = this.getStudentEtat();
     this.currentYear = new Date().getFullYear()
     this.sideBarService.currentSearchTerm.subscribe(term => {
@@ -60,8 +64,10 @@ export class EtudiantsComponent implements OnInit {
   getPermission(): boolean {
     const autorize = sessionStorage.getItem('scolarite');
     const adminData = sessionStorage.getItem("secretaire");
+   
     this.secretaire = JSON.parse(adminData!);
     if (autorize) {
+      // console.log(autorize, "autorize")
       this.permission = true
       return true;
     }
@@ -162,10 +168,10 @@ export class EtudiantsComponent implements OnInit {
     })
   }
   // ------------------------------------------------------------
-  getStudent(student?: Student) {
+  getStudent(inscrit?: Inscription) {
 
     const navigationExtras: NavigationExtras = {
-      queryParams: { id: student?.idEtudiant }
+      queryParams: { id: inscrit!.id }
     };
     const comptable = sessionStorage.getItem('comptable')
     // const scolarite = sessionStorage.getItem('scolarite')
@@ -242,4 +248,7 @@ export class EtudiantsComponent implements OnInit {
     const word = nameWord.filter(wd => wd.length > 3).map(word => word[0].toUpperCase()).join('')
     return word;
   }
+
+  
+  
 }

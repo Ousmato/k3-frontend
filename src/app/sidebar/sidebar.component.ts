@@ -127,13 +127,17 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
   // ------------------------------------------load current admin
   load_admin() {
-    const admin = sessionStorage.getItem('admin');
+    const admin = sessionStorage.getItem('user');
+    // console.log("admin :", admin)
     if (admin) {
 
       this.dataAdmin = JSON.parse(admin);
+      
+
       this.dataAdmin.urlPhoto = `${environment.urlPhoto}${this.dataAdmin.urlPhoto}`
     }
   }
+ 
   // --------------------------------shearch 
   onSearchChange() {
     this.sidebarService.changeSearchTerm(this.searchTerm);
@@ -169,7 +173,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
       sessionStorage.setItem("admin", adminDataString);
       return
     }
-    sessionStorage.clear();
+    // sessionStorage.clear();
 
   }
 }

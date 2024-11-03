@@ -57,7 +57,7 @@ export class ViewSoutenanceComponent implements OnInit {
 load_school(){
   this.schoolService.getSchools().subscribe(result => {
     this.school = result;
-    this.school.urlPhoto = "http://localhost/StudentImg/"+ this.school.urlPhoto;
+    // this.school.urlPhoto = "http://localhost/StudentImg/"+ this.school.urlPhoto;
   })
 }
  goBack(){
@@ -80,17 +80,24 @@ load_school(){
   // --------------------------------------button to imprime
   imprimer() { 
     const buttonContent = document.getElementById('button') as HTMLElement;
-    buttonContent.style.display = "none";
-    var data = document.getElementById('idTable') as HTMLElement;
-    if(data){
+    const data = document.getElementById('idTable') as HTMLElement;
+  
+    if (buttonContent && data) {
+      // Temporarily hide the print button
+      buttonContent.style.display = "none";
+  
+      // Save current styles to restore them later
+      const originalPadding = data.style.padding;
+      const originalHeight = data.style.height;
+      const originalOverflow = data.style.overflow;
+  
+      // Temporarily set styles to capture the entire scrollable area
       data.style.padding = '50px'; 
-      // data.style.fontSize = "14px"  
-    }
-    
-    
-    // Id of the table
-    html2canvas(data!, { scale: 2 }).then(canvas => {
-        // Few necessary setting options
+      data.style.height = 'auto';
+      data.style.overflow = 'visible';
+  
+      // Capture the element with html2canvas
+      html2canvas(data, { scale: 2 }).then(canvas => {
         let imgWidth = 297; // A4 landscape width in mm
         let imgHeight = (canvas.height * imgWidth) / canvas.width;
         
@@ -99,9 +106,15 @@ load_school(){
         let position = 0;
         pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
         pdf.save('programme-de-soutenace.pdf');
+        
+        // Restore original styles
         buttonContent.style.display = "block";
-        data.style.padding = '0px'
-        // data.style.fontSize = '16px'
-    });
-  } 
+        buttonContent.style.justifyContent = "end" 
+        data.style.padding = originalPadding;
+        data.style.height = originalHeight;
+        data.style.overflow = originalOverflow;
+      });
+    }
+  }
+  
 }

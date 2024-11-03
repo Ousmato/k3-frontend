@@ -177,24 +177,33 @@ export class ClassStudentsComponent implements OnInit {
     const navigationExtras: NavigationExtras = {
       queryParams: { id: idClasse }
     };
+    const dga = sessionStorage.getItem("dga")
     if (this.getPermission()) {
       this.router.navigate(['/r-scolarite/all-notes'], navigationExtras);
 
-    } else {
+    } else if(dga) {
       this.router.navigate(['/dga/all-notes'], navigationExtras);
+    }else{
+      this.router.navigate(['/sidebar/all-notes'], navigationExtras);
+
     }
 
   }
   // ------------------------------link go to list students by class
-  toggle_to_presence(idClasse: number) {
+  toggle_toStudentClasse(idClasse: number) {
+
     const navigationExtras: NavigationExtras = {
       queryParams: { id: idClasse }
     };
+    const dga = sessionStorage.getItem("dga")
     if (this.getPermission()) {
       this.router.navigate(['/r-scolarite/etudiant-de-la-classe'], navigationExtras);
-    } else {
+    } else if(dga){
       this.router.navigate(['/dga/etudiant-de-la-classe'], navigationExtras);
 
+    }else{
+      this.router.navigate(['/sidebar/etudiant-de-la-classe'], navigationExtras);
+      
     }
   }
   // ----------------------------------------lint to go to the param

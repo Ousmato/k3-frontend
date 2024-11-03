@@ -1,5 +1,6 @@
 main{
     padding:  10px;
+    height: 80vh;
 }
 th{
     text-align: center;
@@ -16,15 +17,13 @@ td{
     color: var(--secondary);     
     }
 }
-fa-icon{
-    cursor: pointer;
-    &:hover{
-    color: var(--secondary);     
-    }
-   
-}
+
 .delete{
     color: red;
+    &:hover{
+        color: var(--secondary);
+       
+    }
 }
 
 .tab-head{
@@ -52,9 +51,16 @@ fa-icon{
 .next-col{
     display: flex;
     justify-content: space-between;
+    gap: 20px;
 }
-
-.btn-contenair button{
+p{
+    margin: 0;
+}
+#module{
+    padding: 3px;
+    background-color: var(--secondary);
+}
+.btn-contenaire button{
     border: none;
     cursor: pointer;
     padding: 5px 15px;
@@ -76,11 +82,12 @@ fa-icon{
         color: var(--primary);
     }
 }
-.btn-contenair{
+.emplois-main-contente .btn-contenaire{
     width: 100%;
-    margin-top: 20px;
     display: flex;
     justify-content: space-between;
+    padding: 0 10px;
+    height: 45px;
 }
  a{
     display: flex;
@@ -89,6 +96,9 @@ fa-icon{
     font-size: 14px;
     justify-content: center;
     align-items: center;
+    &:hover{
+        color: var(--secondary) !important;
+    }
 }
 .grid-container {
     position: relative;
@@ -102,13 +112,14 @@ fa-icon{
   
   .grid-item {
    
-    padding: 10px;
+    padding: 15px;
     border: 1px solid var(--primo-light);
     border-radius: 8px;
+    color: var(--primary);
     background-color: var(--primo-light);
     &:hover{
         background-color: var(--primo-dark);
-        color: var(--primary);
+        color: black;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
@@ -118,6 +129,32 @@ fa-icon{
     width: 100%;
     display: flex;
     justify-content: space-between;
-   
+   align-items: center;
+  }
+  /* ---scroll style */
+  .emplois-contente{
+    height: 90%;
+    /* border: 1px solid red; */
+    position: relative;
+    overflow: hidden;
+    overflow-y: auto; 
+  }
+/* Personnalisation de la barre de défilement */
+.emplois-contente::-webkit-scrollbar {
+    width: 5px; /* Largeur de la barre de défilement */
+  }
+  
+  .emplois-contente::-webkit-scrollbar-track {
+    background: white; /* Couleur de l'arrière-plan de la piste */
+    border-radius: 10px; /* Coins arrondis de la piste */
+  }
+  
+  .emplois-contente::-webkit-scrollbar-thumb {
+    background: var(--tertiary); /* Couleur de la barre de défilement */
+    border-radius: 10px; /* Coins arrondis de la barre */
+  }
+  
+  .emplois-contente::-webkit-scrollbar-thumb:hover {
+    background: var(--primary); /* Couleur de la barre au survol */
   }
  

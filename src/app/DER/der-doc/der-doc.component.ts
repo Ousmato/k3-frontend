@@ -6,9 +6,10 @@ import { Docum, StudentDoc } from '../../Admin/Models/doc';
 import { AnneeScolaire } from '../../Admin/Models/School-info';
 import { SchoolService } from '../../Services/school.service';
 import { Doc_Pages } from '../../Admin/Models/Pagination-module';
-import { Student } from '../../Admin/Models/Students';
+import { Inscription, Student } from '../../Admin/Models/Students';
 import { PageTitleService } from '../../Services/page-title.service';
 import { faL } from '@fortawesome/free-solid-svg-icons';
+import { SideBarService } from '../../sidebar/side-bar.service';
 
 @Component({
   selector: 'app-der-doc',
@@ -17,28 +18,36 @@ import { faL } from '@fortawesome/free-solid-svg-icons';
 })
 export class DerDocComponent implements OnInit {
 
+  searchTerm: string =""
   show_add_note: boolean = false
   overlay: boolean = false
   doc!: Docum
   isConfirm: boolean = false
   annees: AnneeScolaire[] = []
   docs: StudentDoc[] = []
+  filteredItem: StudentDoc[] = []
   currentYear!: number
-  students: Student[] = []
+  inscriptions: Inscription[] = []
   page = 0;
-  size = 10;
+  size = 20;
   docPage?: Doc_Pages
   pages: number[] = []
   idDocSelect !: number | null
 
 
   constructor(private router: Router, public icons: IconsService, private pageTitle: PageTitleService,
-    private infoSchool: SchoolService,
+    private infoSchool: SchoolService, private sideBarService: SideBarService,
     private studentService: EtudeService) { }
   ngOnInit(): void {
     this.getDocsOfYear();
     this.get_annees();
     this.currentYear = new Date().getFullYear()
+
+    this.sideBarService.currentSearchTerm.subscribe(term =>{
+      this.searchTerm = term;
+      this.filterDocs();
+    })
+    
   }
 
   // ------------
@@ -56,23 +65,21 @@ export class DerDocComponent implements OnInit {
     // Vous pouvez maintenant utiliser la liste des documents reçus dans le parent
   }
 
-  // ----------------------get current docs of year
+  // get current docs of year
   getDocsOfYear() {
     this.studentService.getCurrentYearDoc(this.page, this.size).subscribe(result => {
       this.docPage = result;
       // this.docs = result.content;
       result.content.forEach(res => {
-        this.students = res.idEtudiant
+        this.inscriptions = res.idInscription
+        
         if (!this.docs.some(d => d.idDocument.id == res.idDocument.id)) {
           this.docs.push(res);
-          // this.extractUniqueStudents(this.docs)
         }
       })
       console.log(this.docs, "docs");
 
       this.pages = Array.from({ length: result.totalPages! }, (_, i) => i);
-      // this.docs = 
-      // this.extractUniqueStudents(this.docs)
     })
   }
 
@@ -95,19 +102,32 @@ export class DerDocComponent implements OnInit {
       this.docs = []
       console.log(result, "result")
       this.docPage = result;
-      this.docs = result.content;
+      result.content.forEach(res => {
+        this.inscriptions = res.idInscription
+        if (!this.docs.some(d => d.idDocument.id == res.idDocument.id)) {
+          this.docs.push(res);
+        }
+      })
 
       this.pages = Array.from({ length: result.totalPages! }, (_, i) => i);
-      // this.docs = 
-      // this.extractUniqueStudents(this.docs)
 
     })
   }
 
+  // filter docs
+  filterDocs(){
+    if(!this.searchTerm){
+      return this.filteredItem = this.docs
+    }
+    return this.filteredItem = this.docs.filter(d =>d.idInscription.some(i =>i.idEtudiant.nom.toLowerCase().includes(this.searchTerm.toLowerCase())) ||
+    d.idInscription.some(i =>i.idEtudiant.prenom.toLowerCase().includes(this.searchTerm.toLowerCase())) ||
+   this.abrevigateFiliereName(d.filiere!).toLowerCase().includes(this.searchTerm.toLowerCase()))
+  }
+  // set page
   setPage(page: number): void {
     if (page >= 0 && page < this.docPage!.totalPages!) {
       this.page = page;
-      // this.loadStudents();
+      this.getDocsOfYear();
     }
   }
 
@@ -122,33 +142,29 @@ export class DerDocComponent implements OnInit {
       this.setPage(this.page - 1);
     }
   }
+ // pages visibles
+ getVisiblePages(): number[] {
+  const visiblePages: number[] = [];
+  const totalPages = this.docPage!.totalPages!;
 
-  // private extractUniqueStudents(notes: StudentDoc[]): StudentDoc[] {
-  //   const uniqueStudents = new Set<number>(); // Utilise un Set pour stocker les idEtudiant uniques
-  //   const result: StudentDoc[] = [];
-  //   const students: Student[] = [];
+  const startPage = Math.max(0, this.page - 1); 
+  const endPage = Math.min(totalPages - 1, this.page + 1); 
 
-  //   this.docs.forEach(item => {
-  //     if (!uniqueStudents.has(item.id!)) { // Vérifie si l'idEtudiant n'est pas déjà dans le Set
-  //       uniqueStudents.add(item.id!);
-  //       result.push(item); // Ajoute l'étudiant au tableau résultant des étudiants uniques
-  //     }
-  //   });
-  //   students.forEach((student, index) => {
-  //     student.numero = index + 1; // Ajoute 1 pour commencer à partir de 1 (si nécessaire)
-  //   });
+  for (let i = startPage; i <= endPage; i++) {
+    visiblePages.push(i);
+  }
 
-  //   return result;
-  // }
-  // ------------------programer
-  programer(idDoc: number) {
+  return visiblePages;
+}
+  // programer
+  programer(idStudentDoc: number) {
     const navigationExtrat: NavigationExtras = {
-      queryParams: { id: idDoc }
+      queryParams: { id: idStudentDoc }
     }
     this.router.navigate(['/der/programmer'], navigationExtrat)
 
   }
-  // ------------------close modal
+  // confirm modal
 
   confirm(idDoc: number) {
     console.log(idDoc, "idDoc")
@@ -156,20 +172,24 @@ export class DerDocComponent implements OnInit {
       if (result) {
         this.pageTitle.showSuccessToast("Succes!!!")
         this.isConfirm = false
-        this.ngOnInit();
+        this.overlay = false
+        this.getDocsOfYear();
       }
       else {
         this.pageTitle.showErrorToast("Erreur!!!")
       }
     })
   }
+  // show confirm modal for annuler programme
   show_cofirm(idDoc: number) {
     this.idDocSelect = idDoc
+    this.overlay = true
     this.isConfirm = true;
     console.log("show")
   }
   // exitconfirm
   exitconfirm() {
+    this.overlay = false
     this.isConfirm = false;
   }
 
@@ -184,5 +204,15 @@ export class DerDocComponent implements OnInit {
   close_note() {
     this.show_add_note = false;
     this.overlay = false;
+  }
+  // abrevigate filiere name
+  abrevigateFiliereName(filiere: string) {
+    const name = filiere.split(" ");
+    return name.filter(word =>word.length >3).map(word =>word[0].toUpperCase()).join('')
+  }
+
+  // get full year in the date
+  getFullYear(date: Date) {
+    return new Date(date).getFullYear()
   }
 }

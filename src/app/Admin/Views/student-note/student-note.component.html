@@ -1,129 +1,92 @@
-
 <main>
-    <div (click)="goBack()" class="back-button">
-        <fa-icon [icon]="icons.back"></fa-icon>
+    <div class="head">
+        <div (click)="goBack()" class="back-button">
+            <fa-icon [icon]="icons.back"></fa-icon>
+        </div>
+        <div class="input-search">
+            <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..."  class="search-input">
+        <!-- <fa-icon [icon]="icons.recherche" class="search-icon"></fa-icon> -->
+        </div>
     </div>
-    <!-- <div class="input-search">
-        <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..."  class="search-input">
-    <fa-icon [icon]="icons.recherche" class="search-icon"></fa-icon>
-    </div> -->
-    <table  class="table  table-hover">
-        <thead>
-            <tr>
-              <th>ID</th>
-              <!-- <th>Photo</th> -->
-              <th>Nom</th>
-              <th>Prenom</th>
-              <th>Email</th>
-              <th>Classe</th>
-              <th>Filiere</th>
+    
+    <div class="table-container">
+        <table class="table  table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <!-- <th>Photo</th> -->
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th>Email</th>
+                    <th>Classe</th>
+                    <th>Filiere</th>
 
-              <th>Telephone</th>
-              <th>Action</th>
+                    <th>Telephone</th>
+                    <th>Action</th>
 
-            </tr>
-          </thead>
-          <tbody>
-            <ng-container *ngIf="filterStudents().length; else noResults">
-            <ng-container *ngFor="let incrit of inscrits ; let i = index">
-                <tr >
-                <td>{{i + 1}}</td>
-                <!-- <td><img src="{{studens.urlPhoto}}" alt=""></td> -->
-                <td>{{incrit.idEtudiant.nom}}</td>
-                <td>{{incrit.idEtudiant.prenom}}</td>
-                <td>{{incrit.idEtudiant.email}}</td>
-                <td class="class-name"  title="{{incrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}">{{incrit.idClasse.idFiliere?.idNiveau?.nom}}</td>
-                <td class="class-name"  title="{{incrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}">{{incrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}</td>
-                
-                <td>{{incrit.idEtudiant.telephone}}</td>
-                    <td>
-                        <!-- data-bs-toggle="modal"   [attr.data-bs-target]="'#modal-' + studens.idEtudiant" -->
-                        <div class="btn-contenaire">
-                            <a (click)="load_module_without_note(incrit.idEtudiant)" ><fa-icon  [icon]="icons.plus" class="icons"></fa-icon><span >Ajouter</span></a>
-                            <a (click)="load_bulletin(incrit.idEtudiant.idEtudiant!)" ><fa-icon  [icon]="icons.eye" class="icons"></fa-icon><span>Rélever</span></a>
-                            <a (click)="load_update(incrit.idEtudiant)" data-bs-toggle="modal"   [attr.data-bs-target]="'#noteEdite_' + incrit.idEtudiant"><fa-icon [icon]="icons.edit" class="icons"></fa-icon><span>Modifier</span></a>
-                            <!-- <a><fa-icon [icon]="icons.delete"></fa-icon><span>Supprimer</span></a> -->
-                        
-                        </div>
-                    </td>
-                
                 </tr>
-                <!-- ----------------------------------------------modal update notes----------- -->
-            
-            <div  class="modal fade"  [id]="'noteEdite_' + incrit.idEtudiant"  data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="head-modal modal-header">
-                    <h4>Modifier Informations</h4>
-                      <button (click)="exit()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                     
-                      <div class="form-update" >
-                        <form [formGroup]="update_note_form" (ngSubmit)="update_note(incrit.idEtudiant)">
-                                <ng-container *ngIf="notes.length > 0; else notFoundModule">
-                                <div class="views">
-                                    <label for="validationDefault01" class="label form-label">Module:</label>
-                                    
-                                    <select formControlName="idModule" class="form-select" aria-label="Default select example" (change)="onSelecteModule($event)">
-                                        <option disabled value="">Selectionner un module</option>
-                                        <option *ngFor="let module of modules" [value]="module.id">{{module.nomModule}}</option>
-                                    </select>
-                                </div>
-                            </ng-container>
+            </thead>
+            <tbody>
+                <ng-container *ngIf="filterStudents().length; else noResults">
+                    <ng-container *ngFor="let incrit of inscrits ; let i = index">
+                        <tr>
+                            <td>{{i + 1}}</td>
+                            <!-- <td><img src="{{studens.urlPhoto}}" alt=""></td> -->
+                            <td>{{incrit.idEtudiant.nom}}</td>
+                            <td>{{incrit.idEtudiant.prenom}}</td>
+                            <td>{{incrit.idEtudiant.email}}</td>
+                            <td class="class-name" title="{{incrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}">
+                                {{incrit.idClasse.idFiliere?.idNiveau?.nom}}</td>
+                            <td class="class-name" title="{{incrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}">
+                                {{incrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}</td>
 
-                            <ng-template #notFoundModule>
-                                <p>Aucun module disponible</p>
-                            </ng-template>
+                            <td>{{incrit.idEtudiant.telephone}}</td>
+                            <td>
+                                <!-- data-bs-toggle="modal"   [attr.data-bs-target]="'#modal-' + studens.idEtudiant" -->
+                                <div class="btn-contenaire">
+                                    <a (click)="load_module_without_note(incrit)"><fa-icon [icon]="icons.plus"
+                                            class="icons"></fa-icon><span>Ajouter</span></a>
+                                    <a (click)="load_bulletin(incrit.id!)"><fa-icon [icon]="icons.eye"
+                                            class="icons"></fa-icon><span>Rélever</span></a>
+                                    <!-- <a (click)="load_update(incrit)" data-bs-toggle="modal"   [attr.data-bs-target]="'#noteEdite_' + incrit.idEtudiant"><fa-icon [icon]="icons.edit" class="icons"></fa-icon><span>Modifier</span></a> -->
+                                    <!-- <a><fa-icon [icon]="icons.delete"></fa-icon><span>Supprimer</span></a> -->
 
-                                <ng-container *ngIf="moduleSelect" >
-                                 <div class="input" *ngIf="update_note_form.get('classeNote')!.value || update_note_form.get('classeNote')!.value == ''"  >
-                                    <label for="validationDefault01" class="label form-label">Note de classe :</label>
-                                    <input type="text" class="input-with form-control"   formControlName="classeNote" [class.is-invalid]="update_note_form.get('classeNote')!.invalid && update_note_form.get('classeNote')!.touched">
-                                    <div *ngIf="update_note_form.get('classeNote')!.invalid && update_note_form.get('classeNote')!.touched" class="invalid-feedback">
-                                        <span class="label-error">La note doit etre entre 0 et 20.</span> 
-                                     </div>
-                                    
-                                    
                                 </div>
-                                 <div class="input" *ngIf="update_note_form.get('examNote')!.value || update_note_form.get('examNote')!.value == ''"  >
-                                    
-                                    <label for="validationDefault02" class="label form-label">Note d'examen :</label>
-                                    <input type="text" formControlName="examNote" class="input-with form-control"  [class.is-invalid]="update_note_form.get('examNote')!.invalid && update_note_form.get('examNote')!.touched">
-                                    <div *ngIf="update_note_form.get('examNote')!.invalid && update_note_form.get('examNote')!.touched" class="invalid-feedback">
-                                        <span class="label-error">La note doit entre 0 et 20.</span>
-                                     </div>
-                                </div>
-                              
-                            </ng-container>
-                            <div class="btn-contenair" *ngIf="moduleSelect">
-                            <button  type="submit">Enregistrer</button>
-                            </div>
-                      </form>
-                      </div>
-                    
-                      
-                    </div>
-                  </div>
-                </div> 
-            </div> 
-        </ng-container>
-    </ng-container>
-        <ng-template #noResults>
-            <tr>
-                <td colspan="9" class="text-center">Aucun résultat trouvé</td>
-            </tr>
-        </ng-template>
-        </tbody>
-    </table>
-    <div class="pagination">
-        <button (click)="previousPage()" [disabled]="page === 0"><fa-icon [icon]="icons.previous"></fa-icon></button>
-        <button *ngFor="let p of pages" (click)="setPage(p)" [class.active]="p === page">
-          {{ p + 1 }}
-        </button>
-        <button (click)="nextPage()" [disabled]="page === studentPages!.totalPages! - 1"><fa-icon [icon]="icons.nexte"></fa-icon></button>
-      </div>
+                            </td>
+
+                        </tr>
+                        <!-- ----------------------------------------------modal update notes----------- -->
+
+
+                    </ng-container>
+                </ng-container>
+                <ng-template #noResults>
+                    <tr>
+                        <td colspan="9" class="text-center">Aucun résultat trouvé</td>
+                    </tr>
+                </ng-template>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="footer" *ngIf="inscrits.length !== 0">
+        <div class="button-navigation">
+            <div class="pagination">
+                <button (click)="previousPage()" [disabled]="page === 0">
+                    <fa-icon [icon]="icons.previous"></fa-icon>
+                </button>
+
+                <button *ngFor="let p of getVisiblePages()" (click)="setPage(p)" [class.active]="p === page">
+                    {{ p + 1 }}
+                </button>
+
+                <button (click)="nextPage()" [disabled]="page === studentPages!.totalPages! - 1">
+                    <fa-icon [icon]="icons.nexte"></fa-icon>
+                </button>
+            </div>
+        </div>
+
+        <p>page : {{page + 1}}/{{ studentPages!.totalPages }}</p>
+    </div>
 </main>
-<!-- <ng-container *ngIf="show_widget_add_note" >
-    <app-add-note-widget [student]="studentSelect"  (closeAddNoteModal)="close_widget()" [idClasse]="idUrl"></app-add-note-widget>
-</ng-container> -->

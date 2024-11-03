@@ -5,11 +5,14 @@ import { ClassRoom } from '../../Models/Classe';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EtudeService } from '../../Views/etudiants/etude.service';
 import { ClassStudentService } from '../../../DGA/class-students/class-student.service';
-import { Student } from '../../Models/Students';
+import { Inscription, Student } from '../../Models/Students';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { Location } from '@angular/common';
 import { SchoolService } from '../../../Services/school.service';
 import { AnneeScolaire } from '../../Models/School-info';
+import { environment } from '../../../../environments/environment';
+import { InscriptionService } from '../../../Services/inscription.service';
+import { Admin } from '../../Models/Admin';
 
 @Component({
   selector: 'app-student-edit',
@@ -27,22 +30,25 @@ export class StudentEditComponent implements OnInit {
   isEdit: boolean = false
   isUpdate: boolean = false
   idStudent!: number
-  student?: Student
+  inscrit?: Inscription
+  admin!: Admin 
   urlImage!: string | ArrayBuffer
   anneeScolaire: AnneeScolaire[] = []
 
 
-  constructor(private formBuilder: FormBuilder, private infoSchool: SchoolService,
+  constructor(private formBuilder: FormBuilder, private infoSchool: SchoolService, private inscriptionService: InscriptionService,
     private studentService: EtudeService, private classeService: ClassStudentService,
     private router: ActivatedRoute, private root: Router, public icons: IconsService, private pageTitle: PageTitleService, private location: Location) { }
 
   ngOnInit(): void {
-    this.imageUrl = this.student?.urlPhoto || 'assets/business-professional-icon.svg';
+    this.imageUrl = this.inscrit?.idEtudiant?.urlPhoto || 'assets/business-professional-icon.svg';
     this.load_class_rooms();
     this.load_form();
     this.load_student();
     this.load_all_annee()
 
+    const adminData = sessionStorage.getItem("scolarite");
+    this.admin = JSON.parse(adminData!)
   }
   goBack() {
     this.location.back();
@@ -59,7 +65,7 @@ export class StudentEditComponent implements OnInit {
   // ---------------------------load update
   load_form() {
     this.studentForm = this.formBuilder.group({
-      idEtudiant: ['', Validators.required],
+      id: ['', Validators.required],
       nom: ['', Validators.required],
       prenom: ['', Validators.required],
       sexe: ['', Validators.required],
@@ -67,7 +73,7 @@ export class StudentEditComponent implements OnInit {
       telephone: ['', Validators.required],
       password: [''],
       matricule: ['', Validators.required],
-      scolarite: ['', Validators.required],
+      // scolarite: ['', Validators.required],
       idClasse: ['', Validators.required],
       lieuNaissance: ['', Validators.required],
       dateNaissance: ['', Validators.required],
@@ -75,8 +81,9 @@ export class StudentEditComponent implements OnInit {
     });
   }
 
-  onError() {
-    this.imageUrl = 'assets/business-professional-icon.svg';
+  onError(event: Event) {
+    const target = event.target as HTMLImageElement;
+    target.src = 'assets/business-professional-icon.svg';
   }
   // ----------------------select file
   onFileSelected(event: any) {
@@ -104,44 +111,50 @@ export class StudentEditComponent implements OnInit {
     this.router.queryParams.subscribe(param => {
       this.idStudent = param['id']
     })
-    this.studentService.getStudent_by_id(this.idStudent).subscribe(data => {
-      this.student = data;
+    this.inscriptionService.getInscriptionById(this.idStudent).subscribe(data => {
+      this.inscrit = data;
       // this.studentForm.get('urlPhoto')?.setValue(this.student!.urlPhoto);
-      this.student.urlPhoto = 'http://localhost/StudentImg/' + this.student.urlPhoto
+      this.inscrit.idEtudiant.urlPhoto = `${environment.urlPhoto}${this.inscrit.idEtudiant.urlPhoto}`
 
-      console.log(this.student.password, "ppppppp");
-      this.studentForm.get('idEtudiant')?.setValue(this.student!.idEtudiant);
-      this.studentForm.get('nom')?.setValue(this.student!.nom);
-      this.studentForm.get('prenom')?.setValue(this.student!.prenom);
-      this.studentForm.get('sexe')?.setValue(this.student!.sexe);
-      this.studentForm.get('email')?.setValue(this.student!.email);
-      this.studentForm.get('password')?.setValue(this.student!.password);
-      this.studentForm.get('telephone')?.setValue(this.student!.telephone);
-      this.studentForm.get('lieuNaissance')?.setValue(this.student!.lieuNaissance);
-      this.studentForm.get('dateNaissance')?.setValue(this.student!.dateNaissance);
-      this.studentForm.get('matricule')?.setValue(this.student!.matricule);
-      this.studentForm.get('scolarite')?.setValue(this.student!.scolarite);
-      this.studentForm.get('idClasse')?.setValue(this.student!.idClasse?.id);
+      // console.log(this.inscrit.password, "ppppppp");
+      this.studentForm.get('id')?.setValue(this.inscrit.id!);
+      this.studentForm.get('nom')?.setValue(this.inscrit!.idEtudiant.nom);
+      this.studentForm.get('prenom')?.setValue(this.inscrit!.idEtudiant.prenom);
+      this.studentForm.get('sexe')?.setValue(this.inscrit!.idEtudiant.sexe);
+      this.studentForm.get('email')?.setValue(this.inscrit!.idEtudiant.email);
+      this.studentForm.get('password')?.setValue(this.inscrit!.idEtudiant.password);
+      this.studentForm.get('telephone')?.setValue(this.inscrit!.idEtudiant.telephone);
+      this.studentForm.get('lieuNaissance')?.setValue(this.inscrit!.idEtudiant.lieuNaissance);
+      this.studentForm.get('dateNaissance')?.setValue(this.inscrit!.idEtudiant.dateNaissance);
+      this.studentForm.get('matricule')?.setValue(this.inscrit!.idEtudiant.matricule);
+      // this.studentForm.get('scolarite')?.setValue(this.inscrit!.scolarite);
+      this.studentForm.get('idClasse')?.setValue(this.inscrit!.idClasse?.id);
 
     })
   }
   update() {
     const formData = this.studentForm.value
     console.log(formData, "formdata")
-
+    const {scolarite,idClasse, id, ...studens} = formData
     const student: Student = {
-      ...formData,
-      idClasse: this.classRoom.find(cl => cl.id === +formData.idClasse)!
+      ...studens,
+      // idClasse: this.classRoom.find(cl => cl.id === +formData.idClasse)!
     }
-    console.log(student, "student")
+    const inscrit : Inscription ={
+      id: formData.id,
+      idEtudiant: student,
+      idClasse: this.classRoom.find(cl => cl.id === +formData.idClasse)!,
+      idAdmin: this.admin
+    }
+    console.log(inscrit, "student")
 
     if (this.studentForm.valid) {
       if (this.isUpdate) {
         console.log("consoler")
-        this.studentService.updateStudent(student, this.filename).subscribe({
+        this.studentService.updateStudent(inscrit, this.filename).subscribe({
           next: (response) => {
             this.pageTitle.showSuccessToast(response.message)
-            this.root.navigate(['/sidebar/etudiant']);
+            this.load_student();
           },
           error: (erreur) => {
             this.pageTitle.showErrorToast(erreur.error.message)

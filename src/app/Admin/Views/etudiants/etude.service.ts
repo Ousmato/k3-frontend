@@ -39,9 +39,9 @@ addStudentImport(studentImport: Inscription[]) : Observable<Response_String>{
   getAllDocByClasse(idClasse: number) : Observable<StudentDoc[]>{
     return this.http.get<StudentDoc[]>(this.baseUrl+"all-docs-by-idClasse/" + idClasse);
   }
-  // ----------------------get all docs by idClasse and idAnnee
+  // ----------------------get all docs by idAnnee
   getAnneeByIdClasseAndAnnee(page: number, size: number, idAnnee : number) : Observable<Doc_Pages>{
-    return this.http.get<Doc_Pages>(`${this.baseUrl}all-docs-by-idClass-and-idAnnee/${idAnnee}?page=${page}&${size}`)
+    return this.http.get<Doc_Pages>(`${this.baseUrl}all-docs-by-idAnnee/${idAnnee}?page=${page}&${size}`)
   }
 
   // --------------------------------get current year docs
@@ -53,6 +53,7 @@ addStudentImport(studentImport: Inscription[]) : Observable<Response_String>{
   getStudentByIdClasse(idClasse: number) : Observable<Student[]>{
     return this.http.get<Student[]>(this.baseUrl + "student-by-classe-id/" + idClasse);
   }
+ 
 
   getStudent_ByIdClasse(page: number, size: number, idClasse: number): Observable<StudentPages> {
     return this.http.get<StudentPages>(`${this.baseUrl}list-student-by-classe/${idClasse}?page=${page}&size=${size}`);
@@ -91,7 +92,7 @@ addStudentImport(studentImport: Inscription[]) : Observable<Response_String>{
     return this.http.get<Inscription>(this.baseUrl+"inscription-by-id/"+idInscription)
   }
   // ---------------------update student
-  updateStudent(student: Student, file?: File): Observable<Response_String> {
+  updateStudent(student: Inscription, file?: File): Observable<Response_String> {
     const formData = new FormData();
     formData.append('student', JSON.stringify(student));
     formData.append('file', file!);
@@ -140,8 +141,8 @@ addStudentImport(studentImport: Inscription[]) : Observable<Response_String>{
   }
 
   // ---------------------get all participants by emploi id
-  getParticipantsByEmploiId(idClass: number) : Observable<Participant[]>{
-    return this.http.get<Participant[]>(this.baseUrl+"list-participant-by-class-id/"+idClass);
+  getParticipantsByEmploiId(idEmploi: number) : Observable<Participant[]>{
+    return this.http.get<Participant[]>(this.baseUrl+"list-participant-by-class-id/"+idEmploi);
   }
   // -----------------get sum scolarite of current year
   getScolarite_annee_courante() : Observable<number>{

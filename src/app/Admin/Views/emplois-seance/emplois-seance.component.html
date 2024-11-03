@@ -3,10 +3,7 @@
   <div id="back" (click)="goBack()" class="back-button">
     <fa-icon [icon]="icons.back"></fa-icon>
   </div>
-  <div class="position-realive">
-    <!-- <app-configure-seance *ngIf="is_show_configure" [idEmplois]="idUrl" (closeModal)="show_configure()" [configSeance]="configSeance"></app-configure-seance> -->
-
-  </div>
+ 
   <section class="section-head">
 
     <div class="month-contenaire">
@@ -56,7 +53,7 @@
 
       }
     </div>
-    <div class="children"></div>
+    <!-- <div class="children"></div> -->
   </div>
   <section class="content">
 
@@ -148,15 +145,16 @@
           @for (seance of teacherConf; track $index) {
           <div class="footer">
             <p>{{seance.nom}} {{seance.prenom}} :</p>
+            
             @for (item of seance.seanceType; track $index) {
             <p> @if (item.toString() === 'cm') {
-              {{item.toLocaleUpperCase()}} &
+              {{ec}} {{item.toLocaleUpperCase()}} 
               }
-              @if (item.toString() === 'td') {
-              {{item.toLocaleUpperCase()}}_{{seance.groupe}}
-              }
+             
             </p>
-
+             @if (item.toString() === 'td') {
+               {{item.toLocaleUpperCase()}}_{{seance.groupe}}
+              }
 
             }
           </div>
@@ -211,25 +209,6 @@
     <div class="button-cash">
       <a (click)="close_delete_modal()"><span>Annuler</span></a>
       <button class="submit" (click)="deleted(hasDeleted)"><span>Confirmer</span></button>
-    </div>
-  </div>
-
-  <div class="views" *ngIf="choisir_group">
-    <h4>Choisir </h4>
-    <div class="content">
-      <!-- <div class="form form-group">
-                <label>Types :</label> 
-                <select class="form-select"  (change)="changeType($event)">
-                    <option  selected disabled value="">Choisir Le type</option>
-                        <option *ngFor="let s_type of seanceTypeOptions" [value]="s_type.value">{{s_type.key}}</option>
-                    
-                </select> 
-                
-            </div> -->
-    </div>
-    <div class="button-cash">
-      <button (click)="close_delete_modal()">Annuler</button>
-      <!-- <button class="submit" (click)="deleted(hasDeleted)" ><span>Confirmer</span></button> -->
     </div>
   </div>
 </main>

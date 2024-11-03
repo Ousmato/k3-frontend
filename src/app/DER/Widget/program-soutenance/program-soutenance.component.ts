@@ -11,6 +11,7 @@ import { EtudeService } from '../../../Admin/Views/etudiants/etude.service';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { DatePipe } from '@angular/common';
 import { debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs';
+import { Admin } from '../../../Admin/Models/Admin';
 
 @Component({
   selector: 'app-program-soutenance',
@@ -24,6 +25,7 @@ export class ProgramSoutenanceComponent implements OnInit {
   @Output() closeModal = new EventEmitter<any>();
   teachers?: Teacher[] = []
   salle?: Salles
+  admin!: Admin
   numberJury: any[] = [1, 2, 3]
 
   jury: Jury[] = []
@@ -45,6 +47,11 @@ export class ProgramSoutenanceComponent implements OnInit {
     this.loa_form();
     this.getAllTeacher();
     this.getAllSalles();
+
+    const dataAdmin = sessionStorage.getItem("der");
+    if (dataAdmin) {
+      this.admin = JSON.parse(dataAdmin);
+    }
 
   }
 
@@ -79,6 +86,7 @@ export class ProgramSoutenanceComponent implements OnInit {
   }
  
   submit() {
+    this.jury = []
     const formData : any = this.prog_form.value
     const jurys = formData.jurys;
     // let teacher: Teacher
@@ -102,13 +110,14 @@ export class ProgramSoutenanceComponent implements OnInit {
       heureFin: formData.heureFin,
       idDoc: formData.idDoc,
       idSalle: this.salle!,
+      idAdmin: this.admin.idAdministra!
       
     }
     const prog : ProgramSoutenance ={
       jurys: this.jury,
       soutenance: this.soutenance
     }
-    // console.log(prog, "souuuuuuuuuuuuuuuuu")
+    console.log(prog, "souuuuuuuuuuuuuuuuu")
     // return
     if (this.prog_form.valid) {
       this.studentService.createSoutenance(prog).subscribe({

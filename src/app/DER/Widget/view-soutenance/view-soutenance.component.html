@@ -41,8 +41,8 @@
                         <tr>
                             <td>{{sout.id}}</td>
                             <td>
-                                @for (student of sout.students; track $index) {
-                                    {{student.nom}} {{student.prenom}} <br>
+                                @for (inscrit of sout.inscriptions; track $index) {
+                                    {{inscrit.idEtudiant.nom}} {{inscrit.idEtudiant.prenom}} <br>
                                 }
                             </td>
                             <td>{{sout.filiere}}</td>

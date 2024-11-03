@@ -1,9 +1,9 @@
 table{
-    margin-top: 20px;
+    margin-top: 10px;
 }
 main{width: 100%;
-
-    padding-top: 20px;
+    height: 80vh;
+    padding: 10px;
 }
 
 .back-button{
@@ -31,3 +31,34 @@ select:focus{
     outline: none;
     box-shadow: none;
 }
+select {
+    height: 35px;
+    width: 100px;
+    background-color: var(--primary);
+    color: var(--secondary);
+    border-radius: 8px;
+    padding: 0 5px;
+    outline: none;
+    border: none;
+  }
+  button{
+    width: 100px;
+    height: 35px;
+    margin-left: 10px;
+    border: none;
+    background-color: var(--primary);
+    color: var(--secondary);
+    padding: 0 5px;
+    border-radius: 8px;
+    cursor: pointer;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+  }
+  .head{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+  }

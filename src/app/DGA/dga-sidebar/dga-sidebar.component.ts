@@ -107,7 +107,6 @@ load_school_info(){
 load_admin(){
   const admin = sessionStorage.getItem('dga');
  
- 
   if(admin){
     
     this.dataAdmin = JSON.parse(admin);

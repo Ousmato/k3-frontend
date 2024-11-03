@@ -66,6 +66,7 @@ export class EmploisSeanceComponent  implements OnInit{
     is_show_configure: boolean = false;
     choisir_group: boolean = false;
     formattedDate!: string;
+    ec: string = '&';
   
 
 

@@ -1,3 +1,4 @@
+import { Admin } from "./Admin";
 import { Filiere } from "./Filieres";
 import { type_seance } from "./Seances";
 import { Ue } from "./UE";
@@ -32,6 +33,7 @@ export enum Diplomes{
 
 export interface ProfilDto{
     id?: number;
+    idAdmin: Admin
     teachers: Teacher;
     filieres: Filiere[]
 }

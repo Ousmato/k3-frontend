@@ -1,7 +1,7 @@
 main{
     width: 100%;
     padding: 20px 20px;
-    box-shadow: 0 4px 8px  rgb(0, 0, 0,0.2);
+    height: 80vh;
 }
 .vertical-header{
     writing-mode: vertical-lr;
@@ -79,11 +79,11 @@ select:focus{
 .table-container{
     position: relative;
     width: 100%;
-    height: 400px;
+    height: 70%;
 }
 .table-responsive{
     width:  100%;
-    height: 100%;
+    height: 70%;
     position: absolute;
     overflow-x: auto;
     overflow-y: auto;

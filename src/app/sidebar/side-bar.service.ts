@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Admin } from '../Admin/Models/Admin';
 
 @Injectable({
   providedIn: 'root'
@@ -7,26 +8,27 @@ import { BehaviorSubject } from 'rxjs';
 export class SideBarService {
   private readonly storageKey = 'sb|sidebar-toggle';
 
-  constructor() {
-    this.loadSidebarState();
-  }
+  // constructor() {
+  //   this.loadSidebarState();
+  // }
 
-  private _isToggled: boolean = false;
+  // private _isToggled: boolean = false;
 
-  get isToggled(): boolean {
-    return this._isToggled;
-  }
+  // get isToggled(): boolean {
+  //   return this._isToggled;
+  // }
 
-  toggleSidebar(): void {
-    this._isToggled = !this._isToggled;
-    localStorage.setItem(this.storageKey, String(this._isToggled));
-  }
+  // toggleSidebar(): void {
+  //   this._isToggled = !this._isToggled;
+  //   localStorage.setItem(this.storageKey, String(this._isToggled));
+  // }
 
-  private loadSidebarState(): void {
-    const storedState = localStorage.getItem(this.storageKey);
-    this._isToggled = storedState === 'true';
-  }
+  // private loadSidebarState(): void {
+  //   const storedState = localStorage.getItem(this.storageKey);
+  //   this._isToggled = storedState === 'true';
+  // }
 
+  private adminSubject = new BehaviorSubject<any>(null);
 
   private searchTerm = new BehaviorSubject<string>('');
   currentSearchTerm = this.searchTerm.asObservable();
@@ -36,4 +38,30 @@ export class SideBarService {
     this.searchTerm.next(term);
   }
 
+  setAdmin(admin: any) {
+    console.log(admin, "admin envoyé au service sidebar");
+
+    // Stockage dans BehaviorSubject
+    this.adminSubject.next(admin);
+    
+    // Stockage dans la sessionStorage
+    sessionStorage.setItem('admin', JSON.stringify(admin));
+    
+    // Vérifier si l'objet est bien stocké immédiatement après
+    const storedAdmin = sessionStorage.getItem('admin');
+    
+    if (storedAdmin) {
+        console.log(JSON.parse(storedAdmin), "admin récupéré avec succès de la sessionStorage");
+    } else {
+        console.error("Erreur : admin non stocké dans la sessionStorage");
+    }
+}
+
+  getAdmin(): Observable<any> {
+    const admin = sessionStorage.getItem('admin');
+    if (admin) {
+      this.adminSubject.next(JSON.parse(admin));
+    }
+    return this.adminSubject.asObservable();
+  }
 }

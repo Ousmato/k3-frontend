@@ -25,7 +25,7 @@ import { environment } from '../../../../environments/environment';
 export class StudentNoteComponent implements OnInit {
   searchTerm: string = '';
   inscrits: Inscription [] = [];
-  studentSelect!: Student
+  inscrit_select!: Inscription
   notes: Notes[] = [];
   idUrl! : number;
   moduleSelect!: any
@@ -96,15 +96,15 @@ export class StudentNoteComponent implements OnInit {
   
 }
     // ---------------------------------get module without not of student
-    load_module_without_note(student: Student){
+    load_module_without_note(inscrit: Inscription){
       this.show_widget_add_note = ! this.show_widget_add_note
-      this.studentSelect = student!
-      this.root.navigate(['/r-scolarite/add-note-student'], {queryParams:{id: student.idEtudiant}})
+      this.inscrit_select = inscrit!
+      this.root.navigate(['/r-scolarite/add-note-student'], {queryParams:{id: inscrit.id, idClasse: inscrit.idClasse.idFiliere?.id}})
      
     }
     // ----------------------close widget add note modal
     close_widget(){
-      this.load_module_without_note(this.studentSelect)
+      this.load_module_without_note(this.inscrit_select)
       this.loadStudents();
       // this.loadSemestre();
     }
@@ -166,31 +166,31 @@ filterStudents() {
   }
   // --------------------------------------------method update
   update_note(student: Student){
-    const formData = this.update_note_form.value
-    const note : Notes = {
-      id: this.moduleSelect!.id,
-      idStudents: student,
-      idModule: this.moduleSelect.idModule,
-      idSemestre: this.moduleSelect.idSemestre,
-      classeNote: formData.classeNote,
-      examNote: formData.examNote
-    }
-    if(this.update_note_form.valid){
-      this.studentService.update_note(note).subscribe({
-        next: (response) =>{
-          this.pageTitle.showSuccessToast(response.message);
-          // // this.loadStudents();
-          // this.load_update(student);
-        },
-        error: (erreur) => {
-          this.pageTitle.showErrorToast(erreur.error.message);
-        }
-      })
-      console.log(note, "note-up")
-    }else{
-      this.update_note_form.markAllAsTouched();
-      console.log("invalid", this.update_note_form.value)
-    }
+    // const formData = this.update_note_form.value
+    // const note : Notes = {
+    //   id: this.moduleSelect!.id,
+    //   idStudents: student,
+    //   idModule: this.moduleSelect.idModule,
+    //   idSemestre: this.moduleSelect.idSemestre,
+    //   classeNote: formData.classeNote,
+    //   examNote: formData.examNote
+    // }
+    // if(this.update_note_form.valid){
+    //   this.studentService.update_note(note).subscribe({
+    //     next: (response) =>{
+    //       this.pageTitle.showSuccessToast(response.message);
+    //       // // this.loadStudents();
+    //       // this.load_update(student);
+    //     },
+    //     error: (erreur) => {
+    //       this.pageTitle.showErrorToast(erreur.error.message);
+    //     }
+    //   })
+    //   console.log(note, "note-up")
+    // }else{
+    //   this.update_note_form.markAllAsTouched();
+    //   console.log("invalid", this.update_note_form.value)
+    // }
 
 
   }
@@ -233,6 +233,21 @@ filterStudents() {
     }
   }
 
+
+  // pages visibles
+ getVisiblePages(): number[] {
+  const visiblePages: number[] = [];
+  const totalPages = this.studentPages!.totalPages!;
+
+  const startPage = Math.max(0, this.page - 1); 
+  const endPage = Math.min(totalPages - 1, this.page + 1); 
+
+  for (let i = startPage; i <= endPage; i++) {
+    visiblePages.push(i);
+  }
+
+  return visiblePages;
+}
   previousPage(): void {
     if (this.page > 0) {
       this.setPage(this.page - 1);

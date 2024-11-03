@@ -1,4 +1,4 @@
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { importProvidersFrom, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -7,7 +7,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { DasboardComponent } from './Admin/Views/dasboard/dasboard.component';
 import { EtudiantsComponent } from './Admin/Views/etudiants/etudiants.component';
 import { LoginComponent } from './login/login.component';
-import {  provideHttpClient } from '@angular/common/http';
+import {  HTTP_INTERCEPTORS, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { SinginComponent } from './Admin/Component/singin/singin.component';
 import { ClassStudentsComponent } from './DGA/class-students/class-students.component'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -46,7 +46,6 @@ import { DerSallesAddComponent } from './DER/Widget/der-salles-add/der-salles-ad
 import { DgaSidebarComponent } from './DGA/dga-sidebar/dga-sidebar.component';
 import { DerSeancesComponent } from './DER/der-seances/der-seances.component';
 import { DerEmploiDuTempsComponent } from './DER/der-emploi-du-temps-list/der-emploi-du-temps.component';
-import { DgaMentionListComponent } from './DGA/dga-mention-list/dga-mention-list.component';
 import { DgaHomeComponent } from './DGA/dga-home/dga-home.component';
 import { DerEditSeanceComponent } from './DER/Widget/der-edit-seance/der-edit-seance.component';
 import { AddGroupStudentComponent } from './DER/Widget/add-group-student/add-group-student.component';
@@ -81,7 +80,6 @@ import { ViewUeComponent } from './Widget/ue-widget/view-ue/view-ue.component';
 import { AddClassPromotionComponent } from './Widget/classeroom-widget/add-class-promotion/add-class-promotion.component';
 import { ClassArchiveComponent } from './DGA/class-students/class-archive/class-archive.component';
 import { RSImportComponent } from './R-SCOLARITE/r-s-import/r-s-import.component';
-import { SpinnerComponent } from './Widget/spinner/spinner.component';
 import { SoutenanceNoteComponent } from './DER/Widget/soutenance-note/soutenance-note.component';
 import { StudentGroupListComponent } from './DER/student-group-list/student-group-list.component';
 import { AdminListComponent } from './DG/admin-list/admin-list.component';
@@ -91,7 +89,8 @@ import { ResetPasswordComponent } from './Password/reset-password/reset-password
 import { SetNewPasswordComponent } from './Password/set-new-password/set-new-password.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { provideToastr, ToastrModule } from 'ngx-toastr';
-
+import { NgxSpinnerModule } from "ngx-spinner";
+import { loadingInterceptor } from './Services/interceptor/loading.interceptor';
 registerLocaleData(localeFr);
 @NgModule({
   declarations: [
@@ -132,7 +131,6 @@ registerLocaleData(localeFr);
     DgaSidebarComponent,
     DerSeancesComponent,
     DerEmploiDuTempsComponent,
-    DgaMentionListComponent,
     DgaHomeComponent,
     DerEditSeanceComponent,
     AddGroupStudentComponent,
@@ -167,7 +165,6 @@ registerLocaleData(localeFr);
     AddClassPromotionComponent,
     ClassArchiveComponent,
     RSImportComponent,
-    SpinnerComponent, 
     SoutenanceNoteComponent, StudentGroupListComponent, AdminListComponent, MyAccuntComponent, ForgotPasswordComponent, ResetPasswordComponent, SetNewPasswordComponent
   ],
   imports: [
@@ -177,13 +174,16 @@ registerLocaleData(localeFr);
     ReactiveFormsModule,
     FontAwesomeModule,
     BrowserAnimationsModule,
+    NgxSpinnerModule,
     ToastrModule.forRoot(),
 
   ],
-  providers: [provideHttpClient(),
+  providers: [
     DatePipe,
     { provide: LOCALE_ID, useValue: 'fr' },
-   
+   provideHttpClient(withInterceptors([loadingInterceptor])),
+   importProvidersFrom(BrowserAnimationsModule),
+  //  provide
     provideToastr(
       {
         timeOut: 3000,
