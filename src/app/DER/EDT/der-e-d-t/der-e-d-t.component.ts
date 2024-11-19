@@ -6,6 +6,7 @@ import { EtudeService } from '../../../Admin/Views/etudiants/etude.service';
 import { Participant } from '../../../Admin/Models/Students';
 import { IconsService } from '../../../Services/icons.service';
 import { Admin } from '../../../Admin/Models/Admin';
+import { AdminUSER } from '../../../Admin/Models/Auth';
 
 @Component({
   selector: 'app-der-e-d-t',
@@ -68,8 +69,8 @@ export class DerEDTComponent implements OnInit{
   }
 
   getPermission(): boolean {
-    const autorize = sessionStorage.getItem('der');
-    this.admin = JSON.parse(autorize!);
+    const autorize = AdminUSER()?.der;
+    this.admin = autorize;
     if(autorize){
       this.permission = true
       // console.log(autorize,"autorize")

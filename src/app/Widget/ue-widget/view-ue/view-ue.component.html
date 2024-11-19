@@ -2,38 +2,80 @@
     <div (click)="goBack()" class="back-button">
         <fa-icon [icon]="icons.back"></fa-icon>
     </div>
+    <div class="head-content">
+        <div class="head-left">
+            <select   (change)="onSelect($event)" *ngIf="semestres.length">
+                <option  selected disabled value="">Semestre</option>
+                <option  *ngFor="let sem of semestres" [value]="sem.id">{{sem.nomSemetre}}</option>
+            </select>
+            <button (click)="addUe()"><fa-icon [icon]="icons.plus"></fa-icon> Ajouter</button>
+        </div>
+        <div class="input-search">
+            <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..." class="search-input">
+          </div>
+       
+    </div>
     
-    <select   (change)="onSelect($event)">
-        <option  selected disabled value="">Semestre</option>
-        <option  *ngFor="let sem of semestres" [value]="sem.id">{{sem.nomSemetre}}</option>
-    </select>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>ECUE</th>
-                <th class="coef">Coefficient</th>
-                <!-- <th>Mensions</th> -->
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let ue of ues">
-                <td >{{ ue.idUe.nomUE }}</td>
-                <td >
-                     @for (item of ue.modules; track $index) {
-                        
-                        {{item.nomModule}} <br>
-                     }
-                </td>
-                <td class="coef">
-                    @for (item of ue.modules; track $index) {
-                        
-                        {{item.coefficient}} <br>
-                     }
-                </td>
-               
-            </tr>
-        </tbody>
-    </table>
+    <section class="content">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>N° D'ord</th>
+                    <th>Nom</th>
+                    <th>ECUE</th>
+                    <th class="coef">Coefficient</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody >
+                @if (filterUes().length) {
+                    <tr *ngFor="let ue of filterUes(); let i = index">
+                        <td class="numerotation-clumn" >{{i +1 }}</td>
+                        <td >{{ ue.idUe.nomUE }}</td>
+                        <td >
+                             @for (item of ue.modules; track $index) {
+                                
+                                {{item.nomModule}} <br>
+                             }
+                        </td>
+                        <td class="coef">
+                            @for (item of ue.modules; track $index) {
+                                
+                                {{item.coefficient}} <br>
+                             }
+                        </td>
+                        <td class="action">
+                            <div class="second-child">
+                                <a (click)="updated(ue)" ><fa-icon [icon]="icons.edit"></fa-icon> <span>Modifier</span></a>
+                                <a (click)="deleteted(ue)" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> <span >Supprimer</span></a>
+                               
+                            </div>
+                            
 
+                        </td>
+                       
+                    </tr>
+                }@else {
+                    <tr>
+                        <td colspan="9" class="text-center">Aucune UE trouvée</td>
+                    </tr>
+                }
+               
+            </tbody>
+        </table>
+        <div class="app">
+            <app-ue-widget *ngIf="showUpdate || showDelete && idUeSelect" [show_update]="showUpdate" [ue]="idUeSelect" [show_deleted]="showDelete" (closeModale)="closeModalToAddUe()"></app-ue-widget>
+
+            </div>
+    </section>
+    <ng-container *ngIf="isShow_add_module">
+        <div class="views-add-ues">
+            <div class="nom-class">
+                <h5>Ajouter unite d'enseignement</h5>
+            </div>
+            <app-add-ue (closeModale)="closeModalToAddUe()" [classe]="classe!"></app-add-ue>
+        </div>
+    </ng-container>
+
+    <div class="overlay" *ngIf="overlay" ></div>
 </main>

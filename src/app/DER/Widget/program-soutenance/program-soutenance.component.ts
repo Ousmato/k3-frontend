@@ -12,6 +12,7 @@ import { PageTitleService } from '../../../Services/page-title.service';
 import { DatePipe } from '@angular/common';
 import { debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs';
 import { Admin } from '../../../Admin/Models/Admin';
+import { AdminUSER } from '../../../Admin/Models/Auth';
 
 @Component({
   selector: 'app-program-soutenance',
@@ -48,10 +49,7 @@ export class ProgramSoutenanceComponent implements OnInit {
     this.getAllTeacher();
     this.getAllSalles();
 
-    const dataAdmin = sessionStorage.getItem("der");
-    if (dataAdmin) {
-      this.admin = JSON.parse(dataAdmin);
-    }
+    this.admin = AdminUSER()?.der
 
   }
 

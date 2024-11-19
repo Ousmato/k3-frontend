@@ -11,6 +11,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EtudeService } from '../../Admin/Views/etudiants/etude.service';
 import { PageTitleService } from '../../Services/page-title.service';
 import { Admin } from '../../Admin/Models/Admin';
+import { AdminUSER } from '../../Admin/Models/Auth';
 
 @Component({
   selector: 'app-r-s-import',
@@ -36,7 +37,7 @@ export class RSImportComponent implements OnInit {
   ngOnInit(): void {
     this.get_annees();
     this.load_form();
-    this.getAdmin();
+    this.admin = AdminUSER()?.scolarite
   }
 
   onFileChange(event: any): void {
@@ -163,11 +164,6 @@ export class RSImportComponent implements OnInit {
 
       })
     }
-  }
-
-  getAdmin() {
-    const dataAdmin = sessionStorage.getItem("scolarite");
-    this.admin = JSON.parse(dataAdmin!);
   }
   // -------------------------get annees
   get_annees() {

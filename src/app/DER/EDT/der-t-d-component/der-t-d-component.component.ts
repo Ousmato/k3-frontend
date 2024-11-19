@@ -15,6 +15,7 @@ import { PageTitleService } from '../../../Services/page-title.service';
 import { Admin } from '../../../Admin/Models/Admin';
 import { SideBarService } from '../../../sidebar/side-bar.service';
 import { IconsService } from '../../../Services/icons.service';
+import { AdminUSER } from '../../../Admin/Models/Auth';
 
 @Component({
   selector: 'app-der-t-d-component',
@@ -300,8 +301,8 @@ onRoomChange(idEnseignant: number, event: any) {
  
 
   getPermission(): boolean {
-    const autorize = sessionStorage.getItem('der');
-    this.admin = JSON.parse(autorize!);
+    const autorize = AdminUSER()?.der;
+    this.admin = autorize;
     if (autorize) {
       this.permission = true
       // console.log(autorize,"autorize")

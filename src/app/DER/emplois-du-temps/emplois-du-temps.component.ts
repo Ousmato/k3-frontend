@@ -12,6 +12,7 @@ import { DatePipe, Location } from '@angular/common';
 import { PageTitleService } from '../../Services/page-title.service';
 import { Module } from '../../Admin/Models/Module';
 import { Admin } from '../../Admin/Models/Admin';
+import { AdminUSER } from '../../Admin/Models/Auth';
 
 @Component({
   selector: 'app-emplois-du-temps',
@@ -45,7 +46,7 @@ export class EmploisDuTempsComponent implements OnInit {
     private fb: FormBuilder, private emploisService: ServiceService, private pageTitle: PageTitleService, private location: Location) { }
   // -------------------------------------------ngOinit
   ngOnInit(): void {
-    this.getAdmin();
+    this.admin = AdminUSER()?.der
     this.load_form();
 
     this.classService.getCurrentClassOfYearWithUe().subscribe(data => {
@@ -78,13 +79,6 @@ export class EmploisDuTempsComponent implements OnInit {
 
     })
 
-  }
-  // ----------------get admin 
-  getAdmin(){
-    const adminData = sessionStorage.getItem('der');
-    if (adminData) {
-     this.admin = JSON.parse(adminData);
-    }
   }
   // --------------------------------add emplois
   addEmplois() {

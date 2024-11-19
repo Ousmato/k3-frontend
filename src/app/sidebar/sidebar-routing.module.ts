@@ -13,8 +13,6 @@ import { StudentNoteComponent } from '../Admin/Views/student-note/student-note.c
 import { AllNotesSemestreComponent } from '../Admin/Views/all-notes-semestre/all-notes-semestre.component';
 import { EtudiantsDeLaClasseComponent } from '../Admin/Views/etudiants-de-la-classe/etudiants-de-la-classe.component';
 import { StudentEditComponent } from '../Admin/Component/student-edit/student-edit.component';
-import { StudentViewComponent } from '../Admin/Component/student-view/student-view.component';
-import { TeachersSinginComponent } from '../Admin/Component/teachers-singin/teachers-singin.component';
 import { TeachersEditComponent } from '../Admin/Component/teachers-edit/teachers-edit.component';
 import { StudentBulletinComponent } from '../Admin/Component/student-bulletin/student-bulletin.component';
 import { FicheDePaieComponent } from '../Admin/Component/fiche-de-paie/fiche-de-paie.component';
@@ -35,7 +33,7 @@ const routes: Routes = [{path: "", component: SidebarComponent,
 
       {path: 'paiement', component: DerPaiListComponent},
 
-      {path: 'enseignants', component: EnseignantComponent},
+      {path: 'enseignants', component: EnseignantComponent, data:{title: "Les Enseignants"}},
       {path: 'student-notes', component: StudentNoteComponent},
       {path: 'etudiant-de-la-classe', component : EtudiantsDeLaClasseComponent,  data:{title: "Etudiants de la classe"}},
       {path: 'setting', component: SettingsComponent},

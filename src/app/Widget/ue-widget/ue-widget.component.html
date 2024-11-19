@@ -1,28 +1,46 @@
 <main>
     <ng-container *ngIf="show_update">
         <div class="views">
-            <h3 class="span">Modifier Niveau</h3>
+            <h3 class="span">Modifier UE</h3>
              <form  [formGroup]="update_ue_form" (ngSubmit)="update_ue()">
                 <div class="container-views">
-
-                    <div class="form-group">
-                        <select  class="form-select" formControlName="id"  (change)="onUeChange($event)">
-                            <option  selected disabled value="">Choisir L'Ue</option>
-                            <option  *ngFor="let ue of ueList" [value]="ue.id">{{ue.nomUE}}</option>
-                        </select>
-                    </div>
-
                     <div class="form-group">
                         <label>Nom UE :</label>
-                        <input type="text"  class=" form-control" formControlName="nomUE" placeholder="Nom de l'ue...">
+                        <input type="text"  class=" form-control" formControlName="nomUE" placeholder="Nom de l'ue..." [class.is-invalid]="update_ue_form.get('nomUE')!.invalid && update_ue_form.get('nomUE')!.touched">
                         <div *ngIf="update_ue_form.get('nomUE')!.invalid && update_ue_form.get('nomUE')!.touched" class="invalid-feedback">
                             <div *ngIf="update_ue_form.get('nomUE')!.errors?.['required']">
-                                <span class="label-error" class="label-error">Le nom de l'UE est requis.</span>
+                                <span class="label-error">Le nom de l'UE est requis.</span>
                             </div>
                             <div *ngIf="update_ue_form.get('nomUE')!.errors?.['maxlength']">
-                                <span class="label-error">Le nom de l'UE ne doit pas dépasser 40 caractères.</span>
+                                <span class="label-error">40 caractères autorisé.</span>
                             </div>
                         </div>
+                        <div formArrayName="modules">
+                            <div *ngFor="let moduleControl of modules; let i = index">
+                              <div [formGroupName]="i">
+                                <label for="nomModule-{{i}}">Nom du module</label>
+                                <div class="input-grp">
+                                    <div class="nom">
+                                        <input class="form-control" id="nomModule-{{i}}" formControlName="nomModule" [class.is-invalid]="moduleControl.get('nomModule')!.invalid && moduleControl.get('nomModule')!.touched">
+                                        <div *ngIf="moduleControl.controls['nomModule']!.errors?.['maxlength']">
+                                            <span [ngStyle]="{color: 'red', 'font-size': '11px'}">Trop Long</span>
+                                        </div>
+                                    </div>
+                                
+                                <div class="cofficient">
+                                    <input  id="nomModule-{{i}}" class="coef form-control" type="number" formControlName="coefficient" [class.is-invalid]="moduleControl.get('coefficient')!.invalid && moduleControl.get('coefficient')!.touched">
+                                    <div *ngIf="moduleControl.controls['coefficient'].errors?.['max'] || moduleControl.controls['coefficient'].errors?.['min']">
+                                        <span [ngStyle]="{'color': 'red', 'font-size': '11px'}">1 à 10</span>
+                                    </div>
+                                </div>
+                                   
+                                </div>
+                                
+                                
+                              </div>
+                            </div>
+                        </div>
+                        
                     </div>
                     
                     <input type="number" formControlName="id" *ngIf="false">
@@ -35,41 +53,17 @@
             </form>
         </div>
     </ng-container>
-    <!-- --------------------------------------- -->
     
-    <!-- ----------------------------- -->
-    <ng-container *ngIf="show_deleted" >
-        <div class="views" >
-                <h3 class="span">Supprimer UE</h3>
-               <div class="container-views">
-                <select  class="form-select"placeholder="Choisir la clase" (change)="onDelete($event)">
-                    <option  selected disabled value="">Choisir l'UE</option>
-                    <option  *ngFor="let ue of ueList" [value]="ue.id">{{ue.nomUE}}</option>
-                </select>
-                    <div class="button-cash">
-                        <a (click)="close_delete()" class="submit"  ><span>Annuler</span></a>
-                        <button (click)="nextToConfirm()" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
-                    </div> 
-               </div>
-        </div>
-       
-    </ng-container>
-    <div class="views" *ngIf="isConfirm">
+    <div class="views" *ngIf="show_deleted">
         <h3 class="span">Confirmation</h3>
         <div class="container-views">
-            <p>Êtes-vous sûr de vouloir supprimer l'UE : {{ueForDeleted.nomUE}}?</p>
+            <p>Êtes-vous sûr de vouloir supprimer l'UE : {{ue.idUe.nomUE}}?</p>
             
                 <div class="button-cash">
                     <a type="button" (click)="exitDelete()">Annuler</a>
-                    <button type="button" (click)="delete_niveau(ueForDeleted.id!)">Supprimer</button>
+                    <button type="button" (click)="deleteUe(ue.idUe.id!)">Supprimer</button>
                 </div>
             
         </div>
-    </div>
-
-    <div class="second-child">
-        <a (click)="show_updated()" ><fa-icon [icon]="icons.edit"></fa-icon> <span>Modifier</span></a>
-        <a (click)="show_delete()" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> <span >Supprimer</span></a>
-       
     </div>
 </main>

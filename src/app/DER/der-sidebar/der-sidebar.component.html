@@ -3,6 +3,7 @@
     <!-- Sidebar -->
     <nav id="sidebar">
       <div class="sidebar-header ">
+        <!-- <img src="{{urlLogo}}" alt=""> -->
         <img  src="assets/logounivsegou.png" alt="">
         <!-- <h1>UAM</h1> -->
         <strong>{{school?.nomSchool}}</strong>
@@ -119,7 +120,7 @@
           </div>
           <div class="button-cash">
             <a type="button" (click)="close()">Annuler</a>
-            <button type="button" (click)="singAout()">Confirmer</button>
+            <button type="button" (click)="auth.logout()">Confirmer</button>
           </div>
     
         </div>

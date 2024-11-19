@@ -14,7 +14,6 @@ import { PageTitleService } from '../../../Services/page-title.service';
 import { SalleService } from '../../../Services/salle.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Seances } from '../../../Admin/Models/Seances';
-import { Filiere } from '../../../Admin/Models/Filieres';
 import { NivFiliere } from '../../../Admin/Models/NivFiliere';
 
 @Component({

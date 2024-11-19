@@ -1,5 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AddUeDto, Ue } from '../../Admin/Models/UE';
 import { SetService } from '../../Admin/Views/settings/set.service';
 import { PageTitleService } from '../../Services/page-title.service';
@@ -10,6 +10,8 @@ import { ClassStudentService } from '../../DGA/class-students/class-student.serv
 import { SemestreService } from '../../Services/semestre.service';
 import { Semestres } from '../../Admin/Models/Semestre';
 import { Admin } from '../../Admin/Models/Admin';
+import { AdminUSER } from '../../Admin/Models/Auth';
+import { Module } from '../../Admin/Models/Module';
 
 @Component({
   selector: 'app-ue-widget',
@@ -21,79 +23,92 @@ export class UeWidgetComponent implements OnInit {
   @Output() closeModale = new EventEmitter<any>();
   addUe!: FormGroup 
   update_ue_form!: FormGroup 
+  // module!: FormGroup
 
   ueList: Ue[] = []
-  semestre: Semestres[] = []
-  show_update: boolean = false;
-  show_add: boolean = false;
-  show_deleted: boolean = false;
-  isOldUe: boolean = false;
+  @Input() ue!: AddUeDto
+  // semestre: Semestres[] = []
+  @Input() show_update: boolean = false;
+  // show_add: boolean = false;
+ @Input() show_deleted: boolean = false;
   isConfirm: boolean = false;
   ueForDeleted!: Ue
   admin!: Admin 
   oldUes: Ue [] = [];
   classes: ClassRoom[] = []
 
-  constructor(private setService: SetService, private semestreService: SemestreService,
-    public icons: IconsService, private classService: ClassStudentService,
+  constructor(private setService: SetService,
+    public icons: IconsService,
     private pageTitle: PageTitleService, private fb: FormBuilder){}
 
   ngOnInit(): void {
-    // this.load_formAdd();
+    console.log(this.show_deleted, "show_deleted")
     this.load_formUpdate();
-    this.getAdmin();
+    this.admin = AdminUSER()?.scolarite
   }
 
-  // -------------------load form
+  // load form
   
   load_formUpdate(){
     this.update_ue_form = this.fb.group({
-      id: [''],
-      nomUE: ['', [Validators.required, Validators.maxLength(40)]],
+      id: [this.ue.idUe.id],
+      nomUE: [this.ue.idUe.nomUE, [Validators.required, Validators.maxLength(40)]],
+      modules: this.fb.array([])
+    });
+
+    if (this.ue.modules && this.ue.modules.length > 0) {
+      const moduleControls = this.ue.modules.map(module => this.createModules(module));
+      const modulesFormArray = this.update_ue_form.get('modules') as FormArray;
+      console.log(modulesFormArray, "modulescontrols");
+
+      moduleControls.forEach(control =>modulesFormArray.push(control));
+    }
+  }
+
+ createModules(module: any): FormGroup {
+    return this.fb.group({
+      id: [module.id],
+      coefficient: [module.coefficient, [Validators.required, Validators.min(1), Validators.max(10)]],
+      nomModule: [module.nomModule, [Validators.required, Validators.maxLength(40)]],
       
     });
   }
  
- 
-// ----------------------------get all niveau filiere
-load(){
-  this.semestreService.getCurrentSemestresOfYear().subscribe(result =>{
-    this.semestre = result;
-    console.log(this.semestre, "semestre");
-  })
-  this.classService.getAllCurrentClassOfYear().subscribe(response =>{
-    this.classes = response;
-    console.log(this.classes, "---------nivF")
-  
-  })
-}
-  load_ues(){
-    this.setService.getAll_ue_all().subscribe(response =>{
-      this.ueList = response;
-    
-    })
-  
+  get modules(): FormGroup[] {
+    return (this.update_ue_form.get('modules') as FormArray).controls as FormGroup[];
   }
- getAdmin(){
-  const dataAdmin = sessionStorage.getItem("scolarite");
-  this.admin = JSON.parse(dataAdmin!);
- }
+
   // -------------------------------------------create ue ----------------------------------------
   update_ue(){
     const formData = this.update_ue_form.value;
-    // console.log(formData, "fffff", id)
+    const modList = formData.modules
+    // const formDataModules
+    console.log(formData, "fffff", )
+    // return
     const ue : Ue ={
       id: formData.id,
       nomUE: formData.nomUE,
       idAdmin: this.admin
       
     }
+  
+  const upd : AddUeDto ={
+    idClasse: this.ue.idClasse,
+    semestre: this.ue.semestre,
+    idUe: ue,
+    modules: modList
+  }
+    
+    
     if(this.update_ue_form.valid){
-        this.setService.updateUe(ue).subscribe({
+      console.log(upd, "ue to update")
+      // return
+        this.setService.updateUe(upd).subscribe({
           next: (response) =>{
             this.pageTitle.showSuccessToast(response.message + "Succè");
-            this.load_ues();
+            
             this.update_ue_form.reset();
+            this.closeModale.emit()
           },
           error: (erreur) =>{
             this.pageTitle.showErrorToast(erreur.error.message)
@@ -106,29 +121,12 @@ load(){
    
   }
 
-  onUeChange(event: any) {
-    const selectedUeId = event.target.value;
-    const ueFind = this.ueList.find(u =>u.id == selectedUeId)
-    console.log(ueFind, "ue trouver")
-    this.update_ue_form.get('nomUE')?.setValue(ueFind?.nomUE);
-    this.update_ue_form.get('id')?.setValue(ueFind?.id);
-    
-  }
-
-  onDelete(event: any){
-    const idSelect = event.target.value;
-    
-    this.ueForDeleted = this.ueList.find(u => u.id == idSelect)!;
-    this.isConfirm = true;
-    this.closeModale.emit();
-  }
-
-  delete_niveau(idUe: number){
+  deleteUe(idUe: number){
     this.setService.deleteUe(idUe).subscribe({
       next: (response) => {
         this.pageTitle.showSuccessToast(response.message);
-        this.load_ues();
         this.show_deleted = false
+        this.closeModale.emit()
 
       },
       error: (erreur) => {
@@ -149,8 +147,8 @@ load(){
   
 
   show_added(){
-    this.load();
-    this.show_add = true
+    // this.load();
+    // this.show_add = true
     this.closeModale.emit();
   }
   show_delete(){
@@ -169,10 +167,5 @@ load(){
     this.isConfirm = true
     this.closeModale.emit();
   }
-  // --------------------------
   
-  close_old_ues(){
-    this.isOldUe = false;
-    this.closeModale.emit();
-  }
 }

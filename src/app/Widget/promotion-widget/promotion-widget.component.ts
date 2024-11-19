@@ -5,6 +5,7 @@ import { IconsService } from '../../Services/icons.service';
 import { SchoolService } from '../../Services/school.service';
 import { PageTitleService } from '../../Services/page-title.service';
 import { Admin } from '../../Admin/Models/Admin';
+import { AdminUSER } from '../../Admin/Models/Auth';
 
 @Component({
   selector: 'app-promotion-widget',
@@ -35,17 +36,8 @@ export class PromotionWidgetComponent implements OnInit {
     this.load_form();
     this.get_annees();
     this.load_edit_form();
-    this.getAdmin();
+    this.admin = AdminUSER()?.dga
       
-  }
-
-  // ------------------------get admin
-  getAdmin(){
-    const adminData = sessionStorage.getItem("dga");
-    if(adminData){
-       this.admin = JSON.parse(adminData);
-      
-    }
   }
   // --------------------load form 
   load_form(){

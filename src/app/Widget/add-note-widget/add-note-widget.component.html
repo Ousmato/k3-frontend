@@ -8,6 +8,7 @@
                 <option selected disabled value="">Choisir le semestre</option>
                 <option *ngFor="let seme of semestres" [value]="seme.id">{{seme.nomSemetre}}</option>
             </select>
+            <button >Calculer Notes</button>
             <div class="profil">
                 <div class="mage">
                     <img [src]="inscrit?.idEtudiant!.urlPhoto" alt="">

@@ -36,7 +36,7 @@
           <th>Sexe</th>
 
           <th>Etat</th>
-          <th *ngIf="!idDg  && !secretaire">Action</th>
+          <th *ngIf="!dg  && !secretaire">Action</th>
 
         </tr>
       </thead>
@@ -60,7 +60,7 @@
                 <fa-icon [icon]="inscrit.payer ? icons.circle : icons.circle "
                   [ngStyle]="{ color: inscrit.payer ? 'green' : 'red' }"></fa-icon><span></span></a>
             </td>
-            <td *ngIf="!idDg && ! secretaire">
+            <td *ngIf="!dg && ! secretaire">
               <div class="btn-contenaire">
 
                 <a (click)="getStudent(inscrit)" *ngIf="!secretaire"><fa-icon

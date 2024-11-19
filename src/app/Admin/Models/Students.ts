@@ -82,3 +82,11 @@ export interface Inscription{
     adminPaye?: boolean
 
 }
+export interface montantsCount {
+    sumScolariteReg: number,
+    sumScolaritePro: number,
+    sumScolariteTotal: number,
+    reliquatReg: number,
+    reliquatPro: number,
+    reliquatTotal: number
+}

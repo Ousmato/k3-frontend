@@ -10,6 +10,7 @@ import { DatePipe, Location } from '@angular/common';
 import { PageTitleService } from '../../Services/page-title.service';
 import { Module } from '../../Admin/Models/Module';
 import { Admin } from '../../Admin/Models/Admin';
+import { AdminUSER } from '../../Admin/Models/Auth';
 
 @Component({
   selector: 'app-emplois-widget',
@@ -37,7 +38,7 @@ export class EmploisWidgetComponent  {
      private semestreService: SemestreService, private classService: ClassStudentService) { }
 
   ngOnInit(): void {
-    
+    this.admin = AdminUSER()?.der
       this.load_update_form();
       this.loadModules();
   }
@@ -112,9 +113,5 @@ export class EmploisWidgetComponent  {
     this.isOverlay = false;
     this.closeUpdateModal.emit();
   }
-  // ------------------get admin
-  getAdmin(){
-    const dataAdmin = sessionStorage.getItem('der');
-    this.admin = JSON.parse(dataAdmin!);
-  }
+ 
 }

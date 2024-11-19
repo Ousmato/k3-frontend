@@ -8,6 +8,8 @@ import { SideBarService } from '../../sidebar/side-bar.service';
 import { SchoolInfo } from '../../Admin/Models/School-info';
 import { filter, Subscription } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { AdminUSER } from '../../Admin/Models/Auth';
+import { AuthServiceService } from '../../auth-service.service';
 
 @Component({
   selector: 'app-compte-sidebar',
@@ -28,9 +30,6 @@ export class CompteSidebarComponent implements OnInit, OnDestroy{
   show_add_form: boolean = false
 
   routerEventsSubscription!: Subscription;
-
-  component_Name: string [] = ['_EnseignantComponent',  '_EtudiantsComponent', '_TeachersPresenceComponent', '_FichePaieComponent', '_ArchivesComponent']
- 
 
   searchTerm: string = '';
 
@@ -72,7 +71,7 @@ toggleSubMenuArchive(){
     }
   }
  
-  constructor(private pageTitle: PageTitleService, private schoolService: SchoolService, private sidebarService: SideBarService,
+  constructor(public auth: AuthServiceService, private schoolService: SchoolService, private sidebarService: SideBarService,
      private router: Router, public icons: IconsService, private route: ActivatedRoute){}
 
   
@@ -106,15 +105,8 @@ load_school_info(){
 }
 // ------------------------------------------load current admin
 load_admin(){
-  const admin = sessionStorage.getItem('comptable');
- 
- 
-  if(admin){
-    
-    this.dataAdmin = JSON.parse(admin);
+    this.dataAdmin = AdminUSER()?.comptable
     this.dataAdmin.urlPhoto = `${environment.urlPhoto}${this.dataAdmin.urlPhoto}`
-
-  }
 }
 // --------------------------------shearch 
   onSearchChange() {
@@ -142,10 +134,5 @@ load_admin(){
 
   toAccunt(){
     this.router.navigate(['/comptable/my-accunt'], {queryParams:{id: this.dataAdmin.idAdministra}})
-  }
-  // ---------------
-  singAout(){
-    sessionStorage.clear();
-    this.router.navigate(['']);
   }
 }

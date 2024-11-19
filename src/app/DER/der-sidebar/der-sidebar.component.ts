@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EnvironmentInjector, OnDestroy, OnInit } from '@angular/core';
 import { Admin, Admin_role } from '../../Admin/Models/Admin';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { PageTitleService } from '../../Services/page-title.service';
@@ -8,6 +8,8 @@ import { SideBarService } from '../../sidebar/side-bar.service';
 import { SchoolInfo } from '../../Admin/Models/School-info';
 import { filter, Subscription } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { AdminUSER } from '../../Admin/Models/Auth';
+import { AuthServiceService } from '../../auth-service.service';
 
 @Component({
   selector: 'app-der-sidebar',
@@ -23,6 +25,7 @@ export class DerSidebarComponent implements OnInit, OnDestroy {
   desable_add_button = true;
   showSearchInput: boolean = false
   isConfirm: boolean = false
+  urlLogo = ""
 
   show_admin: boolean = false
   show_add_form: boolean = false
@@ -69,12 +72,12 @@ toggleSubMenuArchive(){
     }
   }
  
-  constructor(private pageTitle: PageTitleService, private schoolService: SchoolService, private sidebarService: SideBarService,
+  constructor(public auth: AuthServiceService, private schoolService: SchoolService, private sidebarService: SideBarService,
      private router: Router, public icons: IconsService, private route: ActivatedRoute){}
 
  
 ngOnInit(): void {
-
+  this.urlLogo = environment.assetUrlLogo
   this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
     this.setTitle();
   });
@@ -103,15 +106,8 @@ load_school_info(){
 }
 // ------------------------------------------load current admin
 load_admin(){
-  const admin = sessionStorage.getItem('der');
- 
- 
-  if(admin){
-    
-    this.dataAdmin = JSON.parse(admin);
+  this.dataAdmin = AdminUSER()?.der
     this.dataAdmin.urlPhoto = `${environment.urlPhoto}${this.dataAdmin.urlPhoto}`
-
-  }
 }
 // --------------------------------shearch 
   onSearchChange() {
@@ -139,10 +135,5 @@ load_admin(){
 
   toAccunt(){
     this.router.navigate(['/der/my-accunt'], {queryParams:{id: this.dataAdmin.idAdministra}})
-  }
-  // ---------------
-  singAout(){
-    sessionStorage.clear();
-    this.router.navigate(['']);
   }
 }

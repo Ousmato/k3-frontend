@@ -7,8 +7,8 @@ import { SchoolService } from '../../Services/school.service';
 import { SideBarService } from '../../sidebar/side-bar.service';
 import { SchoolInfo } from '../../Admin/Models/School-info';
 import { filter, Subscription } from 'rxjs';
-import { ClassRoom } from '../../Admin/Models/Classe';
 import { environment } from '../../../environments/environment';
+import { AdminUSER } from '../../Admin/Models/Auth';
 
 @Component({
   selector: 'app-dga-sidebar',
@@ -105,14 +105,10 @@ load_school_info(){
 }
 // ------------------------------------------load current admin
 load_admin(){
-  const admin = sessionStorage.getItem('dga');
  
-  if(admin){
-    
-    this.dataAdmin = JSON.parse(admin);
+    this.dataAdmin = AdminUSER()?.dga;
     this.dataAdmin.urlPhoto = `${environment.urlPhoto}${this.dataAdmin.urlPhoto}`
 
-  }
 }
 // --------------------------------shearch 
   onSearchChange() {

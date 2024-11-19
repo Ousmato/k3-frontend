@@ -4,6 +4,7 @@ import { Emplois } from '../../Admin/Models/Emplois';
 import { NavigationExtras, Router } from '@angular/router';
 import { IconsService } from '../../Services/icons.service';
 import { SideBarService } from '../../sidebar/side-bar.service';
+import { AdminUSER } from '../../Admin/Models/Auth';
 
 @Component({
   selector: 'app-der-emploi-du-temps',
@@ -62,7 +63,7 @@ export class DerEmploiDuTempsComponent implements OnInit {
   }
   // -----------------------permission methode
   getPermission(): boolean {
-    const autorize = sessionStorage.getItem('der');
+    const autorize = AdminUSER()?.der;
     if (autorize) {
       this.permission = true
       return true;

@@ -89,7 +89,7 @@ export class StudentNoteComponent implements OnInit {
       this.filteredItems = this.inscrits;
       this.pages = Array.from({ length: data.totalPages! }, (_, i) => i);
 
-      console.log(this.inscrits, "pagenation teachers")
+      console.log(this.inscrits, "les etudiants inscrit")
     });
     
    })

@@ -12,6 +12,7 @@ import { ClassStudentService } from '../../DGA/class-students/class-student.serv
 import { ClassRoom } from '../../Admin/Models/Classe';
 import { Niveau } from '../../Admin/Models/Niveau';
 import { environment } from '../../../environments/environment';
+import { AdminUSER } from '../../Admin/Models/Auth';
 
 @Component({
   selector: 'app-r-s-reinscription',
@@ -57,8 +58,8 @@ export class RSReinscriptionComponent implements OnInit {
   }
   // ----------------------------------get permission
   getPermission(): boolean {
-    const autorize = sessionStorage.getItem('scolarite');
-    this.admin = JSON.parse(autorize!)
+    const autorize = AdminUSER()?.scolarite;
+    this.admin = autorize
     if (autorize) {
       this.permission = true
       return true;
@@ -133,8 +134,6 @@ export class RSReinscriptionComponent implements OnInit {
 
   // ------------------close modal
   exitConfirm() {
-    // this.ngOnInit();wi
-    // window.location.reload()
     console.log("-------------------id select", this.idClasse)
     this.is_show = false;
   }

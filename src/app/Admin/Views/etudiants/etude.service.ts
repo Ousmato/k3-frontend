@@ -1,20 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Inscription, Participant, Student, Student_count, Student_group, Student_import, Student_reinscription } from '../../Models/Students';
+import { finalize, Observable } from 'rxjs';
+import { Inscription, montantsCount, Participant, Student, Student_count, Student_group, Student_import, Student_reinscription } from '../../Models/Students';
 import { NoteDto, Notes } from '../../Models/Notes';
 import { Module } from '../../Models/Module';
 import { Response_String } from '../../Models/Response_String';
 import { Doc_Pages, NotesPages, StudentPages } from '../../Models/Pagination-module';
 import { Docum, Jury, ProgramSoutenance, Soutenance, StudentDoc } from '../../Models/doc';
 import { environment } from '../../../../environments/environment';
+import { LoaderService } from '../../../Services/loader.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EtudeService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private loadingService: LoaderService) { }
 
   private baseUrl = `${environment.apiUrl}api-student/`;
   private baseUrl_note = `${environment.apiUrl}api-note/`;
@@ -28,7 +29,10 @@ export class EtudeService {
   }
 // --------------------add studens import excel file 
 addStudentImport(studentImport: Inscription[]) : Observable<Response_String>{
-  return this.http.post<Response_String>(this.baseUrl+"students-import", studentImport);
+this.loadingService.loading();
+  return this.http.post<Response_String>(this.baseUrl+"students-import", studentImport).pipe(
+    finalize(() => this.loadingService.stopLoading())
+  );
 }
   // ---------------------------get all docs(memoir/rapport)
   getAllDoc() : Observable<Docum[]>{
@@ -88,9 +92,6 @@ addStudentImport(studentImport: Inscription[]) : Observable<Response_String>{
   getStudent_by_id(idStudent: number) : Observable<Student>{
     return this.http.get<Student>(this.baseUrl+"student-by-id/"+idStudent)
   }
-  getInscriptionById(idInscription: number) : Observable<Inscription>{
-    return this.http.get<Inscription>(this.baseUrl+"inscription-by-id/"+idInscription)
-  }
   // ---------------------update student
   updateStudent(student: Inscription, file?: File): Observable<Response_String> {
     const formData = new FormData();
@@ -144,13 +145,10 @@ addStudentImport(studentImport: Inscription[]) : Observable<Response_String>{
   getParticipantsByEmploiId(idEmploi: number) : Observable<Participant[]>{
     return this.http.get<Participant[]>(this.baseUrl+"list-participant-by-class-id/"+idEmploi);
   }
-  // -----------------get sum scolarite of current year
-  getScolarite_annee_courante() : Observable<number>{
-    return this.http.get<number>(this.baseUrl+"sum-scolarite");
-  }
+ 
   // ------------------get sum of reliquat of current year
-  getReliquat_annee_courante() : Observable<number>{
-    return this.http.get<number>(this.baseUrl+"sum-reliquat");
+  getmontants() : Observable<montantsCount>{
+    return this.http.get<montantsCount>(this.baseUrl+"montants-cunt");
   }
   // ----------------get student number inscrit and non inscrit
   getStudentNumber() : Observable<Student_count>{

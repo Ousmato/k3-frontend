@@ -1,9 +1,9 @@
 export const environment = {
     production: true,
-    // apiUrl: 'http://172.20.10.2:8080/g-scolaire/', // Replace with your API URL
-    // apiUrl: 'https://a310-154-118-156-78.ngrok-free.app/'
-    // apiUrl: 'https://a310-154-118-156-78.ngrok-free.app/'
+    // apiUrl: 'https://65ca-41-73-98-69.ngrok-free.app',
     apiUrl: "http://localhost:8080/",
-    urlPhoto: "http://localhost/StudentImg/"
+    // apiUrl: "http://localhost:8080/gestion/",
+    assetUrlLogo: "http://localhost:8080/gestion/assets/logounivsegou.png",
+    urlPhoto: "http://localhost/StudentImg/",   
 
 };

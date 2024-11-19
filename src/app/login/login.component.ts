@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { IconsService } from '../Services/icons.service';
 import { ToastrService } from 'ngx-toastr';
 import { SideBarService } from '../sidebar/side-bar.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -20,12 +21,14 @@ export class LoginComponent implements OnInit {
   passwordVisible: boolean = false
   invalid : boolean = false
   errorMessage: any;
+  urlLogo = ""
 
 
   constructor(private authService: AuthServiceService, public icons:IconsService, private toastr: ToastrService,
     private formBuilder: FormBuilder, private route: Router, private sidbarService: SideBarService) { } 
 
   ngOnInit() {
+    this.urlLogo = environment.assetUrlLogo,
     this.userForm = this.formBuilder.group({
       email: ['', Validators.required],
       password: ['', Validators.required]

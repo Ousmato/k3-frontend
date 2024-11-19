@@ -8,9 +8,14 @@
       <!-- <app-student-sidebar *ngIf="isStudentPage()"></app-student-sidebar> -->
       <div id="layou_content">
           <router-outlet />
+          
       </div>
     </div>
+    <div class="session" *ngIf="appSession">
+      <app-session-expired-modal [showModal]="showModal" [alert]="alertModal" [heure]="heure" [date]="date" (alertTime)="canceled($event)" [newAlert]="alerMinutea" ></app-session-expired-modal>
+    </div>
   </div>
+  
   
 
 

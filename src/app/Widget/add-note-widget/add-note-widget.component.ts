@@ -7,7 +7,6 @@ import { EtudeService } from '../../Admin/Views/etudiants/etude.service';
 import { Ecue, Module } from '../../Admin/Models/Module';
 import { Inscription, Student } from '../../Admin/Models/Students';
 import { AddNoteDto, Notes } from '../../Admin/Models/Notes';
-import { max } from 'rxjs';
 import { PageTitleService } from '../../Services/page-title.service';
 import { ActivatedRoute } from '@angular/router';
 import { ClassStudentService } from '../../DGA/class-students/class-student.service';
@@ -15,6 +14,7 @@ import { AddUeDto } from '../../Admin/Models/UE';
 import { InscriptionService } from '../../Services/inscription.service';
 import { environment } from '../../../environments/environment';
 import { Admin } from '../../Admin/Models/Admin';
+import { AdminUSER } from '../../Admin/Models/Auth';
 
 @Component({
   selector: 'app-add-note-widget',
@@ -47,18 +47,8 @@ export class AddNoteWidgetComponent implements OnInit {
     // this.load_form();
     this.loadSemestre();
     this.loadInscription();
-    const r_scolarite = sessionStorage.getItem("scolarite");
-    this.admin = JSON.parse(r_scolarite!);
-
-    // this.ues.forEach(ue => {
-    //   const ueForm = this.fb.group({
-    //     examNote: [''],
-    //     classeNote: [''],
-    //     // Ajoutez d'autres champs si nécessaire
-    //   });
-    //   this.noteForms.push(ueForm);
-    //   console.log(this.noteForms, "---------------noteform")
-    // });
+   
+    this.admin = AdminUSER()?.scolarite;
 
   }
 
@@ -145,7 +135,7 @@ export class AddNoteWidgetComponent implements OnInit {
             this.semestres.push(res)
           }
         })
-        // console.log(this.semestres, "semestre")
+        console.log(this.semestres, "semestre")
       })
 
 

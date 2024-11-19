@@ -3,6 +3,7 @@ import { IconsService } from '../../../Services/icons.service';
 import { ClassRoom } from '../../../Admin/Models/Classe';
 import { ClassStudentService } from '../class-student.service';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
+import { AdminUSER } from '../../../Admin/Models/Auth';
 
 @Component({
   selector: 'app-class-archive',
@@ -90,7 +91,7 @@ export class ClassArchiveComponent implements OnInit {
     }
 
     getPermission(): boolean {
-      const autorize = sessionStorage.getItem('scolarite');
+      const autorize = AdminUSER()?.scolarite;
       if (autorize) {
         console.log(autorize, "autorize")
         return true;

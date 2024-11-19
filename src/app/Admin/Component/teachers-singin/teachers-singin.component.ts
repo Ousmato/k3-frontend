@@ -8,6 +8,7 @@ import { SetService } from '../../Views/settings/set.service';
 import { Ue } from '../../Models/UE';
 import { Filiere } from '../../Models/Filieres';
 import { Admin } from '../../Models/Admin';
+import { AdminUSER } from '../../Models/Auth';
 
 @Component({
   selector: 'app-teachers-singin',
@@ -34,7 +35,7 @@ export class TeachersSinginComponent implements OnInit {
     this.loa_teacher_form();
     this.load_filieres();
     this.getStatusOptions();
-    this.getAdmin();
+    this.admin = AdminUSER()?.der
 
   }
   // -------------------------load teacher add form
@@ -178,11 +179,5 @@ export class TeachersSinginComponent implements OnInit {
   goBack() {
     window.history.back();
   }
-  // ----------------get admin
-  getAdmin(){
-    const adminData = sessionStorage.getItem('der');
-    if (adminData) {
-      this.admin = JSON.parse(adminData);
-    }
-  }
+ 
 }

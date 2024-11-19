@@ -1,5 +1,6 @@
 main{
-    position: relative;
+    /* position: relative; */
+    width: 200px;
 }
 .label-error{
     color: red;
@@ -90,21 +91,27 @@ label{
 }
 .views{
     background-color: white;
-    position: absolute;
-    border: 1px solid #ddd;
-    top: -266%;
-    width: 250px;
+    position: fixed;
+    /* border: 1px solid #ddd; */
+    /* top: -266%; */
+    width: 300px;
+    top: 80px;
     border-radius: 4px;
-    z-index: 1000;
+    z-index: 10001;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15);
     /* transition: 0.5s; */
    
     }
-.second-child{
-    display: flex;
-    gap: 20px;
-    justify-content: space-between;
-    align-items: flex-end;
+    .input-grp{
+        display: flex;
+        gap: 10px;
+    }
+    .coef{
+        width: 55px;
+    }
+input{
+    border: 1px solid var(--tertiary);
+    border-radius: 3px;
 }
 select{
     margin-bottom: 10px;

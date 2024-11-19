@@ -2,8 +2,8 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular
 import { Injectable } from '@angular/core';
 import { Observable, catchError, finalize, map, throwError } from 'rxjs';
 import { environment } from '../environments/environment';
-import { Admin } from './Admin/Models/Admin';
 import { LoaderService } from './Services/loader.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +11,7 @@ import { LoaderService } from './Services/loader.service';
 export class AuthServiceService {
   private authUrl = `${environment.apiUrl}Auth/login`;
 
-
-  constructor(private http : HttpClient, private loadingService: LoaderService) { }
+  constructor(private http : HttpClient, private loadingService: LoaderService, private router: Router) { }
 
 
   login(email: string, password: string): Observable<any> {
@@ -25,8 +24,7 @@ export class AuthServiceService {
         // Stocker le token dans le localStorage
         console.log(response, "response")
         sessionStorage.setItem('authToken', response.token);
-
-        // Stocker d'autres détails de l'utilisateur si nécessaire
+        sessionStorage.setItem('refreshToken', response.refreshToken);
         sessionStorage.setItem('user', JSON.stringify(response.user));
       }
       return response;
@@ -40,16 +38,9 @@ export class AuthServiceService {
   }
 
 
-  logout(): Observable<any> {
-    // Révoquer le jeton d'authentification ou effectuer d'autres opérations de déconnexion
-    return this.http.post<any>(this.authUrl + '/logout', {})
-      .pipe(
-        map(() => {
-          // Suppression du jeton d'authentification du localStorage lors de la déconnexion
-          sessionStorage.clear();
-          return true; // Vous pouvez retourner toute autre donnée pertinente de la réponse si nécessaire
-        })
-      );
+  logout() {
+   sessionStorage.clear();
+   this.router.navigate(['']);
   }
 
   // Méthode pour vérifier si l'utilisateur est actuellement authentifié
@@ -59,28 +50,9 @@ export class AuthServiceService {
     // return sessionStorage.getItem('admin') != null || sessionStorage.getItem('der') != null || sessionStorage.getItem('dga') != null || sessionStorage.getItem('dg') != null
     //  || sessionStorage.getItem('comptable') != null || sessionStorage.getItem('scolarite') != null || sessionStorage.getItem('secretaire') != null; // Exemple : vérifie si un jeton est présent dans le stockage local
   }
-
-
-  // refresh token
  // Méthode pour rafraîchir le token
-refreshToken(email: string): Observable<{token: string}> {
-  return this.http.post<{ token: string }>(`${environment.apiUrl}Auth/refresh-token`, { email }).pipe(
-    map(response => {
-      if (response && response.token) {
-        // Mettre à jour le token dans sessionStorage
-        sessionStorage.setItem('authToken', response.token);
-        console.log("Nouveau token reçu :", response.token);
-        return response; // Retourne la réponse pour l'intercepteur
-      } else {
-        throw new Error("Le token n'a pas été trouvé dans la réponse.");
-      }
-    }),
-    catchError(error => {
-      console.error("Erreur lors du rafraîchissement du token :", error);
-      return throwError(() => error);
-    })
-  );
-}
+ refreshToken(email: string, refreshToken: string): Observable<{token: string}> {
+  return this.http.post<{ token: string }>(`${environment.apiUrl}Auth/refresh-token`, { email, refreshToken })
 
-  
+}
 }

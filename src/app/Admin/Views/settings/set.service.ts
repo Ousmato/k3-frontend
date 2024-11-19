@@ -68,7 +68,7 @@ export class SetService {
     return this.http.get<Ue[]>(`${this.baseUrl}api-class/all-ues-without-modules-and-classe`);
   }
   // -----------------------------update ue
-  updateUe(ue: Ue): Observable<Response_String> {
+  updateUe(ue: AddUeDto): Observable<Response_String> {
     return this.http.put<Response_String>(this.baseUrl + "api-class/update-ue", ue);
   }
   // -----------------------------update module

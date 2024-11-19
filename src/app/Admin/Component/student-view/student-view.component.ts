@@ -9,6 +9,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { environment } from '../../../../environments/environment';
 import { Admin } from '../../Models/Admin';
+import { AdminUSER } from '../../Models/Auth';
+import { InscriptionService } from '../../../Services/inscription.service';
 
 @Component({
   selector: 'app-student-view',
@@ -27,7 +29,7 @@ export class StudentViewComponent implements OnInit {
   permission: boolean = false
   
   constructor(  private studentService: EtudeService, private location: Location, private fb: FormBuilder,
-    private router: ActivatedRoute, private root: Router, public icons: IconsService, private pageTitle: PageTitleService){}
+    private router: ActivatedRoute, private inscriptionService: InscriptionService, public icons: IconsService, private pageTitle: PageTitleService){}
 
   ngOnInit(): void {
     this.getPermission();
@@ -50,8 +52,8 @@ export class StudentViewComponent implements OnInit {
   }
   // --------------------permission to pay
   getPermission(): boolean {
-    const autorize = sessionStorage.getItem('comptable');
-    this.admin = JSON.parse(autorize!);
+    const autorize = AdminUSER()?.comptable;
+    this.admin = autorize;
     if(autorize){
       this.permission = true;
     }
@@ -61,7 +63,7 @@ export class StudentViewComponent implements OnInit {
   loadStudent() {
     this.router.queryParams.subscribe(params => {
       this.idInscritption = +params['id'];
-      this.studentService.getInscriptionById(this.idInscritption).subscribe(data =>{
+      this.inscriptionService.getInscriptionById(this.idInscritption).subscribe(data =>{
         this.inscrit! = data;
        console.log( this.inscrit! , "l'inscrit")
         this.inscrit!.idEtudiant.urlPhoto = `${environment.urlPhoto}${this.inscrit!.idEtudiant.urlPhoto}`

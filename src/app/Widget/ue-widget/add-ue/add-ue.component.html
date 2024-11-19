@@ -30,17 +30,17 @@
                 
             </div> 
 
-            <span (click)="show_old_ues()">old</span>
+            <!-- <span (click)="show_old_ues()">old</span>
             <div class="form-group" *ngIf="isOldUe">
                 <label for="">Semestre :</label>
                 <select  class="form-select" formControlName="idSemestre" [class.is-invalid]="addUe.get('idSemestre')!.invalid && addUe.get('idSemestre')!.touched">
                     <option  selected disabled value="">Choisir semestre...</option>
                     <option  *ngFor="let ue of oldUes" [value]="ue.id"> {{ue.nomUE}}</option>
                 </select>
-            </div>
+            </div> -->
 
             <div class="isEcue">
-                <div class="ecue-contenaire">
+                <div class="ecue-contenaire" >
                     <span class="icons" >ECUE 
                         <fa-icon class="icons" [icon]="icons.mimus" (click)="decrement()"></fa-icon>
                         {{count}}

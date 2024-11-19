@@ -11,6 +11,7 @@ import { ServiceService } from '../../emplois-du-temps/service.service';
 import { InscriptionService } from '../../../Services/inscription.service';
 import { Admin } from '../../../Admin/Models/Admin';
 import { SideBarService } from '../../../sidebar/side-bar.service';
+import { AdminUSER } from '../../../Admin/Models/Auth';
 
 @Component({
   selector: 'app-add-group-student',
@@ -43,11 +44,11 @@ export class AddGroupStudentComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.admin = AdminUSER()?.der
     this.load_form();
     this.getAll_group();
     this.load_participant_form();
     this.loadStudents();
-    this.getAdmin();
     this.sidebarService.currentSearchTerm.subscribe(trem =>{
       this.searchTerm = trem 
     this.filteredInscription();
@@ -217,13 +218,6 @@ export class AddGroupStudentComponent implements OnInit {
   check(id: number) {
     return this.inscriptions.some(sg => sg.id == id);
 
-  }
-  // -----------------get admin
-  getAdmin() {
-    const dataAdmin = sessionStorage.getItem('der')
-    if (dataAdmin) {
-      this.admin = JSON.parse(dataAdmin);
-    }
   }
   // --------compare and extrate group name
   isPresent(idStudent: number): boolean {

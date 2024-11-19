@@ -9,6 +9,7 @@ export class EventServiceService {
   constructor() { }
 
   private eventSubject = new BehaviorSubject<any>('');
+  // private showModal = new BehaviorSubject<>();
 
   // Observable pour l'événement
   event$ = this.eventSubject.asObservable();
@@ -17,5 +18,9 @@ export class EventServiceService {
   emitEvent(data: any) {
     console.log(data, "data")
     this.eventSubject.next(data);
+  }
+
+  show(event:any) {
+    this.eventSubject.next(event);
   }
 }

@@ -8,6 +8,7 @@ import { Salles } from '../../../Admin/Models/Salles';
 import { Admin } from '../../../Admin/Models/Admin';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { AdminUSER } from '../../../Admin/Models/Auth';
 
 
 @Component({
@@ -30,7 +31,7 @@ export class ViewSoutenanceComponent implements OnInit {
  ngOnInit(): void {
      this.load_soutenanceActif();
      this.load_school();
-     this.getAdmin();
+     this.admin = AdminUSER()?.der
  }
 
  load_soutenanceActif(){
@@ -70,13 +71,6 @@ load_school(){
   return new Intl.DateTimeFormat('fr-FR', options).format(date);
  }
 
- getAdmin(){
- const admin =  sessionStorage.getItem("der");
-  if(admin){
-    this.admin = JSON.parse(admin);
-   
-  }
- }
   // --------------------------------------button to imprime
   imprimer() { 
     const buttonContent = document.getElementById('button') as HTMLElement;

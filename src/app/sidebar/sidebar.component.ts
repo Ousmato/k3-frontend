@@ -10,6 +10,7 @@ import { filter, Subscription } from 'rxjs';
 import { MyAccuntComponent } from '../DG/my-accunt/my-accunt.component';
 import { EventServiceService } from '../Services/event-service.service';
 import { environment } from '../../environments/environment';
+import { AuthServiceService } from '../auth-service.service';
 
 
 @Component({
@@ -69,7 +70,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(private pageTitle: PageTitleService, private schoolService: SchoolService, private sidebarService: SideBarService, 
+  constructor(public auth: AuthServiceService, private schoolService: SchoolService, private sidebarService: SideBarService, 
     private eventService: EventServiceService,
     private router: Router, public icons: IconsService, private route: ActivatedRoute) { }
 
@@ -158,19 +159,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
     }
   }
 
-  // --------------sing aout
-  singAout() {
-    const admin = sessionStorage.clear();
-    this.router.navigate(['']);
-  }
-
   show_confirm() {
     this.isConfirm = true
   }
   refreshAdmin(admin: Admin) {
     if (admin.role === Admin_role.DG) {
       const adminDataString = JSON.stringify(admin)
-      sessionStorage.setItem("admin", adminDataString);
+      sessionStorage.setItem("user", adminDataString);
       return
     }
     // sessionStorage.clear();

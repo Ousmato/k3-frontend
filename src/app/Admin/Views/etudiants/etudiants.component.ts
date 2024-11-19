@@ -11,6 +11,7 @@ import { Admin, adminEtat } from '../../Models/Admin';
 import { SchoolService } from '../../../Services/school.service';
 import { AnneeScolaire } from '../../Models/School-info';
 import { environment } from '../../../../environments/environment';
+import { AdminUSER } from '../../Models/Auth';
 
 @Component({
   selector: 'app-etudiants',
@@ -29,7 +30,7 @@ export class EtudiantsComponent implements OnInit {
   pages: number[] = []
 
   // admin!: Admin
-  idDg!: number
+  dg!: Admin
   secretaire!: Admin
   permission: boolean = false
   event_toSetPage: boolean = false
@@ -38,7 +39,7 @@ export class EtudiantsComponent implements OnInit {
   idAnnee!: number
   value_toEvent: any = 0
   annees: AnneeScolaire[] = []
-  student_etats: {key: string, value: any}[] = []
+  student_etats: { key: string, value: any }[] = []
   // urlImage!: string | ArrayBuffer
 
   constructor(private service: EtudeService, private sideBarService: SideBarService, private route: ActivatedRoute,
@@ -48,9 +49,7 @@ export class EtudiantsComponent implements OnInit {
     this.getPermission();
     this.loadStudents();
     this.get_annees();
-    this.route.queryParams.subscribe(param =>{
-      this.idDg = param['id']
-    })
+   
     this.student_etats = this.getStudentEtat();
     this.currentYear = new Date().getFullYear()
     this.sideBarService.currentSearchTerm.subscribe(term => {
@@ -62,10 +61,9 @@ export class EtudiantsComponent implements OnInit {
   }
   // ----------------------------------get permission
   getPermission(): boolean {
-    const autorize = sessionStorage.getItem('scolarite');
-    const adminData = sessionStorage.getItem("secretaire");
-   
-    this.secretaire = JSON.parse(adminData!);
+    const autorize = AdminUSER()?.scolarite;
+    this.dg = AdminUSER()?.dg;
+    this.secretaire = AdminUSER()?.secretaire;
     if (autorize) {
       // console.log(autorize, "autorize")
       this.permission = true
@@ -82,25 +80,25 @@ export class EtudiantsComponent implements OnInit {
         inst.idEtudiant.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         inst.idEtudiant.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         inst.idEtudiant.email.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        inst.idEtudiant.idClasse?.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase())||
+        inst.idEtudiant.idClasse?.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         inst.idEtudiant.idClasse?.idFiliere?.idNiveau.nom?.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     }
   }
   // ----------------------load students
-  onChange(event: any){
+  onChange(event: any) {
     this.event_toSetPage = true
     this.inscrits = []
     this.page = 0
-   this.idAnnee = event.target.value
+    this.idAnnee = event.target.value
     this.service.getAll_by_idAnnee(this.idAnnee, this.page, this.size).subscribe(data => {
-     this.formatedDataStudent(data);
+      this.formatedDataStudent(data);
 
     });
   }
   loadStudents(): void {
     this.service.getSudents(this.page, this.size).subscribe(data => {
-    this.formatedDataStudent(data);
+      this.formatedDataStudent(data);
 
     });
   }
@@ -108,26 +106,26 @@ export class EtudiantsComponent implements OnInit {
   setPage(page: number): void {
     if (page >= 0 && page < this.studentspage!.totalPages!) {
       this.page = page;
-      if(this.event_toSetPage){
+      if (this.event_toSetPage) {
         this.service.getAll_by_idAnnee(this.idAnnee, this.page, this.size).subscribe(data => {
           this.formatedDataStudent(data);
-     
-         });
-         this.event_toSetPage = false;
-         return
+
+        });
+        this.event_toSetPage = false;
+        return
       }
 
-      if(this.value_toEvent === 0 || this.value_toEvent === StudentEtat.Tout){
+      if (this.value_toEvent === 0 || this.value_toEvent === StudentEtat.Tout) {
         console.log("la page selectionner", page)
         this.loadStudents();
-      
-      }else{
-        this.service.getByEtat(this.value_toEvent, this.page, this.size).subscribe(data =>{
+
+      } else {
+        this.service.getByEtat(this.value_toEvent, this.page, this.size).subscribe(data => {
           this.formatedDataStudent(data)
-          })
-       
+        })
+
       }
-      
+
     }
   }
 
@@ -173,7 +171,7 @@ export class EtudiantsComponent implements OnInit {
     const navigationExtras: NavigationExtras = {
       queryParams: { id: inscrit!.id }
     };
-    const comptable = sessionStorage.getItem('comptable')
+    const comptable = AdminUSER()?.comptable
     // const scolarite = sessionStorage.getItem('scolarite')
     if (comptable) {
       this.root.navigate(['/comptable/student-view'], navigationExtras)
@@ -207,32 +205,32 @@ export class EtudiantsComponent implements OnInit {
   // -----------------------
   getStudentEtat(): { key: string, value: any }[] {
     return Object.keys(StudentEtat)
-    .filter(key => isNaN(Number(key))) // Filtrer pour obtenir seulement les clés
-    .map(key => ({
+      .filter(key => isNaN(Number(key))) // Filtrer pour obtenir seulement les clés
+      .map(key => ({
         key: key, // La clé (nom de l'état)
         value: StudentEtat[key as keyof typeof StudentEtat] // La valeur correspondante
-    }));
+      }));
   }
 
-  getEtat(event: any){
+  getEtat(event: any) {
     this.inscrits = []
     this.value_toEvent = event.target.value;
-    if(this.value_toEvent === StudentEtat.Tout){
+    if (this.value_toEvent === StudentEtat.Tout) {
       this.loadStudents();
-    }else{
+    } else {
       this.page = 0
       // console.log(this.value_toEvent, "value",  this.page, "page",  this.size, "size")
-      this.service.getByEtat(this.value_toEvent, this.page, this.size).subscribe(data =>{
-      this.formatedDataStudent(data)
+      this.service.getByEtat(this.value_toEvent, this.page, this.size).subscribe(data => {
+        this.formatedDataStudent(data)
       })
-      
+
     }
 
-    
+
   }
 
   // --------------
-  formatedDataStudent(data: StudentPages){
+  formatedDataStudent(data: StudentPages) {
     this.inscrits = data.content;
     this.inscrits.forEach((item: Inscription) => {
       item.idEtudiant.urlPhoto = `${environment.urlPhoto}${item.idEtudiant.urlPhoto}`;
@@ -243,12 +241,12 @@ export class EtudiantsComponent implements OnInit {
     console.log(this.pages, "pages")
   }
   // ----------------------abrevigate filiere name
-  abreviateFiliereName(filiere: string) : string{
+  abreviateFiliereName(filiere: string): string {
     const nameWord = filiere.split(' ');
     const word = nameWord.filter(wd => wd.length > 3).map(word => word[0].toUpperCase()).join('')
     return word;
   }
 
-  
-  
+
+
 }

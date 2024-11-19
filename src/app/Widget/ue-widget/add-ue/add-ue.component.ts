@@ -10,6 +10,7 @@ import { SemestreService } from '../../../Services/semestre.service';
 import { IconsService } from '../../../Services/icons.service';
 import { FiliereNiveau } from '../../../Admin/Models/Filieres';
 import { Admin } from '../../../Admin/Models/Admin';
+import { AdminUSER } from '../../../Admin/Models/Auth';
 
 @Component({
   selector: 'app-add-ue',
@@ -41,7 +42,7 @@ export class AddUeComponent implements OnInit {
   ngOnInit() {
     this.load_formAdd();
     this.load();
-    this.getAdmin();
+    this.admin = AdminUSER()?.scolarite;
   }
 
   load_formAdd() {
@@ -125,13 +126,6 @@ export class AddUeComponent implements OnInit {
     var errorr = document.getElementById('error') as HTMLElement;
 
     errorr.style.display = "none";
-  }
-
-  // -------------------get admin
-  getAdmin() {
-    const dataAdmin = sessionStorage.getItem("scolarite");
-    this.admin = JSON.parse(dataAdmin!);
-
   }
   getAllUeByIdClasse(id: number) {
     this.classService.getAllUeByIdClasse(id).subscribe(result => {

@@ -1,10 +1,12 @@
 main{
     padding: 0 15px;
-}
-
-table{
+    height: 85vh;
     width: 100%;
 }
+
+/* table{
+    width: 100%;
+} */
 
 button {
 
@@ -30,21 +32,44 @@ button {
     justify-content: space-between;
     align-items: flex-start;
 }
+td{
+    width: 100px;
+
+}
 
 .table-container{
-    height: 400px;
+    height: 80%;
+    /* width: 97%; */
+    overflow-x: auto;
     position: relative;
     overflow-y: auto;
 }
+
+/* Personnalisation de la barre de défilement */
+.table-container::-webkit-scrollbar {
+    width: 5px; /* Largeur de la barre de défilement */
+  }
+  
+  .table-container::-webkit-scrollbar-track {
+    background: white; /* Couleur de l'arrière-plan de la piste */
+    border-radius: 10px; /* Coins arrondis de la piste */
+  }
+  
+  .table-container::-webkit-scrollbar-thumb {
+    background: var(--tertiary); /* Couleur de la barre de défilement */
+    border-radius: 10px; /* Coins arrondis de la barre */
+  }
+  
+  .table-container::-webkit-scrollbar-thumb:hover {
+    background: var(--primary); /* Couleur de la barre au survol */
+  }
 .table thead {
     background-color: white;
     position: sticky;
     top: 0;
     z-index: 1;
 }
-.table-container::-webkit-scrollbar{
-    display: none;
-}
+
 .file-check{
     display: flex;
     background-color: var(--primary);

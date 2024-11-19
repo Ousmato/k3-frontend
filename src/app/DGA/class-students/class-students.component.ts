@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SideBarService } from '../../sidebar/side-bar.service';
 import { AnneeScolaire } from '../../Admin/Models/School-info';
 import { SchoolService } from '../../Services/school.service';
+import { AdminUSER } from '../../Admin/Models/Auth';
 
 @Component({
   selector: 'app-class-students',
@@ -125,7 +126,7 @@ export class ClassStudentsComponent implements OnInit {
   }
   // ---------------------get permission to access
   getPermission(): boolean {
-    const autorize = sessionStorage.getItem('scolarite');
+    const autorize = AdminUSER()?.scolarite;
     if (autorize) {
       this.permission = true
       console.log(autorize, "autorize")
@@ -177,7 +178,7 @@ export class ClassStudentsComponent implements OnInit {
     const navigationExtras: NavigationExtras = {
       queryParams: { id: idClasse }
     };
-    const dga = sessionStorage.getItem("dga")
+    const dga = AdminUSER()?.dga
     if (this.getPermission()) {
       this.router.navigate(['/r-scolarite/all-notes'], navigationExtras);
 
@@ -195,7 +196,7 @@ export class ClassStudentsComponent implements OnInit {
     const navigationExtras: NavigationExtras = {
       queryParams: { id: idClasse }
     };
-    const dga = sessionStorage.getItem("dga")
+    const dga = AdminUSER()?.dga
     if (this.getPermission()) {
       this.router.navigate(['/r-scolarite/etudiant-de-la-classe'], navigationExtras);
     } else if(dga){

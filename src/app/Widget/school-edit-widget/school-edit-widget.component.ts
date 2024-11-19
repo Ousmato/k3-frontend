@@ -37,10 +37,7 @@ export class SchoolEditWidgetComponent implements OnInit{
         localite: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         telephone: ['', [Validators.required, Validators.maxLength(12)]],
-        // anneeScolaire: ['', Validators.required],
-        // finAnnee: ['', Validators.required],
-        // urlPhoto: ['']
-        
+      
       });
     } 
     get_all_annee(){
@@ -98,7 +95,6 @@ export class SchoolEditWidgetComponent implements OnInit{
     this.update_school_form.get('telephone')?.setValue(school?.telephone);
     this.update_school_form.get('localite')?.setValue(school?.localite);
     this.update_school_form.get('id')?.setValue(school?.id);
-    // this.update_school_form.get('urlPhoto')?.setValue(school?.urlPhoto.);
   }
   // -------------------file select
   onFileSelected(event : any){

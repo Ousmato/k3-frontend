@@ -14,6 +14,7 @@ import { InscriptionService } from '../../../Services/inscription.service';
 import { Admin } from '../../../Admin/Models/Admin';
 import { ToastrService } from 'ngx-toastr';
 import { SideBarService } from '../../../sidebar/side-bar.service';
+import { AdminUSER } from '../../../Admin/Models/Auth';
 
 @Component({
   selector: 'app-add-doc',
@@ -60,8 +61,8 @@ export class AddDocComponent implements OnInit {
         console.log(this.teacherFiltered, "teacher filtered")
       })
     })
-    const dataAdmin = sessionStorage.getItem('der');
-    this.admin = JSON.parse(dataAdmin!);
+    
+    this.admin = AdminUSER()?.der;
     
     this.sidebarService.currentSearchTerm.subscribe(term =>{
       this.searchTerm = term

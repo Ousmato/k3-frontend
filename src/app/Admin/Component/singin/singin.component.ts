@@ -10,6 +10,7 @@ import { PageTitleService } from '../../../Services/page-title.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AnneeScolaire } from '../../Models/School-info';
 import { SchoolService } from '../../../Services/school.service';
+import { AdminUSER } from '../../Models/Auth';
 
 
 @Component({
@@ -94,16 +95,9 @@ export class SinginComponent implements OnInit {
   singin() {
 
     const formData = this.studentForm.value;
-    const adminData = sessionStorage.getItem("scolarite");
     console.log("fom", formData);
 
-    if (adminData) {
-      // Convertir les données JSON en objet JavaScript
-      this.admin = JSON.parse(adminData);
-
-    } else {
-      console.log("Aucune donnée d'administrateur trouvée dans le localStorage.");
-    }
+    this.admin = AdminUSER()?.scolarite
     // console.log(this.classRoom.find(c => c.id === formData.idClasse));
     const classe: ClassRoom = this.classRoom.find(c => c.id === +formData.idClasse)!;
 

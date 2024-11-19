@@ -50,6 +50,11 @@ export class ClassStudentService {
   getClassById(id: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}class/${id}`);
   }
+
+  // get class room by id niveau filiere
+  getClassByIdNivFiliere(idNivFil: number): Observable<ClassRoom> {
+    return this.http.get<ClassRoom>(`${this.baseUrl}classe-by-idNivFiliere/${idNivFil}`);
+  }
   //  ------------------------get All module of class
   getAllModules(id: number): Observable<Module[]> {
     return this.http.get<Module[]>(`${this.baseUrl}all-module/${id}`);
@@ -75,7 +80,7 @@ export class ClassStudentService {
   }
   //  -----------------------get all ue by classe id
   getAll_ue(idClasseNivFil: number, idSemestre: number): Observable<AddUeDto[]> {
-    return this.http.get<AddUeDto[]>(`${this.baseUrl}list-ue/${idClasseNivFil}/${idSemestre}`);
+    return this.http.get<AddUeDto[]>(`${this.baseUrl}list-ue-idClasse-idSemestre/${idClasseNivFil}/${idSemestre}`);
   }
   getAll_ue_toAddNote(idClasseNivFil: number, idSemestre: number, idStudent: number): Observable<AddNoteDto[]> {
     return this.http.get<AddNoteDto[]>(`${this.baseUrl}list-ue/${idClasseNivFil}/${idSemestre}/${idStudent}`);
@@ -118,5 +123,10 @@ export class ClassStudentService {
   // ---------------------------get list of supperior class
   getNextClasseByIdPrevious(idClasse: number): Observable<ClassRoom[]> {
     return this.http.get<ClassRoom[]>(this.baseUrl + "get-all-next-classe-by-id/" + idClasse);
+  }
+
+  // update ue
+  update_ue(ue: Ue): Observable<Response_String> {
+    return this.http.put<Response_String>(this.baseUrl + 'update-ue', ue);
   }
 }

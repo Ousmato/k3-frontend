@@ -34,7 +34,7 @@ const routes: Routes = [{path: '', component: RSSidebarComponent,
     
     {path: 'student-bulletin', component: StudentBulletinComponent, data:{title: "RELEVER DE NOTES"}},
     {path: 'all-notes', component: AllNotesSemestreComponent, data:{title: "NOTES DU SEMESTRE"}},
-    {path: 'etudiant-de-la-classe', component : EtudiantsDeLaClasseComponent},
+    {path: 'etudiant-de-la-classe', component : EtudiantsDeLaClasseComponent, data:{title: "Etudiants de la classe"}},
     { path: 'classe', component: ClassStudentsComponent, data:{title: "LES MENTIONS"} },
     {path: 'student-edit', component: StudentEditComponent, data:{title: "MODIFIER INFORMATIONS"}},
     {path: 'student-view', component: StudentViewComponent, data:{title: "DETAILS DE L'ETUDIANT"}},

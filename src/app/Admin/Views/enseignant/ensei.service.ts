@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { finalize, Observable } from 'rxjs';
 import { ProfilDto, Teacher } from '../../Models/Teachers';
 import { Teacher_presence } from '../../Models/objectPresence';
 import { Presence } from '../../Models/Teacher-presence';
@@ -8,6 +8,7 @@ import { Paie, PaieDTO } from '../../Models/paie';
 import { Response_String } from '../../Models/Response_String';
 import { Paie_Pages, Presence_pages, Teacher_presence_pages, TeacherPages } from '../../Models/Pagination-module';
 import { environment } from '../../../../environments/environment';
+import { LoaderService } from '../../../Services/loader.service';
 
 
 @Injectable({
@@ -15,7 +16,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class EnseiService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private loadingService: LoaderService) { }
   private baseUrl = `${environment.apiUrl}api-teacher/`;
 
   // -----------------------------get all enseignants
@@ -35,7 +36,11 @@ export class EnseiService {
     // const formData = new FormData();
     // formData.append('teacher', JSON.stringify(teacher));
     // formData.append('file', photo!);
-    return this.http.post<Response_String>(this.baseUrl + 'add', dto);
+    this.loadingService.loading();
+    return this.http.post<Response_String>(this.baseUrl + 'add', dto).pipe(
+      finalize(() => this.loadingService.stopLoading())
+    );
+
   }
   // ------------------------------get enseignant detaille  emplois by id 
   getTeacherPresence(id: number): Observable<Teacher_presence> {

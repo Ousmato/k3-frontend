@@ -26,7 +26,6 @@ import { AllNotesSemestreComponent } from './Admin/Views/all-notes-semestre/all-
 import { EtudiantsDeLaClasseComponent } from './Admin/Views/etudiants-de-la-classe/etudiants-de-la-classe.component';
 import { StudentEditComponent } from './Admin/Component/student-edit/student-edit.component';
 import { StudentViewComponent } from './Admin/Component/student-view/student-view.component';
-import { MatieresComponent } from './Widget/matieres/matieres.component';
 import { EmploisWidgetComponent } from './Widget/emplois-widget/emplois-widget.component';
 import { TeachersSinginComponent } from './Admin/Component/teachers-singin/teachers-singin.component';
 import { TeachersEditComponent } from './Admin/Component/teachers-edit/teachers-edit.component';
@@ -37,8 +36,6 @@ import { EnseignantFichePaieComponent } from './Admin/Component/enseignant-fiche
 import { SchoolEditWidgetComponent } from './Widget/school-edit-widget/school-edit-widget.component';
 import { AdminSettingWidgetComponent } from './Widget/admin-setting-widget/admin-setting-widget.component';
 import { AddAdminComponent } from './Admin/Component/add-admin/add-admin.component';
-import { DashboardComponent } from './DR/dashboard/dashboard.component';
-import { DrSidebarComponent } from './DR/dr-sidebar/dr-sidebar.component';
 import { DerSidebarComponent } from './DER/der-sidebar/der-sidebar.component';
 import { DerHomeComponent } from './DER/der-home/der-home.component';
 import { DerSallesComponent } from './DER/der-salles/der-salles.component';
@@ -91,6 +88,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { provideToastr, ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { loadingInterceptor } from './Services/interceptor/loading.interceptor';
+import { SessionExpiredModalComponent } from './Widget/session-expired-modal/session-expired-modal.component';
 registerLocaleData(localeFr);
 @NgModule({
   declarations: [
@@ -111,7 +109,6 @@ registerLocaleData(localeFr);
     EtudiantsDeLaClasseComponent,
     StudentEditComponent,
     StudentViewComponent,
-    MatieresComponent,
     EmploisWidgetComponent,
     TeachersSinginComponent,
     TeachersEditComponent,
@@ -122,8 +119,6 @@ registerLocaleData(localeFr);
     SchoolEditWidgetComponent,
     AdminSettingWidgetComponent,
     AddAdminComponent,
-    DashboardComponent,
-    DrSidebarComponent,
     DerSidebarComponent,
     DerHomeComponent,
     DerSallesComponent,
@@ -165,7 +160,7 @@ registerLocaleData(localeFr);
     AddClassPromotionComponent,
     ClassArchiveComponent,
     RSImportComponent,
-    SoutenanceNoteComponent, StudentGroupListComponent, AdminListComponent, MyAccuntComponent, ForgotPasswordComponent, ResetPasswordComponent, SetNewPasswordComponent
+    SoutenanceNoteComponent, StudentGroupListComponent, AdminListComponent, MyAccuntComponent, ForgotPasswordComponent, ResetPasswordComponent, SetNewPasswordComponent, SessionExpiredModalComponent
   ],
   imports: [
     BrowserModule,

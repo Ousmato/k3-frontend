@@ -7,6 +7,7 @@ import { TeacherPages } from '../../Models/Pagination-module';
 import { SideBarService } from '../../../sidebar/side-bar.service';
 import { Filiere } from '../../Models/Filieres';
 import { Admin } from '../../Models/Admin';
+import { AdminUSER } from '../../Models/Auth';
 
 @Component({
   selector: 'app-enseignant',
@@ -32,8 +33,6 @@ export class EnseignantComponent implements OnInit {
   constructor(public icons: IconsService, private root: Router, private sideBareService: SideBarService,
     private enseignantService: EnseiService) { }
   ngOnInit(): void {
-    // this.load_enseignants();
-    this.load_admin();
     this.loadTeachers();
     this.getPermission();
     this.sideBareService.currentSearchTerm.subscribe(term => {
@@ -61,26 +60,16 @@ export class EnseignantComponent implements OnInit {
     const navigationExtras: NavigationExtras = {
       queryParams: { id: idEnseignant }
     };
-    const der = sessionStorage.getItem("der")
+    
     if(this.permission){
        this.root.navigate(['/der/t-edit'], navigationExtras)
-    }else if(der){
-      this.root.navigate(['/der/t-edit'], navigationExtras)
+    // }else if(der){
+    //   this.root.navigate(['/der/t-edit'], navigationExtras)
 
     }else{
       this.root.navigate(['/sidebar/t-edit'], navigationExtras)
     }
    
-  }
-
-  load_admin() {
-    const admin = sessionStorage.getItem('admin');
-    console.log("admin :", admin)
-    if (admin) {
-      console.log(JSON.parse(admin), "admin parse")
-      // this.dataAdmin = JSON.parse(admin);
-      // this.dataAdmin.urlPhoto = `${environment.urlPhoto}${this.dataAdmin.urlPhoto}`
-    }
   }
   // -----------------------------load teacher by pages
   loadTeachers(): void {
@@ -164,10 +153,8 @@ export class EnseignantComponent implements OnInit {
   }
 
   getPermission() : boolean{
-    console.log("admin")
-    const admin = sessionStorage.getItem('admin')
-    this.admin = JSON.parse(admin!);
-    console.log( admin, "-----------------------")
+    const admin = AdminUSER()?.der
+    this.admin = admin;
     if(admin){
       this.permission = true;
       return true

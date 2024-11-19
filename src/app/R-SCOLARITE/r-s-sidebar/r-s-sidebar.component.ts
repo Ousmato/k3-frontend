@@ -8,6 +8,8 @@ import { SideBarService } from '../../sidebar/side-bar.service';
 import { filter, Subscription } from 'rxjs';
 import { SchoolInfo } from '../../Admin/Models/School-info';
 import { environment } from '../../../environments/environment';
+import { AdminUSER } from '../../Admin/Models/Auth';
+import { AuthServiceService } from '../../auth-service.service';
 
 @Component({
   selector: 'app-r-s-sidebar',
@@ -70,7 +72,7 @@ toggleSubMenuArchive(){
     }
   }
  
-  constructor(private pageTitle: PageTitleService, private schoolService: SchoolService, private sidebarService: SideBarService,
+  constructor(public auth: AuthServiceService, private schoolService: SchoolService, private sidebarService: SideBarService,
      private router: Router, public icons: IconsService, private route: ActivatedRoute){}
 
   
@@ -104,15 +106,9 @@ load_school_info(){
 }
 // ------------------------------------------load current admin
 load_admin(){
-  const admin = sessionStorage.getItem('scolarite');
- 
- 
-  if(admin){
-    
-    this.dataAdmin = JSON.parse(admin);
-    this.dataAdmin.urlPhoto = `${environment.urlPhoto}${this.dataAdmin.urlPhoto}`
+  this.dataAdmin = AdminUSER()?.scolarite;
+  this.dataAdmin.urlPhoto = `${environment.urlPhoto}${this.dataAdmin.urlPhoto}`
 
-  }
 }
 // --------------------------------shearch 
   onSearchChange() {
@@ -140,10 +136,5 @@ load_admin(){
 
   toAccunt(){
     this.router.navigate(['/r-scolarite/my-accunt'], {queryParams:{id: this.dataAdmin.idAdministra}})
-  }
-  // ---------------
-  singAout(){
-    sessionStorage.clear();
-    this.router.navigate(['']);
   }
 }

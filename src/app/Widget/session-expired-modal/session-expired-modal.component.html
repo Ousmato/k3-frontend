@@ -1,0 +1,24 @@
+<main>
+  <div class="session-modal" *ngIf="showModal" >
+    <div class="session-modal-overlay"></div>
+    <div class="session-modal-content">
+      <div class="session-header">
+        <h2>Session Expirée</h2>
+      </div>
+      <div class="session-body">
+        <p>Votre session a expiré. Vous devez vous reconnecter pour continuer.</p>
+      </div>
+      <div class="session-footer">
+        <button (click)="redirectToLogin()">Se reconnecter</button>
+        <!-- <button (click)="closeModal()">Annuler</button> -->
+      </div>
+    </div>
+  </div>
+  <div class="altermodal" *ngIf="alert || newAlert">
+    <div class="session-modal-content modal-alter">
+      <p>Votre session vas expiré dans 3 jours <br>
+      Vous devez vous reconnecter pour continuer avant le {{date}} a <br> {{heure}}</p>
+      <p class="btn-alter"><a (click)="annuler()">Annuler</a></p>
+    </div>
+  </div>
+</main>
