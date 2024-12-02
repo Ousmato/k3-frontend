@@ -22,6 +22,7 @@ import html2canvas from 'html2canvas';
 import { Salles } from '../../Models/Salles';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { Admin } from '../../Models/Admin';
+import { AdminUSER } from '../../Models/Auth';
 
 @Component({
   selector: 'app-emplois-seance',
@@ -35,6 +36,7 @@ export class EmploisSeanceComponent  implements OnInit{
     hasDeleted! : Journee
     admin!: Admin
     scolarite!: Admin
+    secretaire!: Admin; 
     idEmplois!: number;
     selected_seance_heure_fin! : any
     form_seance! : FormGroup;
@@ -82,16 +84,16 @@ export class EmploisSeanceComponent  implements OnInit{
       this.getPermission();
       this.getStatusOptions();
       
+      this.secretaire = AdminUSER()?.secretaire
 
     }
    
     // ---------------------------------get permission
     getPermission(): boolean {
-      const autorize = sessionStorage.getItem('der');
-      const scolarite = sessionStorage.getItem('secretaire');
-      this.scolarite = JSON.parse(scolarite!);
-      this.admin = JSON.parse(autorize!);
-      if(autorize){
+      this.scolarite = AdminUSER()?.scolarite;
+
+      this.admin = AdminUSER()?.der;
+      if(this.admin){
         this.permission = true
         // console.log(autorize,"autorize")
         return true;
@@ -139,13 +141,13 @@ export class EmploisSeanceComponent  implements OnInit{
             // console.log(dat, "dat")
            dat.plageHoraire = this.formatTimeString(dat.plageHoraire!)
           //  console.log(dat.plageHoraire, "journee")
-          if (dat.seanceType.toString() === 'td') {
-            if (!dat.groupe) {
-                dat.groupe = [];
-            }
-            dat.groupe.push(dat.idParticipant!);
-            console.log(dat.groupe, "--------------grp")
-          }
+          // if (dat.seanceType.toString().includes('td')) {
+          //   if (!dat.groupe) {
+          //       dat.groupe = [];
+          //   }
+          //   dat.groupe.push(dat.idParticipant!);
+          //   console.log(dat.groupe, "--------------grp")
+          // }
             this.journee.push(dat)
 
         }
@@ -261,7 +263,7 @@ export class EmploisSeanceComponent  implements OnInit{
    
   }
 
-  // ----------------------to list of student group
+  // to list of student group
   go_toList(idEmploi: number){
     const navigationExtras : NavigationExtras ={
       queryParams: {
@@ -352,13 +354,14 @@ export class EmploisSeanceComponent  implements OnInit{
     })
   }
   // ------------------------------------------
-  to_groupe(idClasse: number, idEmploi: number){
+  to_groupe(idClasse: number, idEmploi: number, idAnnee: number){
     // 
     // return
     const navigationExtras : NavigationExtras ={
       queryParams: {
         id : idClasse, 
-        idEmploi:  idEmploi
+        idEmploi:  idEmploi,
+        idAnnee: idAnnee,
       }
     }
     this.router.navigate(['/der/group-student'], navigationExtras)
@@ -390,10 +393,20 @@ export class EmploisSeanceComponent  implements OnInit{
     buttonBack.style.display = "none";
     const buttonContent = document.getElementById('idContent') as HTMLElement;
     buttonContent.style.display = "none";
+    const logo = document.getElementById('logo') as HTMLElement;
     var data = document.getElementById('idTable') as HTMLElement;
     if(data){
-      data.style.padding = '10px';   
-    }
+        // Save current styles to restore them later
+        const originalPadding = data.style.padding;
+        const originalHeight = data.style.height;
+        const originalOverflow = data.style.overflow;
+    
+        // Temporarily set styles to capture the entire scrollable area
+        data.style.padding = '50px'; 
+        data.style.height = 'auto';
+        data.style.overflow = 'visible'; 
+        logo.style.display = 'block';
+    
     
     
     // Id of the table
@@ -409,8 +422,12 @@ export class EmploisSeanceComponent  implements OnInit{
         pdf.save('emplois-du-temps.pdf');
         buttonBack.style.display = "block";
         buttonContent.style.display = "block";
-        data.style.padding = '0px'
+        logo.style.display = "none";
+        data.style.padding = originalPadding;
+        data.style.height = originalHeight;
+        data.style.overflow = originalOverflow;
     });
+  }
   } 
   // ------------------------------get double of each configure seance
   filteredJournee(jList: Journee[]) : Journee[]{
@@ -421,9 +438,10 @@ export class EmploisSeanceComponent  implements OnInit{
    getTeacherConf(idEmploi: number){
     this.seanceService.get_teacher_configuration(idEmploi).subscribe(data=>{
       data.forEach(d =>{
-         if(!this.teacherConf.some(tc => tc.id == d.id)){
+
+         if(!this.teacherConf.some(tc => tc.id == d.id ) ){
            this.teacherConf.push(d)
-          
+           
            if(d.groupe !== null)
             this.group = d.groupe
 

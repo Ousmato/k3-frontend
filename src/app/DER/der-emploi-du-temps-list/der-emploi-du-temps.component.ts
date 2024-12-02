@@ -45,13 +45,14 @@ export class DerEmploiDuTempsComponent implements OnInit {
 
     })
   }
-  // ----------------------------go to seance by id emplois
+  
+  //go to seance by id emplois
   toggle_toSeance(idClasse: number) {
     const navigationExtras: NavigationExtras = {
       queryParams: { id: idClasse }
     };
 
-    const autorize_s = sessionStorage.getItem('secretaire');
+    const autorize_s = AdminUSER()?.secretaire;
     if (this.getPermission()) {
       this.router.navigate(['/der/emplois-seances'], navigationExtras);
     } else if (autorize_s) {

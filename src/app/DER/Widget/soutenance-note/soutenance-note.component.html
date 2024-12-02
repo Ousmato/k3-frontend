@@ -4,7 +4,7 @@
         <form [formGroup]="addNote" (ngSubmit)="submit()">
             <input type="number" formControlName="note" class="form-control" placeholder="Saisir le note" [class.is-invalid]="addNote.get('note')!.invalid && addNote.get('note')!.touched">
             <div *ngIf="addNote.get('note')!.errors?.['min'] || addNote.get('note')!.errors?.['max']" class="invalid-feedback">
-                <span class="label-error">La note ne pas etre supperieure a 20</span>
+                <span class="label-error">La note est supperieure a 20</span>
 
             </div>
             <div class="button-cash">

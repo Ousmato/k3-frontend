@@ -137,4 +137,9 @@ load_admin(){
   toAccunt(){
     this.router.navigate(['/r-scolarite/my-accunt'], {queryParams:{id: this.dataAdmin.idAdministra}})
   }
+
+  // got to notifications
+  toNotifications(){
+    this.router.navigate(['/r-scolarite/notifications']);
+  }
 }

@@ -41,7 +41,7 @@ export enum Type_status{
 export interface Student_group{
     id?: number;
     nom: string;
-    idEmploi: Emplois;
+    idEmploi: number;
 }
 
 export interface Participant{

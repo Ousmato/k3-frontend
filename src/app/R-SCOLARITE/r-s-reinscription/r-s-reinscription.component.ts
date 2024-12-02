@@ -104,7 +104,7 @@ export class RSReinscriptionComponent implements OnInit {
  
   // -------------------reinscription
   confirmInscription(student: Inscription, idClasse: number){
-    console.log(student, "innn------------------------")
+    console.log(student, "student", idClasse,"idClasse")
     // return
     this.service.reInscriptionStudent(student!, idClasse!, this.admin.idAdministra!).subscribe({
       next: (result) => {
@@ -132,9 +132,10 @@ export class RSReinscriptionComponent implements OnInit {
   }
 
 
-  // ------------------close modal
+  // close modal
   exitConfirm() {
     console.log("-------------------id select", this.idClasse)
+    this.changeClasse(this.idClasse);
     this.is_show = false;
   }
 
@@ -143,19 +144,24 @@ export class RSReinscriptionComponent implements OnInit {
     window.history.back();
   }
   changeClasse(eventOrIdClasse: any) {
-   
-      // Si c'est directement l'ID de la classe
-      this.idClasse = eventOrIdClasse.target.value;
- 
+    if (eventOrIdClasse.target) {
+      // Si c'est un événement, obtenir la valeur de target
+      this.idClasse = eventOrIdClasse.target.value ? eventOrIdClasse.target.value : undefined;
+    } else {
+        // Si ce n'est pas un événement, assumer que c'est un idClasse
+        this.idClasse = eventOrIdClasse ? eventOrIdClasse : undefined;
+    }
     this.rout.queryParams.subscribe(param => {
       this.idAnne = +param['id']
     })
+    console.log(this.idClasse, "id classe")
+
     this.service.getStudentListByIdAnneeAndIdClasse(this.idAnne, +this.idClasse).subscribe(data => {
       this.inscription = data
       
       this.filteredItems = data;
      
-      // console.log(this.inscription, "students")
+      console.log(this.inscription, "students")
     });
     this.load_nextClasse(this.idClasse);
 
@@ -165,15 +171,16 @@ export class RSReinscriptionComponent implements OnInit {
     this.classeService.getNextClasseByIdPrevious(idClasse).subscribe(result => {
       this.NextClassRoom = result;
 
+      
       console.log(result, "next class")
 
       this.NextClassRoom.forEach(ncls => {
         this.NextClass = ncls
         this.niveau = ncls.idFiliere?.idNiveau
-        this.service.getStudentListByIdAnneeAndIdClasse(ncls.idAnneeScolaire?.id! ,ncls.id!).subscribe(result => {
-          this.studentsInscrit = result
-          console.log(this.studentsInscrit, "les incrits")
-        })
+        // this.service.getStudentListByIdAnneeAndIdClasse(ncls.idAnneeScolaire?.id! ,ncls.id!).subscribe(result => {
+        //   this.studentsInscrit = result
+        //   console.log(this.studentsInscrit, "les incrits")
+        // })
       })
     })
 

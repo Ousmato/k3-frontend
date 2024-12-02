@@ -2,7 +2,7 @@ import { Admin } from "./Admin";
 import { Ecue, Module } from "./Module";
 import { Semestres } from "./Semestre";
 import { Inscription, Student } from "./Students";
-import { AddUeDto } from "./UE";
+import { AddUeDto, Ue } from "./UE";
 
 export interface Notes{
     id?: number;
@@ -26,7 +26,20 @@ export interface NoteDto{
     session : number;
     noteUeCoefficient: number;
 }
+export interface GetNoteDto{
+    idNote: number;
+    ues : UeDto;
+    moyenUe: number;
+    coefUe: number
+    session : number;
+    moyenGeneral: number;
+}
 
+export interface UeDto{
+    id: number;
+    nomUE: string
+    modules: Module[];
+}
 export interface NoteModuleDto{
     idModule: number;
     idUe: number;
@@ -36,9 +49,10 @@ export interface NoteModuleDto{
 }
 
 export interface StudentsNotesDto{
-    noteDTO: NoteDto[];
+    noteDTO: GetNoteDto[];
     nom: string;
     prenom: string;
+    moyenGeneral: number;
     lieuNaissance: string;
     date_naissance: Date;
 }

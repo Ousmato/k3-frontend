@@ -77,6 +77,11 @@ table td {
     padding: 8px;
     text-align: left;
 }
+.childre-1 strong{
+    font-size: 16px;
+    color: black !important;
+    font-weight: 700;
+}
 
 .seance-content {
     display: flex;
@@ -93,7 +98,17 @@ table td {
     gap: 20px;
 
 }
-
+#logo{
+    display: none;
+}
+.logo-masque-content img{
+    height: 40px;
+    width: 40px;
+    padding: 5px;
+    border: 1px solid var(--primary);
+    border-radius: 50%;
+    object-fit: cover;
+}
 .childre-2 span {
     color: var(--secondary);
 }

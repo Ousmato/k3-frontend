@@ -142,4 +142,8 @@ load_admin(){
     sessionStorage.clear();
     this.router.navigate(['']);
   }
+  // got to notifications
+  toNotifications(){
+    this.router.navigate(['/dga/notifications']);
+  }
 }

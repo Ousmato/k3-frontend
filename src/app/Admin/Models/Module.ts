@@ -5,6 +5,7 @@ export interface  Module{
     nomModule: string;
     coefficient: number;
     idUe: Ue;
+    noteModule?: number;
    
 }
 

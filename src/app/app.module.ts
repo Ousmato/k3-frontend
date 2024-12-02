@@ -54,7 +54,6 @@ import { SecSidebarComponent } from './SECRETAIRE/sec-sidebar/sec-sidebar.compon
 import { SecHomeComponent } from './SECRETAIRE/sec-home/sec-home.component';
 import { StudentReInscriptionComponent } from './R-SCOLARITE/student-re-inscription/student-re-inscription.component';
 import { RSReinscriptionComponent } from './R-SCOLARITE/r-s-reinscription/r-s-reinscription.component';
-import { ReInscriptionWidgetComponent } from './R-SCOLARITE/Widget/re-inscription-widget/re-inscription-widget.component';
 import { DgaArchivesComponent } from './DGA/dga-archives/dga-archives.component';
 import { SecSurveillanceComponent } from './SECRETAIRE/sec-surveillance/sec-surveillance.component';
 import { SecAddSurveillanceComponent } from './SECRETAIRE/sec-add-surveillance/sec-add-surveillance.component';
@@ -89,6 +88,8 @@ import { provideToastr, ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { loadingInterceptor } from './Services/interceptor/loading.interceptor';
 import { SessionExpiredModalComponent } from './Widget/session-expired-modal/session-expired-modal.component';
+import { EmptyWidgetComponent } from './Widget/empty-widget/empty-widget.component';
+import { NotificationComponent } from './Admin/notification/notification.component';
 registerLocaleData(localeFr);
 @NgModule({
   declarations: [
@@ -137,7 +138,6 @@ registerLocaleData(localeFr);
     SecHomeComponent,
     StudentReInscriptionComponent,
     RSReinscriptionComponent,
-    ReInscriptionWidgetComponent,
     DgaArchivesComponent,
     SecSurveillanceComponent,
     SecAddSurveillanceComponent,
@@ -160,7 +160,8 @@ registerLocaleData(localeFr);
     AddClassPromotionComponent,
     ClassArchiveComponent,
     RSImportComponent,
-    SoutenanceNoteComponent, StudentGroupListComponent, AdminListComponent, MyAccuntComponent, ForgotPasswordComponent, ResetPasswordComponent, SetNewPasswordComponent, SessionExpiredModalComponent
+    EmptyWidgetComponent,
+    SoutenanceNoteComponent, StudentGroupListComponent, AdminListComponent, MyAccuntComponent, ForgotPasswordComponent, ResetPasswordComponent, SetNewPasswordComponent, SessionExpiredModalComponent, NotificationComponent,
   ],
   imports: [
     BrowserModule,

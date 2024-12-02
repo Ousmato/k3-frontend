@@ -16,6 +16,10 @@ main{
     top: 0;
     z-index: 1;
 }
+th {
+    background: linear-gradient(180deg, #ffffff, #d4d4d4);
+  
+  }
 /* Personnalisation de la barre de défilement */
 .table-container::-webkit-scrollbar {
     width: 5px; /* Largeur de la barre de défilement */

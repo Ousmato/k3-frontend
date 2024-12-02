@@ -21,13 +21,13 @@ import { ProgramSoutenanceComponent } from '../Widget/program-soutenance/program
 import { ViewSoutenanceComponent } from '../Widget/view-soutenance/view-soutenance.component';
 import { StudentGroupListComponent } from '../student-group-list/student-group-list.component';
 import { MyAccuntComponent } from '../../DG/my-accunt/my-accunt.component';
-import { EtudiantsComponent } from '../../Admin/Views/etudiants/etudiants.component';
+import { NotificationComponent } from '../../Admin/notification/notification.component';
 
 const routes: Routes = [{path: '', component: DerSidebarComponent,
   children: [
     {path: '', component: DerHomeComponent, data:{title: "ACCUEIL"}},
     {path: 'salles', component: DerSallesComponent, data:{title: "Les salles"}},
-    {path: 'paiement', component: DerPaiListComponent},
+    {path: 'paiement', component: DerPaiListComponent, data:{title: "Heures effectuees"}},
     {path: 'enseignants', component: EnseignantComponent, data:{title: "Les enseignants"}},
     {path: 't-singin', component: TeachersSinginComponent, data:{title: "AJOUTER ENSEIGNANT"}},
     {path: 'doc', component: DerDocComponent, data:{title: "RAPPORTS ET MEMOIRES"}},
@@ -38,12 +38,13 @@ const routes: Routes = [{path: '', component: DerSidebarComponent,
     {path: 'emplois-du-temps', component: DerEmploiDuTempsComponent, data:{title: "EMPLOI DU TEMPS EN COURS"}},
     {path: 'emplois-seances', component: EmploisSeanceComponent, data:{title: "EMPLOI DU TEMPS"}},
     {path: 'edit-seance', component: DerEditSeanceComponent},
-    {path: 'group-student', component: AddGroupStudentComponent},
+    {path: 'group-student', component: AddGroupStudentComponent, data:{title: "Creer groupes"}},
     {path: 'affect-t-d', component: DerEDTComponent , data:{title: "AJOUTER SEANCE"}},
     {path: 'programmer', component: ProgramSoutenanceComponent, data:{title: "Programmer soutenance"}},
     {path: 'programme-view', component: ViewSoutenanceComponent, data:{title: "SOutenances programmer"}},
     {path: 'liste-groupe', component: StudentGroupListComponent},
     {path: 'my-accunt', component: MyAccuntComponent, data:{title: "Mon compte"} },
+    {path: 'notifications', component: NotificationComponent, data:{title: "Notifications"}},
 
     
     // { path: 'classe-student', component: ClassStudentsComponent, data:{title: "Les Classes de Formation"} },

@@ -74,8 +74,22 @@ img{
     width: 50px;
     object-fit: cover;
 }
-
-select {
+select:focus{
+    outline: none;
+    border: none;
+}
+.select {
+    height: 35px;
+    width: 100px;
+    /* margin-: 10px; */
+    background-color: var(--primary);
+    color: var(--secondary);
+    border-radius: 5px;
+    padding: 0 5px;
+    outline: none;
+    border: none;
+  }
+.head-left select {
     height: 35px;
     width: 100px;
     margin-right: 10px;
@@ -197,11 +211,7 @@ select{
     border: none;
      outline: none;
 }
-.numerotation-clumn{
-    width: auto;
-    min-width: 30px; 
-    text-align: center;
-}
+
 
 tr td{
     font-size: 16px;

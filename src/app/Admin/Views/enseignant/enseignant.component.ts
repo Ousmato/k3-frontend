@@ -77,7 +77,9 @@ export class EnseignantComponent implements OnInit {
     
       data.content.forEach(p =>{
         if(!this.enseignants.some(en => en.idEnseignant === p.teachers.idEnseignant)){
-          this.enseignants.push(p.teachers);
+        p.teachers.nom =  p.teachers.nom.charAt(0).toUpperCase() + p.teachers.nom.slice(1).toLowerCase();
+         p.teachers.prenom = p.teachers.prenom.charAt(0).toUpperCase() + p.teachers.prenom.slice(1).toLowerCase();
+        this.enseignants.push(p.teachers);
           this.profiles.push(p)
         }
        
@@ -113,9 +115,9 @@ export class EnseignantComponent implements OnInit {
   timeWorks() {
     this.searchTerm = '';
     if (this.getPermission()) {
-        this.root.navigate(['/sidebar/paiement']);
-    } else {
         this.root.navigate(['/der/paiement']);
+    } else {
+        this.root.navigate(['/sidebar/paiement']);
     }
 }
 

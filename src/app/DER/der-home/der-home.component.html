@@ -50,47 +50,61 @@
             </div>
             
 
-            <div class="child-card" (click)="toggle_toEmploi()">
+            <!-- <div class="child-card" (click)="toggle_toEmploi()">
                 <div class="child-card-content">
                     <div class="card-img">
                         <img src="assets/booking-confirmed-icon.svg" alt="Logo">
                     </div>
                     <div class="card-text" >
                         <p>Emplois du temps actifs</p>
-                        <h1>{{emploiCount}}</h1>
+                        <h1>{{emploisCount}}</h1>
                     </div>
                     
                 </div>
                 
                 
-            </div>
+            </div> -->
            
         </div>
         <!-- -------------------------------------------------------------- -->
-        <!-- <div class="body-content">
+        <div class="body-content">
             <div class="child-cards">
+                <!-- <div class="child-card-content"> -->
                     <div  id="card-img">
                         <img id="calendar" src="assets/booking-confirmed-icon.svg" alt="Logo">
                     </div>
                     <div id="cart-text" class="card-text">
-                        <h5>Emplois Actifs</h5>
-                        <h1></h1>
-                    </div>
-            </div> -->
-                <!-- <div class="class-scrol">
+                        <h5>Emplois du temps en cours</h5>
+                        <h1>{{emploisCount}}</h1>
+                    <!-- </div> -->
+                    
+                </div>
+            </div>
+                <div class="class-scrol">
                     <ng-container *ngFor="let classe of emplois">
                         <div class="calendar-classes-content">
-                        <p>{{classe.idClasse.idFiliere?.idNiveau?.nom}} ({{classe.idClasse.idFiliere?.idFiliere?.nomFiliere}})</p>
+                        <p>{{classe.idClasse.idFiliere?.idNiveau?.nom}} {{abrevigateNameFiliere(classe.idClasse.idFiliere?.idFiliere?.nomFiliere!)}}</p>
+                       
+                        <progress id="file" [value]="classe.progess" max="100"></progress>
+                        
                         <div class="date-content">
                             <p> Debuté le : {{classe.dateDebut}}</p>
                             <p> Prend fin le : <span id="span">{{classe.dateFin}}</span></p>
                         </div>
+                        <div class="active-contente">
+                            <p > {{classe.toDay ? "En cours" : "En attente"}}
+                                 <fa-icon [ngStyle]="{color: classe.toDay ? 'green' : 'red'}" [icon]="icons.circle"></fa-icon>
+                            </p>
+                        </div>
+                        <div class="button-content">
+                            <button class="btn " (click)="gotoEmploi(classe.id!)"><fa-icon [icon]="icons.nexte"></fa-icon></button>
+                        </div>
                     </div>
                     </ng-container>
-                </div> -->
+                </div>
             
             <!-- <h2>Body Content</h2>
             <p>Here you can add more detailed information, graphs, tables, etc.</p> -->
-        <!-- </div> -->
+        </div>
     </div>
 </main>

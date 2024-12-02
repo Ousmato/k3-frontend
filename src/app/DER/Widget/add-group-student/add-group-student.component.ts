@@ -37,7 +37,7 @@ export class AddGroupStudentComponent implements OnInit {
   form_add!: FormGroup;
   form_participants!: FormGroup
 
-  constructor(private service: EtudeService, private inscriptionService: InscriptionService,
+  constructor(private service: EtudeService, private inscriptionService: InscriptionService, private studentsServices: EtudeService,
     private fb: FormBuilder, private root: ActivatedRoute, private sidebarService: SideBarService,
     private emploisService: ServiceService, public icons: IconsService, private pageTitle: PageTitleService) { }
 
@@ -59,10 +59,12 @@ export class AddGroupStudentComponent implements OnInit {
   loadStudents(): void {
     this.root.queryParams.subscribe(param => {
       this.idClasse = +param['id'];
-      this.emploisService.getEmploisById(this.idEmploi).subscribe(data => {
-        this.emploi = data;
-        console.log(this.emploi, "emploi trouver");
+      const idAnnee = param['idAnnee'];
+      this.inscriptionService.getInscriptionsIdClasse(idAnnee, this.idClasse).subscribe(result =>{
+        this.inscriptions = result
+        console.log(this.inscriptions, "les inscrit de la classe");
       })
+     
      
     })
 
@@ -78,15 +80,11 @@ export class AddGroupStudentComponent implements OnInit {
   // ------------create group
   add_groupe() {
     const formData = this.form_add.value
-    const group_student: Student_group = {
-      nom: formData.nom,
-      idEmploi: this.emploi
-    }
-    // console.log(group_student, "groupe student")
+    const name = formData.nom;
     // return
     if (this.form_add.valid) {
       // console.log(group_student, "group_student")
-      this.service.addGroup(group_student).subscribe({
+      this.service.addGroup(name, this.idEmploi).subscribe({
         next: (res) => {
           this.pageTitle.showSuccessToast(res.message);
           this.form_add.reset();
@@ -112,11 +110,11 @@ export class AddGroupStudentComponent implements OnInit {
       this.groupes = data
       console.log(this.groupes, "groupes")
     })
-    this.inscriptionService.getListInscriptionByIdEmploi(this.idEmploi).subscribe(inscrit => {
-      this.inscriptions = inscrit
-      // this.filteredItem = inscrit
-      console.log(inscrit, "touts les incrits")
-    })
+    // this.inscriptionService.getListInscriptionByIdEmploi(this.idEmploi).subscribe(inscrit => {
+    //   this.inscriptions = inscrit
+    //   // this.filteredItem = inscrit
+    //   console.log(inscrit, "touts les incrits")
+    // })
     this.load_participation_by_emploi(this.idEmploi);
   }
   // load all participation by idEmploi
@@ -216,7 +214,7 @@ export class AddGroupStudentComponent implements OnInit {
 
 
   check(id: number) {
-    return this.inscriptions.some(sg => sg.id == id);
+    return this.participants.some(sg => sg.idInscription.id == id);
 
   }
   // --------compare and extrate group name

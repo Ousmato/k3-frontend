@@ -16,6 +16,7 @@ import { SchoolEditWidgetComponent } from '../../Widget/school-edit-widget/schoo
 import { ViewUeComponent } from '../../Widget/ue-widget/view-ue/view-ue.component';
 import { ClassArchiveComponent } from '../class-students/class-archive/class-archive.component';
 import { MyAccuntComponent } from '../../DG/my-accunt/my-accunt.component';
+import { NotificationComponent } from '../../Admin/notification/notification.component';
 
 const routes: Routes = [{path: '', component: DgaSidebarComponent,
   children: [
@@ -37,8 +38,8 @@ const routes: Routes = [{path: '', component: DgaSidebarComponent,
     
     {path: 'emplois-seances', component: EmploisSeanceComponent},
     {path: 'emplois-du-temps', component: DerEmploiDuTempsComponent, data:{title: "LES EMPLOIS DU TEMPS ENCOURS"}},
+    {path: 'notifications', component: NotificationComponent, data:{title: "Notifications"}},
     
-
   ]
 }];
 

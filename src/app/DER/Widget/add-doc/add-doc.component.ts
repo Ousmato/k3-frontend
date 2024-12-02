@@ -203,6 +203,8 @@ export class AddDocComponent implements OnInit {
         this.pageTitle.showSuccessToast(result.message);
         // this.load_students(this.classe.idAnneeScolaire?.id!, this.classe.id!);
         this.getAllDocsByClass(this.classe.id!, this.inscriptions);
+        this.isConfirm = false;
+        this.ngOnInit()
       }, 
       error :(err) =>{
         this.pageTitle.showErrorToast(err.error.message);

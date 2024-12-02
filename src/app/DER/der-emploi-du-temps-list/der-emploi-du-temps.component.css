@@ -91,8 +91,10 @@ p{
 }
  a{
     display: flex;
+    text-decoration: none;
     cursor: pointer;
     flex-direction: column;
+    color: var(--primary);
     font-size: 14px;
     justify-content: center;
     align-items: center;

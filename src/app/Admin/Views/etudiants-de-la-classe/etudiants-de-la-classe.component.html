@@ -1,8 +1,13 @@
 <main>
-    <div class="head">
-        <div (click)="goBack()" class="back-button">
+    <div (click)="goBack()" class="back-button">
             <fa-icon [icon]="icons.back"></fa-icon>
           </div>
+    <div class="head">
+        <select class="select">
+            <option selected disabled value="">Exporter</option>
+            <option  value="PDF">PDF</option>
+            <option  value="EXCEL">EXCEL</option>
+        </select>
     
         <div class="input-search">
             <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..."  class="search-input">
@@ -14,16 +19,15 @@
         <table  class="table  table-hover">
             <thead>
                 <tr>
-                    <th>N°D'ordre</th>
+                    <th>N°</th>
                     <!-- <th>Photo</th> -->
                     <th>Nom</th>
                     <th>Prenom</th>
                     <th>Classe</th>
-                    <th>Filiere</th>
                     <th>Telephone</th>
                     <th>Status</th>
                     <th>Etat</th>
-                    <th>Action</th>
+                    <th *ngIf="!adminDga">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,22 +38,20 @@
                         <td>{{ inscrit.idEtudiant.nom }}</td>
                         <td>{{ inscrit.idEtudiant.prenom }}</td>
                         <td class="class-name" title="{{ inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere }}">
-                            {{ inscrit.idClasse.idFiliere?.idNiveau?.nom }}
+                            {{ inscrit.idClasse.idFiliere?.idNiveau?.nom }}  {{ abrevigateFiliereName(inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere!)}}
                         </td>
-                        <td class="class-name" title="{{ inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere }}">
-                            {{ abrevigateFiliereName(inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere!)}}
-                        </td>
+                        
                         <td>{{ inscrit.idEtudiant.telephone }}</td>
-                        <td>{{ inscrit.idEtudiant.status }}</td>
+                        <td>{{ inscrit.idEtudiant.status.toUpperCase() }}</td>
                         <td>
                             <a>
                                 <fa-icon [icon]="inscrit.payer ? icons.circle : icons.circle" [ngStyle]="{ color: inscrit.payer ? 'green' : 'red' }"></fa-icon>
-                                <span>{{ inscrit.payer ? 'inscrit(e)' : 'Non Inscrit(e)' }}</span>
+                                
                             </a>
                         </td>
-                        <td>
+                        <td *ngIf="!adminDga">
                             <div class="btn-contenaire">
-                                <a (click)="load_bulletin(inscrit.idEtudiant.idEtudiant!)" ><fa-icon  [icon]="icons.eye" class="icons"></fa-icon><span>Rélever</span></a>
+                                <a (click)="load_bulletin(inscrit.id!)" ><fa-icon  [icon]="icons.eye" class="icons"></fa-icon><span>Rélever</span></a>
                            
                                 
                             </div>

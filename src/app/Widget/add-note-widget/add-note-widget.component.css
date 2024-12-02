@@ -84,7 +84,31 @@ p {
     grid-template-columns: repeat(1, 1fr);
     grid-gap: 10px;
 }
+.grid-container-modules-without {
 
+    position: relative;
+    margin: 10px;
+    border-radius: 8px;
+    display: grid;
+    justify-content: flex-start;
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 10px;
+}
+.line{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.grid-item-modules-without {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid var(--tertiary);
+    border-radius: 8px;
+    color: var(--primary);
+    background-color: var(--secondary);
+}
 .grid-item {
     display: flex;
     justify-content: flex-start;

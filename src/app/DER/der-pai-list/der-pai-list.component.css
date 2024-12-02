@@ -34,9 +34,9 @@ main{
 button{
     border: none;
     padding: 5px;
-    background-color: transparent;
+    background-color: var(--primary);
     cursor: pointer;
-    color: var(--primary);
+    color: var(--secondary);
     border-radius: 5px;
     &:hover{
         background-color: var(--secondary);

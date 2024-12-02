@@ -34,4 +34,6 @@ export class InscriptionService {
   getInscriptionById(idInscription: number) : Observable<Inscription>{
     return this.http.get<Inscription>(this.baseUrl+"inscription-by-id/"+idInscription)
   }
+
+  // all
 }

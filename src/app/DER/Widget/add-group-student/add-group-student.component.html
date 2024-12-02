@@ -90,7 +90,7 @@
                 </tr>
             </thead>
             <tbody>
-                <ng-container *ngIf="participants.length ; else noResults">
+                <ng-container *ngIf="filteredInscription().length > 0">
                     <ng-container *ngFor="let inscrit of filteredInscription()">
                         <tr [ngClass]="{ 'red-border': check(inscrit.id!)}">
                             <td>
@@ -109,7 +109,7 @@
                                 {{inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}</td>
 
                             <td>{{inscrit.idEtudiant.telephone}}</td>
-                            <td>{{isPresent(inscrit.idEtudiant.idEtudiant!) ? particip?.idStudentGroup?.nom : 'Accun'}}</td>
+                            <td>{{isPresent(inscrit.id!) ? particip?.idStudentGroup?.nom : 'Accun'}}</td>
                         </tr>
                     </ng-container>
 

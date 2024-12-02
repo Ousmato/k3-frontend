@@ -91,8 +91,27 @@ tr td{
 .item-image {
   padding: 8px;
   display: flex;
+  align-items: center;
   gap: 10px;
   margin-right: 20px;
+}
+.icon-new-content{
+  cursor: pointer;
+  position: relative;
+}
+.icon-new-content fa-icon{
+  font-size: 30px;
+  color: var(--primary);
+}
+.badge-new{
+  position: absolute;
+  top: -2px;
+    right: -8px;
+    color: red;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 2px 5px;
+  border-radius: 50%;
 }
 
 .item-image img {
@@ -116,6 +135,7 @@ tr td{
 strong {
   margin-top: 8px;
   font-weight: bold;
+  /* color: var(--secondary) !important; */
 }
 
 /* Sidebar styling */
@@ -174,7 +194,8 @@ a fa-icon {
 #sidebar .sidebar-header {
   display: flex;
   flex-direction: column;
-  background: linear-gradient(180deg, #ffffff, #d4d4d4);
+  /* background: linear-gradient(180deg, #ffffff, #d4d4d4); */
+  background-color: var(--secondary);
   align-items: center;
   width: 223px;
   border-radius: 10px;
@@ -331,6 +352,17 @@ nav .nav-element {
   border-radius: 8px;
 }
 
+.filter-content{
+  display: flex;
+  gap: 10px;
+}
+.filter-content select{
+  border: none;
+  outline: none;
+}
+.trie-content fa-icon{
+  color: var(--primary);
+}
 .search-input:focus {
   border-color: var(--primary-light);
   outline: none;
@@ -351,13 +383,14 @@ nav .nav-element {
 
 
 #sidebar .sidebar-header strong {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: bold;
   /* Dégradé pour l'effet de profondeur */
-  background: linear-gradient(180deg, #ffffff, #d4d4d4);
+  /* background: linear-gradient(180deg, #ffffff, #312D7C); */
   border-radius: 8px;
   color: var(--primary);
   padding: 5px;
+  letter-spacing: 1px;
   /* Ombre portée pour l'effet 3D */
   text-shadow:
     1px 1px 2px rgba(0, 0, 0, 0.2),

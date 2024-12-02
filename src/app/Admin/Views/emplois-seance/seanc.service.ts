@@ -1,18 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { finalize, Observable } from 'rxjs';
 import { Seances} from '../../Models/Seances';
 import { Response_String } from '../../Models/Response_String';
 import { Journee } from '../../Models/Configure_seance';
 import { teacherConfigureDto } from '../../Models/Teachers';
+import { environment } from '../../../../environments/environment';
+import { LoaderService } from '../../../Services/loader.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SeancService {
 
-  constructor(private http: HttpClient) { }
-  private baseUrl = 'http://localhost:8080/api-seance/'
+  constructor(private http: HttpClient, private loadService: LoaderService) { }
+  private baseUrl = `${environment.apiUrl}api-seance/`
   // -----------------------------get all seances by emplois id
   // getAllByEmploisId(id: number) : Observable<Seances[]>{
   //   return this.http.get<Seances[]>(this.baseUrl + 'list/' + id);
@@ -27,7 +29,10 @@ export class SeancService {
   }
  
   add_journee(journee: Journee[]) : Observable<Response_String>{
-    return this.http.post<Response_String>(this.baseUrl+"add-journee", journee)
+    this.loadService.loading();
+    return this.http.post<Response_String>(this.baseUrl+"add-journee", journee).pipe(
+      finalize(() =>this.loadService.stopLoading())
+    );
   }
   // ---------------------------------------delete seance 
   delete(id: number): Observable<Response_String>{
@@ -45,7 +50,10 @@ export class SeancService {
   // ----------------------------add surveillance
 
   addSurveillance(surveillance: Journee[]) : Observable<Response_String>{
-    return this.http.post<Response_String>(this.baseUrl+"add-addSurveillance", surveillance);
+    this.loadService.loading();
+    return this.http.post<Response_String>(this.baseUrl+"add-addSurveillance", surveillance).pipe(
+      finalize(() =>this.loadService.stopLoading())
+    );
   }
   
    // -----------------get teacher config

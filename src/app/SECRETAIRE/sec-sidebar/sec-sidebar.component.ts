@@ -8,6 +8,7 @@ import { SideBarService } from '../../sidebar/side-bar.service';
 import { filter, Subscription } from 'rxjs';
 import { SchoolInfo } from '../../Admin/Models/School-info';
 import { environment } from '../../../environments/environment';
+import { AdminUSER } from '../../Admin/Models/Auth';
 
 @Component({
   selector: 'app-sec-sidebar',
@@ -82,7 +83,9 @@ toggleSubMenuArchive(){
     
       this.setTitle();
        this.load_school_info();
-       this.load_admin();
+       this.dataAdmin = AdminUSER()?.secretaire;
+       this.dataAdmin.urlPhoto = `${environment.urlPhoto}${this.dataAdmin.urlPhoto}`
+
     }
     
     setTitle(): void {
@@ -102,18 +105,7 @@ toggleSubMenuArchive(){
         // console.log(data, "----------------------------");
       })
     }
-    // ------------------------------------------load current admin
-    load_admin(){
-      const admin = sessionStorage.getItem('secretaire');
-     
-      if(admin){
-        
-        this.dataAdmin = JSON.parse(admin);
-        this.dataAdmin.urlPhoto = `${environment.urlPhoto}${this.dataAdmin.urlPhoto}`
-    
-      }
-    }
-    // --------------------------------shearch 
+    //shearch 
       onSearchChange() {
         this.sidebarService.changeSearchTerm(this.searchTerm);
       }

@@ -2,15 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { IconsService } from '../../../Services/icons.service';
 import { SemestreService } from '../../../Services/semestre.service';
 import { EtudeService } from '../../Views/etudiants/etude.service';
-import { NoteDto, Notes } from '../../Models/Notes';
+import { GetNoteDto, NoteDto, Notes } from '../../Models/Notes';
 import { ActivatedRoute } from '@angular/router';
-import { Student } from '../../Models/Students';
+import { Inscription, Student } from '../../Models/Students';
 import { Semestres } from '../../Models/Semestre';
-import jspdf from 'jspdf';
+import jspdf, { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { Admin } from '../../Models/Admin';
-import { PageTitleService } from '../../../Services/page-title.service';
-import { Toast, ToastrService } from 'ngx-toastr';
+import { InscriptionService } from '../../../Services/inscription.service';
+import { AdminUSER } from '../../Models/Auth';
 
 @Component({
   selector: 'app-student-bulletin',
@@ -21,31 +21,44 @@ export class StudentBulletinComponent implements OnInit {
   idStudent!: number
   moyenneGenerale: number = 0
   mention: string = "";
-  students!: Student
+  inscrit!: Inscription
+  isImprime: boolean = true
   semestres: Semestres[] = [];
 
-  admin!: Admin
+  adminRscolarite!: Admin
+  
 
 
-  notes: NoteDto[] = [];
+  notes: GetNoteDto[] = [];
 
-  constructor(public icons: IconsService, private root: ActivatedRoute, private toast: ToastrService,
-    private semestreService: SemestreService, private studentService: EtudeService, private pageTitle: PageTitleService) { }
+  constructor(public icons: IconsService, private root: ActivatedRoute,
+    private semestreService: SemestreService, private studentService: EtudeService, private inscriptionService: InscriptionService) { }
   ngOnInit(): void {
     // this.load_bulletin();
     // this.load_ues()
-    this.load_admin();
+    this.adminRscolarite = AdminUSER()?.scolarite;
     this.load_student();
 
   }
 
   //  --------------------------------------button to imprime
   imprimer() {
-    const button = document.querySelector('.btn-container') as HTMLElement
+    const button = document.getElementById('bulletin__content') as HTMLElement
     button.style.display = "none"
+    const head = document.getElementById('bulletin') as HTMLElement;
+    head.style.display = "block"
+    const foot = document.getElementById('footer') as HTMLElement;
+    foot.style.display = "flex"
 
-    var data = document.getElementById('bulletin');
+
+    
+    var data = document.getElementById('section')!;
     //Id of the table
+    
+      data.style.paddingLeft = "70px";
+      data.style.paddingRight = "70px";
+      data.style.paddingTop = "70px";
+      data.style.fontSize = "18px";
     html2canvas(data!, { scale: 2 }).then(canvas => {
 
       // Few necessary setting options  
@@ -56,27 +69,96 @@ export class StudentBulletinComponent implements OnInit {
       let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
       let position = 0;
       pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
-      pdf.save(`fiche_paie ${name}.pdf`);
+      pdf.save(`releve_note_${this.inscrit.idEtudiant.nom}_${this.inscrit.idEtudiant.prenom}.pdf`);
       button.style.display = "block"
+      head.style.display = "none"
+      foot.style.display = "none"
     });
   }
+  // imprimer() {
+  //   const head = document.querySelector('.head') as HTMLElement;
+  //   const button = document.getElementById('btn-contenair') as HTMLElement;
+  //   const backButton = document.getElementById('back-button') as HTMLElement;
+  
+  //   // Masquer les boutons
+  //   head.style.display = 'block';
+  //   button.style.display = "none";
+  //   backButton.style.display = "none";
+  
+
+  //   var data = document.querySelector('.bulletin') as HTMLElement;
+  //   var foot = document.getElementById('foot') as HTMLElement;
+  //   foot.style.display = 'block';
+  //   foot.style.paddingBottom = '70px';
+  //   foot.style.paddingLeft = '70px';
+  //   foot.style.paddingRight = '70px';
+  //     data.style.paddingLeft = "70px";
+  //     data.style.paddingRight = "70px";
+  //     data.style.paddingTop = "70px";
+  //     data.style.fontSize = "18px";
+  //     console.log(data, "data");
+  //   //   //Id of the table
+  //   html2canvas(data!, { scale: 2 }).then(canvas => {
+  //     const contentDataURL = canvas.toDataURL('image/png');
+  //     let imgWidth = 208;
+  //     let imgHeight = (canvas.height * imgWidth) / canvas.width;
+  //     let pdf = new jsPDF('p', 'mm', 'a4'); // Taille A4 du PDF
+  //     let position = 0;
+      
+  
+  //     // Ajout de l'image
+  //     pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+     
+  //     // Préparation des données pour le tableau
+  //     const tableData : any[] = [];
+  //     this.notes.forEach(note => {
+  //         note.ues.modules.forEach((module, index) => {
+  //             tableData.push([
+  //                 index === 0 ? note.ues.nomUE : '',
+  //                 module.nomModule || '',
+  //                 index === 0 ? note.coefUe : '',
+  //                 index === 0 ? note.session : '',
+  //                 module.noteModule || '',
+  //                 '',
+  //                 index === 0 ? note.moyenUe : '',
+  //                 ''
+  //             ]);
+  //         });
+  //     });
+  
+  //     // Génération du tableau après l'image
+  //     autoTable(pdf, {
+  //         startY: imgHeight + 10, // Position en dessous de l'image
+  //         head: [['UE', 'ECUE', 'Coefficient', 'session', 'Moyenne', 'PJ ECUES', 'Moyenne UE', 'PJ UE']],
+  //         body: tableData,
+  //     });
+  
+  //     // Sauvegarde du fichier PDF
+  //     pdf.save('releve_de_note.pdf');
+  //     this.isImprime = false;
+  //     backButton.style.display = "block";
+  //     head.style.display = "none";
+  // });
+  // }  
+  
   // -------------------------
 
   load_student() {
     this.root.queryParams.subscribe(params => {
       this.idStudent = +params['id'];
+      this.inscriptionService.getInscriptionById(this.idStudent).subscribe(student => {
+        this.inscrit = student;
+        console.log(this.inscrit, "student")
+        this.load_semestre()
+      });
     });
 
-    this.studentService.getStudent_by_id(this.idStudent).subscribe(student => {
-      this.students = student;
-      console.log(this.students, "student")
-      this.load_semestre()
-    });
+    
 
   }
   load_semestre() {
 
-    this.semestreService.getCurrentSemestresByIdNivFiliere(this.students.idClasse?.idFiliere?.id!).subscribe(result => {
+    this.semestreService.getCurrentSemestresByIdNivFiliere(this.inscrit.idClasse?.idFiliere?.id!).subscribe(result => {
       result.forEach(res => {
         if (!this.semestres.some(sem => sem.id == res.id)) {
           this.semestres.push(res)
@@ -89,25 +171,8 @@ export class StudentBulletinComponent implements OnInit {
 
   onSelect(event: any) {
     const idSemestre = event.target.value;
-    let sum: number = 0
-    let sumCoef : number = 0
     this.studentService.getAllNoteByIdStudent(this.idStudent, idSemestre).subscribe(note => {
       this.notes = note;
-      this.notes.forEach(n =>{
-       sum += n.noteUeCoefficient
-       sumCoef += n.coefficientUe
-      
-      })
-      sumCoef = sumCoef -1
-      console.log(sum, "sum", sumCoef);
-      this.moyenneGenerale = sum / sumCoef
-      // --------round 2 number after  comma
-      this.moyenneGenerale = Math.round(this.moyenneGenerale * 100.0)/100.0
-      // this.moyenneGenerale = Math.round(this.moyenneGenerale)
-      if(this.notes.length === 0){
-        // this.pageTitle.showErrorToast("Auccune notes est disponible ")
-        this.toast.warning("Les notes de l'étudiant sont indisponible")
-      }
       console.log(this.notes, "notes student")
 
     });
@@ -120,12 +185,6 @@ export class StudentBulletinComponent implements OnInit {
     const date = new Date();
     const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long',  year: 'numeric'};
     return new Intl.DateTimeFormat('fr-FR', options).format(date);
-  }
-
-  // -----------------load admin
-  load_admin() {
-    const adminData =  sessionStorage.getItem('scolarite');
-    this.admin = JSON.parse(adminData!)
   }
 
 }

@@ -12,7 +12,6 @@ import { EnseignantPrDetailsComponent } from '../Admin/Views/enseignant-pr-detai
 import { StudentNoteComponent } from '../Admin/Views/student-note/student-note.component';
 import { AllNotesSemestreComponent } from '../Admin/Views/all-notes-semestre/all-notes-semestre.component';
 import { EtudiantsDeLaClasseComponent } from '../Admin/Views/etudiants-de-la-classe/etudiants-de-la-classe.component';
-import { StudentEditComponent } from '../Admin/Component/student-edit/student-edit.component';
 import { TeachersEditComponent } from '../Admin/Component/teachers-edit/teachers-edit.component';
 import { StudentBulletinComponent } from '../Admin/Component/student-bulletin/student-bulletin.component';
 import { FicheDePaieComponent } from '../Admin/Component/fiche-de-paie/fiche-de-paie.component';
@@ -22,7 +21,7 @@ import { AddAdminComponent } from '../Admin/Component/add-admin/add-admin.compon
 import { DerPaiListComponent } from '../DER/der-pai-list/der-pai-list.component';
 import { AdminListComponent } from '../DG/admin-list/admin-list.component';
 import { MyAccuntComponent } from '../DG/my-accunt/my-accunt.component';
-import { ForgotPasswordComponent } from '../Password/forgot-password/forgot-password.component';
+import { NotificationComponent } from '../Admin/notification/notification.component';
 
 const routes: Routes = [{path: "", component: SidebarComponent,
     
@@ -41,7 +40,7 @@ const routes: Routes = [{path: "", component: SidebarComponent,
       {path: 'admin-list', component: AdminListComponent, data:{title: "Les Administrateurs"}},
       {path: 't-edit', component: TeachersEditComponent, data:{title: "INFORMATIONS DE L'ENSEIGNANT"}},
 
-      {path: 'student-bulletin', component: StudentBulletinComponent},
+      {path: 'student-bulletin', component: StudentBulletinComponent, data:{title: "Relever de note"}},
       {path: 'fiche-de-paie-component', component: FicheDePaieComponent},
       {path: 'fiche-enseignant', component: EnseignantFichePaieComponent},
       {path: 'add-admin', component: AddAdminComponent},
@@ -53,13 +52,11 @@ const routes: Routes = [{path: "", component: SidebarComponent,
       {path: 'enseignant-pre-detail', component: EnseignantPrDetailsComponent},
       {path: 'all-notes', component: AllNotesSemestreComponent, data:{title: "Notes du Semestre"}},
      
-     
+      {path: 'notifications', component: NotificationComponent, data:{title: "Notifications"}},
+
     ]
-
-
   },
 
- 
 ]
   
 @NgModule({

@@ -145,5 +145,18 @@ export class SinginComponent implements OnInit {
     window.history.back();
   }
 
+  // abrevigate filiere name
+  abreviateFiliereName(filiereName: string) : string{
+    const words = filiereName.split(' ');
+    // Garder uniquement les mots de plus de 3 lettres pour l'abréviation
+    const abbreviation = words.filter(word => word.length > 3)
+     .map(word => word[0].toUpperCase())
+     .join('');
+     if(abbreviation.includes('EEER')){
+      return '3ER'
+     }
+    return abbreviation;
+  }
+
 }
 

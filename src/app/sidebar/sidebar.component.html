@@ -5,7 +5,8 @@
       <div class="sidebar-header ">
         <img src="assets/logounivsegou.png" alt="">
         <!-- <h1>UAM</h1> -->
-        <strong>{{school?.nomSchool}}</strong>
+        <!-- <strong>{{school?.nomSchool}}</strong> -->
+         <strong>US-GESTION</strong>
       </div>
       <div class="side-child">
         <ul class="list-unstyled components">
@@ -101,6 +102,10 @@
         </div>
 
         <div class="item-image">
+          <div class="icon-new-content" (click)="toNotifications()">
+            <fa-icon [icon]="icons.bell" class="icon-new"></fa-icon>
+            <span class="badge-new">5</span>
+          </div>
           <img [src]="dataAdmin.urlPhoto" (error)="onError($event)" alt="">
           <div class="name-content">
             <span>{{dataAdmin.nom.charAt(0)}}. {{dataAdmin.prenom.toUpperCase()}}</span>

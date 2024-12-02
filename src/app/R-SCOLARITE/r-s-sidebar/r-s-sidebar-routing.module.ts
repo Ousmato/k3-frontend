@@ -18,6 +18,7 @@ import { ClassArchiveComponent } from '../../DGA/class-students/class-archive/cl
 import { RSImportComponent } from '../r-s-import/r-s-import.component';
 import { MyAccuntComponent } from '../../DG/my-accunt/my-accunt.component';
 import { AddNoteWidgetComponent } from '../../Widget/add-note-widget/add-note-widget.component';
+import { NotificationComponent } from '../../Admin/notification/notification.component';
 
 const routes: Routes = [{path: '', component: RSSidebarComponent,
   children: [
@@ -31,6 +32,7 @@ const routes: Routes = [{path: '', component: RSSidebarComponent,
     {path: 'import', component: RSImportComponent, data:{title: "IMPORTER ETUDIANTS"}},
     {path: 'my-accunt', component: MyAccuntComponent, data:{title: "Compte"}},
     {path: 'add-note-student', component: AddNoteWidgetComponent, data:{title: "AJout des notes"}},
+    {path: 'notifications', component: NotificationComponent, data:{title: "Notifications"}},
     
     {path: 'student-bulletin', component: StudentBulletinComponent, data:{title: "RELEVER DE NOTES"}},
     {path: 'all-notes', component: AllNotesSemestreComponent, data:{title: "NOTES DU SEMESTRE"}},

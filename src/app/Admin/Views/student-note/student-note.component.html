@@ -38,7 +38,7 @@
                             <td class="class-name" title="{{incrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}">
                                 {{incrit.idClasse.idFiliere?.idNiveau?.nom}}</td>
                             <td class="class-name" title="{{incrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}">
-                                {{incrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}</td>
+                                {{abrevigateFiliereName(incrit.idClasse.idFiliere?.idFiliere?.nomFiliere!)}}</td>
 
                             <td>{{incrit.idEtudiant.telephone}}</td>
                             <td>
@@ -46,8 +46,8 @@
                                 <div class="btn-contenaire">
                                     <a (click)="load_module_without_note(incrit)"><fa-icon [icon]="icons.plus"
                                             class="icons"></fa-icon><span>Ajouter</span></a>
-                                    <a (click)="load_bulletin(incrit.id!)"><fa-icon [icon]="icons.eye"
-                                            class="icons"></fa-icon><span>Rélever</span></a>
+                                    <!-- <a (click)="load_bulletin(incrit.id!)"><fa-icon [icon]="icons.eye"
+                                            class="icons"></fa-icon><span>Rélever</span></a> -->
                                     <!-- <a (click)="load_update(incrit)" data-bs-toggle="modal"   [attr.data-bs-target]="'#noteEdite_' + incrit.idEtudiant"><fa-icon [icon]="icons.edit" class="icons"></fa-icon><span>Modifier</span></a> -->
                                     <!-- <a><fa-icon [icon]="icons.delete"></fa-icon><span>Supprimer</span></a> -->
 
@@ -55,9 +55,6 @@
                             </td>
 
                         </tr>
-                        <!-- ----------------------------------------------modal update notes----------- -->
-
-
                     </ng-container>
                 </ng-container>
                 <ng-template #noResults>

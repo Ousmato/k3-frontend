@@ -39,9 +39,13 @@ export class RSHomeComponent implements OnInit{
       this.studentNumber_noInscrit = data.non_inscrit
     })
   }
-  // --------------------------go to student liste page
-  toggle_student(){
-    this.router.navigate(['/r-scolarite/etudiant'])
+  // go to student inscrit
+  toggle_studentInscrit(){
+    this.router.navigate(['/r-scolarite/etudiant'],{queryParams: {state: 'inscrit'}});
+  }
+  // go to student not inscrit
+  toggle_studentNotInscrit(){
+    this.router.navigate(['/r-scolarite/etudiant'],{queryParams: {state: 'not-inscrit'}});
   }
 
   toggle_class(){

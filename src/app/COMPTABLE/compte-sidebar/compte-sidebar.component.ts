@@ -135,4 +135,9 @@ load_admin(){
   toAccunt(){
     this.router.navigate(['/comptable/my-accunt'], {queryParams:{id: this.dataAdmin.idAdministra}})
   }
+
+  // got to notifications
+  toNotifications(){
+    this.router.navigate(['/comptable/notifications']);
+  }
 }

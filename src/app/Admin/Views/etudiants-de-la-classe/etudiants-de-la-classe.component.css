@@ -5,8 +5,8 @@ main{
     align-items: flex-start;
     justify-content: flex-start;
     width: 100%;
-
-    padding-top: 20px;
+    height: 85vh;
+    padding-top: 10px;
 }
 a button{
     margin-bottom: 30px;
@@ -21,6 +21,22 @@ tr td{
     font-size: 16px;
     text-overflow: ellipsis;
 }
+
+select:focus{
+    outline: none;
+    border: none;
+}
+.select {
+    height: 35px;
+    width: 100px;
+    /* margin-: 10px; */
+    background-color: var(--primary);
+    color: var(--secondary);
+    border-radius: 5px;
+    padding: 0 5px;
+    outline: none;
+    border: none;
+  }
 
 span{
     margin-left: 5px;
@@ -55,6 +71,23 @@ img{
 }
 .btn-contenaire{
     cursor: pointer;
+}
+.btn-contenaire a{
+    font-size: 12px;
+    padding: 5px;
+    display: flex;
+    border: 1px var(--primary) solid;
+    border-radius: 5px;
+    /* flex-direction: column; */
+    justify-content: center;
+    align-items: center;
+    color: var(--primary);
+    &:hover{
+        color: var(--primary);
+        border-color: var(--secondary);
+        background-color: var(--secondary);
+       cursor: pointer;
+    }
 }
 .table-container{
     height: 400px;

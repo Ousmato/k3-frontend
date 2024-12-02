@@ -29,9 +29,11 @@ export class ClassStudentsComponent implements OnInit {
   idNivFiliere!: number;
   annees: AnneeScolaire [] = []
 
+  currentYear!: number
+
   classeSelect!: ClassRoom | null 
 
-  ueList: any[] = [];
+  // ueList: any[] = [];
   list_checked: any[] = [];
   isDesabled: boolean = false;
   isShow_add_module: boolean = false
@@ -53,12 +55,8 @@ export class ClassStudentsComponent implements OnInit {
     this.getPermission();
     this.loadClasses();
     this.get_annees();
-    const formGroupControls: any = {};
-    this.ueList.forEach(ue => {
-      formGroupControls[ue.id] = new FormControl(false);
-    });
-
-    this.addModules = new FormGroup(formGroupControls);
+    const date = new Date();
+    this.currentYear = date.getFullYear();
 
     this.sideBarService.currentSearchTerm.subscribe(term => {
       this.searchTerm = term;
@@ -66,8 +64,6 @@ export class ClassStudentsComponent implements OnInit {
       this.filterClasse_L1();
       this.filterClasse_L2();
       this.filterClasse_L3();
-
-
 
     });
   }
@@ -85,7 +81,7 @@ export class ClassStudentsComponent implements OnInit {
     return this.dropdownStates[id] || false;
   }
 
-  // ------------------------------------------get all classRoom
+  //get all classRoom
   loadClasses(): void {
 
     this.service.getAllCurrentClassOfYear().subscribe((classRoms: ClassRoom[]) => {
@@ -121,7 +117,7 @@ export class ClassStudentsComponent implements OnInit {
 
     this.service.getAllArchivesByClasseIdNivFil(classe.idFiliere?.id!).subscribe(result => {
       this.classesArchives = result
-      // console.log(this.classesArchives, "arch99999999999999")
+      console.log(this.classesArchives, "arch99999999999999")
     })
   }
   // ---------------------get permission to access
@@ -173,10 +169,11 @@ export class ClassStudentsComponent implements OnInit {
     }
 
   }
-  //  -------------------------hover bottom button 
-  toggle_to_noteSemestre(idClasse: number) {
+
+  //hover bottom button 
+  toggle_to_noteSemestre(idClasse: number, idNivFiliere: number) {
     const navigationExtras: NavigationExtras = {
-      queryParams: { id: idClasse }
+      queryParams: { id: idClasse, idNivFiliere: idNivFiliere },
     };
     const dga = AdminUSER()?.dga
     if (this.getPermission()) {
@@ -188,13 +185,13 @@ export class ClassStudentsComponent implements OnInit {
       this.router.navigate(['/sidebar/all-notes'], navigationExtras);
 
     }
-
   }
-  // ------------------------------link go to list students by class
-  toggle_toStudentClasse(idClasse: number) {
+
+  //link go to list students by class
+  toggle_toStudentClasse(idClasse: number, idNivFiliere: number) {
 
     const navigationExtras: NavigationExtras = {
-      queryParams: { id: idClasse }
+      queryParams: { id: idClasse, idNivFil: idNivFiliere }
     };
     const dga = AdminUSER()?.dga
     if (this.getPermission()) {

@@ -15,6 +15,7 @@ import { InscriptionService } from '../../Services/inscription.service';
 import { environment } from '../../../environments/environment';
 import { Admin } from '../../Admin/Models/Admin';
 import { AdminUSER } from '../../Admin/Models/Auth';
+import { NoteService } from '../../Services/note.service';
 
 @Component({
   selector: 'app-add-note-widget',
@@ -26,9 +27,13 @@ export class AddNoteWidgetComponent implements OnInit {
   inscrit?: Inscription;
   searchTerm: string = ""
   ues: AddUeDto[] = []
+  uesWithoutEmploi: AddUeDto[] = []
+  studentIds: number[] = []
   modules: Ecue[] = []
-  uesWithNote: AddNoteDto[] = []
+  modulesWithoutEmplois: Ecue[] = []
   empty: number[] = [1, 2, 3]
+  uesWithNote: AddNoteDto[] = []
+  uesWithNoteAndEmploi: AddNoteDto[] = []
   // @Output() closeAddNoteModal = new EventEmitter<any>();
 
   noteForm!: FormGroup;
@@ -42,11 +47,11 @@ export class AddNoteWidgetComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private studentService: EtudeService, private inscriptionService: InscriptionService,
     private pageTitle: PageTitleService, private root: ActivatedRoute, private classService: ClassStudentService,
-    public icons: IconsService, private semestreService: SemestreService) { }
+    public icons: IconsService, private semestreService: SemestreService, private noteService: NoteService) { }
   ngOnInit(): void {
     // this.load_form();
     this.loadSemestre();
-    this.loadInscription();
+    // this.loadInscription();
    
     this.admin = AdminUSER()?.scolarite;
 
@@ -108,11 +113,7 @@ export class AddNoteWidgetComponent implements OnInit {
     } else {
       console.error('Form not found for module ID:', id);
     }
-
-
     return
-
-
   }
 
   // get inscription by id
@@ -124,6 +125,8 @@ export class AddNoteWidgetComponent implements OnInit {
       this.inscrit = result;
       this.inscrit.idEtudiant.urlPhoto = `${environment.urlPhoto}${this.inscrit.idEtudiant.urlPhoto}`
       // console.log(this.inscrit, "inscrit")
+      // this.get_all_ids_students_with_notes(this.idClasseNivFil,this.idSemestre, this.inscrit.idClasse.id!)
+
     })
   }
   loadSemestre() {
@@ -138,17 +141,44 @@ export class AddNoteWidgetComponent implements OnInit {
         console.log(this.semestres, "semestre")
       })
 
+      this.loadInscription();
 
     })
 
   }
-  // ---------------load all semestre oc classe
+  // load all semestre oc classe
 
   onSelect(event: any) {
+    this.ues = []
     this.idSemestre = event.target.value;
 
     this.get_ues_to_add_note(this.idSemestre);
 
+
+  }
+  // load all modules withou
+  getModulesWithoutEmplois(){
+    this.classService.getModulesWithoutEmploi(this.inscrit?.idClasse.idFiliere?.id!, this.idSemestre).subscribe(
+      result => {
+        this.uesWithNoteAndEmploi = result;
+
+        console.log(this.modulesWithoutEmplois, "modules without emplois");
+        console.log(this.ues, "ues");
+
+
+        result.forEach(rlt => {
+          if (!this.uesWithoutEmploi.some(ue => ue.idUe.id === rlt.addUeDto.idUe.id)) {
+              this.uesWithoutEmploi.push(rlt.addUeDto);
+          }
+  
+          rlt.addUeDto.modules.forEach((m, index) => {
+              if (!this.modulesWithoutEmplois.some(mod => mod.id === m.id)) {
+                  this.modulesWithoutEmplois.push(m);
+              }
+          });
+      });
+      }
+    )
   }
 
   // get all ues to add note
@@ -169,12 +199,38 @@ export class AddNoteWidgetComponent implements OnInit {
               }
           });
       });
+      // this.get_all_ids_students_with_notes(this.idClasseNivFil,this.idSemestre, this.inscrit!.idClasse.id!)
+    this.getModulesWithoutEmplois();
+
   });
   
 
   }
 
+  calculate(){
+    this.noteService.calculateNote(this.idInscription, this.idSemestre).subscribe({
+      next: (data) => {
+        this.pageTitle.showSuccessToast(data.message);
+      },
+      error: (error) => {
+        this.pageTitle.showErrorToast(error.error.message);
+      }
+    })
+  }
+
   goBack(){
     window.history.back()
   }
+
+  // get all ids of all students have notes for all modules
+  get_all_ids_students_with_notes(idClasseNivFil: number, idSemestre: number, idClasse: number) {
+    this.noteService.getAllStudentIdsBySemestre(idSemestre, idClasseNivFil, idClasse).subscribe(result =>{
+      this.studentIds = result;
+      console.log(this.studentIds, "studentIds")
+      // if(this.studentIds.includes(this.inscrit?.id!)){
+
+      // }
+    })
+  }
+
 }

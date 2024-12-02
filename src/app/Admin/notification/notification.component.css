@@ -1,0 +1,63 @@
+main{
+    width: 100%;
+    height: 80vh;
+
+}
+
+.grid-container {
+    position: relative;
+    /* padding: 10px; */
+    margin: 0 10px;
+    border-radius: 8px;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 10px;
+  }
+  
+  .grid-item {
+    margin-top: 20px;
+   display: flex;
+   gap: 20px;
+    padding: 15px;
+    border: 1px solid var(--primo-light);
+    border-radius: 8px;
+    color: black;
+    background-color: var(--primo-light);
+    /* &:hover{
+        background-color: var(--primo-dark);
+        color: black;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    } */
+  }
+
+  .grid-item img{
+    height: 40px;
+    width: 40px;
+    border: 1px solid var(--tertiary);
+    border-radius: 50%;
+    object-fit: cover;
+  }
+.notification-content{
+    height: 90%;
+    position: relative;
+    overflow-y: auto;
+}
+/* Personnalisation de la barre de défilement */
+.notification-content::-webkit-scrollbar {
+    width: 5px; /* Largeur de la barre de défilement */
+  }
+  
+  .notification-content::-webkit-scrollbar-track {
+    background: white; /* Couleur de l'arrière-plan de la piste */
+    border-radius: 10px; /* Coins arrondis de la piste */
+  }
+  
+  .notification-content::-webkit-scrollbar-thumb {
+    background: var(--tertiary); /* Couleur de la barre de défilement */
+    border-radius: 10px; /* Coins arrondis de la barre */
+  }
+  
+  .notification-content::-webkit-scrollbar-thumb:hover {
+    background: var(--primary); /* Couleur de la barre au survol */
+  }

@@ -171,5 +171,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
     // sessionStorage.clear();
 
   }
+
+  // got to notifications
+  toNotifications(){
+    this.router.navigate(['/sidebar/notifications']);
+  }
 }
 

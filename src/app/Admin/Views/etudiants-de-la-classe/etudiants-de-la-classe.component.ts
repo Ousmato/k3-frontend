@@ -7,6 +7,8 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { StudentPages } from '../../Models/Pagination-module';
 import { SideBarService } from '../../../sidebar/side-bar.service';
 import { environment } from '../../../../environments/environment';
+import { Admin } from '../../Models/Admin';
+import { AdminUSER } from '../../Models/Auth';
 
 @Component({
   selector: 'app-etudiants-de-la-classe',
@@ -21,6 +23,7 @@ export class EtudiantsDeLaClasseComponent implements OnInit{
   student!: Student;
   idClasse !: number
 
+  adminDga!: Admin
   studentspage?: StudentPages;
   page = 0;
   size = 20;
@@ -34,6 +37,7 @@ export class EtudiantsDeLaClasseComponent implements OnInit{
   ngOnInit(): void {
     this.loadStudents();
 
+    this.adminDga = AdminUSER()?.dga;
     this.sideBarService.currentSearchTerm.subscribe(term => {
       this.searchTerm = term;
       this.filterStudents();
@@ -77,15 +81,7 @@ export class EtudiantsDeLaClasseComponent implements OnInit{
   goBack() {
     window.history.back();
   }
-  // ------------------------get permission
-  getPermission(): boolean {
-    const autorize = sessionStorage.getItem('dga');
-    if(autorize){
-     this.permission = true
-      return true;
-    }
-    return false
-  }
+  
     //  -------------------------------load bulletin
     load_bulletin(idStudent: number){
       const navigationExtrat: NavigationExtras = {
@@ -94,12 +90,16 @@ export class EtudiantsDeLaClasseComponent implements OnInit{
         }
 
       }
-      if(this.getPermission()){
-        this.router.navigate(['/dga/student-bulletin'], navigationExtrat);
-      }else{
-        this.router.navigate(['/r-scolarite/student-bulletin'], navigationExtrat)
-      }
       
+      
+      if(AdminUSER()?.dg){
+      this.router.navigate(['/sidebar/student-bulletin'], navigationExtrat);
+
+      }else{
+      this.router.navigate(['/r-scolarite/student-bulletin'], navigationExtrat);
+
+      }
+
    
     }
   // --------------------------------buttons pagination

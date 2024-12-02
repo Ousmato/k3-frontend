@@ -8,6 +8,7 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { SidebarComponent } from '../../sidebar/sidebar.component';
 import { EventServiceService } from '../../Services/event-service.service';
 import { environment } from '../../../environments/environment';
+import { AdminUSER } from '../../Admin/Models/Auth';
 
 @Component({
   selector: 'app-my-accunt',
@@ -51,7 +52,7 @@ export class MyAccuntComponent implements OnInit {
         this.update_form.get('email')?.setValue(admin.email);
         this.update_form.get('telephone')?.setValue(admin.telephone);
         this.update_form.get('sexe')?.setValue(admin.sexe);
-        if (this.admin.role == Admin_role.DG.toString()) {
+        if (AdminUSER()?.dg) {
           console.log(this.admin.role)
           this.permission = true
         }

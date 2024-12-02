@@ -1,113 +1,163 @@
-<main>
-    <div (click)="goBack()" class="back-button">
+<main class="bulletin" >
+    <div id="bulletin__content">
+         <div id="back-button" (click)="goBack()" class="back-button">
         <fa-icon [icon]="icons.back"></fa-icon>
-    </div>
-
-    <section class="section-head">
-        <h5>Relever de notes
-
-        </h5>
-        <div class="info">
-            <div class="coll">
-                <div class="img">
-                    <img src="/assets/logounivsegou.png" alt="">
-                </div>
-                <p>Anneé universitaire : 2024 - 2025</p>
-                <p>Nom: {{students.nom}}</p>
-                <p>Prenom : {{students.prenom}}</p>
-            </div>
-            <div class="coll">
-                <p>Semestre :
-                    <select (change)="onSelect($event)">
-                        <option selected disabled value="">Semestre</option>
-                        <option *ngFor="let sem of semestres" [value]="sem.id">{{sem.nomSemetre}}</option>
-                    </select>
-                </p>
-                <p>Date de naissance : {{students.dateNaissance}}</p>
-                <p>Lieu de naissance : {{students.lieuNaissance}}</p>
-
-            </div>
-            <div class="coll">
-                <p>Université de Ségou</p>
-                <p>Institut universitaire de Formation Professionnel </p>
-                <p>Mention : {{students.idClasse?.idFiliere?.idNiveau?.nom}}
-                    {{students.idClasse?.idFiliere?.idFiliere?.nomFiliere}}</p>
+        </div>
+        <div id="btn-contenair" class="btn-contenair" *ngIf="isImprime">
+            <select class="select" (change)="onSelect($event)">
+                <option selected disabled value="">Semestre</option>
+                <option *ngFor="let sem of semestres" [value]="sem.id">{{sem.nomSemetre}}</option>
+            </select>
+            <div class="btn-content">
+                <button *ngIf="adminRscolarite" (click)="imprimer()" type="button">
+                    Imprimer</button>
+        
             </div>
         </div>
-
-    </section>
-
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th >UE</th>
-                <th>ECUE</th>
-
-                <th class="coef">Coefficient</th>
-                <th>Session</th>
-                <th>Moyenne</th>
-                <th>PJ <br>ECUE</th>
-                <th>Moyenne <br> UE</th>
-                <th>PJ<br> UE</th>
-                <!-- <th>Mensions</th> -->
-            </tr>
-        </thead>
-        <tbody>
-            @if (notes.length > 0 ) {
-            <tr *ngFor="let ue of notes">
-                <td>{{ ue.nomUE }}</td>
-                <td>
-                    @for (item of ue.modules; track $index) {
-
-                    {{item.nomModule}} <br>
-                    }
-                </td>
-                <td class="coef">
-
-
-                    {{ue.coefficientUe}} <br>
-
-                </td>
-                <td>{{ue.session}}</td>
-                <td>
-                    @for (item of ue.modules; track $index) {
-
-                    {{item.noteModule}} <br>
-                    }
-                </td>
-                <td></td>
-                <td>{{ue.noteUE}}</td>
-                <td></td>
-
-            </tr>
-            }@else {
-            <tr>
-                <td colspan="9">Aucune note pour trouver</td>
-            </tr>
-            }
-
-        </tbody>
-    </table>
-    <div class="info-footer">
-        <p> Moyenne du semestre : {{moyenneGenerale}}</p>
-        <p> Point Jury : </p>
-        <p> Validation du semestre  : </p>
     </div>
-<div class="footer">
-     <div class="signature">
-        <p>Ségou le, {{getCurrentDate()}}<br>
-          Le chéf de Département
-        </p>
-        <p>Dr  {{admin.nom.charAt(0).toLocaleUpperCase()}} {{admin.prenom.toLocaleUpperCase()}}<br>
-          Maître assistant
-        </p>
-      </div>
-
-</div>
-<div class="btn-content">
-    <button (click)="imprimer()" type="button"><fa-icon [icon]="icons.pdf" class="pdf-icon"></fa-icon> Imprimer</button>
-
-</div>
-
    
+    <section id="section">
+        <section  id="bulletin" class="section-head" >
+                    <h5>Relever de notes
+            
+                    </h5>
+                    <div class="info">
+                        <div class="coll">
+                            <div class="img">
+                                <img src="/assets/logounivsegou.png" alt="">
+                            </div>
+                            <p>Anneé universitaire : 2024 - 2025</p>
+                            <p>Nom: {{inscrit.idEtudiant.nom}}</p>
+                            <p>Prenom : {{inscrit.idEtudiant.prenom}}</p>
+                        </div>
+                        <div class="coll">
+                            <p>Semestre :
+                                <select (change)="onSelect($event)">
+                                    <option selected disabled value="">Semestre</option>
+                                    <option *ngFor="let sem of semestres" [value]="sem.id">{{sem.nomSemetre}}</option>
+                                </select>
+                            </p>
+                            <p>Date de naissance : {{inscrit.idEtudiant.dateNaissance}}</p>
+                            <p>Lieu de naissance : {{inscrit.idEtudiant.lieuNaissance}}</p>
+            
+                        </div>
+                        <div class="coll">
+                            <p>Université de Ségou</p>
+                            <p>Institut universitaire de Formation Professionnel </p>
+                            <p>Mention : {{inscrit.idClasse.idFiliere?.idNiveau?.nom}}
+                                {{inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}</p>
+                        </div>
+                    </div>
+            
+                </section>
+            
+            
+        
+            <div class="table-container">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>UE</th>
+                            <th>ECUE</th>
+                            <th class="coef">Coefficient</th>
+                            <th>Session</th>
+                            <th>Moyenne</th>
+                            <th>PJ <br>ECUE</th>
+                            <th>Moyenne <br>UE</th>
+                            <th>PJ<br>UE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Vérifie si des notes existent -->
+                        <ng-container *ngIf="notes.length > 0; else noNotes">
+                            <ng-container *ngFor="let note of notes">
+                                <!-- Boucle sur les modules de l'UE -->
+                                <ng-container *ngFor="let module of note.ues.modules; let i = index">
+                                    <tr>
+                                        <!-- Affiche le nom de l'UE uniquement pour la première ligne des modules -->
+                                        <th *ngIf="i === 0" [attr.rowspan]="note.ues.modules.length">
+                                        
+                                        @if(note.ues.modules.length == 1){
+                                            {{ note.ues.nomUE }}
+                                        }@else {
+                                            <span> {{ note.ues.nomUE }}</span>
+                                        }
+                                        </th>
+                                        <!-- Nom du module -->
+                                        <td class="mod-td">{{ module.nomModule }}</td>
+                                        <!-- Coefficient uniquement sur la première ligne -->
+                                        <td id="coef-td" *ngIf="i === 0" [attr.rowspan]="note.ues.modules.length">
+                                        @if(note.ues.modules.length == 1){
+                                            {{ note.coefUe }}
+                                        }@else {
+                                            <span> {{ note.coefUe }}</span>
+                                        }
+                                            
+                                        </td>
+                                        <!-- Session (peut être à compléter) -->
+                                        <td *ngIf="i === 0" [attr.rowspan]="note.ues.modules.length">
+                                            @if(note.ues.modules.length == 1){
+                                                {{ note.session }}
+                                            }@else {
+                                                <span> {{ note.session }}</span>
+                                            }
+                                        </td>
+                                        <!-- Note du module -->
+                                        <td>{{ module.noteModule }}</td>
+                                        <!-- PJ ECUE (peut être à compléter) -->
+                                        <td></td>
+                                        <!-- Moyenne UE uniquement sur la première ligne -->
+                                        <td *ngIf="i === 0" [attr.rowspan]="note.ues.modules.length">
+                                            @if(note.ues.modules.length === 1){
+                                                {{ note.moyenUe }}
+                                            }@else {
+                                                <span> {{ note.moyenUe }}</span>
+                                            }
+                                        </td>
+                                        <!-- PJ UE uniquement sur la première ligne -->
+                                        <td *ngIf="i === 0" [attr.rowspan]="note.ues.modules.length">
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </ng-container>
+                        </ng-container>
+                        <!-- Si aucune note n'existe -->
+                        <ng-template #noNotes>
+                            <tr>
+                                <td class="text-center" colspan="8">Aucune note trouvée</td>
+                            </tr>
+                        </ng-template>
+                    </tbody>
+                </table>
+                
+            </div>
+
+            <div id="foot" class="bulletin">
+                <div class="info-footer" >
+                    <p> Moyenne du semestre : 
+                        @for (note of notes; track $index) {
+                            @if ($index == 0) {
+                                {{note.moyenGeneral}}
+                            }
+                    
+                        }
+                       </p>
+                    <p> Point Jury : </p>
+                    <p> Validation du semestre : </p>
+                </div>
+                <div id="footer" class="footer" *ngIf="adminRscolarite">
+                    <div class="signature">
+                        <p>Ségou le, {{getCurrentDate()}}<br>
+                            Le chéf de Département
+                        </p>
+                        <p>Dr {{adminRscolarite.nom.charAt(0).toLocaleUpperCase()}}
+                            {{adminRscolarite.prenom.toLocaleUpperCase()}}<br>
+                            Maître assistant
+                        </p>
+                    </div>
+            
+                </div>
+                
+            </div>
+    </section>
 </main>

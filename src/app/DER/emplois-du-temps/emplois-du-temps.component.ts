@@ -187,6 +187,6 @@ export class EmploisDuTempsComponent implements OnInit {
       console.error("idSemestre is not a valid number");
       return; // Sortir de la fonction si la valeur n'est pas valide
   }
-    this.loadModulesByClass(this.classeSelect?.idFiliere?.id!, +idSemestre);
+    this.loadModulesByClass(this.classeSelect.idFiliere?.id!, +idSemestre);
   }
 }

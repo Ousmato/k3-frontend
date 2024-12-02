@@ -3,7 +3,7 @@
   <div id="back" (click)="goBack()" class="back-button">
     <fa-icon [icon]="icons.back"></fa-icon>
   </div>
- 
+
   <section class="section-head">
 
     <div class="month-contenaire">
@@ -12,10 +12,14 @@
     </div>
 
 
+    <div id="logo" class="logo-masque-content">
+      <img src="assets/logounivsegou.png" alt="alt">
+
+    </div>
     <div id="idContent" class="btn-contenaire">
       <div class="child-1">
-        <button *ngIf="permission && group !== null " (click)="go_toList(emplois?.id!)"
-          class="btn btn-valid-emplois" type="button"><fa-icon [icon]="icons.list"></fa-icon>
+        <button *ngIf="permission && group !== null " (click)="go_toList(emplois?.id!)" class="btn btn-valid-emplois"
+          type="button"><fa-icon [icon]="icons.list"></fa-icon>
           Groupe Listes</button>
         <button *ngIf="permission" (click)="imprimer()" class="btn btn-valid-emplois" type="button"><fa-icon
             [icon]="icons.pdf" class="pdf-icon"></fa-icon> Imprimer</button>
@@ -23,11 +27,13 @@
             [icon]="icons.edit"></fa-icon> Editer</button>
 
         <button *ngIf="permission" class="btn btn-show-form" type="button"
-          (click)="to_groupe(emplois?.idClasse?.id!, emplois?.id!)"><fa-icon [icon]="icons.user"></fa-icon>
+          (click)="to_groupe(emplois?.idClasse?.id!, emplois?.id!, emplois?.idSemestre?.idAnneeScolaire?.id!)"><fa-icon
+            [icon]="icons.user"></fa-icon>
           Groupe</button>
-        <button class="btn btn-show-form" *ngIf="scolarite || permission" type="button" (click)="to_configure()"><fa-icon
-            [icon]="icons.setting"></fa-icon> Configurer</button>
+        <button class="btn btn-show-form" *ngIf="scolarite || permission || secretaire" type="button"
+          (click)="to_configure()"><fa-icon [icon]="icons.setting"></fa-icon> Configurer</button>
       </div>
+      
 
     </div>
 
@@ -45,11 +51,11 @@
     </div>
     <div class="children">
       @for (salle of listSalle; track $index) {
-      @for (item of salle.typeSeance; track $index) {
-      @if (item.toString().toLocaleUpperCase() == 'CM') {
-      <h4>Salle CM : {{salle.salle.nom}} </h4>
-      }
-      }
+        @for (item of salle.typeSeance; track $index) {
+          @if (item.toString().toLocaleUpperCase() == 'CM') {
+          <h4>Salle CM : {{salle.salle.nom}} </h4>
+          }
+        }
 
       }
     </div>
@@ -88,10 +94,11 @@
 
                       <div class="seance-content">
                         <div class="childre-1">
-                          @if(seance.seanceType.toString() == 'examen'){
+                          @if(seance.seanceType.toString().toLowerCase() === "examen"){
                           <strong>
                             {{seance.seanceType.toLocaleUpperCase()}}
-                          </strong>
+                          </strong> <br>
+                          <!-- {{seance.nomTeacher.charAt(0).toUpperCase()}}. {{seance.prenomTeacher}} -->
                           }@else {
 
                           <strong>
@@ -100,7 +107,14 @@
                           </strong><br>
                           @if (seance.seanceType.toString() == 'td') {
 
-                          {{seance.groupe ? seance.groupe : ""}} <br>
+                            @for (jour of journee; track $index) {
+                              @if ($index == 0) {
+                                @for (gp of jour.groupes; track $index) {
+                                  {{gp.nom}} 
+                                }
+                            }
+                          }
+                          <!-- {{seance.groupe ? seance.groupe : ""}} <br> -->
                           <!-- {{seance.idParticipant}} <br>
                                   {{seance.nomTeacher}} -->
                           }@else {
@@ -144,17 +158,17 @@
         <div class="f-contenair">
           @for (seance of teacherConf; track $index) {
           <div class="footer">
-            <p>{{seance.nom}} {{seance.prenom}} :</p>
-            
+            <p >{{seance.nom}} {{seance.prenom}} :</p>
+
             @for (item of seance.seanceType; track $index) {
             <p> @if (item.toString() === 'cm') {
-              {{ec}} {{item.toLocaleUpperCase()}} 
+              {{ec}} {{item.toLocaleUpperCase()}}
               }
-             
+
             </p>
-             @if (item.toString() === 'td') {
-               {{item.toLocaleUpperCase()}}_{{seance.groupe}}
-              }
+            @if (item.toString() === 'td') {
+            {{item.toLocaleUpperCase()}}_{{seance.groupe}}
+            }
 
             }
           </div>

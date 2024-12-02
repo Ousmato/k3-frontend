@@ -12,6 +12,7 @@ import { SchoolService } from '../../../Services/school.service';
 import { AnneeScolaire } from '../../Models/School-info';
 import { environment } from '../../../../environments/environment';
 import { AdminUSER } from '../../Models/Auth';
+import { InscriptionService } from '../../../Services/inscription.service';
 
 @Component({
   selector: 'app-etudiants',
@@ -42,14 +43,15 @@ export class EtudiantsComponent implements OnInit {
   student_etats: { key: string, value: any }[] = []
   // urlImage!: string | ArrayBuffer
 
-  constructor(private service: EtudeService, private sideBarService: SideBarService, private route: ActivatedRoute,
+  constructor(private service: EtudeService, private inscriptionService: InscriptionService, private sideBarService: SideBarService, private route: ActivatedRoute,
     private root: Router, public icons: IconsService, private pageTitle: PageTitleService, private infoSchool: SchoolService) { }
 
   ngOnInit(): void {
+
     this.getPermission();
     this.loadStudents();
     this.get_annees();
-   
+
     this.student_etats = this.getStudentEtat();
     this.currentYear = new Date().getFullYear()
     this.sideBarService.currentSearchTerm.subscribe(term => {
@@ -97,6 +99,7 @@ export class EtudiantsComponent implements OnInit {
     });
   }
   loadStudents(): void {
+
     this.service.getSudents(this.page, this.size).subscribe(data => {
       this.formatedDataStudent(data);
 
@@ -232,13 +235,42 @@ export class EtudiantsComponent implements OnInit {
   // --------------
   formatedDataStudent(data: StudentPages) {
     this.inscrits = data.content;
-    this.inscrits.forEach((item: Inscription) => {
-      item.idEtudiant.urlPhoto = `${environment.urlPhoto}${item.idEtudiant.urlPhoto}`;
-    })
-    this.studentspage = data;
-    this.filteredItems = this.inscrits;
-    this.pages = Array.from({ length: data.totalPages! }, (_, i) => i);
-    console.log(this.pages, "pages")
+    this.route.queryParams.subscribe(params => {
+      // On essaie de récupérer d'abord le paramètre 'not-inscrit' s'il est présent
+      const param = params['state'];
+
+      if (param && param.toLowerCase().includes('not-inscrit')) {
+        console.log('not-ins' + param)
+        // Filtrer les inscriptions pour ne garder que celles où "payer" est false
+        this.inscrits = this.inscrits.filter(inscrit => inscrit.payer === false);
+      }
+      // Vérification si 'param' contient la valeur 'inscrit'
+      else if (param && param.toLowerCase().includes('inscrit')) {
+        console.log('ins' + param)
+        // Filtrer les inscriptions pour ne garder que celles où "payer" est true
+        this.inscrits = this.inscrits.filter(inscrit => inscrit.payer === true);
+      }
+      // Si aucun des deux paramètres n'est trouvé
+      else {
+        // Mettre à jour l'URL de la photo des étudiants
+        this.inscrits.forEach((item: Inscription) => {
+          if (item.idEtudiant && item.idEtudiant.urlPhoto) {
+            item.idEtudiant.urlPhoto = `${environment.urlPhoto}${item.idEtudiant.urlPhoto}`;
+          }
+        });
+      }
+
+      // Mise à jour des données générales
+      this.studentspage = data;
+      this.filteredItems = this.inscrits;
+
+      // Vérification de `data.totalPages` avant d'assigner les pages
+      if (data.totalPages != null) {
+        this.pages = Array.from({ length: data.totalPages }, (_, i) => i);
+        console.log(this.pages, "pages");
+      }
+    });
+
   }
   // ----------------------abrevigate filiere name
   abreviateFiliereName(filiere: string): string {
@@ -248,5 +280,20 @@ export class EtudiantsComponent implements OnInit {
   }
 
 
+  // sort students
+  onSorted(event: any){
+    const value: keyof Inscription = event.target.value;
+
+    console.log(value, "value")
+    console.log(this.inscrits, "inscrit")
+    this.inscrits = [...this.filterStudents()].sort((a, b) =>{
+      const valA = a[value]?.toString().toLowerCase() || '';
+      const valB = b[value]?.toString().toLowerCase() || '';
+     
+      if (valA < valB) return -1; // a avant b
+      if (valA > valB) return 1;  // a après b
+      return 0;
+    })
+  }
 
 }

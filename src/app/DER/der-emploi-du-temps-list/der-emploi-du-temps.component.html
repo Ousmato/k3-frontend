@@ -1,8 +1,5 @@
 <main class="emplois-main-contente" >
-    <!-- <div (click)="goBack()" class="back-button" *ngIf="!permission">
-        <fa-icon [icon]="icons.back"></fa-icon>
-    </div> -->
-    
+   
     <div class="btn-contenaire">
         <button *ngIf="permission" type="button"  (click)="nouveau()"><fa-icon [icon]="icons.plus"></fa-icon> Nouveau</button>
         
@@ -18,6 +15,7 @@
    </div>
    <div class="emplois-contente">
     <div class="grid-container">
+        @if(filteredEmplois().length){
         <div class="grid-item" *ngFor="let eploi of filteredEmplois()">
             <!-- <div class="section-folder"> -->
                 <div class="emploi-item" >
@@ -53,7 +51,7 @@
                         </p>
                     <!-- </div> -->
                     <div class="next-col second-child"> 
-                        <a *ngIf="permission" (click)="deleted(eploi.id!)" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> Supprimer</a>
+                        <!-- <a *ngIf="permission" (click)="deleted(eploi.id!)" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> Supprimer</a> -->
                     
                         <a *ngIf="permission" (click)="updated(eploi)" ><fa-icon [icon]="icons.edit"></fa-icon>Modifier</a>
                         <div class="button-content">
@@ -66,6 +64,9 @@
                 </div>
             <!-- </div> -->
         </div>
+    }@else {
+        <app-empty-widget></app-empty-widget>
+    }
     </div>
    </div>
     

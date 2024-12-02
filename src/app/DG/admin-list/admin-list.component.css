@@ -1,4 +1,8 @@
 
+main{
+  width: 100%;
+  height: 80vh;
+}
 .btn-contenair{
     display: flex;
     justify-content: space-between;

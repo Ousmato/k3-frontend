@@ -8,7 +8,7 @@
                 <option selected disabled value="">Choisir le semestre</option>
                 <option *ngFor="let seme of semestres" [value]="seme.id">{{seme.nomSemetre}}</option>
             </select>
-            <button >Calculer Notes</button>
+            <button *ngIf="ues.length" (click)="calculate()">Calculer moyenne</button>
             <div class="profil">
                 <div class="mage">
                     <img [src]="inscrit?.idEtudiant!.urlPhoto" alt="">
@@ -100,7 +100,61 @@
                 </div>
             </div>
         </div>
-        }
+    }
+    
+
+    @if (modulesWithoutEmplois.length > 0) {
+        <div class="line" *ngIf="modulesWithoutEmplois.length">
+            <p>Modules non programmer</p>
+        </div>
+        <div class="grid-container-modules-without">
+            <div class="grid-item-modules-without" *ngFor="let ue of uesWithoutEmploi">
+                <div class="info-folder">
+                    <h6 class="title">UE</h6>
+                    <p class="small">{{ue.idUe.nomUE}}</p>
+
+                    
+                </div>
+
+                <div class="form-content">
+                    <div class="modules-contente" *ngFor="let mod of ue.modules;  let i = index">
+                        <form >
+
+                            <input type="number" formControlName="idModule" *ngIf="false">
+                            <div class="module-name">
+                                <h6 *ngIf="i == 0" class="title">Modules</h6>
+                                <p class="small">{{mod.nomModule}}</p>
+                            </div>
+
+                            <div class="rows coef">
+                                <h6 class="title" *ngIf="i == 0">Coef</h6>
+                                <p class="small">{{mod.coefficient}}</p>
+
+                            </div>
+
+                            <div class="rows">
+                                <h6 class="title" *ngIf="i == 0">Note Examen</h6>
+                                <p class="small subtitle">
+                                    <input [value]="0" readonly>
+                                    
+                                </p>
+                            </div>
+                            <div class="rows">
+                                <h6 class="title" *ngIf="i == 0">Note Classe</h6>
+                                <p class="small" >
+                                    <input [value]="0" readonly>
+                                   
+                                </p>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            
+        </div>
+    }
     </div>
 
 </main>

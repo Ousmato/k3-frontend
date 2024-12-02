@@ -45,11 +45,7 @@
 
       </div>
     </div>
-    <!-- <div class="views" *ngIf="is_show">
-
-      <app-re-inscription-widget [student]="student!" (closeModal)="closeModal()"
-        [nextClass]="NextClassRoom"></app-re-inscription-widget>
-    </div> -->
+    
 
     <table class="table table-hover">
       <thead>
@@ -60,7 +56,7 @@
           <th>Niveau</th>
           <th>Filiere</th>
           <th>Status</th>
-          <th>Inscrit</th>
+          <!-- <th>Inscrit</th> -->
           <th>Action</th>
 
         </tr>
@@ -77,14 +73,14 @@
             <td class="class-name" title="{{inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}">
               {{abrevigateFiliere(inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere!)}}</td>
 
-            <td>{{inscrit.idEtudiant.status}}</td>
-            <td>
+            <td>{{inscrit.idEtudiant.status.toUpperCase()}}</td>
+            <!-- <td>
               <a>
                 <fa-icon [icon]="inscrit.payer ? icons.circle : icons.circle"
                   [ngStyle]="{ color: check(inscrit.idEtudiant.idEtudiant!, inscrit?.active!)  ? 'green' : 'red' }"></fa-icon>
                 <span class="text-muted small">{{ check(inscrit.idEtudiant.idEtudiant!, inscrit?.active!) ? 'inscrit(e)' : 'Non Inscrit(e)' }}</span>
               </a>
-            </td>
+            </td> -->
 
             <td>
               <!-- <div class="btn-contenaire"> -->

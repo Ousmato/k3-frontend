@@ -78,7 +78,11 @@ export class ClassStudentService {
   getAllModulesByUeId(idUe: number): Observable<Module[]> {
     return this.http.get<Module[]>(`${this.baseUrl}list-by-idUe/${idUe}`);
   }
-  //  -----------------------get all ue by classe id
+
+  getModulesWithoutEmploi(idNivFil: number, idSemestre: number): Observable<AddNoteDto[]> {
+    return this.http.get<AddNoteDto[]>(`${this.baseUrl}all-modules-without-emploi/${idNivFil}/${idSemestre}`);
+  }
+  // get all ue by classe id
   getAll_ue(idClasseNivFil: number, idSemestre: number): Observable<AddUeDto[]> {
     return this.http.get<AddUeDto[]>(`${this.baseUrl}list-ue-idClasse-idSemestre/${idClasseNivFil}/${idSemestre}`);
   }

@@ -2,7 +2,7 @@ import { Emplois } from "./Emplois";
 import { Module } from "./Module";
 import { Salles } from "./Salles";
 import { type_seance } from "./Seances";
-import { Participant } from "./Students";
+import { Participant, Student_group } from "./Students";
 import { Teacher } from "./Teachers";
 
 export interface Surveillance{
@@ -22,7 +22,7 @@ export interface Journee{
     date: Date;
     id?: number;
     idParticipant?: Participant;
-    groupe?: Participant[];
+    groupes?: Student_group[];
     seanceType: type_seance;
     heureDebut: string;
     heureFin: string;

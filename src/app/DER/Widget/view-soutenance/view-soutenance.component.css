@@ -2,7 +2,9 @@ main{
     height: 80vh;
     width: 100%;
 }
-
+strong{
+    color: black !important;
+}
 /* ----------------------back button style */
 
 .back-button{

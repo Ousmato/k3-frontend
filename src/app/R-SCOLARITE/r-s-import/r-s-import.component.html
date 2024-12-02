@@ -52,7 +52,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let student of students">
+        @if (students.length) {
+          <tr *ngFor="let student of students">
           <td>{{student.nom}}</td>
           <td>{{student.prenom}}</td>
           <td>{{student.matricule}}</td>
@@ -64,6 +65,12 @@
           <td>{{student.status}}</td>
           <td>{{student.sexe}}</td>
         </tr>
+        }@else {
+          <tr>
+            <td class="text-center" colspan="10"> Veillez importer un fichier excel conforme</td>
+          </tr>
+        }
+        
   
   
       </tbody>

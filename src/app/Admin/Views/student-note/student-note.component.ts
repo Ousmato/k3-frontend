@@ -16,6 +16,7 @@ import { NotesPages, StudentPages } from '../../Models/Pagination-module';
 import { SideBarService } from '../../../sidebar/side-bar.service';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { environment } from '../../../../environments/environment';
+import { NoteService } from '../../../Services/note.service';
 
 @Component({
   selector: 'app-student-note',
@@ -25,6 +26,7 @@ import { environment } from '../../../../environments/environment';
 export class StudentNoteComponent implements OnInit {
   searchTerm: string = '';
   inscrits: Inscription [] = [];
+  studentIds: number [] = [];
   inscrit_select!: Inscription
   notes: Notes[] = [];
   idUrl! : number;
@@ -54,12 +56,10 @@ export class StudentNoteComponent implements OnInit {
 
   constructor(public icons: IconsService, private fb: FormBuilder, private root: Router, private pageTitle: PageTitleService,
     private studentService: EtudeService, private schoolService: SchoolService, private sideBarService: SideBarService,
-    private route: ActivatedRoute, private semestreService: SemestreService, private location: Location) {}
+    private route: ActivatedRoute, private noteService: NoteService, private location: Location) {}
   ngOnInit(): void {
     this.getSchoolInfo();
     this.loadStudents();
-    // this.loadSemestre();
-    this.load_update_form();
   
   //  --------------------------------filter methode
   this.sideBarService.currentSearchTerm.subscribe(term => {
@@ -79,11 +79,13 @@ export class StudentNoteComponent implements OnInit {
 
     this.route.queryParams.subscribe(data =>{
      this.idUrl = data['id'];
+     const idNivFiliere = data['idNivFil']
      this.studentService.getStudent_ByIdClasse(this.page, this.size, this.idUrl).subscribe(data => {
       this.inscrits = data.content;
       this.inscrits.forEach((item, index) => {
        
         item.idEtudiant.urlPhoto = `${environment.urlPhoto}${item.idEtudiant.urlPhoto}`;
+        // this.noteService.getAllStudentIdsBySemestre()
       })
       this.studentPages = data;
       this.filteredItems = this.inscrits;
@@ -137,83 +139,6 @@ filterStudents() {
       this.schoolInfo = data;
     });
   }
-  // ---------------------update note
-  load_update(student: Student){
-    this.isShow_modal = true
-    this.semestreService.getCurentSemestre().subscribe(semestre =>{
-      const idSemestre = semestre
-      // this.studentService.getAllNoteByIdStudent(student.idEtudiant!, idSemestre.id!).subscribe(note =>{
-      //   note.forEach(n => {
-      //     if(!this.modules.some(module => module.id === n.idModule.id)){
-      //       this.modules.push(n.idModule)
-      //     }
-      //     this.moduleSelect = n
-          
-      //   });
-      //   this.notes = note
-        
-      // })
-    })
-  }
-  // ---------------------load update form
-  load_update_form(){
-    this.update_note_form = this.fb.group({
-      examNote: ['', [Validators.required, Validators.min(0), Validators.max(20)]],
-      classeNote: ['', [Validators.required, Validators.min(0), Validators.max(20)]],
-      idModule: ['', Validators.required],
-      // idSemestre: ['']
-    })
-  }
-  // --------------------------------------------method update
-  update_note(student: Student){
-    // const formData = this.update_note_form.value
-    // const note : Notes = {
-    //   id: this.moduleSelect!.id,
-    //   idStudents: student,
-    //   idModule: this.moduleSelect.idModule,
-    //   idSemestre: this.moduleSelect.idSemestre,
-    //   classeNote: formData.classeNote,
-    //   examNote: formData.examNote
-    // }
-    // if(this.update_note_form.valid){
-    //   this.studentService.update_note(note).subscribe({
-    //     next: (response) =>{
-    //       this.pageTitle.showSuccessToast(response.message);
-    //       // // this.loadStudents();
-    //       // this.load_update(student);
-    //     },
-    //     error: (erreur) => {
-    //       this.pageTitle.showErrorToast(erreur.error.message);
-    //     }
-    //   })
-    //   console.log(note, "note-up")
-    // }else{
-    //   this.update_note_form.markAllAsTouched();
-    //   console.log("invalid", this.update_note_form.value)
-    // }
-
-
-  }
-  // -------------------------------
-  onSelecteModule(event: any){
-    console.log("clic ici")
-    const evenSelect = event.target.value
-    this.notes.forEach(n =>{
-       console.log(this.moduleSelect, "module-select");
-      if(evenSelect == n.idModule.id){
-        if(this.moduleSelect == null){
-
-        }
-          this.moduleSelect = n
-        
-        console.log(this.moduleSelect, "module-select")
-      }
-    })
-    this.update_note_form.get('examNote')?.setValue(this.moduleSelect.examNote);
-    this.update_note_form.get('classeNote')?.setValue(this.moduleSelect.classeNote);
-    
-    // console.log(this.notesSelectModule, "module-select")
-  }
   // ------------------------------------exit button
   exit(){
     this.moduleSelect = null
@@ -252,5 +177,11 @@ filterStudents() {
     if (this.page > 0) {
       this.setPage(this.page - 1);
     }
+  }
+
+  // abrevigate filiere name
+  abrevigateFiliereName(filiereName: string): string {
+    const nameSplit = filiereName.split(' ');
+    return nameSplit.filter(word => word.length > 3).map(word => word[0].toUpperCase()).join('');
   }
 }

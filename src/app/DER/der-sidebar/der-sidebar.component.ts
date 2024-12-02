@@ -136,4 +136,9 @@ load_admin(){
   toAccunt(){
     this.router.navigate(['/der/my-accunt'], {queryParams:{id: this.dataAdmin.idAdministra}})
   }
+
+  // got to notifications
+  toNotifications(){
+    this.router.navigate(['/der/notifications']);
+  }
 }

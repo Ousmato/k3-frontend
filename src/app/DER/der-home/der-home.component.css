@@ -46,8 +46,8 @@
     justify-content: start; 
      gap: 10px;
      flex: 1;
-     border: 1px solid #ccc;
-     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.15);
+     /* border: 1px solid #ccc; */
+     /* box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.15); */
      transition: transform 0.3s, box-shadow 0.3s;
      margin-bottom: 10px;
      
@@ -99,10 +99,6 @@ p{
     height: 60px;
     width: 60px;
 }
-#calendar{
-    height: 90px;
-    width: 90px;
-}
 
 
 .child-card:last-child {
@@ -117,11 +113,7 @@ p{
 }
 
 
-.calendar-classes-content{
-    display: flex;
-    justify-content: space-between;
-    border-bottom: var(--primary) 1px solid;
-}
+
 #span{
     color: var(--primary);
 }
@@ -129,4 +121,50 @@ fa-icon{
 
     font-size: 30px;
     color: gray;
+}
+
+#calendar {
+    height: 50px;
+    width: 50px;
+}
+
+
+.child-card:last-child {
+    margin-right: 0;
+}
+
+.body-content {
+    /* background-color: #e9ecef; */
+    padding: 20px;
+    border-radius: 8px;
+    border: #ccc 1px solid;
+}
+
+.calendar-classes-content {
+    padding: 0 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--primo-light);
+    border: var(--primo-light) 1px solid;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); */
+}
+.active-contente p{
+    font-size: 12px;
+}
+.class-scrol fa-icon{
+    font-size: 16px;
+}
+.button-content button{
+    color: var(--primary) !important;
+    border: none;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+}
+.button-content fa-icon{
+    color: var(--primary);
 }

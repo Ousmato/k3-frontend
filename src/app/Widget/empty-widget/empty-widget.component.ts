@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IconsService } from '../../../Services/icons.service';
+import { IconsService } from '../../Services/icons.service';
 
 @Component({
   selector: 'app-empty-widget',
@@ -8,6 +8,8 @@ import { IconsService } from '../../../Services/icons.service';
 })
 export class EmptyWidgetComponent implements OnInit{
 
+  
+  empty: number[] = [1, 2, 3]
   constructor(public icons: IconsService) { }
 
   ngOnInit(): void {
