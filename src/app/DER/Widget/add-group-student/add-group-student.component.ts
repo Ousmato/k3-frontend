@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EtudeService } from '../../../Admin/Views/etudiants/etude.service';
+import { EtudeService } from '../../../Admin/Views/Etudiants/etude.service';
 import { IconsService } from '../../../Services/icons.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { Inscription, Participant, Student, Student_group } from '../../../Admin/Models/Students';
 import { StudentPages } from '../../../Admin/Models/Pagination-module';
 import { Emplois } from '../../../Admin/Models/Emplois';
-import { ServiceService } from '../../emplois-du-temps/service.service';
+import { ServiceService } from '../../EDT/emplois-du-temps/service.service';
 import { InscriptionService } from '../../../Services/inscription.service';
 import { Admin } from '../../../Admin/Models/Admin';
 import { SideBarService } from '../../../sidebar/side-bar.service';
@@ -60,7 +60,7 @@ export class AddGroupStudentComponent implements OnInit {
     this.root.queryParams.subscribe(param => {
       this.idClasse = +param['id'];
       const idAnnee = param['idAnnee'];
-      this.inscriptionService.getInscriptionsIdClasse(idAnnee, this.idClasse).subscribe(result =>{
+      this.service.getStudentListByIdAnneeAndIdClasse(idAnnee, this.idClasse).subscribe(result =>{
         this.inscriptions = result
         console.log(this.inscriptions, "les inscrit de la classe");
       })
@@ -121,11 +121,12 @@ export class AddGroupStudentComponent implements OnInit {
   load_participation_by_emploi(idEmploi: number) {
     this.service.getParticipantsByEmploiId(idEmploi).subscribe((data) => {
       console.log("parti----------", data)
-      data.forEach(part => {
-        if (!this.participants.some(d => d.idStudentGroup.id == part.idStudentGroup.id)) {
-          this.participants.push(part)
-        }
-      })
+      this.participants = data
+      // data.forEach(part => {
+      //   if (!this.participants.some(d => d.idStudentGroup.id == part.idStudentGroup.id)) {
+      //     this.participants.push(part)
+      //   }
+      // })
 
       console.log(this.participants, "participations");
     })
@@ -177,20 +178,25 @@ export class AddGroupStudentComponent implements OnInit {
   }
   // -----------add participant
   create_participant(list_checked: Inscription[]) {
+  
     let list_student: Participant[] = [];
 
     const formData = this.form_participants.value;
     const group_fund = this.groupes.find(g => g.id == formData.idStudentGroup);
     if (list_checked && list_checked.length > 0) {
       list_checked.forEach(inscrit => {
+        
+    const {scolarite, ...newList_cheked } = inscrit
+
         const group: Participant = {
           idStudentGroup: group_fund!,
-          idInscription: inscrit,
+          idInscription: newList_cheked,
           idAdmin: this.admin
         };
         list_student.push(group);
+        console.log(group.idInscription);
       });
-      console.log(list_student);
+      
     }
     console.log(list_student, "list to add")
     if (this.form_participants.valid) {
@@ -214,13 +220,15 @@ export class AddGroupStudentComponent implements OnInit {
 
 
   check(id: number) {
-    return this.participants.some(sg => sg.idInscription.id == id);
+    console.log(id, "check-id");
+    return this.participants.some(sg => sg.idInscription.id === id);
 
   }
   // --------compare and extrate group name
   isPresent(idStudent: number): boolean {
-    this.particip = this.participants.find(pc => pc.idInscription.idEtudiant.idEtudiant == idStudent);
-    return this.participants.some(pc => pc.idInscription.idEtudiant.idEtudiant)
+    this.particip = this.participants.find(pc => pc.idInscription.id == idStudent);
+    console.log(this.particip, "isPresent")
+    return this.participants.some(pc => pc.idInscription.id == idStudent);
   }
 // -------select groupe
 onSelect(event: any){

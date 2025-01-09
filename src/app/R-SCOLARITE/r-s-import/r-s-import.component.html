@@ -1,33 +1,21 @@
 <main>
   <div class="head-content">
-    <div class="file-check">
+    <div class="file-check" *ngIf="classes.length">
       <input type="file" id="fileUpload" (change)="onFileChange($event)">
       <label for="fileUpload">Importer <fa-icon [icon]="icons.had_point_down"></fa-icon></label>
     </div>
 
-    <form [formGroup]="formAdd" (ngSubmit)="submit()">
-      <div [ngClass]="{'select': classes.length !== 0}">
-        @if(classes.length !== 0){
-        <select formControlName="idClasse"
-          [class.is-invalid]="formAdd.get('idClasse')!.invalid && formAdd.get('idClasse')!.touched">
-          <option class="option" value="">Classes</option>
-
-          <option *ngFor="let cl of classes" [value]="cl.id">{{cl.idFiliere?.idNiveau?.nom}}
-            {{abrevigateFiliereName(cl.idFiliere?.idFiliere?.nomFiliere!)}}</option>
-        </select>
-        }
-      </div>
+    <form >
 
       <div class="select">
-        <select formControlName="idAnnee"
-          [class.is-invalid]="formAdd.get('idAnnee')!.invalid && formAdd.get('idAnnee')!.touched"
+        <select 
           (change)="onSelect($event)">
           <option class="option" value="">Promotions</option>
-          <option *ngFor="let annee of annees" [value]="annee.id">Promotion {{annee.ans}}</option>
+          <option *ngFor="let annee of annees" [value]="annee.id">Pro {{annee.ans}}-{{annee.nextYear}}</option>
         </select>
       </div>
 
-      <button *ngIf="show_add" type="submit">Enregistrer</button>
+      
     </form>
 
   </div>
@@ -36,38 +24,53 @@
     <table class="table table-hover">
       <thead>
         <tr>
+          <th>matricule</th>
           <th>Nom</th>
           <th>Prenom</th>
-  
-          <th>matricule</th>
-          <th>email</th>
-          <th>password</th>
+          <th>dateNaissance</th>
+          <th>lieu Naissance</th>
+          <th>sexe</th>
+          <th>Statuts</th>
+          <th>Diplome</th>
+          <th>Classe</th>
+          <!-- <th>Filiere</th> -->
+          <th>Nationalite</th>
   
           <th>Telephone</th>
-          <th>lieuNaissance</th>
-          <th>dateNaissance</th>
-          <th>Status</th>
-          <th>sexe</th>
+          <th>Serie</th>
+          <th>Date Inscrit°</th>
+          
+          <th>N° Etudiant</th>
+        
   
         </tr>
       </thead>
       <tbody>
-        @if (students.length) {
-          <tr *ngFor="let student of students">
-          <td>{{student.nom}}</td>
-          <td>{{student.prenom}}</td>
-          <td>{{student.matricule}}</td>
-          <td>{{student.email}}</td>
-          <td>{{student.password}}</td>
-          <td>{{student.telephone}}</td>
-          <td>{{student.lieuNaissance}}</td>
-          <td>{{student.dateNaissance}}</td>
-          <td>{{student.status}}</td>
-          <td>{{student.sexe}}</td>
+        @if (incrits.length) {
+          <tr *ngFor="let inscrit of incrits">
+            <td>{{inscrit.idEtudiant.matricule}}</td>
+          <td>{{inscrit.idEtudiant.nom}}</td>
+          <td>{{inscrit.idEtudiant.prenom}}</td>
+          <td>{{inscrit.idEtudiant.lieuNaissance}}</td>
+          <td>{{inscrit.idEtudiant.dateNaissance}}</td>
+          
+          <td>{{inscrit.idEtudiant.sexe}}</td>
+          <td>{{inscrit.idEtudiant.status}}</td>
+
+          <td>{{inscrit.idEtudiant.diplome}}</td>
+          <td>{{inscrit.idClasse.idFiliere?.idNiveau?.nom}} {{ mappers.abrevigateFiliereName(inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere!)}}</td>
+         
+          <!-- <td></td> -->
+          
+          <td>{{inscrit.idEtudiant.nationalite}}</td>
+          <td>{{inscrit.idEtudiant.telephone}}</td>
+          <td>{{inscrit.idEtudiant.series}}</td>
+          <td>{{inscrit.date}}</td>
+          <td>{{inscrit.numeroInscrit}}</td>
         </tr>
         }@else {
           <tr>
-            <td class="text-center" colspan="10"> Veillez importer un fichier excel conforme</td>
+            <td class="text-center" colspan="15"> Veillez importer un fichier excel conforme</td>
           </tr>
         }
         
@@ -76,5 +79,11 @@
       </tbody>
     </table>
   </div>
+  <div class="btn-container">
+     <button *ngIf="incrits.length" (click)="submit()" type="button">Enregistrer</button>
+  <button *ngIf="incrits.length" (click)="annuler()" class="btn-annuler" type="button">Anuler</button>
+  </div>
+ 
+  <span>{{incrits.length}} étudiants à importer</span>
   
 </main>

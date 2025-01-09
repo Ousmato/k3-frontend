@@ -23,7 +23,7 @@ export class AdminSettingWidgetComponent implements OnInit{
   }
 
   load_admin(){
-    if(this.admin.role != Admin_role.DG.toLocaleLowerCase()){
+    if(this.admin.idRole.nom != Admin_role.DG.toString().toLocaleLowerCase()){
       // console.log(this.admin.role, "666776")
       this.desable_add_button = false
     }else{

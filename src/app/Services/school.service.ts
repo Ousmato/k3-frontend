@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { finalize, Observable } from 'rxjs';
 import { AnneeScolaire, SchoolInfo } from '../Admin/Models/School-info';
 import { Response_String } from '../Admin/Models/Response_String';
 import { environment } from '../../environments/environment';
+import { LoaderService } from './loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ import { environment } from '../../environments/environment';
 export class SchoolService {
   private baseUrl = `${environment.apiUrl}Auth/`; 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private loading: LoaderService) { }
   getSchools() :Observable<SchoolInfo>{
     return this.http.get<SchoolInfo>(this.baseUrl+"read-info-school");
   }
@@ -23,8 +24,11 @@ export class SchoolService {
     return this.http.put<Response_String>(this.baseUrl+"update", formData);
   }
   // -----------------------------add annee scolaire
-  addAnnee(annee: AnneeScolaire) : Observable<Response_String>{
-    return this.http.post<Response_String>(`${this.baseUrl}add-annee-scolaire`, annee);
+  addAnnee(annee: AnneeScolaire, idAdmin: number) : Observable<Response_String>{
+    this.loading.loading()
+    return this.http.post<Response_String>(`${this.baseUrl}add-annee-scolaire/${idAdmin}`, annee).pipe(
+      finalize(() => this.loading.stopLoading())
+    );
   }
   // -------------------------------get all annee scolaire
   getAll_annee() : Observable<AnneeScolaire[]>{

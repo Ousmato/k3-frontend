@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Paie } from '../../Models/paie';
-import { EnseiService } from '../../Views/enseignant/ensei.service';
+import { EnseiService } from '../../Views/Enseignant/ensei.service';
 import { SchoolService } from '../../../Services/school.service';
 import { ActivatedRoute } from '@angular/router';
 

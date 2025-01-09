@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SeancService } from '../../Admin/Views/emplois-seance/seanc.service';
+import { SeancService } from '../../DER/EDT/emplois-seance/seanc.service';
 import { Router } from '@angular/router';
 import { type_seance } from '../../Admin/Models/Seances';
 

@@ -3,7 +3,7 @@ import { SideBarService } from './side-bar.service';
 import { IconsService } from '../Services/icons.service';
 import { SchoolService } from '../Services/school.service';
 import { SchoolInfo } from '../Admin/Models/School-info';
-import { Admin, Admin_role } from '../Admin/Models/Admin';
+import { Admin, Admin_role, AdminRoleDto } from '../Admin/Models/Admin';
 import { PageTitleService } from '../Services/page-title.service';
 import { ActivatedRoute, NavigationEnd, NavigationExtras, Router } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
@@ -11,6 +11,8 @@ import { MyAccuntComponent } from '../DG/my-accunt/my-accunt.component';
 import { EventServiceService } from '../Services/event-service.service';
 import { environment } from '../../environments/environment';
 import { AuthServiceService } from '../auth-service.service';
+import { AdminUSER } from '../Admin/Models/Auth';
+import { AdminService } from '../Services/admin.service';
 
 
 @Component({
@@ -31,6 +33,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   routerEventsSubscription!: Subscription;
 
   searchTerm: string = '';
+  postes: AdminRoleDto[] = [];
 
   school?: SchoolInfo;
   dataAdmin!: Admin
@@ -71,7 +74,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   constructor(public auth: AuthServiceService, private schoolService: SchoolService, private sidebarService: SideBarService, 
-    private eventService: EventServiceService,
+    private eventService: EventServiceService, private adminService: AdminService,
     private router: Router, public icons: IconsService, private route: ActivatedRoute) { }
 
 
@@ -128,15 +131,19 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
   // ------------------------------------------load current admin
   load_admin() {
-    const admin = sessionStorage.getItem('user');
-    // console.log("admin :", admin)
-    if (admin) {
+    // const admin = sessionStorage.getItem('user');
+    // // console.log("admin :", admin)
+    // if (admin) {
 
-      this.dataAdmin = JSON.parse(admin);
+      this.dataAdmin = AdminUSER()?.admin;
       
 
       this.dataAdmin.urlPhoto = `${environment.urlPhoto}${this.dataAdmin.urlPhoto}`
-    }
+      this.adminService.getPostesByIdCurrentAdmin(this.dataAdmin.idAdministra!).subscribe(res =>{
+        this.postes = res
+        console.log(this.postes, "postes")
+      })
+    // }
   }
  
   // --------------------------------shearch 
@@ -163,7 +170,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.isConfirm = true
   }
   refreshAdmin(admin: Admin) {
-    if (admin.role === Admin_role.DG) {
+    console.log('Refreshing', admin)
+    if (this.abreviateName(admin.idRole.nom) === Admin_role.DG.toString().toUpperCase()) {
       const adminDataString = JSON.stringify(admin)
       sessionStorage.setItem("user", adminDataString);
       return
@@ -175,6 +183,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
   // got to notifications
   toNotifications(){
     this.router.navigate(['/sidebar/notifications']);
+  }
+
+  // abrevigate name
+  abreviateName(filiere: string): string {
+    const nameWord = filiere.split(' ');
+    const word = nameWord.filter(wd => wd.length > 3).map(word => word[0].toUpperCase()).join('')
+    return word;
   }
 }
 

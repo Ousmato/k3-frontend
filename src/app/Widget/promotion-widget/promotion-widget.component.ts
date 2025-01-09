@@ -64,7 +64,7 @@ export class PromotionWidgetComponent implements OnInit {
     console.log(annee, "promotion");
     // return
     if(this.form_annee.valid){
-      this.infoSchool.addAnnee(annee).subscribe({
+      this.infoSchool.addAnnee(annee, this.admin.idAdministra!).subscribe({
         next: (result) =>{
           this.pageTile.showSuccessToast(result.message);
           this.form_annee.reset();

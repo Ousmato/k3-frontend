@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { EtudeService } from '../../Admin/Views/etudiants/etude.service';
+import { EtudeService } from '../../Admin/Views/Etudiants/etude.service';
 import { ClassStudentService } from '../../DGA/class-students/class-student.service';
 import { NavigationExtras, Router } from '@angular/router';
 import { Emplois } from '../../Admin/Models/Emplois';
-import { ServiceService } from '../emplois-du-temps/service.service';
+import { ServiceService } from '../EDT/emplois-du-temps/service.service';
 import { SalleService } from '../../Services/salle.service';
-import { EnseiService } from '../../Admin/Views/enseignant/ensei.service';
+import { EnseiService } from '../../Admin/Views/Enseignant/ensei.service';
 import { IconsService } from '../../Services/icons.service';
 import { ClassRoom } from '../../Admin/Models/Classe';
 

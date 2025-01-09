@@ -26,21 +26,21 @@
     <div class="views" *ngIf="is_show">
       <h3 class="span">Confirmation de réinscription</h3>
       <div class="container-views">
-        <p>Êtes-vous sûr de vouloir {{ check(inscrit?.idEtudiant?.idEtudiant!, inscrit?.active!) ? "Annuler l'inscription de": "Réinscrit" }} l'étudiant dans cette classe,
+        <p>Êtes-vous sûr de vouloir faire cette Opération de ré-inscription  dans cette classe,
           <span> {{NextClass.idFiliere?.idNiveau?.nom}}
             {{abrevigateFiliere(NextClass.idFiliere?.idFiliere?.nomFiliere!)}}?</span>
         </p>
-        <div class="profil">
+        <!-- <div class="profil">
           <img [src]="inscrit?.idEtudiant?.urlPhoto" (error)="onError($event)" alt="photo">
           <p>
             {{inscrit?.idEtudiant?.nom}} {{inscrit?.idEtudiant?.prenom}}<br>
             <span>{{inscrit?.idEtudiant?.status?.toUpperCase()}}</span>
           </p>
-        </div>
+        </div> -->
 
         <div class="button-cash">
           <a type="button" (click)="exitConfirm()">Annuler</a>
-          <button type="button" (click)="confirmInscription(inscrit!, NextClass.id!)">Confirmer</button>
+          <button type="button" (click)="confirmInscription(list_checked!, NextClass.id!)">Confirmer</button>
         </div>
 
       </div>
@@ -50,14 +50,15 @@
     <table class="table table-hover">
       <thead>
         <tr>
-          <th>N° D'ordre</th>
+          <th>N°</th>
+          <th *ngIf="NextClassRoom.length">Cocher</th>
           <th>Nom</th>
           <th>Prenom</th>
           <th>Niveau</th>
           <th>Filiere</th>
           <th>Status</th>
           <!-- <th>Inscrit</th> -->
-          <th>Action</th>
+          <!-- <th>Action</th> -->
 
         </tr>
       </thead>
@@ -65,6 +66,8 @@
         <ng-container *ngIf="filterStudents().length ; else noResults">
           <tr *ngFor="let inscrit of filterStudents(); let i = index">
             <td class="numerotation-clumn">{{i + 1}}</td>
+            <td *ngIf="NextClassRoom.length" class="numerotation-clumn"><input type="checkbox" (change)="student_check(inscrit.id!, $event)"
+              [checked]="is_checked(inscrit.id!)"></td>
             <td>{{inscrit.idEtudiant.nom}}</td>
             <td>{{inscrit.idEtudiant.prenom}}</td>
 
@@ -82,18 +85,17 @@
               </a>
             </td> -->
 
-            <td>
-              <!-- <div class="btn-contenaire"> -->
+            <!-- <td>
+              <div class="btn-contenaire">
                 @if(!check(inscrit.idEtudiant.idEtudiant!, inscrit?.active!)){
-                <button class="reinscrit" (click)="getStudentView(inscrit) ">Réinscrit</button>
 
                 }@else {
                 <button id="annuler" (click)="getStudentView(inscrit) ">Annuler</button>
 
                 }
 
-              <!-- </div> -->
-            </td>
+              </div>
+            </td> -->
 
           </tr>
         </ng-container>
@@ -107,5 +109,7 @@
     </table>
   </div>
 
+        <button class="btn-valide" *ngIf="list_checked.length"  (click)="getStudentView(list_checked) ">Valider</button>
+      <p class="footer-NB" *ngIf="!NextClassRoom.length && inscription.length">NB: Accune classe supperieure n'est disponible pour la re-inscription</p>
   <!-- <div class="overlay" ></div> -->
 </main>

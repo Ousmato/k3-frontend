@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { EnseiService } from '../../../Admin/Views/enseignant/ensei.service';
+import { EnseiService } from '../../../Admin/Views/Enseignant/ensei.service';
 import { Teacher, teacherConfigureDto } from '../../../Admin/Models/Teachers';
 import { Participant } from '../../../Admin/Models/Students';
-import { EtudeService } from '../../../Admin/Views/etudiants/etude.service';
+import { EtudeService } from '../../../Admin/Views/Etudiants/etude.service';
 import { Emplois } from '../../../Admin/Models/Emplois';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SalleService } from '../../../Services/salle.service';
@@ -10,7 +10,7 @@ import { Salles } from '../../../Admin/Models/Salles';
 import { Seances, type_seance } from '../../../Admin/Models/Seances';
 import { Journee } from '../../../Admin/Models/Configure_seance';
 import { ActivatedRoute } from '@angular/router';
-import { SeancService } from '../../../Admin/Views/emplois-seance/seanc.service';
+import { SeancService } from '../emplois-seance/seanc.service';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { Admin } from '../../../Admin/Models/Admin';
 import { SideBarService } from '../../../sidebar/side-bar.service';
@@ -90,7 +90,7 @@ export class DerTDComponentComponent implements OnInit {
   getAllTeacherByIdUe() {
     console.log(this.currentEmploi, "---------------")
     const idProfile = this.currentEmploi.idClasse.idFiliere?.idFiliere.id
-    this.teacherService.getAll_Teacher_By_IdUe(idProfile!).subscribe(result => {
+    this.teacherService.getAll().subscribe(result => {
       this.enseignants = result;
       console.log(this.enseignants, "enseignants");
       this.filteredItems = this.enseignants;
@@ -325,6 +325,12 @@ onRoomChange(idEnseignant: number, event: any) {
 
   onSearchChange() {
     this.sideBareService.changeSearchTerm(this.searchTerm);
+  }
+
+  // cancel all search
+  cancel(){
+    this.show_views = false;
+    this.enseignants = []
   }
  
 }

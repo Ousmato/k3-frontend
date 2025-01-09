@@ -15,5 +15,6 @@ export interface Emplois{
     seances?: Seances[]
     progess?: number
     toDay?: boolean
+    status?: string
     idAdmin: Admin
 }

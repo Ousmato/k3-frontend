@@ -5,6 +5,8 @@ import { IconsService } from '../../Services/icons.service';
 import { SchoolService } from '../../Services/school.service';
 import { PageTitleService } from '../../Services/page-title.service';
 import { faL } from '@fortawesome/free-solid-svg-icons';
+import { Admin } from '../../Admin/Models/Admin';
+import { AdminUSER } from '../../Admin/Models/Auth';
 
 @Component({
   selector: 'app-dga-archives',
@@ -21,6 +23,7 @@ export class DgaArchivesComponent  implements OnInit{
   overlay : boolean = false
   isDelete: boolean = false
   isSelected!: AnneeScolaire
+  admin!: Admin
 
 
   constructor(private fb: FormBuilder, public icons: IconsService, private infoSchool: SchoolService, private pageTile: PageTitleService){}
@@ -29,6 +32,7 @@ export class DgaArchivesComponent  implements OnInit{
     this.load_form();
     this.get_annees();
     this.load_edit_form();
+    this.admin = AdminUSER()?.dga
       
   }
 
@@ -54,7 +58,7 @@ export class DgaArchivesComponent  implements OnInit{
       finAnnee: formData.finAnnee
     }
     if(this.form_annee.valid){
-      this.infoSchool.addAnnee(annee).subscribe({
+      this.infoSchool.addAnnee(annee, this.admin.idAdministra!).subscribe({
         next: (result) =>{
           this.pageTile.showSuccessToast(result.message);
           this.load_form();

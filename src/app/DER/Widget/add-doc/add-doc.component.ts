@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Inscription, Student } from '../../../Admin/Models/Students';
-import { EtudeService } from '../../../Admin/Views/etudiants/etude.service';
+import { EtudeService } from '../../../Admin/Views/Etudiants/etude.service';
 import { ClassStudentService } from '../../../DGA/class-students/class-student.service';
 import { ClassRoom } from '../../../Admin/Models/Classe';
 import { Docum, StudentDoc, TypeDoc } from '../../../Admin/Models/doc';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { IconsService } from '../../../Services/icons.service';
 import { debounceTime } from 'rxjs';
-import { EnseiService } from '../../../Admin/Views/enseignant/ensei.service';
+import { EnseiService } from '../../../Admin/Views/Enseignant/ensei.service';
 import { Teacher } from '../../../Admin/Models/Teachers';
 import { InscriptionService } from '../../../Services/inscription.service';
 import { Admin } from '../../../Admin/Models/Admin';

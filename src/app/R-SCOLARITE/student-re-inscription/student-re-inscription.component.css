@@ -7,12 +7,7 @@
     align-items: center;
     gap: 10px;
     cursor: pointer;
-   &:hover{
-    /* padding: 0 10px; */
-    border-radius: 5px;
-    border: 1px solid var(--tertiary);
-    
-   }
+  
   }
  .icon-folder{
     margin-left: 10px;
@@ -30,22 +25,7 @@
     text-align: left;
   }
 
-.info-folder a{
-    text-decoration: none;
-    display: flex;
-    gap: 8px;
-    margin: 0;
-    cursor: pointer;
-    color: var(--primary);
-    font-size: 14px;
-    &:hover{
-      color: var(--secondary);
-      background-color: var(--primary);
-      padding: 2px;
-      border-radius: 5px;
-      width: 100px;
-    }
-  }
+
  .info-folder .title {
  font-size: 18px;
  font-weight: bold;
@@ -53,6 +33,19 @@
 }
 .nom{
     color: #5a5a5a;
+    font-size: 14px;
+}
+.class-folder a{
+  color: var(--primary);
+  font-weight: bold;
+  cursor: pointer;
+  padding: 5px;
+  &:hover{
+    color: var(--secondary);
+    background-color: var(--primary);
+    border-radius: 4px;
+
+  }
 }
 /* -------------------------grid style */
 .grid-container {

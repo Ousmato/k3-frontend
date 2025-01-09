@@ -1,0 +1,44 @@
+<main>
+    <div class="views" >
+        <h3 class="span">Modifier spécialité</h3>
+        <form [formGroup]="form" (ngSubmit)="submit()">
+            <div class="container-views">
+                <div class="form-group">
+                    <label for="nom">Nom de la spécialité</label>
+                    <input type="text" class="input-with form-control" formControlName="nom" id="nom" [class.is-invalid]="form.get('nom')!.invalid && form.get('nom')!.touched"  placeholder="Nom de la spécialité...">
+                    <span *ngIf="form.controls['nom']!.errors?.['required'] && form.controls['nom'].touched" [ngStyle]="{color: 'red', 'font-size': '11px'}">
+                        Champ obligatoire*
+                    </span>
+                    <span *ngIf="form.controls['nom'].hasError('maxlength') && form.controls['nom'].touched" [ngStyle]="{color: 'red', 'font-size': '11px'}">
+                        30 caractères maximum
+                      </span>
+                      <div *ngIf="form.controls['nom']!.errors?.['minlength']">
+                        <span [ngStyle]="{color: 'red', 'font-size': '11px'}">3 caractères minimum</span>
+                    </div>
+                </div>
+
+                <!-- <div class="form-group filiere-content">
+                    <label >Choisir les filières</label>
+                   <div class="input-content" *ngFor="let filiere of filieres">
+                        
+                    <input type="checkbox" id="{{filiere.id}}" (change)="filiere_check(filiere.id!, $event)"
+                            [checked]="is_checked(filiere.id!)"
+                            [ngClass]="{ 'custom-checked': is_checked(filiere.id!) }">
+                        <label for="{{filiere.id}}" style="margin-right: 10px;">{{abreviateFiliereName(filiere.nomFiliere)}}</label>
+                        
+                   
+                   </div>
+                       
+                    
+                </div> -->
+                <div class="button-cash">
+                    <a type="button" (click)="cancel()">Annuler</a>
+                    <button type="submit">Enregistrer</button>
+                </div>
+            </div>
+
+            
+        
+    </form>
+    </div>
+</main>

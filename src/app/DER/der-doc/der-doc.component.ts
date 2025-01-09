@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { IconsService } from '../../Services/icons.service';
-import { EtudeService } from '../../Admin/Views/etudiants/etude.service';
+import { EtudeService } from '../../Admin/Views/Etudiants/etude.service';
 import { Docum, StudentDoc } from '../../Admin/Models/doc';
 import { AnneeScolaire } from '../../Admin/Models/School-info';
 import { SchoolService } from '../../Services/school.service';

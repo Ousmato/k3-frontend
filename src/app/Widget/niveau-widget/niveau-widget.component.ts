@@ -4,6 +4,7 @@ import { SetService } from '../../Admin/Views/settings/set.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IconsService } from '../../Services/icons.service';
 import { PageTitleService } from '../../Services/page-title.service';
+import { NiveauService } from '../../Services/niveau.service';
 
 @Component({
   selector: 'app-niveau-widget',
@@ -24,7 +25,7 @@ export class NiveauWidgetComponent implements OnInit{
   niveauForDeleted!: Niveau 
   niveaux_type : {key: string, value: string}[] = []
 
-  constructor(private setingService: SetService, public icons: IconsService,
+  constructor(private setingService: SetService, public icons: IconsService, private niveauService: NiveauService,
     private fb: FormBuilder, private pageTitle: PageTitleService,  ) { }
 
 
@@ -39,7 +40,7 @@ export class NiveauWidgetComponent implements OnInit{
 
    // ----------------------get liste niveau-------------------------------------
    load_niveau(){
-    this.setingService.getAll().subscribe((niveaux: Niveau[]) => {
+    this.niveauService.getAll().subscribe((niveaux: Niveau[]) => {
     this.niveaux = niveaux;
     
   });

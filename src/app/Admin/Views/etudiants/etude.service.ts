@@ -9,6 +9,7 @@ import { Doc_Pages, NotesPages, StudentPages } from '../../Models/Pagination-mod
 import { Docum, Jury, ProgramSoutenance, Soutenance, StudentDoc } from '../../Models/doc';
 import { environment } from '../../../../environments/environment';
 import { LoaderService } from '../../../Services/loader.service';
+import { SharedMethodes } from '../../../R-SCOLARITE/Utils/SharedMethodes';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,9 @@ export class EtudeService {
   }
 // --------------------add studens import excel file 
 addStudentImport(studentImport: Inscription[]) : Observable<Response_String>{
-this.loadingService.loading();
+  console.log(studentImport.length, "studentImport nombre dans le service")
+  // studentImport.forEach(sti =>sti.date = new Date(sti.date!));
+  this.loadingService.loading();
   return this.http.post<Response_String>(this.baseUrl+"students-import", studentImport).pipe(
     finalize(() => this.loadingService.stopLoading())
   );
@@ -63,10 +66,7 @@ this.loadingService.loading();
     return this.http.get<StudentPages>(`${this.baseUrl}list-student-by-classe/${idClasse}?page=${page}&size=${size}`);
   }
   
-  // ------------------------add note
-  add_note(note: Notes) : Observable<Response_String>{
-    return this.http.post<Response_String>(this.baseUrl_note+"add-note", note);
-  }
+  
 
    // -----------------------------------get all module filter
    getAllModulesWithoutNoteFilter(idStudent: number, idClass: number, idSemestre: number): Observable<Module[]> {
@@ -103,9 +103,9 @@ this.loadingService.loading();
     formData.append('file', file!);
     return this.http.put<Response_String>(this.baseUrl + 'update', formData);
   }
-  reInscriptionStudent(student: Inscription, idClasse: number, idAdmin: number): Observable<Response_String> {
+  reInscriptionStudent(students: Inscription[], idClasse: number, idAdmin: number): Observable<Response_String> {
     const url = `${this.baseUrl}re-inscription/${idClasse}/${idAdmin}`;
-    return this.http.post<Response_String>(url, student);
+    return this.http.post<Response_String>(url, students);
 }
   // -----------------------update scolarite
   update_student_scolarite(idInscription: number, idAdmin: number, scolarite: number): Observable<Response_String> {
@@ -114,7 +114,11 @@ this.loadingService.loading();
   }
   // ----------------------------------lad teacher by pagination
   getSudents(page: number, size: number): Observable<StudentPages> {
-    return this.http.get<StudentPages>(`${this.baseUrl}list?page=${page}&size=${size}`);
+    console.log(size, "les sizes chercher")
+    this.loadingService.loading()
+    return this.http.get<StudentPages>(`${this.baseUrl}list?page=${page}&size=${size}`).pipe(
+      finalize(() => this.loadingService.stopLoading())
+    );
   }
   // -----------------------get all student by id annee scolaire
 
@@ -194,7 +198,10 @@ this.loadingService.loading();
   }
   // -------------------------get student by etats
   getByEtat(value: number, page: number, size: number): Observable<StudentPages> {
-    return this.http.get<StudentPages>(`${this.baseUrl}get-student-by-etats/${value}?page=${page}&size=${size}`);
+    this.loadingService.loading()
+    return this.http.get<StudentPages>(`${this.baseUrl}get-student-by-etats/${value}?page=${page}&size=${size}`).pipe(
+      finalize(() => this.loadingService.stopLoading())
+    );
   }
   // -----------change state inscription
   changeStateStudentInscription(idInscription: number, idClasse: number): Observable<Response_String>{

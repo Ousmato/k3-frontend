@@ -6,7 +6,8 @@
       <!-- <img src="assets/logounivsegou.png" alt=""> -->
       <!-- <h1>UAM</h1> -->
       <!-- <strong>{{school?.nomSchool}}</strong> -->
-       <strong>IUFP-GESTION</strong>
+      <strong>IUFP <fa-icon [icon]="icons.grade" [ngStyle]="{'font-size': '16px' }"></fa-icon> GESTION</strong>
+
     </div>
     <div class="side-child">
       <ul class="list-unstyled components">
@@ -28,14 +29,15 @@
             <span><fa-icon [icon]="icons.user_plus"></fa-icon>Inscriptions</span>
           </a>
         </li>
+        
         <li class="menu-link">
-          <a routerLink="/r-scolarite/re-inscription" routerLinkActive="active">
-            <span><fa-icon [icon]="icons.user_plus"></fa-icon>Réinscriptions</span>
+          <a routerLink="/r-scolarite/classe" routerLinkActive="active">
+            <span><fa-icon [icon]="icons.scool"></fa-icon>Les Classes</span>
           </a>
         </li>
         <li class="menu-link">
-          <a routerLink="/r-scolarite/classe" routerLinkActive="active">
-            <span><fa-icon [icon]="icons.scool"></fa-icon>Les Mentions</span>
+          <a routerLink="/r-scolarite/re-inscription" routerLinkActive="active">
+            <span><fa-icon [icon]="icons.folder"></fa-icon>Archives</span>
           </a>
         </li>
         <li class="menu-link">
@@ -49,10 +51,26 @@
     </div>
     <ul id="components">
       <li class="menu-link">
+        <div (click)="submenuOpen()">
+          <a> <span><fa-icon [icon]="icons.grade"></fa-icon>Compte<fa-icon
+                [icon]="isSubMenuVisible ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
+          </a>
+        </div>
+        <ul class="sub-menu" *ngIf="isSubMenuVisible">
+          <li><a (click)="toAccunt()" routerLink="/r-scolarite/my-accunt" routerLinkActive="active">Mon compte</a></li>
+          @for (poste of postes; track $index) {
+            <li *ngFor="let p of poste.roleNames"><a (click)="switchAccuntDGA()"  routerLinkActive="active">Compte {{abrevigate(p.toString())}}</a></li>
+
+          }
+          <!-- <li><a routerLink="/r-scolarite/inscription" routerLinkActive="active"> Compte DER</a></li> -->
+        </ul>
+      </li>
+
+      <!-- <li class="menu-link">
         <a (click)="toAccunt()" routerLink="/r-scolarite/my-accunt" routerLinkActive="active">
           <span><fa-icon [icon]="icons.user"></fa-icon>Mon Compte</span>
         </a>
-      </li>
+      </li> -->
       <li class="menu-link">
         <a (click)="show_confirm()">
           <span><fa-icon [icon]="icons.aout"></fa-icon>Déconnexion</span>
@@ -85,7 +103,7 @@
         <img [src]="dataAdmin!.urlPhoto" (error)="onError($event)" alt="">
         <div class="name-content">
           <span>{{dataAdmin.nom.charAt(0).toUpperCase()}}. {{dataAdmin.prenom.toUpperCase()}}</span>
-          <span class="text-muted small">{{dataAdmin.role.toUpperCase()}}</span>
+          <span class="text-muted small">{{abrevigate(dataAdmin.idRole.nom)}}</span>
           <!-- <fa-icon [icon]="show_admin ? icons.sortUp : icons.sortDown" class="my-custom-style"></fa-icon> -->
 
         </div>
@@ -115,7 +133,7 @@
         <img [src]="dataAdmin.urlPhoto" (error)="onError($event)" alt="">
         <div class="info-pofil">
           <p>{{dataAdmin.nom}} {{dataAdmin.prenom}}</p>
-          <p class="text-muted small">{{dataAdmin.role.toUpperCase()}}</p>
+          <p class="text-muted small">{{dataAdmin.idRole.nom.toUpperCase()}}</p>
         </div>
 
       </div>
@@ -127,5 +145,27 @@
     </div>
   </div>
 </ng-container>
-<div class="overlay" *ngIf="isConfirm"></div>
+
+<ng-container *ngIf="isSwitch">
+  <div class="views-switch">
+    <h3 class="span">Changer Compte</h3>
+    <div class="container-views">
+      <p>Êtes-vous sûr de vouloir vous Connecter au compte du DGA ?</p>
+      <div class="profil">
+        <img [src]="dataAdmin.urlPhoto" (error)="onError($event)" alt="">
+        <div class="info-pofil">
+          <p>{{dataAdmin.nom}} {{dataAdmin.prenom}}</p>
+          <p class="text-muted small">{{dataAdmin.idRole.nom.toUpperCase()}}</p>
+        </div>
+
+      </div>
+      <div class="button-cash">
+        <a type="button" (click)="close()">Annuler</a>
+        <button type="button" (click)="auth.logout()">Confirmer</button>
+      </div>
+
+    </div>
+  </div>
+</ng-container>
+<div class="overlay" *ngIf="isConfirm || isSwitch"></div>
 </main>

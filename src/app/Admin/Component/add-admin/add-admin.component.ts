@@ -1,5 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Admin, Admin_role } from '../../Models/Admin';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Admin, Admin_role, Roles } from '../../Models/Admin';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IconsService } from '../../../Services/icons.service';
 import { AdminService } from '../../../Services/admin.service';
@@ -12,10 +12,11 @@ import { PageTitleService } from '../../../Services/page-title.service';
 })
 export class AddAdminComponent implements OnInit{
 
-  
+  roles: Roles[] = [];
   passwordVisible: boolean = false
   // show_add_form: boolean = true
   add_admin_form!: FormGroup
+  @Input() idAdminDg !: number
   fileName!: File
   @Output() closeModal = new EventEmitter<any>();
 
@@ -26,6 +27,7 @@ export class AddAdminComponent implements OnInit{
 
   ngOnInit(): void {
       this.load_add_form();
+      this.getRoles();
   }
 
   // ------------------load form
@@ -42,7 +44,7 @@ export class AddAdminComponent implements OnInit{
     Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}$/),
       ]],
       telephone: ['', Validators.required],
-      role: ['', Validators.required]
+      idRole: ['', Validators.required]
     })
     // console.log("add-admin-form")
     this.adminStatusOptions = this.getStatusOptions();
@@ -57,7 +59,13 @@ export class AddAdminComponent implements OnInit{
     this.fileName = event.target.files[0];
   }
 
-  
+  // load all roles
+  getRoles(){
+    this.adminService.getAllRoles(this.idAdminDg).subscribe(result =>{
+      this.roles = result;
+      console.log(this.roles, "roles")
+    })
+  }
   getStatusOptions(): { key: string, value: string }[] {
     return Object.keys(Admin_role).map(key => ({
       key: key,
@@ -67,6 +75,7 @@ export class AddAdminComponent implements OnInit{
   // ------------------------------add admin
   add_admin(){
     const formData = this.add_admin_form.value;
+    const role = this.roles.find(r => r.id == formData.idRole);
     if(this.add_admin_form.valid){
       const admin: Admin ={
         nom: formData.nom,
@@ -75,7 +84,7 @@ export class AddAdminComponent implements OnInit{
         password: formData.password,
         telephone: formData.telephone,
         sexe: formData.sexe,
-        role: formData.role
+        idRole: role!
       }
       console.log(admin, "admin")
       // return

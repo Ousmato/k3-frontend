@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Admin, Admin_role } from '../../Admin/Models/Admin';
+import { Admin, Admin_role, AdminRoleDto } from '../../Admin/Models/Admin';
 import { PageTitleService } from '../../Services/page-title.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { IconsService } from '../../Services/icons.service';
@@ -10,6 +10,8 @@ import { SchoolInfo } from '../../Admin/Models/School-info';
 import { environment } from '../../../environments/environment';
 import { AdminUSER } from '../../Admin/Models/Auth';
 import { AuthServiceService } from '../../auth-service.service';
+import { AdminService } from '../../Services/admin.service';
+import { EventServiceService } from '../../Services/event-service.service';
 
 @Component({
   selector: 'app-r-s-sidebar',
@@ -22,6 +24,7 @@ export class RSSidebarComponent implements OnInit, OnDestroy {
   title!: string;
   isSidebarCollapsed = false;
   isSubmenuCollapsed = false;
+  isSwitch = false;
   desable_add_button = true;
   showSearchInput: boolean = false
   showTitle: boolean = false
@@ -30,6 +33,7 @@ export class RSSidebarComponent implements OnInit, OnDestroy {
   isConfirm: boolean = false
 
   routerEventsSubscription!: Subscription;
+  postes: AdminRoleDto [] = [];
 
 
   searchTerm: string = '';
@@ -39,8 +43,8 @@ export class RSSidebarComponent implements OnInit, OnDestroy {
 
   
   isSubMenuOpen = {
-    enseignants: false,
-    etudiants: false,
+    DGA: false,
+    DER: false,
     archive: false
   };
 
@@ -48,14 +52,19 @@ export class RSSidebarComponent implements OnInit, OnDestroy {
   
 isSubMenuVisible: boolean = false;
 
-toggleSubMenuEnseignant() {
-  this.isSubMenuOpen.enseignants = !this.isSubMenuOpen.enseignants
-  this.isSubMenuOpen.etudiants  = false
+submenuOpen(){
+  this.isSubMenuVisible = !this.isSubMenuVisible
+}
+switchAccuntDGA() {
+  this.isSwitch = !this.isSwitch
+  
+  this.isSubMenuOpen.DGA = !this.isSubMenuOpen.DGA
+  this.isSubMenuOpen.DER  = false
 }
 
-toggleSubMenuStudent(){
-  this.isSubMenuOpen.etudiants = !this.isSubMenuOpen.etudiants
-  this.isSubMenuOpen.enseignants = false
+switchToDER(){
+  this.isSubMenuOpen.DER = !this.isSubMenuOpen.DER
+  this.isSubMenuOpen.DGA = false
 }
 
 toggleSubMenuArchive(){
@@ -72,7 +81,8 @@ toggleSubMenuArchive(){
     }
   }
  
-  constructor(public auth: AuthServiceService, private schoolService: SchoolService, private sidebarService: SideBarService,
+  constructor(public auth: AuthServiceService, private schoolService: SchoolService,
+     private sidebarService: SideBarService,private adminService: AdminService, private eventService: EventServiceService,
      private router: Router, public icons: IconsService, private route: ActivatedRoute){}
 
   
@@ -85,6 +95,12 @@ ngOnInit(): void {
   this.setTitle();
    this.load_school_info();
    this.load_admin();
+   this.eventService.event$.subscribe(event => {
+    if(event =="true" || event === "false"){
+      this.toggleSidebar();
+    }
+    console.log("voici ce qui est dans l'evenement",event);
+   })
 }
 
 setTitle(): void {
@@ -108,6 +124,11 @@ load_school_info(){
 load_admin(){
   this.dataAdmin = AdminUSER()?.scolarite;
   this.dataAdmin.urlPhoto = `${environment.urlPhoto}${this.dataAdmin.urlPhoto}`
+
+  this.adminService.getPostesByIdCurrentAdmin(this.dataAdmin.idAdministra!).subscribe(res =>{
+    this.postes = res
+    console.log(this.postes, "postes")
+  })
 
 }
 // --------------------------------shearch 
@@ -142,4 +163,9 @@ load_admin(){
   toNotifications(){
     this.router.navigate(['/r-scolarite/notifications']);
   }
+
+abrevigate(name: string){
+    const nameSplit = name.split(' ');
+    return nameSplit.filter(word => word.length > 3).map(w => w[0].toUpperCase()).join('');
+   }
 }

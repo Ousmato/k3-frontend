@@ -17,4 +17,5 @@ export interface AnneeScolaire{
     finAnnee: Date;
     ans?: number
     idAdmin?: Admin
+    nextYear?: number
 }

@@ -1,4 +1,5 @@
 
+
 .button-cash{
     display: flex;
     gap: 20px;
@@ -55,13 +56,13 @@ form{
 /* ---------------- */
 
 
-  .views{
+  .views-add-sale{
     background-color: white;
     position: absolute;
     /* border: 1px solid #ddd; */
     border-radius: 4px;
     margin-top: 15px;
-    left: 10px;
+   
     z-index: 1000;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15);
    

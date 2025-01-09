@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Docum } from '../../../Admin/Models/doc';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EtudeService } from '../../../Admin/Views/etudiants/etude.service';
+import { EtudeService } from '../../../Admin/Views/Etudiants/etude.service';
 import { PageTitleService } from '../../../Services/page-title.service';
 
 @Component({

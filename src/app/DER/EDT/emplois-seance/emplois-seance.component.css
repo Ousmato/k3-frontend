@@ -1,0 +1,408 @@
+main {
+    padding: 0 10px;
+    width: 100%;
+    height: 80vh;
+}
+
+
+
+.content{
+    position: relative;
+    overflow: hidden;
+    overflow-y: auto;
+    height: 70%;
+}
+/* Personnalisation de la barre de défilement */
+.content::-webkit-scrollbar {
+    width: 5px; /* Largeur de la barre de défilement */
+  }
+  
+  .content::-webkit-scrollbar-track {
+    background: white; /* Couleur de l'arrière-plan de la piste */
+    border-radius: 10px; /* Coins arrondis de la piste */
+  }
+  
+  .content::-webkit-scrollbar-thumb {
+    background: var(--tertiary); /* Couleur de la barre de défilement */
+    border-radius: 10px; /* Coins arrondis de la barre */
+  }
+  
+  .content::-webkit-scrollbar-thumb:hover {
+    background: var(--primary); /* Couleur de la barre au survol */
+  }
+span {
+    font-size: 14px;
+}
+
+.configure-form p {
+    color: var(--secondary);
+    cursor: pointer;
+
+    &:hover {
+        color: var(--primary);
+    }
+
+}
+
+.entete-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.children h4 {
+    font-size: 16px;
+}
+
+/* --------------------------------------- */
+.month-contenaire {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+.month-contenaire p {
+    color: var(--secondary);
+    margin: 0;
+    font-size: 14px;
+}
+
+table td {
+    padding: 0px ;
+    font-size: 12px;
+    vertical-align: middle;
+    text-align: center;
+    word-wrap: break-word; /* Permet de couper le texte si nécessaire */
+    word-break: break-word; /* Ajoute une coupure automatique sur les mots longs */
+    white-space: pre-wrap; 
+}
+
+.childre-1 {
+    padding: 5px;
+    text-align: left;
+}
+.childre-1 strong{
+    font-size: 16px;
+    color: black !important;
+    font-weight: 700;
+}
+
+.seance-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* border-bottom: 1px solid var(--tertiary); */
+}
+
+.childre-2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: end;
+    gap: 20px;
+
+}
+#logo{
+    display: none;
+}
+.logo-masque-content img{
+    height: 40px;
+    width: 40px;
+    padding: 5px;
+    border: 1px solid var(--primary);
+    border-radius: 50%;
+    object-fit: cover;
+}
+.childre-2 span {
+    color: var(--secondary);
+}
+
+.horaire {
+    display: none;
+}
+
+.section-head {
+    padding-bottom: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    height: 50px;
+    border-bottom: 4px solid;
+
+}
+
+.pdf-icon {
+    color: red;
+}
+
+/* ---------------------------footer style */
+.footer-content {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer {
+    display: flex;
+    align-items: baseline;
+}
+
+.salle-row {
+    display: flex;
+
+}
+
+.type-footer {
+    margin-left: 8px;
+    font-size: 12px
+}
+
+.salle-row,
+.group,
+.salle {
+    margin-left: 5px;
+    font-size: 14px;
+}
+
+.footer-group {
+    font-size: 12px;
+}
+
+.f-contenair {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.signature {
+    padding-right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+}
+
+.signature p {
+    font-size: 14px;
+}
+
+/* ------------------------------------- */
+p {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.btn {
+    margin-left: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#btn-submit {
+    margin-top: 10px;
+}
+
+.btn-cont button {
+    border: none;
+    background-color: transparent;
+    margin-left: 10px;
+    height: 30px;
+    width: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-cont strong {
+    margin-left: 10px;
+    height: 30px;
+
+}
+
+/* ----------------------form style */
+
+.input-time {
+    display: flex;
+    justify-content: space-between;
+}
+
+.hidden {
+    display: none;
+}
+
+section {
+    border: none;
+}
+
+/* ------------------------------------------------------- */
+
+.button-cash {
+    display: flex;
+    gap: 20px;
+    justify-content: end;
+}
+
+.btn-valid-emplois {
+    padding: 5px 10px;
+    color: var(--secondary);
+    cursor: pointer;
+    &:hover {
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+}
+
+.btn-show-form {
+    padding: 5px 10px;
+    color: var(--secondary);
+    cursor: pointer;
+
+    /* background-color: var(--primary); */
+    &:hover {
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+}
+
+.button-cash button {
+    border: none;
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 5px;
+    border-radius: 5px;
+    /* background-color: var(--primary); */
+    color: var(--secondary);
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+
+}
+
+.button-cash a {
+    text-decoration: none;
+    border: none;
+    margin-top: 8px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: var(--primary);
+    color: var(--secondary);
+    cursor: pointer;
+
+    &:hover {
+
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+
+}
+
+/* -----------------------------views style */
+
+.views {
+    background-color: #fff;
+    position: absolute;
+    top: 10%;
+    right: 50%;
+    width: 310px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    z-index: 10001;
+
+    &:hover {
+        border: var(--primary);
+    }
+}
+
+.views .content button {
+    margin: 10px 0;
+    padding: 8px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: 500;
+
+    /* background-color: var(--primary); */
+    /* color: var(--primary); */
+    &:hover {
+        background-color: var(--secondary);
+        color: var(--primary);
+
+
+    }
+}
+
+.views h4 {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    background-color: var(--primary);
+    color: var(--secondary);
+}
+
+.views .content {
+
+    display: flex;
+    flex-direction: column;
+    padding: 10px 10px 0 10px;
+}
+
+.views .button-cash button {
+    margin: 0;
+    width: 150px;
+    background-color: var(--secondary);
+    color: var(--primary);
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    /* Assurez-vous que l'overlay est au-dessus de tout */
+}
+
+/* calendar.component.css */
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+}
+
+/* --------------style back button */
+.back-button {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    font-size: 20px;
+    margin: 10px 0;
+
+    &:hover {
+        background-color: var(--tertiary);
+        color: var(--primary);
+        border: none;
+        border-radius: 50%;
+    }
+
+}

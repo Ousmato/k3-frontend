@@ -53,7 +53,6 @@ export class MyAccuntComponent implements OnInit {
         this.update_form.get('telephone')?.setValue(admin.telephone);
         this.update_form.get('sexe')?.setValue(admin.sexe);
         if (AdminUSER()?.dg) {
-          console.log(this.admin.role)
           this.permission = true
         }
 

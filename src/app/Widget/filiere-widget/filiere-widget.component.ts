@@ -5,6 +5,8 @@ import { IconsService } from '../../Services/icons.service';
 import { PageTitleService } from '../../Services/page-title.service';
 import { SetService } from '../../Admin/Views/settings/set.service';
 import { NivFiliere } from '../../Admin/Models/NivFiliere';
+import { NiveauService } from '../../Services/niveau.service';
+import { FiliereService } from '../../Services/filiere.service';
 
 @Component({
   selector: 'app-filiere-widget',
@@ -26,7 +28,8 @@ export class FiliereWidgetComponent implements OnInit {
   objectNivFil: NivFiliere [] = [];
   filieres: Filiere[] = []
 
-  constructor(public icons: IconsService, private setingService: SetService, private setService: SetService, private fb: FormBuilder,
+  constructor(public icons: IconsService, private setingService: SetService, private filiereService: FiliereService,
+    private setService: SetService, private fb: FormBuilder,
     private pageTitle: PageTitleService){}
 
   ngOnInit(): void {
@@ -84,7 +87,7 @@ export class FiliereWidgetComponent implements OnInit {
   }
   // ----------------------load niveau
   loa_filiere(){
-    this.setService.getAll_filiere().subscribe( result =>{
+    this.filiereService.getAll_filiere().subscribe( result =>{
         this.filieres = result
         console.log(this.filieres, "filiere")
       })

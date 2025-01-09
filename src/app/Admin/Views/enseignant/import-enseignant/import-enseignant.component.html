@@ -1,0 +1,51 @@
+<main>
+    <div class="file-check">
+        <input type="file" id="fileUpload" [ngStyle]="{'display': 'none'}" (change)="onFileChange($event)">
+        <label for="fileUpload">Importer <fa-icon [icon]="icons.had_point_down"></fa-icon></label>
+      </div>
+        
+            <section class="table-container">
+                <!-- <form > -->
+                    <table class="table table-bordered">
+                        <thead>
+                            <th>N°</th>
+                            <th>Nom</th>
+                            <th>Prenom</th>
+                            <th>Email</th>
+                            <th>Telephone</th>
+                            <th>Sexe</th>
+                            <th>Diplomes</th>
+                            <th>Statuts</th>
+                        </thead>
+                        <tbody>
+                            @if (enseignants.length) {
+                                <tr *ngFor="let ensiegnant of enseignants; let i = index">
+                                    <td>{{i +1}}</td>
+                                    <td>{{ensiegnant.nom}}</td>
+                                    <td>{{ensiegnant.prenom}}</td>
+                                    <td>{{ensiegnant.email}}</td>
+                                    <td>{{ensiegnant.telephone}}</td>
+                                    <td>{{ensiegnant.sexe}}</td>
+                                    <td>{{ensiegnant.diplome}}</td>
+                                    <td>{{ensiegnant.status}}</td>
+                                </tr>
+                            }@else {
+                                <tr *ngFor="let item of empty">
+                                    <td class="empty-td"></td>
+                                    <td class="empty-td"></td>
+                                    <td class="empty-td"></td>
+                                    <td class="empty-td"></td>
+                                    <td class="empty-td"></td>
+                                    <td class="empty-td"></td>
+                                    <td class="empty-td"></td>
+                                    <td class="empty-td"></td>
+                                </tr>
+                            }
+                            
+                        </tbody>
+                    </table>
+                <!-- </form> -->
+            </section>
+            <button (click)="addTeachers()">Valider</button>
+        
+</main>

@@ -3,7 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { IconsService } from '../../Services/icons.service';
 import { SemestreService } from '../../Services/semestre.service';
 import { Semestres } from '../../Admin/Models/Semestre';
-import { EtudeService } from '../../Admin/Views/etudiants/etude.service';
+import { EtudeService } from '../../Admin/Views/Etudiants/etude.service';
 import { Ecue, Module } from '../../Admin/Models/Module';
 import { Inscription, Student } from '../../Admin/Models/Students';
 import { AddNoteDto, Notes } from '../../Admin/Models/Notes';
@@ -23,7 +23,8 @@ import { NoteService } from '../../Services/note.service';
   styleUrl: './add-note-widget.component.css'
 })
 export class AddNoteWidgetComponent implements OnInit {
-  idClasseNivFil!: number;
+  idClasse!: number;
+  idAnnee!: number;
   inscrit?: Inscription;
   searchTerm: string = ""
   ues: AddUeDto[] = []
@@ -64,8 +65,8 @@ export class AddNoteWidgetComponent implements OnInit {
     this.noteForms = {};
     notes.forEach((note) => {
       this.noteForms[note.idModule] = this.fb.group({
-        examNote: [note.noteExam, [Validators.required, Validators.min(0), Validators.max(20)]],
-        classeNote: [note.noteClasse, [Validators.required, Validators.min(0), Validators.max(20)]],
+        examNote: [note.examNote, [Validators.required, Validators.min(0), Validators.max(20)]],
+        classeNote: [note.classeNote, [Validators.required, Validators.min(0), Validators.max(20)]],
         idModule: [note.idModule]
 
       });
@@ -80,10 +81,8 @@ export class AddNoteWidgetComponent implements OnInit {
     const formData = this.noteForms[id].value;
     const module = this.modules.find(m => m.id == id);
     this.semestreSelect = this.semestres.find(sem => sem.id == this.idSemestre)!;
-    // const formData = this.noteForms.find(form => form.get('idModule')?.value == id);
 
     if (formData) {
-      const formValue = formData.value
       // console.log(formData, "note dans le console");
       const note: Notes = {
         examNote: formData.examNote,
@@ -95,21 +94,21 @@ export class AddNoteWidgetComponent implements OnInit {
       }
       console.log(note, "note")
 // return
-      if (this.noteForms[id].valid) {
-        this.studentService.add_note(note).subscribe({
-          next: () => {
-            this.get_ues_to_add_note(this.idSemestre)
-          },
-          error: (err) => {
-            this.pageTitle.showErrorToast(err.error.message)
-          }
+      // if (this.noteForms[id].valid) {
+      //   this.studentService.add_note(note).subscribe({
+      //     next: () => {
+      //       this.get_ues_to_add_note(this.idSemestre)
+      //     },
+      //     error: (err) => {
+      //       this.pageTitle.showErrorToast(err.error.message)
+      //     }
 
-        })
+      //   })
 
-      } else {
-        this.noteForms[id].markAllAsTouched();
-        console.log(this.noteForms[id].value, "form invalide")
-      }
+      // } else {
+      //   this.noteForms[id].markAllAsTouched();
+      //   console.log(this.noteForms[id].value, "form invalide")
+      // }
     } else {
       console.error('Form not found for module ID:', id);
     }
@@ -131,8 +130,8 @@ export class AddNoteWidgetComponent implements OnInit {
   }
   loadSemestre() {
     this.root.queryParams.subscribe(param => {
-      this.idClasseNivFil = param['idClasse'];
-      this.semestreService.getCurrentSemestresByIdNivFiliere(this.idClasseNivFil).subscribe(result => {
+      this.idClasse = param['idClasse'];
+      this.semestreService.getCurrentSemestresByIdNivFiliere(this.idClasse).subscribe(result => {
         result.forEach(res => {
           if (!this.semestres.some(sem => sem.id == res.id)) {
             this.semestres.push(res)
@@ -166,41 +165,20 @@ export class AddNoteWidgetComponent implements OnInit {
         console.log(this.ues, "ues");
 
 
-        result.forEach(rlt => {
-          if (!this.uesWithoutEmploi.some(ue => ue.idUe.id === rlt.addUeDto.idUe.id)) {
-              this.uesWithoutEmploi.push(rlt.addUeDto);
-          }
-  
-          rlt.addUeDto.modules.forEach((m, index) => {
-              if (!this.modulesWithoutEmplois.some(mod => mod.id === m.id)) {
-                  this.modulesWithoutEmplois.push(m);
-              }
-          });
-      });
       }
     )
   }
 
   // get all ues to add note
   get_ues_to_add_note(idSemestre: number) {
-    this.classService.getAll_ue_toAddNote(this.idClasseNivFil, idSemestre, this.idInscription).subscribe(result => {
+    this.classService.getAll_ue_toAddNote(this.idClasse, idSemestre, this.idInscription).subscribe(result => {
       this.uesWithNote = result;
       console.log(result, "result---------")
       this.load_form(this.uesWithNote);
       
-      result.forEach(rlt => {
-          if (!this.ues.some(ue => ue.idUe.id === rlt.addUeDto.idUe.id)) {
-              this.ues.push(rlt.addUeDto);
-          }
-  
-          rlt.addUeDto.modules.forEach((m, index) => {
-              if (!this.modules.some(mod => mod.id === m.id)) {
-                  this.modules.push(m);
-              }
-          });
-      });
+      
       // this.get_all_ids_students_with_notes(this.idClasseNivFil,this.idSemestre, this.inscrit!.idClasse.id!)
-    this.getModulesWithoutEmplois();
+    // this.getModulesWithoutEmplois();
 
   });
   

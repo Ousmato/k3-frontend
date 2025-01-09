@@ -1,0 +1,111 @@
+
+main{
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    /* align-items: center; */
+    
+}
+button{
+    color: var(--secondary);
+    margin-top: 20px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: var(--primary);
+    border: none;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+}
+form{
+    width: 100%;
+    padding: 10px;
+    justify-content: center;
+    /* border: 1px solid #ccc; */
+    border-radius: 8px;
+}
+
+
+.input{
+    margin-top: 10px;
+}
+.label{
+    font-weight: bold;
+    margin-right: 30px;
+}
+.label-nom-prenom{
+    font-weight: bold;
+}
+.chil{
+    width: 30%;
+}
+.position-relative {
+    position: relative;
+}
+
+.position-absolute {
+    position: absolute;
+}
+.radio-button{
+    display: flex;
+}
+a{
+    color: rgb(101, 101, 253);
+}
+#btn-label{
+    display: flex;
+    flex-direction: column;
+    padding-left: 20%;
+   margin-top: 10px;
+}
+
+
+.contenaires{
+    display: flex;
+    justify-content: space-between;
+}
+label span{
+    font-size: 12px;
+    color: var(--tertiary);
+    font-weight: 300;
+}
+.image-column{
+    margin-top: 37px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+.pop-img img{
+    height: 120px;
+    width: auto;
+    border: #ccc 1px solid;
+    border-radius: 0;
+}
+.input-nom-prenom{
+    border: none;
+    border-bottom: 1px solid var(--tertiary);
+}
+.back-button{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    font-size: 20px;
+    margin: 10px 0;
+    &:hover{
+        background-color: var(--tertiary);
+        color: var(--primary);
+        border: none;
+        border-radius: 50%;
+    }
+
+}
+
+input:focus, select:focus{
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 5px var(--primary);
+}

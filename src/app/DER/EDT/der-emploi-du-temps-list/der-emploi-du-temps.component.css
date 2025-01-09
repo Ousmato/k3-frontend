@@ -1,0 +1,172 @@
+main{
+    padding:  10px;
+    height: 80vh;
+}
+th{
+    text-align: center;
+}
+td{
+    border: none;
+}
+.second-child span{
+    color: var(--primary);
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    &:hover{
+    color: var(--secondary);     
+    }
+}
+
+.info-folder-module{
+    width: 200px;
+    word-wrap: break-word; /* Permet de couper le texte si nécessaire */
+    word-break: break-word;
+    white-space: pre-wrap;
+    /* margin-right: 30px; */
+}
+.delete{
+    color: red;
+    &:hover{
+        color: var(--secondary);
+       
+    }
+}
+
+.tab-head{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.back-button{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    font-size: 20px;
+    margin: 10px 0;
+    &:hover{
+        background-color: var(--tertiary);
+        color: var(--primary);
+        border: none;
+        border-radius: 50%;
+    }
+
+}
+.next-col{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+p{
+    margin: 0;
+}
+#module{
+    padding: 3px;
+    background-color: var(--secondary);
+}
+.btn-contenaire button{
+    border: none;
+    cursor: pointer;
+    padding: 5px 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: var(--primary);
+    color: var(--secondary);
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+    
+}
+.button-content button{
+    color: var(--primary);
+    border: none;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+}
+.emplois-main-contente .btn-contenaire{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    height: 45px;
+}
+ a{
+    display: flex;
+    text-decoration: none;
+    cursor: pointer;
+    flex-direction: column;
+    color: var(--primary);
+    font-size: 14px;
+    justify-content: center;
+    align-items: center;
+    &:hover{
+        color: var(--secondary) !important;
+    }
+}
+.grid-container {
+    position: relative;
+    /* padding: 10px; */
+    margin: 0 10px;
+    border-radius: 8px;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 10px;
+  }
+  
+  .grid-item {
+   
+    padding: 15px;
+    border: 1px solid var(--primo-light);
+    border-radius: 8px;
+    color: var(--primary);
+    background-color: var(--primo-light);
+    &:hover{
+        background-color: var(--primo-dark);
+        color: black;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+  }
+
+  .emploi-item{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+   align-items: center;
+  }
+  /* ---scroll style */
+  .emplois-contente{
+    height: 90%;
+    /* border: 1px solid red; */
+    position: relative;
+    overflow: hidden;
+    overflow-y: auto; 
+  }
+/* Personnalisation de la barre de défilement */
+.emplois-contente::-webkit-scrollbar {
+    width: 5px; /* Largeur de la barre de défilement */
+  }
+  
+  .emplois-contente::-webkit-scrollbar-track {
+    background: white; /* Couleur de l'arrière-plan de la piste */
+    border-radius: 10px; /* Coins arrondis de la piste */
+  }
+  
+  .emplois-contente::-webkit-scrollbar-thumb {
+    background: var(--tertiary); /* Couleur de la barre de défilement */
+    border-radius: 10px; /* Coins arrondis de la barre */
+  }
+  
+  .emplois-contente::-webkit-scrollbar-thumb:hover {
+    background: var(--primary); /* Couleur de la barre au survol */
+  }
+
+  
+ 

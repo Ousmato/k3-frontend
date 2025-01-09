@@ -2,8 +2,8 @@
   <div class="content-head">
     <div class="head-left">
       <select id="promo-seclect" (change)="onChange($event)">
-        <option selected disabled value="">Promotion {{currentYear}}</option>
-        <option *ngFor="let annee of annees" [value]="annee.id">Promotion {{annee.ans}}</option>
+        <option selected disabled value="">Pro {{currentYear -1}} {{currentYear}}</option>
+        <option *ngFor="let annee of annees" [value]="annee.id">Pro {{annee.ans}} {{annee.ans! + 1}}</option>
       </select>
       <!-- ------------ -->
       <select (change)="getEtat($event)">
@@ -56,11 +56,11 @@
             <td>{{inscrit.idEtudiant.prenom}}</td>
 
             <td class="class-name" title="{{inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}">
-              {{inscrit.idClasse.idFiliere?.idNiveau?.nom}}  {{abreviateFiliereName(inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere!)}}</td>
+              {{inscrit.idClasse.idFiliere?.idNiveau?.nom}}  {{sharedMethod.abreviateFiliereName(inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere!)}}</td>
            
 
             <td>{{inscrit.idEtudiant.telephone}}</td>
-            <td>{{inscrit.idEtudiant.status.toUpperCase()}}</td>
+            <td>{{sharedMethod.statusMapper(inscrit.idEtudiant.status)}}</td>
             <td>{{inscrit.idEtudiant.sexe.charAt(0)}}</td>
             <td title="{{ inscrit.payer ? 'Valider' : 'Non Valider' }}"><a>
                 <fa-icon [icon]="inscrit.payer ? icons.circle : icons.circle "
@@ -70,9 +70,9 @@
               <div class="btn-contenaire">
 
                 <a (click)="getStudent(inscrit)" *ngIf="!secretaire"><fa-icon
-                    [icon]="permission ? icons.eye : icons.userCheck"></fa-icon><span>{{permission ? 'Details' :
+                    [icon]="permission ? icons.eye : icons.userCheck"></fa-icon><span>{{permission ? 'Editer' :
                     'Valider'}}</span></a>
-                <!-- <a *ngIf="secretaire" (click)="getStudentView(inscrit.id!)">Details</a> -->
+                <a *ngIf="permission" (click)="getStudentView(inscrit.id!)">Details</a>
 
               </div>
             </td>
@@ -107,6 +107,7 @@
     
     <p >page : {{page + 1}}/{{ studentspage!.totalPages }}</p>
   </div>
+  <!-- <p>Total : {{inscrits.length}}</p> -->
   
 
 </main>

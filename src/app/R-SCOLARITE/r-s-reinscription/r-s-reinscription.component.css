@@ -1,14 +1,14 @@
 main {
     width: 100%;
-    padding-top: 20px;
+    height: 80vh;
 }
 /* Styler l'en-tête du tableau */
 th {
-    background: linear-gradient(180deg, #ffffff, #d4d4d4);
+    background: white;
 }
 
 .table-container {
-    height: 400px;
+    height: 77%;
     position: relative;
     overflow-y: auto;
 }
@@ -46,6 +46,22 @@ main {
     height: 100%;
     z-index: 1000;
 }
+.btn-valide {
+
+    margin: 10px;
+    background-color: var(--primary); 
+    color: var(--secondary); 
+    padding: 4px; 
+    width: 150px;
+    border: none; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    font-size: 14px; 
+    &:hover {
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+}
 
 .back-button {
     width: 30px;
@@ -68,25 +84,7 @@ main {
     cursor: not-allowed;
     border: none;
 }
- .reinscrit{
-    width: 100px;
-    text-decoration: none;
-    margin-left: 10px;
-    font-size: 12px;
-    cursor: pointer;
-    border-radius: 5px;
-    padding: 5px;
-    text-align: center;
-    border: 1px solid var(--primary);
-    /* background-color: var(--primary); */
-    color: var(--primary);
-    transition: color 0.2s ease;
-    &:hover{
-        border-color: var(--secondary);
-        background-color: var(--secondary);
-        color: var(--primary);
-    }
-}
+ 
 #annuler{
     width: 100px !important;
     text-decoration: none;
@@ -227,4 +225,8 @@ select:focus {
 }
 .container-views p span{
     font-weight: bold;
+}
+.footer-NB{
+    font-size: 14px;
+    margin: 10px ;
 }

@@ -3,59 +3,136 @@
         <div (click)="goBack()" class="back-button">
             <fa-icon [icon]="icons.back"></fa-icon>
         </div>
+        
         <div class="input-search">
+            <a (click)="refresh()" class="btn-refresh" >
+                <fa-icon [icon]="icons.actualise"></fa-icon>
+                Actualiser
+            </a>
+            <a >
+                <fa-icon [icon]="icons.filter"></fa-icon>
+                <select (change)="shorted($event)">
+                    <option selected disabled value="">Trier</option>
+                    <option value="nom">Nom</option>
+                    <option value="prenom">Prenom</option>
+                </select>
+
+            </a>
             <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..."  class="search-input">
         <!-- <fa-icon [icon]="icons.recherche" class="search-icon"></fa-icon> -->
         </div>
     </div>
-    
+    <div class="entete">
+        
+        <div class="modulo">
+            <h6>Module : {{module}}</h6>
+            <h6>{{classe}} {{sharedMethod.extractAnnee(annees)}} - {{sharedMethod.extractAnnee(annees) + 1}}</h6>
+            <h6>Semestre : {{semestres}}</h6>
+        </div>
+       
+    </div>
     <div class="table-container">
         <table class="table  table-hover">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>N°</th>
                     <!-- <th>Photo</th> -->
                     <th>Nom</th>
                     <th>Prenom</th>
-                    <th>Email</th>
-                    <th>Classe</th>
-                    <th>Filiere</th>
+                    <th>Date Naissance</th>
+                    <th>Lieu Naissance</th>
+                    <th>Sexe</th>
+                    <th>Note Classe</th>
 
-                    <th>Telephone</th>
-                    <th>Action</th>
+                    <th>Note Examen</th>
+                    <th>Note Sess</th>
+                    <th>Session</th>
+                    <th>Note UE</th>
+                    <th>Val UE</th>
+                    <!-- <th>Emargement</th> -->
 
                 </tr>
             </thead>
             <tbody>
                 <ng-container *ngIf="filterStudents().length; else noResults">
-                    <ng-container *ngFor="let incrit of inscrits ; let i = index">
+                    <ng-container *ngFor="let incrit of filterStudents(); let i = index">
                         <tr>
-                            <td>{{i + 1}}</td>
-                            <!-- <td><img src="{{studens.urlPhoto}}" alt=""></td> -->
-                            <td>{{incrit.idEtudiant.nom}}</td>
-                            <td>{{incrit.idEtudiant.prenom}}</td>
-                            <td>{{incrit.idEtudiant.email}}</td>
-                            <td class="class-name" title="{{incrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}">
-                                {{incrit.idClasse.idFiliere?.idNiveau?.nom}}</td>
-                            <td class="class-name" title="{{incrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}">
-                                {{abrevigateFiliereName(incrit.idClasse.idFiliere?.idFiliere?.nomFiliere!)}}</td>
-
-                            <td>{{incrit.idEtudiant.telephone}}</td>
-                            <td>
-                                <!-- data-bs-toggle="modal"   [attr.data-bs-target]="'#modal-' + studens.idEtudiant" -->
-                                <div class="btn-contenaire">
-                                    <a (click)="load_module_without_note(incrit)"><fa-icon [icon]="icons.plus"
-                                            class="icons"></fa-icon><span>Ajouter</span></a>
-                                    <!-- <a (click)="load_bulletin(incrit.id!)"><fa-icon [icon]="icons.eye"
-                                            class="icons"></fa-icon><span>Rélever</span></a> -->
-                                    <!-- <a (click)="load_update(incrit)" data-bs-toggle="modal"   [attr.data-bs-target]="'#noteEdite_' + incrit.idEtudiant"><fa-icon [icon]="icons.edit" class="icons"></fa-icon><span>Modifier</span></a> -->
-                                    <!-- <a><fa-icon [icon]="icons.delete"></fa-icon><span>Supprimer</span></a> -->
-
-                                </div>
-                            </td>
-
+                          <td class="numerotation-clumn">{{ i + 1 + (page * size) }}</td>
+                          <td>{{ incrit.inscriptions.nom }}</td>
+                          <td>{{ incrit.inscriptions.prenom }}</td>
+                          <td>{{ incrit.inscriptions.dateNaissance }}</td>
+                          <td>{{ incrit.inscriptions.lieuNaissance }}</td>
+                          <td>{{ incrit.inscriptions.sexe}}</td>
+                          
+                          <td>
+                            <form [formGroup]="noteForms[incrit.idModule + '-' + i]">
+                              <input
+                                (change)="onSubmit(incrit.idModule, incrit.inscriptions.id!, noteForms[incrit.idModule + '-' + i].value)"
+                                type="number"
+                                [class.is-invalid]="noteForms[incrit.idModule + '-' + i].get('classeNote')?.invalid"
+                                formControlName="classeNote"/>
+                              <span
+                                *ngIf="noteForms[incrit.idModule + '-' + i]?.get('classeNote')?.errors?.['min'] || noteForms[incrit.idModule + '-' + i]?.get('classeNote')?.errors?.['max']"
+                                style="color: red;">
+                                0 à 20.
+                              </span>
+                              <span
+                                *ngIf="noteForms[incrit.idModule + '-' + i]?.get('classeNote')?.errors?.['required']"
+                                style="color: red;">
+                                Requise
+                              </span>
+                            </form>
+                          </td>
+                          <td>
+                            <!-- FormGroup key based on idModule and index -->
+                            <form [formGroup]="noteForms[incrit.idModule + '-' + i]">
+                              <input
+                                (change)="onSubmit(incrit.idModule, incrit.inscriptions.id!, noteForms[incrit.idModule + '-' + i].value)"
+                                type="number"
+                                [class.is-invalid]="noteForms[incrit.idModule + '-' + i].get('examNote')?.invalid"
+                                formControlName="examNote"/>
+                              <span
+                                *ngIf="noteForms[incrit.idModule + '-' + i]?.get('examNote')?.errors?.['min'] || noteForms[incrit.idModule + '-' + i]?.get('examNote')?.errors?.['max']"
+                                style="color: red;">
+                                0 à 20.
+                              </span>
+                              <span
+                                *ngIf="noteForms[incrit.idModule + '-' + i]?.get('examNote')?.errors?.['required']"
+                                style="color: red;">
+                                Requise
+                              </span>
+                            </form>
+                          </td>
+                          <td>
+                            <form [formGroup]="noteForms[incrit.idModule + '-' + i]">
+                                <input [ngStyle]="{
+                                  'border-color': incrit.sessionNote !== 0 ? 'red' : 'normal'}"
+                                  (change)="onSubmitSession(incrit.idModule, incrit.inscriptions.id!, noteForms[incrit.idModule + '-' + i].value)"
+                                  type="number"
+                                  [class.is-invalid]="noteForms[incrit.idModule + '-' + i].get('sessionNote')?.invalid"
+                                  formControlName="sessionNote"/>
+                                <span
+                                  *ngIf="noteForms[incrit.idModule + '-' + i]?.get('sessionNote')?.errors?.['min'] || noteForms[incrit.idModule + '-' + i]?.get('sessionNote')?.errors?.['max']"
+                                  style="color: red;">
+                                  0 à 20.
+                                </span>
+                                <span
+                                  *ngIf="noteForms[incrit.idModule + '-' + i]?.get('sessionNote')?.errors?.['required']"
+                                  style="color: red;">
+                                  Requise
+                                </span>
+                              </form>
+                          </td>
+                          <td>{{incrit.nbreSession}}</td>
+                          <td>{{incrit.noteUe}}</td>
+                          <td [ngStyle]="{'background-color': incrit.validate.includes('AD') ? 'green' : 'red', 'color': 'white'}">
+                            {{ incrit.validate }}
+                          </td>
+                          <!-- <td>--------</td> -->
                         </tr>
-                    </ng-container>
+                      </ng-container>
+                      
+                      
                 </ng-container>
                 <ng-template #noResults>
                     <tr>

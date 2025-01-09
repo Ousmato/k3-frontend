@@ -1,7 +1,7 @@
 import { Admin } from "./Admin";
 import { Ecue, Module } from "./Module";
 import { Semestres } from "./Semestre";
-import { Inscription, Student } from "./Students";
+import { Inscription, InscriptionNoteDto, Student } from "./Students";
 import { AddUeDto, Ue } from "./UE";
 
 export interface Notes{
@@ -60,7 +60,11 @@ export interface StudentsNotesDto{
 export interface AddNoteDto{
     idNote: number;
     idModule: number
-    noteExam: number;
-    noteClasse: number;
-    addUeDto: AddUeDto;
+    examNote: number;
+    classeNote: number;
+    noteUe: number
+    validate: string
+    sessionNote: number
+    nbreSession: number
+    inscriptions: InscriptionNoteDto
 }

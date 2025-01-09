@@ -12,31 +12,40 @@ export const AdminUSER = () => {
     if (user) {
       const objet = JSON.parse(user);  // Vous devez analyser l'objet stocké
   
-      if (objet.role === Admin_role.SCOLARITE) {
+      if (abrevigate(objet.idRole.nom )=== Admin_role.SCOLARITE.toUpperCase()) {
 
         return {scolarite : objet};  
 
-      }else if(objet.role === Admin_role.COMPTABLE){
+      }else if(abrevigate(objet.idRole.nom ) === Admin_role.COMPTABLE.toUpperCase()){
 
         return {comptable: objet};
 
-      }else if(objet.role === Admin_role.DER){
+      }else if(abrevigate(objet.idRole.nom ) === Admin_role.DER.toUpperCase()){
 
         return {der: objet};
 
-      }else if(objet.role === Admin_role.DGA){
+      }else if(abrevigate(objet.idRole.nom ) === Admin_role.DGA.toUpperCase()){
 
         return {dga: objet};
 
-      }else if(objet.role === Admin_role.SECRETAIRE){
+      }else if(abrevigate(objet.idRole.nom) === Admin_role.SECRET_P.toUpperCase()){
 
         return {secretaire: objet};
 
-      }else if(objet.role === Admin_role.DG){
+      }else if(abrevigate(objet.idRole.nom) === Admin_role.DG.toUpperCase()){
         
         return {dg: objet};
+      
+      }else if(objet.idRole.nom === "Admin"){
+        
+        return {admin: objet};
       }
     }
   
     return null; // Si l'utilisateur ou la scolarité n'existent pas, retourner null
+
+     function abrevigate(name: string){
+      const nameSplit = name.split(' ');
+      return nameSplit.filter(word => word.length > 3).map(w => w[0].toUpperCase()).join('');
+     }
   }

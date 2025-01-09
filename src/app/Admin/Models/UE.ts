@@ -6,6 +6,9 @@ import { Semestres } from "./Semestre";
 export interface Ue{
     id?:number;
     nomUE:string;
+    codeUE?: string;
+    idSemestre?: Semestres
+    active?: boolean
     idAdmin: Admin
 }
 

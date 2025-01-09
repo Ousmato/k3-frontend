@@ -13,6 +13,7 @@ import { AnneeScolaire } from '../../Models/School-info';
 import { environment } from '../../../../environments/environment';
 import { AdminUSER } from '../../Models/Auth';
 import { InscriptionService } from '../../../Services/inscription.service';
+import { StudentSharedMethods } from './Utils/Student-shared-methode';
 
 @Component({
   selector: 'app-etudiants',
@@ -26,7 +27,7 @@ export class EtudiantsComponent implements OnInit {
 
   studentspage?: StudentPages;
   page = 0;
-  size = 20;
+  size = 100;
   filteredItems: Inscription[] = []
   pages: number[] = []
 
@@ -43,7 +44,8 @@ export class EtudiantsComponent implements OnInit {
   student_etats: { key: string, value: any }[] = []
   // urlImage!: string | ArrayBuffer
 
-  constructor(private service: EtudeService, private inscriptionService: InscriptionService, private sideBarService: SideBarService, private route: ActivatedRoute,
+  constructor(private service: EtudeService, private inscriptionService: InscriptionService, 
+    private sideBarService: SideBarService, private route: ActivatedRoute, public sharedMethod: StudentSharedMethods,
     private root: Router, public icons: IconsService, private pageTitle: PageTitleService, private infoSchool: SchoolService) { }
 
   ngOnInit(): void {
@@ -82,8 +84,9 @@ export class EtudiantsComponent implements OnInit {
         inst.idEtudiant.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         inst.idEtudiant.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         inst.idEtudiant.email.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        inst.idEtudiant.idClasse?.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        inst.idEtudiant.idClasse?.idFiliere?.idNiveau.nom?.toLowerCase().includes(this.searchTerm.toLowerCase())
+        this.sharedMethod.abreviateFiliereName(inst.idClasse?.idFiliere?.idFiliere.nomFiliere!).toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        inst.idClasse?.idFiliere?.idNiveau.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        inst.idEtudiant.lieuNaissance.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     }
   }
@@ -93,13 +96,20 @@ export class EtudiantsComponent implements OnInit {
     this.inscrits = []
     this.page = 0
     this.idAnnee = event.target.value
+    // this.inscriptionService.getAllInscriptionsOfYear(this.idAnnee).subscribe(ins => {
+    //   this.inscrits = ins;
+    //   // this.formatedDataStudent(ins);
+    // })
     this.service.getAll_by_idAnnee(this.idAnnee, this.page, this.size).subscribe(data => {
       this.formatedDataStudent(data);
 
     });
   }
   loadStudents(): void {
-
+    // this.inscriptionService.getInscriptionByCurrentYear().subscribe(data => {
+    //   this.inscrits = data
+    // })
+    
     this.service.getSudents(this.page, this.size).subscribe(data => {
       this.formatedDataStudent(data);
 
@@ -190,7 +200,8 @@ export class EtudiantsComponent implements OnInit {
     const navigationExtras: NavigationExtras = {
       queryParams: { id: idInscription }
     };
-    this.root.navigate(['/secretaire/student-view'], navigationExtras)
+    
+    this.root.navigate(['/r-scolarite/student-view'], navigationExtras)
   }
   // ----------------------------------------------------------
   deleted_student(id: number) {
@@ -272,28 +283,26 @@ export class EtudiantsComponent implements OnInit {
     });
 
   }
-  // ----------------------abrevigate filiere name
-  abreviateFiliereName(filiere: string): string {
-    const nameWord = filiere.split(' ');
-    const word = nameWord.filter(wd => wd.length > 3).map(word => word[0].toUpperCase()).join('')
-    return word;
-  }
-
+ 
 
   // sort students
-  onSorted(event: any){
-    const value: keyof Inscription = event.target.value;
-
-    console.log(value, "value")
-    console.log(this.inscrits, "inscrit")
-    this.inscrits = [...this.filterStudents()].sort((a, b) =>{
-      const valA = a[value]?.toString().toLowerCase() || '';
-      const valB = b[value]?.toString().toLowerCase() || '';
-     
+  onSorted(event: any) {
+    const value: keyof Student = event.target.value; // Obtenir la valeur de tri (nom ou prénom)
+    console.log(value, "value");
+    const filteredStudents = this.filterStudents();
+  
+    // Trier les étudiants filtrés en fonction du critère sélectionné
+    this.inscrits = filteredStudents.sort((a, b) => {
+      const valA = a.idEtudiant[value]?.toString().toLowerCase() || ''; // Récupérer la valeur de a et la convertir en minuscule
+      const valB = b.idEtudiant[value]?.toString().toLowerCase() || ''; // Récupérer la valeur de b et la convertir en minuscule
+      
       if (valA < valB) return -1; // a avant b
       if (valA > valB) return 1;  // a après b
-      return 0;
-    })
+      return 0; // égalité
+    });
+  
+    // console.log(this.inscrits, "inscrits après tri");
   }
+  
 
 }

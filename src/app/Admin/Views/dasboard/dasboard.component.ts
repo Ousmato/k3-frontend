@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { IconsService } from '../../../Services/icons.service';
-import { EtudeService } from '../etudiants/etude.service';
+import { EtudeService } from '../Etudiants/etude.service';
 import { ClassStudentService } from '../../../DGA/class-students/class-student.service';
-import { EnseiService } from '../enseignant/ensei.service';
-import { ServiceService } from '../../../DER/emplois-du-temps/service.service';
+import { EnseiService } from '../Enseignant/ensei.service';
+import { ServiceService } from '../../../DER/EDT/emplois-du-temps/service.service';
 import { ClassRoom } from '../../Models/Classe';
 import { Emplois } from '../../Models/Emplois';
 import { FormBuilder, FormGroup } from '@angular/forms';

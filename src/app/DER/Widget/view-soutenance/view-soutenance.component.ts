@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Jury, Soutenance } from '../../../Admin/Models/doc';
 import { IconsService } from '../../../Services/icons.service';
-import { EtudeService } from '../../../Admin/Views/etudiants/etude.service';
+import { EtudeService } from '../../../Admin/Views/Etudiants/etude.service';
 import { SchoolService } from '../../../Services/school.service';
 import { SchoolInfo } from '../../../Admin/Models/School-info';
 import { Salles } from '../../../Admin/Models/Salles';

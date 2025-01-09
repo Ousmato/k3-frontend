@@ -1,16 +1,16 @@
 <main>
-  
+
   <div class="btn-containere">
     <div class="right">
-      <button type="button"  *ngIf="permission" (click)="addTeacher()">Ajouter enseignant <fa-icon
-        [icon]="icons.had_point_down"></fa-icon></button>
-    <button type="button" *ngIf="permission" (click)="timeWorks()">Heure éffectuer <fa-icon
-        [icon]="icons.had_point_down"></fa-icon></button>
+      <button type="button" *ngIf="permission" (click)="addTeacher()">Ajouter enseignant <fa-icon
+          [icon]="icons.had_point_down"></fa-icon></button>
+      <button type="button" *ngIf="permission" (click)="timeWorks()">Heure éffectuer <fa-icon
+          [icon]="icons.had_point_down"></fa-icon></button>
     </div>
     <div class="input-search">
       <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..." class="search-input">
     </div>
-    
+
   </div>
   <div class="table-container">
 
@@ -21,11 +21,11 @@
           <!-- <th>Photo</th> -->
           <th>Nom</th>
           <th>Prenom</th>
-          <th>Email</th>
+          <!-- <th>Email</th> -->
           <th>Telephone</th>
           <th>Status</th>
           <th>Spécialité </th>
-          <th>Action</th>
+          <th>Actions</th>
 
         </tr>
       </thead>
@@ -34,26 +34,38 @@
           <tr *ngFor="let pr of filterTeachers() let i = index">
             <td class="numerotation-clumn">{{i+1}}</td>
             <!-- <td><img [src]="enseign.urlPhoto || icons.user" alt=""></td> -->
-            <td>{{pr.teachers.nom}}</td>
-            <td>{{pr.teachers.prenom}}</td>
-            <td>{{pr.teachers.email}}</td>
+            <td>{{pr.nom}}</td>
+            <td>{{pr.prenom}}</td>
+            <!-- <td>{{pr.email}}</td> -->
 
-            <td>{{pr.teachers.telephone}}</td>
-            <td>{{pr.teachers.status}}</td>
-            <td> @for (item of pr.filieres; track $index) {
-              <span class="span">{{abbreviateFiliereName(item.nomFiliere)}}, </span>
-              
+            <td>{{pr.telephone}}</td>
+            <td>{{pr.status}}</td>
+            <td>@if(pr.specialitesList.length != 0){
+              @for (item of pr.specialitesList; track $index) {
+                <span class="span">
+                  {{item.nom}} <br>
+                </span>
+  
+                }
+              }@else {
+              -
               }
+
             </td>
             <td>
               <div class="btn-contenaire">
                 <!-- <a data-bs-toggle="modal" [attr.data-bs-target]="'#enseignantDetail_' + enseign.idEnseignant" ><fa-icon [icon]="icons.eye"></fa-icon><span>Details</span></a> -->
-                <a (click)="toggle_toEdit(pr.teachers.idEnseignant!)"><fa-icon
+                <a (click)="showForm(i)"><fa-icon [icon]="icons.books"></fa-icon><span>Ajouter spécialité</span></a>
+                <a (click)="toggle_toEdit(pr.idEnseignant!)"><fa-icon
                     [icon]="icons.eye"></fa-icon><span>Details</span></a>
+                <a (click)="toggle_toEdit(pr.idEnseignant!)"><fa-icon
+                    [icon]="icons.eye"></fa-icon><span>H/effectuées</span></a>
               </div>
             </td>
             <!-- ------------------------------------------------------------------------ -->
 
+            <app-add-teacher-specialites *ngIf="show_form && i === index" [idTeacher]="pr.idEnseignant!"
+              (closeModal)="cancel()"></app-add-teacher-specialites>
           </tr>
         </ng-container>
         <ng-template #noResults>
@@ -69,11 +81,11 @@
     <button (click)="previousPage()" [disabled]="page === 0">
       <fa-icon [icon]="icons.previous"></fa-icon>
     </button>
-    
+
     <button *ngFor="let p of getVisiblePages()" (click)="setPage(p)" [class.active]="p === page">
       {{ p + 1 }}
     </button>
-    
+
     <button (click)="nextPage()" [disabled]="page === teachersPage!.totalPages! - 1">
       <fa-icon [icon]="icons.nexte"></fa-icon>
     </button>

@@ -1,0 +1,78 @@
+<main class="emplois-main-contente" >
+   
+    <div class="btn-contenaire">
+        <button *ngIf="permission" type="button"  (click)="nouveau()"><fa-icon [icon]="icons.plus"></fa-icon> Nouveau</button>
+        
+        <div class="app" *ngIf="show_add">
+            <app-emplois-du-temps [idClasse]="idClasse" (closeModale)="close()"></app-emplois-du-temps>
+        </div>
+        <div class="app-update" *ngIf="show_update">
+            <app-emplois-widget [emplois]="emploiSelect" (closeUpdateModal)="close()"></app-emplois-widget>
+        </div>
+        <div class="input-search">
+            <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..." class="search-input">
+          </div>
+   </div>
+   <div class="emplois-contente">
+    <div class="grid-container">
+        @if(filteredEmplois().length){
+        <div class="grid-item" *ngFor="let eploi of filteredEmplois()">
+            <!-- <div class="section-folder"> -->
+                <div class="emploi-item" >
+                  
+                    <div class="info-folder">
+                        <h6 class="title">Date de début</h6>
+                        <p class="small">{{eploi.dateDebut}}</p>
+                        
+                    </div>
+                    <div class="info-folder">
+                        <h6 class="title">Date de fin</h6>
+                        <p class="small">{{eploi.dateFin}}</p>
+                        
+                    </div>
+                    <div class="info-folder-module">
+                        <h6 class="title">Module</h6>
+                        <p class="small">{{eploi.idModule.nomModule}}</p>
+                        
+                    </div>
+                    <div class="info-folder">
+                        <h6 class="title">Semestre</h6>
+                        <p class="small">{{eploi.idSemestre.nomSemetre}}</p>
+                        
+                    </div>
+                    <div class="info-folder-module">
+                        <h6 class="title">Mention</h6>
+                        <p class="small">{{eploi.idClasse.idFiliere?.idNiveau?.nom}} {{eploi.idClasse.idFiliere?.idFiliere?.nomFiliere}}</p>
+                        
+                    </div>
+                    <!-- <div class="active-contente"> -->
+                        <p>
+                            {{ eploi.status === 'en_cours' ? "En cours" : eploi.status === 'en_attente' ? "En attente" : "Dépassé" }}
+                            <fa-icon 
+                              [ngStyle]="{ color: eploi.status === 'en_cours' ? 'green' : eploi.status === 'en_attente' ? 'blue' : 'gray' }"
+                              [icon]="icons.circle">
+                            </fa-icon>
+                          </p>
+                          
+                    <!-- </div> -->
+                    <div class="next-col second-child"> 
+                        <!-- <a *ngIf="permission" (click)="deleted(eploi.id!)" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> Supprimer</a> -->
+                    
+                        <a *ngIf="permission" (click)="updated(eploi)" ><fa-icon [icon]="icons.edit"></fa-icon>Modifier</a>
+                        <div class="button-content">
+                            <button class="btn " (click)="toggle_toSeance(eploi.id!)"><fa-icon [icon]="icons.nexte"></fa-icon></button>
+                        </div>
+                        <!-- <a (click)="toggle_toSeance(eploi.id!)"><fa-icon [icon]="icons.eye"></fa-icon>Consulter</a> -->
+                    </div>
+                    
+                    
+                </div>
+            <!-- </div> -->
+        </div>
+    }@else {
+        <app-empty-widget></app-empty-widget>
+    }
+    </div>
+   </div>
+    
+</main>

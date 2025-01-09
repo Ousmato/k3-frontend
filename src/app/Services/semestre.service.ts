@@ -23,8 +23,8 @@ export class SemestreService {
   getCurrentSemestresOfYear(): Observable<Semestres[]>{
     return this.http.get<Semestres[]>(this.baseUrl+"current-semestre-of-year")
   }
-  getCurrentSemestresByIdNivFiliere(idNivFil: number): Observable<Semestres[]>{
-    return this.http.get<Semestres[]>(this.baseUrl+"all-semestre-by-idNiv-fil/"+ idNivFil);
+  getCurrentSemestresByIdNivFiliere(idClasse: number): Observable<Semestres[]>{
+    return this.http.get<Semestres[]>(this.baseUrl+"all-semestre-by-idClasse/"+ idClasse);
   }
   // ---------------------------get semestre by id classe
 

@@ -1,0 +1,234 @@
+<main>
+    
+    <div class="footer" *ngIf="permission">
+
+        <div>
+            <ng-container *ngIf="montantRestant <= 0">
+                <p>La totalité a été payée</p>
+            </ng-container>
+            <ng-container *ngIf="montantRestant > 0">
+                <p>Le montant restant à payer est <span>{{ scolarites.reliquat }} FCFA</span></p>
+            </ng-container>
+            <div class="float-end">
+                <p *ngIf="montantRestant > 0" (click)="payer()">Payer</p>
+                <div class="views" *ngIf="isShow">
+                    <form [formGroup]="update_paie_student_form" (ngSubmit)="update_paie_student(inscrit!)">
+                        <!-- <input type="number" formControlName="idEtudiant" *ngIf="false"> -->
+                        <div class="input">
+                            <label for="validationDefault03" class="label form-label">Scolarité : <span>(Montant en
+                                    FCFA)</span> </label>
+                            <input type="text" formControlName="scolarite" class="scolarite-input form-control"
+                                placeholder="La scolarite...."
+                                [class.is-invalid]="update_paie_student_form.get('scolarite')!.invalid && update_paie_student_form.get('scolarite')!.touched"
+                                pattern="[0-9]{1,7}">
+                            <span
+                                *ngIf="update_paie_student_form.controls['scolarite'].invalid && update_paie_student_form.controls['scolarite'].touched"
+                                [ngStyle]="{color: 'red'}">
+                                Champ obligatoire*
+                            </span>
+                            <span class="small"
+                                *ngIf="update_paie_student_form.controls['scolarite'].hasError('pattern') && !update_paie_student_form.controls['scolarite'].hasError('required')"
+                                [ngStyle]="{color: 'red'}">
+                                Maximum 7 chiffres autorisés*
+                            </span>
+                            <span class="small"
+                                *ngIf="update_paie_student_form.get('scolarite')?.value > 6000 && inscrit?.idEtudiant?.status?.toString()?.toUpperCase() === typeStatus.REGULIER.toUpperCase()"
+                                [ngStyle]="{color: 'red'}">
+                                Frais invalide*
+                            </span>
+                        </div>
+
+
+                        <div class="button-cash">
+                            <button class="submit" type="submit"><span>Suivant</span><fa-icon
+                                    [icon]="icons.nexte_circle"></fa-icon></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form>
+
+
+        <input *ngIf="false" type="number" formControlName="idEtudiant">
+
+        <div class="childs-school">
+            <div class="first">
+                <input type="text" value="INSTITUT UNIVERSITAIRE DE FORMATION PROFESSIONNELLE (IUFP)">
+                <input type="text" value="{{inscrit?.idClasse?.idFiliere?.idFiliere?.nomFiliere}}">
+            </div>
+
+            <div class="second">
+                <input type="text" value="2020-2023">
+                <input type="text" value="{{inscrit?.idClasse?.idFiliere?.idNiveau?.nom}}">
+            </div>
+
+
+        </div>
+        <!-- ----------------- -->
+        <div class="childs-school">
+            <div class="first">
+                <div class="left-content">
+                    <!-- <div class="radio-button"> -->
+                    <div class="input-radio">
+                        <label for="">Homme</label>
+                        <input type="checkbox" [checked]="inscrit?.idEtudiant?.sexe?.toUpperCase() === 'HOMME'">
+                    </div>
+                    <div class="input-radio">
+                        <label for="">Femme</label>
+                        <input type="checkbox" [checked]="inscrit?.idEtudiant?.sexe?.toUpperCase() === 'FEMME'">
+                    </div>
+
+
+                    <!-- </div> -->
+                    <div class="input">
+                        <label for="validationDefault02">Matricule </label>
+                        <input type="text" value="{{inscrit?.idEtudiant?.matricule}}" class="form-control" readonly>
+                    </div>
+                    <div class="input">
+                        <label>Statut </label>
+                        <input type="text" value="{{inscrit?.idEtudiant?.status}}" class="form-control" readonly>
+
+                    </div>
+                </div>
+                <div class="left-content">
+                    <div class="name">
+                        <label>Nom </label>
+                        <input type="text" value="{{inscrit?.idEtudiant?.nom}}" class="form-control" readonly>
+
+                    </div>
+                    <div class="name">
+                        <label>Prenom </label>
+                        <input type="text" value="{{inscrit?.idEtudiant?.prenom}}" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="left-content">
+                    <div class="name">
+                        <label>Résidence à ségou </label>
+                        <input type="text" value="{{inscrit?.idEtudiant?.quartier}}" class="form-control" readonly>
+
+                    </div>
+                    <div class="name">
+                        <label>Email</label>
+                        <input type="text" value="{{inscrit?.idEtudiant?.email}}" class="form-control" readonly>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="second">
+                <div class="pop-img">
+                    <img [src]="inscrit?.idEtudiant?.urlPhoto" (error)="onError($event!)" alt="Profile Image">
+                    <!-- <img [src]="student?.urlPhoto ? student?.urlPhoto : 'assets/business-professional-icon.svg'" alt="Profile Image"> -->
+
+                </div>
+                <fieldset>
+                    <!-- <legend >Tel</legend> -->
+                    <input type="text" value="{{inscrit?.idEtudiant?.telephone}}" class="form-control" readonly>
+                </fieldset>
+
+
+            </div>
+        </div>
+        <!-- ----------------- -->
+        <div class="childs-school grid-item" [ngStyle]="{border: '1px solid ', 'padding': '8px'}">
+            <div class="box">
+                <label>Né le</label>
+                <input type="text"
+                    value="{{inscrit?.idEtudiant?.dateNaissance}} à {{inscrit?.idEtudiant?.lieuNaissance}} "
+                    class="form-control" readonly>
+            </div>
+            <div class="box">
+                <label>Prénom/Père</label>
+                <input type="text" value="{{inscrit?.idEtudiant?.lastNameFather}}" class="form-control" readonly>
+
+            </div>
+            <div class="box">
+                <label>Prénom & Nom/Mère</label>
+                <input type="text" value="{{inscrit?.idEtudiant?.motherName}}" class="form-control" readonly>
+
+            </div>
+            <div class="box">
+                <label>Comm/Naissance</label>
+                <input type="text" value="{{inscrit?.idEtudiant?.commNaissance}}" class="form-control" readonly>
+
+            </div>
+            <div class="box">
+                <label>Cerc/Naissance</label>
+                <input type="text" value="{{inscrit?.idEtudiant?.cercleNaissance}}" class="form-control" readonly>
+
+            </div>
+            <div class="box">
+                <label>Résidence des parent</label>
+                <input type="text" value="{{inscrit?.idEtudiant?.residenceParent}}" class="form-control" readonly>
+
+            </div>
+        </div>
+        <div class="childs-school grid-item">
+            <div class="box">
+                <label>Diplome</label>
+                <input type="text" value="{{inscrit?.idEtudiant?.diplome}}" class="form-control" readonly>
+            </div>
+            <div class="box">
+                <label>Année d'obtention</label>
+                <input type="text" value="{{inscrit?.idEtudiant?.anneeObtention}}" class="form-control" readonly>
+
+            </div>
+            <div class="box">
+                <label>Série</label>
+                <input type="text" value="{{inscrit?.idEtudiant?.series}}" class="form-control" readonly>
+
+            </div>
+            <div class="box">
+                <label>Académie</label>
+                <input type="text" value="{{inscrit?.idEtudiant?.academies}}" class="form-control" readonly>
+
+            </div>
+            <div class="box">
+                <label>N° de place Bac/BT2</label>
+                <input type="text" value="{{inscrit?.idEtudiant?.numeroPlace}}" class="form-control" readonly>
+
+            </div>
+            <div class="box">
+                <label>Nationalité</label>
+                <input type="text" value="{{inscrit?.idEtudiant?.nationalite}}" class="form-control" readonly>
+
+            </div>
+        </div>
+        <!-- ------------- -->
+        <div class="paiement">
+            <h6>FRAIS DE FORMATION :
+                @if (inscrit?.idEtudiant?.status?.toString() == typeStatus.REGULIER ) {
+                6000 FCFA
+                }@else if(inscrit?.idEtudiant?.status?.toString() ==
+                typeStatus.FORMATION_CONTINUE.toString().toUpperCase()) {
+                300 000 FCFA
+                }
+                @else if(inscrit?.idEtudiant?.status?.toString() ==
+                typeStatus.PROFESSIONNEL_COLLECTIVITE.toString().toUpperCase() ||
+                inscrit?.idEtudiant?.status?.toString() ==typeStatus.PROFESSIONNEL_ETAT.toString().toUpperCase() ) {
+                150 000 FCFA
+                }
+                @else if(inscrit?.idEtudiant?.status?.toString() == typeStatus.PROFESSIONNEL_PRIVEE ) {
+                200 000 FCFA
+                }
+
+            </h6>
+            <div class="name">
+                <label>Montant payer</label>
+                <input type="text" value="{{scolarites.payer}} FCFA" class="form-control" readonly>
+            </div>
+            <div class="name">
+                <label>Montant restant</label>
+                <input type="text" value="{{scolarites.reliquat}} FCFA" class="form-control" readonly>
+            </div>
+
+
+        </div>
+
+        
+
+    </form>
+</main>

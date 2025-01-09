@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 // import { faEye,faPlus,faBookOpen,faCalendar, faBell, faClipboard, faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { ClassStudentService } from './class-student.service';
-import { ClassRoom } from '../../Admin/Models/Classe';
+import { ClassRoom, Specialite_Filiere } from '../../Admin/Models/Classe';
 import { SetService } from '../../Admin/Views/settings/set.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClassModules } from '../../Admin/Models/ClassModule';
-import { ServiceService } from '../../DER/emplois-du-temps/service.service';
+import { ServiceService } from '../../DER/EDT/emplois-du-temps/service.service';
 import { Emplois } from '../../Admin/Models/Emplois';
 import { NavigationExtras, Route, Router } from '@angular/router';
 import { IconsService } from '../../Services/icons.service';
@@ -14,6 +14,8 @@ import { SideBarService } from '../../sidebar/side-bar.service';
 import { AnneeScolaire } from '../../Admin/Models/School-info';
 import { SchoolService } from '../../Services/school.service';
 import { AdminUSER } from '../../Admin/Models/Auth';
+import { Admin } from '../../Admin/Models/Admin';
+import { Class_shared } from './Utils/Class-shared-methods';
 
 @Component({
   selector: 'app-class-students',
@@ -23,15 +25,18 @@ import { AdminUSER } from '../../Admin/Models/Auth';
 export class ClassStudentsComponent implements OnInit {
 
   searchTerm: string = ""
+  sortedValue: string = ""
   classRoms: ClassRoom[] = [];
   classesArchives: ClassRoom[] = [];
   filteredClasse: ClassRoom[] = [];
   idNivFiliere!: number;
-  annees: AnneeScolaire [] = []
+  annees: AnneeScolaire[] = []
+  annee_check !: number
 
   currentYear!: number
 
-  classeSelect!: ClassRoom | null 
+  classeSelect!: ClassRoom | null
+  sousClassSelect!: Specialite_Filiere | null
 
   // ueList: any[] = [];
   list_checked: any[] = [];
@@ -44,10 +49,12 @@ export class ClassStudentsComponent implements OnInit {
   classes_L1: ClassRoom[] = []
   classes_L2: ClassRoom[] = []
   classes_L3: ClassRoom[] = []
+  classesSorted: ClassRoom[] = []
   permission: boolean = false
+  der!: Admin
 
   constructor(private service: ClassStudentService, private sideBarService: SideBarService,
-    private toastr: ToastrService, private infoSchool: SchoolService,
+    public sharedMethod: Class_shared, private infoSchool: SchoolService,
     private router: Router, public icons: IconsService) {
 
   }
@@ -57,7 +64,7 @@ export class ClassStudentsComponent implements OnInit {
     this.get_annees();
     const date = new Date();
     this.currentYear = date.getFullYear();
-
+    this.der = AdminUSER()?.der
     this.sideBarService.currentSearchTerm.subscribe(term => {
       this.searchTerm = term;
       console.log(this.searchTerm, "search")
@@ -96,7 +103,7 @@ export class ClassStudentsComponent implements OnInit {
 
     });
   }
-  
+
   // ------------------------------------------get all ue by class id
   getAll_ues(classe: ClassRoom) {
     this.isShow_add_module = true;
@@ -120,6 +127,16 @@ export class ClassStudentsComponent implements OnInit {
       console.log(this.classesArchives, "arch99999999999999")
     })
   }
+  show_views_sousFiliere(classe: Specialite_Filiere) {
+    console.log(classe, "dois etre changer")
+    if (this.sousClassSelect === classe) {
+      this.classeSelect = null; // Deselect if already selected
+    } else {
+      this.sousClassSelect = classe; // Select the clicked item
+
+    }
+
+  }
   // ---------------------get permission to access
   getPermission(): boolean {
     const autorize = AdminUSER()?.scolarite;
@@ -133,10 +150,23 @@ export class ClassStudentsComponent implements OnInit {
 
   toggle_to_view_ues(classe: ClassRoom) {
     const navigationExtras: NavigationExtras = {
-      queryParams: { id: classe.idFiliere?.id }
+      queryParams: { id: classe?.id }
 
     }
+    if (this.der) {
+      this.router.navigate(['/der/view-ues'], navigationExtras)
+      return
+    }
     this.router.navigate(['/r-scolarite/view-ues'], navigationExtras)
+
+  }
+
+  toggle_to_emplois(classe: ClassRoom) {
+    const navigationExtras: NavigationExtras = {
+      queryParams: { id: classe?.id }
+
+    }
+    this.router.navigate(['/der/emplois-du-temps'], navigationExtras)
 
   }
   archive(classe: ClassRoom) {
@@ -145,23 +175,23 @@ export class ClassStudentsComponent implements OnInit {
       queryParams: { id: classe.idFiliere?.id }
 
     }
-    if(this.getPermission()){
-    this.router.navigate(['/r-scolarite/class-archives'], navigationExtras)
+    if (this.getPermission()) {
+      this.router.navigate(['/r-scolarite/class-archives'], navigationExtras)
 
-    }else{
-    this.router.navigate(['/dga/class-archives'], navigationExtras)
+    } else {
+      this.router.navigate(['/dga/class-archives'], navigationExtras)
 
     }
 
   }
   // ----------------------- method go to add notes aux student
-  toggle_to_notes(idClasse: number) {
+  toggle_to_notes(idClasse: number, idAnnee: number) {
     const navigationExtras: NavigationExtras = {
-      queryParams: { id: idClasse }
+      queryParams: { id: idClasse, query:idAnnee }
     };
     if (this.getPermission()) {
       console.log("scolarite")
-      this.router.navigate(['/r-scolarite/student-notes'], navigationExtras);
+      this.router.navigate(['/r-scolarite/view-ues'], navigationExtras);
     } else {
       console.log("dga")
       this.router.navigate(['/dga/student-notes'], navigationExtras);
@@ -179,9 +209,9 @@ export class ClassStudentsComponent implements OnInit {
     if (this.getPermission()) {
       this.router.navigate(['/r-scolarite/all-notes'], navigationExtras);
 
-    } else if(dga) {
+    } else if (dga) {
       this.router.navigate(['/dga/all-notes'], navigationExtras);
-    }else{
+    } else {
       this.router.navigate(['/sidebar/all-notes'], navigationExtras);
 
     }
@@ -196,12 +226,13 @@ export class ClassStudentsComponent implements OnInit {
     const dga = AdminUSER()?.dga
     if (this.getPermission()) {
       this.router.navigate(['/r-scolarite/etudiant-de-la-classe'], navigationExtras);
-    } else if(dga){
+    } else if (dga) {
       this.router.navigate(['/dga/etudiant-de-la-classe'], navigationExtras);
 
-    }else{
+
+    } else {
       this.router.navigate(['/sidebar/etudiant-de-la-classe'], navigationExtras);
-      
+
     }
   }
   // ----------------------------------------lint to go to the param
@@ -221,9 +252,9 @@ export class ClassStudentsComponent implements OnInit {
     }
     return this.filteredClasse = this.classes_L1.filter(clf => clf.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
       clf.idFiliere?.idNiveau.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      this.abreviateFiliereName(clf.idFiliere?.idFiliere.nomFiliere.toLowerCase()!).toLowerCase().includes(this.searchTerm.toLowerCase())
+      this.sharedMethod.abreviateFiliereName(clf.idFiliere?.idFiliere.nomFiliere.toLowerCase()!).toLowerCase().includes(this.searchTerm.toLowerCase())
     )
-      
+
   }
   filterClasse_L2() {
     if (!this.searchTerm) {
@@ -231,7 +262,7 @@ export class ClassStudentsComponent implements OnInit {
     }
     return this.filteredClasse = this.classes_L2.filter(clf => clf.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
       clf.idFiliere?.idNiveau.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      this.abreviateFiliereName(clf.idFiliere?.idFiliere.nomFiliere.toLowerCase()!).toLowerCase().includes(this.searchTerm.toLowerCase())
+      this.sharedMethod.abreviateFiliereName(clf.idFiliere?.idFiliere.nomFiliere.toLowerCase()!).toLowerCase().includes(this.searchTerm.toLowerCase())
     )
   }
   filterClasse_L3() {
@@ -240,42 +271,61 @@ export class ClassStudentsComponent implements OnInit {
     }
     return this.filteredClasse = this.classes_L3.filter(clf => clf.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
       clf.idFiliere?.idNiveau.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      this.abreviateFiliereName(clf.idFiliere?.idFiliere.nomFiliere.toLowerCase()!).toLowerCase().includes(this.searchTerm.toLowerCase())
+      this.sharedMethod.abreviateFiliereName(clf.idFiliere?.idFiliere.nomFiliere.toLowerCase()!).toLowerCase().includes(this.searchTerm.toLowerCase())
     )
   }
 
-  // ------------------methode to abrevigate
-  abreviateFiliereName(nom : string) : string{
-    const wordAbreviate = nom.split(' ');
-    const word = wordAbreviate.filter(w => w.length > 3).map(w => w[0].toUpperCase()).join('');
-    return word;
-    
-  }
-   // -------------------------get annees
-   get_annees(){
-    this.infoSchool.getAll_annee().subscribe(data =>{
+  // -------------------------get annees
+  get_annees() {
+    this.infoSchool.getAll_annee().subscribe(data => {
       this.annees = data;
-      this.annees.forEach(ans=>{
+      this.annees.forEach(ans => {
         const annee = new Date(ans.debutAnnee)
         const debutAnnee = annee.getFullYear()
         ans.ans = debutAnnee
+        ans.nextYear = debutAnnee + 1
       })
     })
   }
 
-  promoSelect(event: any){
-    
-    const idAnnee = event.target.value
+  promoSelect(event: any) {
 
-    this.service.getAllClasse(idAnnee).subscribe(classRoms =>{
+    const idAnnee = event.target.value
+    const anneeSelect = this.annees.find(annee => annee.id == idAnnee);
+    this.annee_check = this.sharedMethod.extractAnnee(anneeSelect!);
+
+    this.service.getAllClasse(idAnnee).subscribe(classRoms => {
       this.classRoms = []
       this.classRoms = classRoms;
+      this.classesSorted = classRoms
+      console.log(this.sortedValue, "dans promo seleccion")
+      this.onSortByFiliere(this.sortedValue);
+      
       console.log(this.classRoms, "is class selectm list")
 
       this.classes_L1 = classRoms.filter(clr => clr.idFiliere?.idNiveau.nom === "LICENCE 1");
       this.classes_L2 = classRoms.filter(clr => clr.idFiliere?.idNiveau.nom === "LICENCE 2");
       this.classes_L3 = classRoms.filter(clr => clr.idFiliere?.idNiveau.nom === "LICENCE 3");
     })
+  }
+  // sort students
+  onSortByFiliere(event: any) {
+    // Si une valeur est sélectionnée, on l'assigne
+  if (event && event.target && event.target.value) {
+    this.sortedValue = event.target.value;
+  }
+  
+  // Si aucune valeur n'est sélectionnée, on garde la valeur précédente
+  else {
+    this.sortedValue = this.sortedValue || 'Auccun';
+  }
+    console.log(this.sortedValue, "value avec even");
+   if(this.sortedValue.toString() === "Auccun"){
+    this.classesSorted = []
+    return
+   }
+   this.classesSorted = this.classRoms.filter(cr =>this.sharedMethod.abreviateFiliereName(cr.idFiliere?.idFiliere.nomFiliere!).includes(this.sortedValue))
+   
   }
 
 }

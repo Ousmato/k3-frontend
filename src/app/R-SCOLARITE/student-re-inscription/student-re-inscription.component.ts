@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { IconsService } from '../../Services/icons.service';
 import { AnneeScolaire } from '../../Admin/Models/School-info';
 import { SchoolService } from '../../Services/school.service';
-import { EtudeService } from '../../Admin/Views/etudiants/etude.service';
+import { EtudeService } from '../../Admin/Views/Etudiants/etude.service';
 import { NavigationExtras, Router } from '@angular/router';
 
 @Component({

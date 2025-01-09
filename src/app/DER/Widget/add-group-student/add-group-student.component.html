@@ -72,6 +72,7 @@
         <table class="table">
             <thead>
                 <tr>
+                    <th>N°</th>
                     <th>
                         <div class="select-al input">
 
@@ -91,8 +92,9 @@
             </thead>
             <tbody>
                 <ng-container *ngIf="filteredInscription().length > 0">
-                    <ng-container *ngFor="let inscrit of filteredInscription()">
+                    <ng-container *ngFor="let inscrit of filteredInscription() ; let i = index">
                         <tr [ngClass]="{ 'red-border': check(inscrit.id!)}">
+                            <td>{{i + 1}}</td>
                             <td>
 
                                 <input type="checkbox" (change)="student_check(inscrit.id!, $event)"
@@ -109,7 +111,7 @@
                                 {{inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}</td>
 
                             <td>{{inscrit.idEtudiant.telephone}}</td>
-                            <td>{{isPresent(inscrit.id!) ? particip?.idStudentGroup?.nom : 'Accun'}}</td>
+                            <td >{{isPresent(inscrit.id!) ? particip?.idStudentGroup?.nom : 'Accun'}}</td>
                         </tr>
                     </ng-container>
 

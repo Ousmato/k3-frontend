@@ -5,10 +5,17 @@
                 <fa-icon class="search-icon" [icon]="icons.search"></fa-icon>
                 <input type="text" class="search" (input)="onSearchChange()" [(ngModel)]="searchTerm"
                     placeholder="Rechercher...">
+
+                    <div (click)="cancel()" class="cancel-modal">
+                        <fa-icon  [icon]="icons.xmark"></fa-icon>
+                    </div>
             </div>
-            <ng-container *ngFor="let teacher of filteredItems">
+            <div class="content-scroll">
+                <ng-container *ngFor="let teacher of filteredItems">
                 <p (click)="chose_teacher(teacher)">{{teacher.nom}} {{teacher.prenom}}</p>
             </ng-container>
+            </div>
+            
 
         </div>
     </div>

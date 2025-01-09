@@ -1,0 +1,19 @@
+<main>
+    <div class="content">
+        <div (click)="goBack()" class="back-button">
+            <fa-icon [icon]="icons.back"></fa-icon>
+        </div>
+        <div class="tab-app">
+            <a (click)="getView()" [ngStyle]="{'color': isView ? 'white' : 'var(--primary)'}"> <fa-icon [icon]="icons.info"></fa-icon> Details étudiant</a>
+            <a (click)="getSuivis()" [ngStyle]="{'color': isSuivis ? 'white' : 'var(--primary)'}"> <fa-icon [icon]="icons.chartArea"></fa-icon> Suivis étudiant</a>
+        </div>
+      
+    </div>
+     <div class="views-app" > 
+            <app-student-view *ngIf="isView"></app-student-view>
+        </div>
+        <!-- ------------ -->
+        <div class="suivis-app" >
+            <app-student-suivis *ngIf="isSuivis"></app-student-suivis>
+        </div>
+</main>

@@ -10,6 +10,7 @@ import { AnneeScolaire } from '../../Admin/Models/School-info';
 import { SchoolService } from '../../Services/school.service';
 import { Filiere } from '../../Admin/Models/Filieres';
 import { Niveau } from '../../Admin/Models/Niveau';
+import { FiliereService } from '../../Services/filiere.service';
 
 @Component({
   selector: 'app-classeroom-widget',
@@ -34,7 +35,8 @@ export class ClasseroomWidgetComponent implements OnInit {
 
   classFordelete!: ClassRoom
 
-  constructor(private classService: ClassStudentService, public icons: IconsService, private infoSchool: SchoolService,
+  constructor(private classService: ClassStudentService, public icons: IconsService, 
+    private infoSchool: SchoolService, private filiereService:FiliereService,
     private pageTitle: PageTitleService, private fb: FormBuilder, private setService: SetService) { }
   ngOnInit(): void {
     this.load_all_classe()
@@ -86,7 +88,7 @@ export class ClasseroomWidgetComponent implements OnInit {
     this.setService.getAllNiveau().subscribe(result =>{
         this.niveaux = result;
       })
-    this.setService.getAll_filiere().subscribe(result =>{
+    this.filiereService.getAll_filiere().subscribe(result =>{
         this.filieres = result;
       })
 

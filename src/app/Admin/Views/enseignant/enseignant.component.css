@@ -17,8 +17,13 @@ main{
     z-index: 1;
 }
 th {
-    background: linear-gradient(180deg, #ffffff, #d4d4d4);
+    text-align: center;
+    background: white;
   
+  }
+  tr{
+    height: 30px !important;
+    border-bottom: 1px solid var(--tertiary);
   }
 /* Personnalisation de la barre de défilement */
 .table-container::-webkit-scrollbar {
@@ -89,15 +94,20 @@ tr td{
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-.btn-containere{
-    margin: 10px;
+.btn-contenaire{
+    margin-right: 8px;
     display: flex;
-    justify-content: space-between;
-    /* gap: 10px; */
+    gap: 10px;
     
 }
+.btn-containere{
+    display: flex;
+    justify-content: space-between;
+    /* align-items: end; */
+    padding: 0 10px;
+}
 .btn-contenaire a{
-    width: 100px;
+    /* width: 100px; */
     display: flex;
     justify-content: center;
     align-items: center;

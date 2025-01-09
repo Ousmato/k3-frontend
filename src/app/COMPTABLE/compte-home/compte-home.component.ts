@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EtudeService } from '../../Admin/Views/etudiants/etude.service';
+import { EtudeService } from '../../Admin/Views/Etudiants/etude.service';
 import { montantsCount, Student } from '../../Admin/Models/Students';
 import { Router } from '@angular/router';
 

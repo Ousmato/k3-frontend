@@ -5,30 +5,30 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { DasboardComponent } from './Admin/Views/dasboard/dasboard.component';
-import { EtudiantsComponent } from './Admin/Views/etudiants/etudiants.component';
+import { EtudiantsComponent } from './Admin/Views/Etudiants/etudiants.component';
 import { LoginComponent } from './login/login.component';
 import {  HTTP_INTERCEPTORS, provideHttpClient, withInterceptors } from '@angular/common/http';
-import { SinginComponent } from './Admin/Component/singin/singin.component';
+import { SinginComponent } from './Admin/Views/Etudiants/CRUD/singin/singin.component';
 import { ClassStudentsComponent } from './DGA/class-students/class-students.component'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SettingsComponent } from './Admin/Views/settings/settings.component';
-import { EmploisDuTempsComponent } from './DER/emplois-du-temps/emplois-du-temps.component';
-import { EmploisSeanceComponent } from './Admin/Views/emplois-seance/emplois-seance.component';
-import { EnseignantComponent } from './Admin/Views/enseignant/enseignant.component';
+import { EmploisDuTempsComponent } from './DER/EDT/emplois-du-temps/emplois-du-temps.component';
+import { EmploisSeanceComponent } from './DER/EDT/emplois-seance/emplois-seance.component';
+import { EnseignantComponent } from './Admin/Views/Enseignant/enseignant.component';
 import { DatePipe, registerLocaleData } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { }
 
 import localeFr from '@angular/common/locales/fr';
-import { EnseignantPrDetailsComponent } from './Admin/Views/enseignant-pr-details/enseignant-pr-details.component';
+import { EnseignantPrDetailsComponent } from './Admin/Views/Enseignant/enseignant-pr-details/enseignant-pr-details.component';
 import { StudentNoteComponent } from './Admin/Views/student-note/student-note.component';
 import { AllNotesSemestreComponent } from './Admin/Views/all-notes-semestre/all-notes-semestre.component';
-import { EtudiantsDeLaClasseComponent } from './Admin/Views/etudiants-de-la-classe/etudiants-de-la-classe.component';
-import { StudentEditComponent } from './Admin/Component/student-edit/student-edit.component';
-import { StudentViewComponent } from './Admin/Component/student-view/student-view.component';
+import { EtudiantsDeLaClasseComponent } from './Admin/Views/Etudiants/etudiants-de-la-classe/etudiants-de-la-classe.component';
+import { StudentEditComponent } from './Admin/Views/Etudiants/CRUD/student-edit/student-edit.component';
+import { StudentViewComponent } from './Admin/Views/Etudiants/CRUD/student-view/student-view.component';
 import { EmploisWidgetComponent } from './Widget/emplois-widget/emplois-widget.component';
-import { TeachersSinginComponent } from './Admin/Component/teachers-singin/teachers-singin.component';
-import { TeachersEditComponent } from './Admin/Component/teachers-edit/teachers-edit.component';
+import { TeachersSinginComponent } from './Admin/Views/Enseignant/CRUD/teachers-singin/teachers-singin.component';
+import { TeachersEditComponent } from './Admin/Views/Enseignant/CRUD/teachers-edit/teachers-edit.component';
 import { AddNoteWidgetComponent } from './Widget/add-note-widget/add-note-widget.component';
 import { StudentBulletinComponent } from './Admin/Component/student-bulletin/student-bulletin.component';
 import { FicheDePaieComponent } from './Admin/Component/fiche-de-paie/fiche-de-paie.component';
@@ -42,7 +42,7 @@ import { DerSallesComponent } from './DER/der-salles/der-salles.component';
 import { DerSallesAddComponent } from './DER/Widget/der-salles-add/der-salles-add.component';
 import { DgaSidebarComponent } from './DGA/dga-sidebar/dga-sidebar.component';
 import { DerSeancesComponent } from './DER/der-seances/der-seances.component';
-import { DerEmploiDuTempsComponent } from './DER/der-emploi-du-temps-list/der-emploi-du-temps.component';
+import { DerEmploiDuTempsComponent } from './DER/EDT/der-emploi-du-temps-list/der-emploi-du-temps.component';
 import { DgaHomeComponent } from './DGA/dga-home/dga-home.component';
 import { DerEditSeanceComponent } from './DER/Widget/der-edit-seance/der-edit-seance.component';
 import { AddGroupStudentComponent } from './DER/Widget/add-group-student/add-group-student.component';
@@ -90,6 +90,13 @@ import { loadingInterceptor } from './Services/interceptor/loading.interceptor';
 import { SessionExpiredModalComponent } from './Widget/session-expired-modal/session-expired-modal.component';
 import { EmptyWidgetComponent } from './Widget/empty-widget/empty-widget.component';
 import { NotificationComponent } from './Admin/notification/notification.component';
+import { RolesComponent } from './DG/roles/roles.component';
+import { StudentSuivisComponent } from './Admin/Views/Etudiants/student-suivis/student-suivis.component';
+import { StudentDetailsComponent } from './Admin/Views/Etudiants/student-details/student-details.component';
+import { SpecialitesComponent } from './DER/specialites/specialites.component';
+import { EditComponent } from './DER/specialites/CRUD/edit/edit.component';
+import { AddTeacherSpecialitesComponent } from './DER/specialites/CRUD/add-teacher-specialites/add-teacher-specialites.component';
+import { ImportEnseignantComponent } from './Admin/Views/Enseignant/import-enseignant/import-enseignant.component';
 registerLocaleData(localeFr);
 @NgModule({
   declarations: [
@@ -161,7 +168,7 @@ registerLocaleData(localeFr);
     ClassArchiveComponent,
     RSImportComponent,
     EmptyWidgetComponent,
-    SoutenanceNoteComponent, StudentGroupListComponent, AdminListComponent, MyAccuntComponent, ForgotPasswordComponent, ResetPasswordComponent, SetNewPasswordComponent, SessionExpiredModalComponent, NotificationComponent,
+    SoutenanceNoteComponent, StudentGroupListComponent, AdminListComponent, MyAccuntComponent, ForgotPasswordComponent, ResetPasswordComponent, SetNewPasswordComponent, SessionExpiredModalComponent, NotificationComponent, RolesComponent, StudentSuivisComponent, StudentDetailsComponent, SpecialitesComponent, EditComponent, AddTeacherSpecialitesComponent, ImportEnseignantComponent
   ],
   imports: [
     BrowserModule,

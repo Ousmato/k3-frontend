@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GetNoteDto, NoteDto, NoteModuleDto, Notes, StudentsNotesDto } from '../../Models/Notes';
-import { EtudeService } from '../etudiants/etude.service';
+import { EtudeService } from '../Etudiants/etude.service';
 import { ActivatedRoute } from '@angular/router';
 import { ClassStudentService } from '../../../DGA/class-students/class-student.service';
 import { Ue } from '../../Models/UE';

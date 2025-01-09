@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Emplois } from '../../../Admin/Models/Emplois';
-import { ServiceService } from '../../emplois-du-temps/service.service';
-import { EtudeService } from '../../../Admin/Views/etudiants/etude.service';
+import { ServiceService } from '../emplois-du-temps/service.service';
+import { EtudeService } from '../../../Admin/Views/Etudiants/etude.service';
 import { Participant } from '../../../Admin/Models/Students';
 import { IconsService } from '../../../Services/icons.service';
 import { Admin } from '../../../Admin/Models/Admin';

@@ -1,5 +1,5 @@
 import { Admin } from "./Admin";
-import { Filiere } from "./Filieres";
+import { Filiere, Specialites } from "./Filieres";
 import { type_seance } from "./Seances";
 import { Ue } from "./UE";
 
@@ -16,6 +16,7 @@ export interface Teacher {
     urlPhoto?: string;
     isDeleted?: boolean;
     status: TeachersStatus;
+    admin: Admin
 }
 
 export enum TeachersStatus {
@@ -31,11 +32,18 @@ export enum Diplomes{
     Doctorat = 'Doctorat'
 }
 
-export interface ProfilDto{
-    id?: number;
-    idAdmin: Admin
-    teachers: Teacher;
-    filieres: Filiere[]
+export interface TeacherDto{
+    numero?: number;
+    idEnseignant?: number;
+    nom: string;
+    prenom: string;
+    email: string;
+    sexe: string;
+    diplome: Diplomes;
+    telephone: number;
+    urlPhoto?: string;
+    status: TeachersStatus;
+    specialitesList: Specialites[]
 }
 
 export interface teacherConfigureDto{

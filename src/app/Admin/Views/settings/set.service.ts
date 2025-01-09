@@ -18,16 +18,11 @@ export class SetService {
   private baseUrl = 'http://localhost:8080/';
 
 
-  getAll(): Observable<Niveau[]> {
-    return this.http.get<Niveau[]>(this.baseUrl + "api-niveau/readAll");
-  }
+  
   getAll_Niveau_filiere(): Observable<NivFiliere[]> {
     return this.http.get<NivFiliere[]>(this.baseUrl + "api-filiere/list-mentions");
   }
   // ----------------------------all filiere
-  getAll_filiere(): Observable<Filiere[]> {
-    return this.http.get<Filiere[]>(this.baseUrl + "api-filiere/readAll");
-  }
   // // -------------------------------------------------update niveau filiere
   // updateNiveauFiliere(nivFiliere: NivFiliere) : Observable<any>{
   //   return this.http.put<any>(this.baseUrl+"filiere/update-niveau-filiere", nivFiliere);

@@ -146,4 +146,12 @@ load_admin(){
   toNotifications(){
     this.router.navigate(['/dga/notifications']);
   }
+
+  // abrevigate role name
+  abreviateName(filiere: string): string {
+    const nameWord = filiere.split(' ');
+    const word = nameWord.filter(wd => wd.length > 3).map(word => word[0].toUpperCase()).join('')
+    // console.log("word", word)
+    return word;
+  }
 }

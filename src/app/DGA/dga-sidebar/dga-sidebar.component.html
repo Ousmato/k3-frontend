@@ -3,9 +3,10 @@
     <!-- Sidebar -->
     <nav id="sidebar">
       <div class="sidebar-header ">
-        <img  src="assets/logounivsegou.png" alt="">
+        <!-- <img  src="assets/logounivsegou.png" alt=""> -->
         <!-- <h1>UAM</h1> -->
-         <strong>US-GESTION</strong>
+      <strong>IUFP <fa-icon [icon]="icons.grade" [ngStyle]="{'font-size': '16px' }"></fa-icon> GESTION</strong>
+         <!-- <strong>US-GESTION</strong> -->
         <!-- <strong class="strong">{{school?.nomSchool}}</strong> -->
       </div>
       <div class="side-child">
@@ -78,7 +79,7 @@
           <img [src]="dataAdmin!.urlPhoto" (error)="onError($event)" alt="">
           <div class="name-content">
             <span>{{dataAdmin.nom.charAt(0).toUpperCase()}}. {{dataAdmin.prenom.toUpperCase()}}</span>
-            <span class="text-muted small">{{dataAdmin.role.toUpperCase()}}</span>
+            <span class="text-muted small">{{abreviateName(dataAdmin.idRole.nom)}}</span>
             <!-- <fa-icon [icon]="show_admin ? icons.sortUp : icons.sortDown" class="my-custom-style"></fa-icon> -->
   
           </div>
@@ -110,7 +111,7 @@
         <img [src]="dataAdmin.urlPhoto" (error)="onError($event)" alt="">
         <div class="info-pofil">
           <p>{{dataAdmin.nom}} {{dataAdmin.prenom}}</p>
-          <p class="text-muted small">{{dataAdmin.role.toUpperCase()}}</p>
+          <p class="text-muted small">{{dataAdmin.idRole.nom.toUpperCase()}}</p>
         </div>
 
       </div>

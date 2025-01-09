@@ -5,6 +5,7 @@ export interface  Module{
     nomModule: string;
     coefficient: number;
     idUe: Ue;
+    description?: string;
     noteModule?: number;
    
 }
@@ -12,5 +13,9 @@ export interface  Module{
 export interface Ecue{
     id?: number
     nomModule: string;
+    VHT?: number
+    TD?: number
+    CM?: number
+    description?: string
     coefficient: number;
 }

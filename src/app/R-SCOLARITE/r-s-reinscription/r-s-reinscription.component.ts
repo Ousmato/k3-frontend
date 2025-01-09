@@ -1,8 +1,8 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
-import { Inscription, Student } from '../../Admin/Models/Students';
+import { Inscription, Student, Type_status } from '../../Admin/Models/Students';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EtudeService } from '../../Admin/Views/etudiants/etude.service';
+import { EtudeService } from '../../Admin/Views/Etudiants/etude.service';
 import { IconsService } from '../../Services/icons.service';
 import { PageTitleService } from '../../Services/page-title.service';
 import { SideBarService } from '../../sidebar/side-bar.service';
@@ -24,6 +24,7 @@ export class RSReinscriptionComponent implements OnInit {
   searchTerm: string = '';
   inscription: Inscription[] = [];
   studentsInscrit: Inscription[] = [];
+  list_checked: Inscription[] = [];
   idClasse!: any
   classRoom: ClassRoom[] = []
   niveau?: Niveau
@@ -93,20 +94,20 @@ export class RSReinscriptionComponent implements OnInit {
   }
 
   // ------------------------------------------------------------
-  getStudentView(inscrit: Inscription) {
+  getStudentView(inscrits: Inscription[]) {
     this.is_show = true
-    this.inscrit = inscrit
-    this.inscrit.idEtudiant.urlPhoto = `${environment.urlPhoto}${inscrit.idEtudiant.urlPhoto}`
+    // this.inscrit = inscrit
+    // this.inscrit.idEtudiant.urlPhoto = `${environment.urlPhoto}${inscrit.idEtudiant.urlPhoto}`
     console.log(this.inscrit, "student 000")
     
   }
 
  
   // -------------------reinscription
-  confirmInscription(student: Inscription, idClasse: number){
-    console.log(student, "student", idClasse,"idClasse")
+  confirmInscription(students: Inscription[], idClasse: number){
+    console.log(students, "student", idClasse,"idClasse")
     // return
-    this.service.reInscriptionStudent(student!, idClasse!, this.admin.idAdministra!).subscribe({
+    this.service.reInscriptionStudent(students!, idClasse!, this.admin.idAdministra!).subscribe({
       next: (result) => {
         this.pageTitle.showSuccessToast(result.message)
         // this.changeClasse(idClasse);
@@ -161,7 +162,7 @@ export class RSReinscriptionComponent implements OnInit {
       
       this.filteredItems = data;
      
-      console.log(this.inscription, "students")
+      console.log(this.inscription, "students id anne id classe")
     });
     this.load_nextClasse(this.idClasse);
 
@@ -215,5 +216,40 @@ export class RSReinscriptionComponent implements OnInit {
   onError(event: Event) {
     const target = event.target as HTMLImageElement;
     target.src = 'assets/business-professional-icon.svg';
+  }
+  // student select
+  student_check(idInscription: number, event: any) {
+    const student_fund = this.inscription.find(inscrit => inscrit.id === idInscription);
+
+
+    if (student_fund) {
+      if(student_fund.idEtudiant.status == Type_status.PROFESSIONNEL_PRIVEE){
+        
+        console.log("status: " + student_fund.idEtudiant.status)
+      }
+      if (event.target.checked) {
+        if (!this.list_checked.some(st => st.id === idInscription)) {
+          this.list_checked.push(student_fund);
+        }
+      } else {
+        this.list_checked = this.list_checked.filter(st => st.id !== student_fund.id);
+      }
+    }
+    console.log(this.list_checked, "student list checked");
+  }
+  // select all students
+  selectAll(event: any) {
+    if (event.target.checked) {
+      this.list_checked = [...this.inscription];
+    } else {
+      this.list_checked = [];
+    }
+  }
+  is_checked(idStudent: number): boolean {
+    return this.list_checked.some(st => st.id === idStudent);
+  }
+
+  areAllChecked(): boolean {
+    return this.list_checked.length === this.inscription.length;
   }
 }

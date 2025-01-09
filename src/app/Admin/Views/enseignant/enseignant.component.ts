@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ProfilDto, Teacher, TeachersStatus } from '../../Models/Teachers';
+import {  Teacher, TeacherDto, TeachersStatus } from '../../Models/Teachers';
 import { IconsService } from '../../../Services/icons.service';
-import { EnseiService } from './ensei.service';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { TeacherPages } from '../../Models/Pagination-module';
 import { SideBarService } from '../../../sidebar/side-bar.service';
 import { Filiere } from '../../Models/Filieres';
 import { Admin } from '../../Models/Admin';
 import { AdminUSER } from '../../Models/Auth';
+import { EnseiService } from './ensei.service';
 
 @Component({
   selector: 'app-enseignant',
@@ -24,11 +24,13 @@ export class EnseignantComponent implements OnInit {
   filteredItems: Teacher[] = []
   pages: number[] = []
   admin!: Admin
+  index!: number 
   
-  profiles: ProfilDto[] = []
-  profilesItem: ProfilDto[] = []
+  profiles: TeacherDto[] = []
+  profilesItem: TeacherDto[] = []
   current_enseignat_create!: Teacher;
   permission: boolean = false
+  show_form: boolean = false
 
   constructor(public icons: IconsService, private root: Router, private sideBareService: SideBarService,
     private enseignantService: EnseiService) { }
@@ -47,10 +49,10 @@ export class EnseignantComponent implements OnInit {
       return this.profilesItem = this.profiles;
     } else {
       return this.profilesItem = this.profiles.filter(p =>
-        p.teachers.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        p.teachers.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        p.filieres.some(pf => 
-          this.abbreviateFiliereName(pf.nomFiliere).toLowerCase().includes(this.searchTerm.toLowerCase()))
+        p.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        p.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        p.specialitesList.some(pf => 
+          this.abbreviateFiliereName(pf.nom).toLowerCase().includes(this.searchTerm.toLowerCase()))
       );
     }
   }
@@ -76,10 +78,10 @@ export class EnseignantComponent implements OnInit {
     this.enseignantService.getTeachers(this.page, this.size).subscribe(data => {
     
       data.content.forEach(p =>{
-        if(!this.enseignants.some(en => en.idEnseignant === p.teachers.idEnseignant)){
-        p.teachers.nom =  p.teachers.nom.charAt(0).toUpperCase() + p.teachers.nom.slice(1).toLowerCase();
-         p.teachers.prenom = p.teachers.prenom.charAt(0).toUpperCase() + p.teachers.prenom.slice(1).toLowerCase();
-        this.enseignants.push(p.teachers);
+        if(!this.enseignants.some(en => en.idEnseignant === p.idEnseignant)){
+        p.nom =  p.nom.charAt(0).toUpperCase() + p.nom.slice(1).toLowerCase();
+         p.prenom = p.prenom.charAt(0).toUpperCase() + p.prenom.slice(1).toLowerCase();
+        // this.enseignants.push(p);
           this.profiles.push(p)
         }
        
@@ -162,5 +164,16 @@ export class EnseignantComponent implements OnInit {
       return true
     }
     return false;
+  }
+
+  // show form
+  showForm(index: number) {
+    this.index = index;
+    this.show_form = true
+  }
+  // cancel modal
+  cancel(){
+    this.show_form = false
+    window.location.reload
   }
 }

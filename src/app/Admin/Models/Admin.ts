@@ -7,7 +7,7 @@ export interface Admin{
     password:string;
     urlPhoto?: string;
     sexe: string;
-    role: Admin_role;
+    idRole: Roles;
     active?: boolean;
     updateDate?: Date
     
@@ -15,12 +15,13 @@ export interface Admin{
 
 export enum Admin_role{
     // ADMINISTRATEUR = 'admin',
-    COMPTABLE = 'comptable',
-    SECRETAIRE = 'secretaire',
+    COMPTABLE = 'c',
+    SECRETAIRE = 's',
+    SECRET_P = 'sp',
     DG = "dg",
     DGA ="dga",
     DER = "der",
-    SCOLARITE = "scolarite"
+    SCOLARITE = "rs"
 }
 
 export enum adminEtat{
@@ -28,6 +29,23 @@ export enum adminEtat{
     INACTIF = 0
 }
 
+export interface Roles {
+    id?: number
+    nom: string
+    idAdminDg: number
+
+}
+
+export interface Poste {
+    id?: number
+    currentAdmin: Admin
+    defaultAdmin: number
+    active: boolean
+    dateTime: Date
+    dateTimeUpdate: Date
+    otp?: string
+    
+}
 export interface AdminDto{
     idAdministra?:number;
     nom:string;
@@ -45,23 +63,7 @@ export interface validatePassworConfirmCode{
 
     
 }
-
-// Implémentation de l'interface
-class PasswordConfirmCode  {
-    box1: string;
-    box2: string;
-    box3: string;
-    box4: string;
-
-    constructor(box1: string, box2: string, box3: string, box4: string) {
-        this.box1 = box1;
-        this.box2 = box2;
-        this.box3 = box3;
-        this.box4 = box4;
-    }
-
-    // Méthode qui concatène les valeurs
-    getResult(): string {
-        return this.box1 + this.box2 + this.box3 + this.box4; // "6215"
-    }
+export interface AdminRoleDto{
+    admin: Admin
+    roleNames: String[]
 }

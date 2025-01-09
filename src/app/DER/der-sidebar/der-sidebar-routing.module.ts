@@ -3,13 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { DerSidebarComponent } from './der-sidebar.component';
 import { DerHomeComponent } from '../der-home/der-home.component';
 import { DerSallesComponent } from '../der-salles/der-salles.component';
-import { EnseignantComponent } from '../../Admin/Views/enseignant/enseignant.component';
-import { TeachersSinginComponent } from '../../Admin/Component/teachers-singin/teachers-singin.component';
-import { TeachersEditComponent } from '../../Admin/Component/teachers-edit/teachers-edit.component';
+import { EnseignantComponent } from '../../Admin/Views/Enseignant/enseignant.component';
+import { TeachersSinginComponent } from '../../Admin/Views/Enseignant/CRUD/teachers-singin/teachers-singin.component';
+import { TeachersEditComponent } from '../../Admin/Views/Enseignant/CRUD/teachers-edit/teachers-edit.component';
 import { DerSeancesComponent } from '../der-seances/der-seances.component';
-import { DerEmploiDuTempsComponent } from '../der-emploi-du-temps-list/der-emploi-du-temps.component';
-import { EmploisDuTempsComponent } from '../emplois-du-temps/emplois-du-temps.component';
-import { EmploisSeanceComponent } from '../../Admin/Views/emplois-seance/emplois-seance.component';
+import { DerEmploiDuTempsComponent } from '../EDT/der-emploi-du-temps-list/der-emploi-du-temps.component';
+import { EmploisDuTempsComponent } from '../EDT/emplois-du-temps/emplois-du-temps.component';
+import { EmploisSeanceComponent } from '../EDT/emplois-seance/emplois-seance.component';
 import { DerEditSeanceComponent } from '../Widget/der-edit-seance/der-edit-seance.component';
 import { AddGroupStudentComponent } from '../Widget/add-group-student/add-group-student.component';
 import { EnseignantFichePaieComponent } from '../../Admin/Component/enseignant-fiche-paie/enseignant-fiche-paie.component';
@@ -22,6 +22,10 @@ import { ViewSoutenanceComponent } from '../Widget/view-soutenance/view-soutenan
 import { StudentGroupListComponent } from '../student-group-list/student-group-list.component';
 import { MyAccuntComponent } from '../../DG/my-accunt/my-accunt.component';
 import { NotificationComponent } from '../../Admin/notification/notification.component';
+import { SpecialitesComponent } from '../specialites/specialites.component';
+import { ClassStudentsComponent } from '../../DGA/class-students/class-students.component';
+import { ImportEnseignantComponent } from '../../Admin/Views/Enseignant/import-enseignant/import-enseignant.component';
+import { ViewUeComponent } from '../../Widget/ue-widget/view-ue/view-ue.component';
 
 const routes: Routes = [{path: '', component: DerSidebarComponent,
   children: [
@@ -45,9 +49,12 @@ const routes: Routes = [{path: '', component: DerSidebarComponent,
     {path: 'liste-groupe', component: StudentGroupListComponent},
     {path: 'my-accunt', component: MyAccuntComponent, data:{title: "Mon compte"} },
     {path: 'notifications', component: NotificationComponent, data:{title: "Notifications"}},
+    {path: 'specialites', component: SpecialitesComponent, data:{title: "Les Specialites"}},
+    {path: 'import', component: ImportEnseignantComponent, data:{title: "IMporter Enseignant"}},
+    {path: 'view-ues', component: ViewUeComponent, data:{title: "LES UNITES D'ENSEIGNEMENT"}},
 
     
-    // { path: 'classe-student', component: ClassStudentsComponent, data:{title: "Les Classes de Formation"} },
+    { path: 'students-class', component: ClassStudentsComponent, data:{title: "Les Classes de Formation"} },
     {path: 'ajouter-emplois', component: EmploisDuTempsComponent, data:{title: "CREATION DE L'EMPLOI DU TEMPS"}},
   ]
 }];

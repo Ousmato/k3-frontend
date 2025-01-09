@@ -4,10 +4,11 @@
     <nav id="sidebar">
       <div class="sidebar-header ">
         <!-- <img src="{{urlLogo}}" alt=""> -->
-        <img  src="assets/logounivsegou.png" alt="">
+        <!-- <img  src="assets/logounivsegou.png" alt=""> -->
         <!-- <h1>UAM</h1> -->
         <!-- <strong>{{school?.nomSchool}}</strong> -->
-         <strong>US-GESTION</strong>
+        <strong>IUFP <fa-icon [icon]="icons.grade" [ngStyle]="{'font-size': '16px' }"></fa-icon> GESTION</strong>
+
       </div>
       <div class="side-child">
         <ul class="list-unstyled components">
@@ -19,6 +20,11 @@
           </li>
          </div>
          <!-- ---------------- -->
+         <li class="menu-link">
+            <a routerLink="/der/specialites" routerLinkActive="active">
+              <span><fa-icon [icon]="icons.books"></fa-icon>Spécialité</span>
+            </a>
+          </li>
          <li class="menu-link">
             <a routerLink="/der/salles" routerLinkActive="active">
               <span><fa-icon [icon]="icons.scool"></fa-icon>Salles</span>
@@ -37,14 +43,20 @@
           
          
           <li class="menu-link" >
-            <a routerLink="/der/emplois-du-temps" routerLinkActive="active">
-              <span ><fa-icon [icon]="icons.calandarPlus"></fa-icon> Programmer EDT</span>
+            <a routerLink="/der/students-class" routerLinkActive="active">
+              <span ><fa-icon [icon]="icons.calandarPlus"></fa-icon> Les Classes</span>
             </a>
           </li>
 
          <li class="menu-link">
             <a routerLink="/der/doc" routerLinkActive="active">
               <span><fa-icon [icon]="icons.archive"></fa-icon>Rapport et Memoire</span>
+            </a>
+          </li>
+
+         <li class="menu-link">
+            <a routerLink="/der/import" routerLinkActive="active">
+              <span><fa-icon [icon]="icons.upload"></fa-icon>Importer Enseignants</span>
             </a>
           </li>
         </ul>
@@ -88,7 +100,7 @@
           <img [src]="dataAdmin!.urlPhoto" (error)="onError($event)" alt="">
           <div class="name-content">
             <span>{{dataAdmin.nom.charAt(0).toUpperCase()}}. {{dataAdmin.prenom.toUpperCase()}}</span>
-            <span class="text-muted small">{{dataAdmin.role.toUpperCase()}}</span>
+            <span class="text-muted small">{{abreviateName(dataAdmin.idRole.nom)}}</span>
             <!-- <fa-icon [icon]="show_admin ? icons.sortUp : icons.sortDown" class="my-custom-style"></fa-icon> -->
   
           </div>
@@ -120,7 +132,7 @@
             <img [src]="dataAdmin.urlPhoto" (error)="onError($event)" alt="">
             <div class="info-pofil">
               <p>{{dataAdmin.nom}} {{dataAdmin.prenom}}</p>
-              <p class="text-muted small">{{dataAdmin.role.toUpperCase()}}</p>
+              <p class="text-muted small">{{dataAdmin.idRole.nom.toUpperCase()}}</p>
             </div>
     
           </div>

@@ -1,0 +1,303 @@
+
+<main >
+<!-- 
+    <div (click)="goBack()" class="back-button">
+        <fa-icon  [icon]="icons.back"></fa-icon>
+    </div> -->
+    <form  [formGroup]="studentForm" (ngSubmit)="singin()" enctype="multipart/form-data">
+       
+        
+        <div class="contenaires">
+            <div class="chil">
+                <div class="input">
+                    <label for="validationDefault01" class="label form-label">Nom :</label>
+                    <input type="text" class="input-with form-control" formControlName="nom" id="nom" [class.is-invalid]="studentForm.get('nom')!.invalid && studentForm.get('nom')!.touched"  placeholder="Nom de l'etudiant....">
+                    <span *ngIf="studentForm.controls['nom'].invalid && studentForm.controls['nom'].touched" [ngStyle]="{color: 'red', 'font-size':'13px'}">
+                    Champ obligatoire*
+                    </span>
+                    <span *ngIf="studentForm.controls['nom'].errors?.['minLength'] || studentForm.controls['nom'].errors?.['maxlength']" [ngStyle]="{color: 'red', 'font-size': '13px'}">
+                        Nombre Caractères 3 à 30
+                         </span>
+                </div>
+
+                <div class="input">
+                    <label for="validationDefault02" class="label form-label">Prenom :</label>
+                    <input type="text" formControlName="prenom" class="input-with form-control" id="prenom" [class.is-invalid]="studentForm.get('prenom')!.invalid && studentForm.get('prenom')!.touched"   placeholder="Prenom de l'etudiant....">
+                    <span *ngIf="studentForm.controls['prenom'].invalid && studentForm.controls['prenom'].touched" [ngStyle]="{color: 'red' , 'font-size':'13px'}">
+                    Champ  obligatoire*
+                    </span>
+                    <span *ngIf="studentForm.controls['prenom'].errors?.['minLength'] || studentForm.controls['prenom'].errors?.['maxlength']" [ngStyle]="{color: 'red', 'font-size': '13px'}">
+                        Nombre Caractères 3 à 30
+                         </span>
+                </div>
+                <div class="input">
+                    <label for="validationDefault02" class="label form-label">Prénom du Pére :</label>
+                    <input type="text" formControlName="lastNameFather" class="input-with form-control" [class.is-invalid]="studentForm.get('lastNameFather')!.invalid && studentForm.get('lastNameFather')!.touched"   placeholder="Prenom du pere....">
+                    <span *ngIf="studentForm.controls['lastNameFather'].invalid && studentForm.controls['lastNameFather'].touched" [ngStyle]="{color: 'red', 'font-size':'13px'}">
+                    Champ  obligatoire*
+                    </span>
+                    <span *ngIf="studentForm.controls['lastNameFather'].errors?.['minLength'] || studentForm.controls['lastNameFather'].errors?.['maxlength']" [ngStyle]="{color: 'red', 'font-size': '13px'}">
+                        Nombre Caractères 3 à 30
+                         </span>
+                </div>
+                <div class="input">
+                    <label for="validationDefault02" class="label form-label">Prénom/Nom de la Mère :</label>
+                    <input type="text" formControlName="motherName" class="input-with form-control" [class.is-invalid]="studentForm.get('motherName')!.invalid && studentForm.get('motherName')!.touched"   placeholder="Prenom et nom de la mere....">
+                    <span *ngIf="studentForm.controls['motherName'].invalid && studentForm.controls['motherName'].touched" [ngStyle]="{color: 'red', 'font-size':'13px'}">
+                    Champ  obligatoire*
+                    </span>
+                    <span *ngIf="studentForm.controls['motherName'].errors?.['minLength'] || studentForm.controls['motherName'].errors?.['maxlength']" [ngStyle]="{color: 'red', 'font-size': '13px'}">
+                        Nombre Caractères 3 à 30
+                         </span>
+                </div>
+
+                <div class="input">
+                    <label for="validationDefault03" class="label form-label">Date de Naissance :</label>
+                    <input type="date" formControlName="dateNaissance" class="input-with form-control" [class.is-invalid]="studentForm.get('dateNaissance')!.invalid && studentForm.get('dateNaissance')!.touched" placeholder="Date de naissance....">
+                    <span *ngIf="studentForm.controls['dateNaissance'].invalid && studentForm.controls['dateNaissance'].touched" [ngStyle]="{color: 'red', 'font-size':'13px'}">
+                    Ce champ obligatoire*
+                    </span>
+                </div>
+               
+            </div>
+        <!-- ----------------------secon column----------- -->
+            <div class="chil childrem">
+                
+                <div class="second-child-children">
+                    <div class="input">
+                        <label for="validationDefault0" class="label form-label">Com/Naissance :</label>
+                        <input type="text" formControlName="commNaissance" class="form-control" [class.is-invalid]="studentForm.get('commNaissance')!.invalid && studentForm.get('commNaissance')!.touched" placeholder="Commune de naissance....">
+                        <span *ngIf="studentForm.controls['commNaissance'].invalid && studentForm.controls['commNaissance'].touched" [ngStyle]="{color: 'red', 'font-size': '13px'}">
+                        Ce champ obligatoire*
+                        </span>
+                        <span *ngIf="studentForm.controls['commNaissance'].errors?.['minLength'] || studentForm.controls['commNaissance'].errors?.['maxlength']" [ngStyle]="{color: 'red', 'font-size': '13px'}">
+                       Nombre Caractères 3 à 30
+                        </span>
+                    </div>
+                     <div class="input">
+                        <label for="validationDefault0" class="label form-label">Cer/Naissance :</label>
+                        <input type="text" formControlName="cercleNaissance" class="form-control" [class.is-invalid]="studentForm.get('cercleNaissance')!.invalid && studentForm.get('cercleNaissance')!.touched" placeholder="Cercle de naissance....">
+                        <span *ngIf="studentForm.controls['cercleNaissance'].invalid && studentForm.controls['cercleNaissance'].touched" [ngStyle]="{color: 'red', 'font-size': '13px'}">
+                        Ce champ obligatoire*
+                        </span>
+                        <span *ngIf="studentForm.controls['cercleNaissance'].errors?.['minLength'] || studentForm.controls['cercleNaissance'].errors?.['maxlength']" [ngStyle]="{color: 'red', 'font-size': '13px'}">
+                            Nombre Caractères 3 à 30
+                        </span>
+                    </div>
+    
+                     <div class="input">
+                        <label for="validationDefault0" class="label form-label">Nationalite :</label>
+                        <input type="text" formControlName="nationalite" class="form-control" [class.is-invalid]="studentForm.get('nationalite')!.invalid && studentForm.get('nationalite')!.touched" placeholder="Nationalite....">
+                        <span *ngIf="studentForm.controls['nationalite'].invalid && studentForm.controls['nationalite'].touched" [ngStyle]="{color: 'red', 'font-size': '13px'}">
+                        Ce champ obligatoire*
+                        </span>
+                        <span *ngIf="studentForm.controls['nationalite'].errors?.['minLength'] || studentForm.controls['nationalite'].errors?.['maxlength']" [ngStyle]="{color: 'red', 'font-size': '13px'}">
+                            Nombre Caractères 3 à 30
+                        </span>
+                    </div>
+    
+                    <div class="input">
+                        <label for="validationDefault0" class="label form-label">Résidence/parents :</label>
+                        <input type="text" formControlName="residenceParent" class="form-control" [class.is-invalid]="studentForm.get('residenceParent')!.invalid && studentForm.get('residenceParent')!.touched" placeholder="Residence des parents....">
+                        <span *ngIf="studentForm.controls['residenceParent'].invalid && studentForm.controls['residenceParent'].touched" [ngStyle]="{color: 'red', 'font-size': '13px'}">
+                        Ce champ obligatoire*
+                        </span>
+                        <span *ngIf="studentForm.controls['residenceParent'].errors?.['minLength'] || studentForm.controls['residenceParent'].errors?.['maxlength']" [ngStyle]="{color: 'red', 'font-size': '13px'}">
+                            Nombre Caractères 3 à 30
+                        </span>
+                    </div>
+
+                    <div class="input">
+                        <label class="label form-label">Quartier : </label> 
+                        <select class="form-select" formControlName="quartier" [class.is-invalid]="studentForm.get('quartier')!.invalid && studentForm.get('quartier')!.touched">
+                            <option  selected disabled value="">Choisir Le Quartier</option>
+                            <option *ngFor="let quartier of studentQuartierOptions" [value]="quartier.key" >{{quartier.value}}</option>
+                        </select> 
+                      
+                    </div>
+                     
+                     <!-- <div class="input">
+                        <label for="validationDefault02" class="label form-label">Mot de Passe :</label>
+                        <div class="pass-chec position-relative">
+                            <input type="{{ passwordVisible ? 'text' : 'password' }}" class="form-control" formControlName="password" [class.is-invalid]="studentForm.get('password')!.invalid && studentForm.get('password')!.touched" id="password" placeholder="Mot de passe....">
+                            <span *ngIf="studentForm.controls['password'].invalid && studentForm.controls['password'].touched" [ngStyle]="{color: 'red'}">
+                                Champ obligatoire*
+                            </span>
+                            <fa-icon [icon]="passwordVisible ? icons.eyeSlash : icons.eye" class="toggle-password position-absolute" id="togglePassword" [ngStyle]="{cursor: 'pointer', right: '10px', top: '50%', transform: 'translateY(-50%)'}" (click)="togglePasswordVisibility()"></fa-icon>
+                        </div>
+                    </div> -->
+                    
+                
+                    
+                    <div class="input">
+                        <label for="validationDefault0" class="label form-label">Lieu/Naissance :</label>
+                        <input type="text" formControlName="lieuNaissance" class="form-control" [class.is-invalid]="studentForm.get('lieuNaissance')!.invalid && studentForm.get('lieuNaissance')!.touched" placeholder="Lieu de naissance....">
+                        <span *ngIf="studentForm.controls['lieuNaissance'].invalid && studentForm.controls['lieuNaissance'].touched" [ngStyle]="{color: 'red'}">
+                        Ce champ obligatoire*
+                        </span>
+                        <span *ngIf="studentForm.controls['commNaissance'].errors?.['minLength'] || studentForm.controls['commNaissance'].errors?.['maxlength']" [ngStyle]="{color: 'red', 'font-size': '13px'}">
+                            Nombre Caractères 3 à 30
+                        </span>
+                    </div>
+    
+                    <div class="input">
+                        <label for="telephone" class="label form-label">Téléphone :</label>
+                        <input type="text" formControlName="telephone" class="form-control" [class.is-invalid]="studentForm.get('telephone')!.invalid && studentForm.get('telephone')!.touched" pattern="[0-9]{1,8}" placeholder="Numero de telephone....">
+                        <span *ngIf="studentForm.controls['telephone'].hasError('required') && studentForm.controls['telephone'].touched"
+                            [ngStyle]="{color: 'red', 'font-size': '13px'}">
+                            Champ obligatoire*
+                        </span>
+                        <span *ngIf="studentForm.controls['telephone'].hasError('pattern') && !studentForm.controls['telephone'].hasError('required')"
+                            [ngStyle]="{color: 'red', 'font-size': '13px'}">
+                            Maximum 8 chiffres autorisés*
+                        </span>
+                    </div>
+
+                    <!-- button radio sexe start -->
+                    <div class="input">
+                        <label  class="label form-label">Sexe :</label>
+                        <div class="radio-button">
+                            <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio1" value="Homme"  required>
+                            <label class="form-check-label" for="inlineRadio1">Homme</label>
+                            </div>
+    
+                            <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio2" value="Femme" required>
+                            <label class="form-check-label" for="inlineRadio2">Femme</label>
+                            </div>
+                        </div>
+                     </div>
+                    
+                </div>
+                 
+
+                 <div class="input">
+                    <label for="validationDefault05" class="label form-label">Photo :</label>
+                    <div class="img-contenaire">
+                        <img [src]="imageUrl || 'assets/default-image.png'" 
+                        (click)="triggerFileInput()" 
+                        (error)="onError($event)" >
+                    </div>
+                    <input type="file" #fileInput  formControlName="urlPhoto" accept="image/*" class="input-with"  id="inputPhoto" (change)="onFileSelected($event)"  >
+                    <span *ngIf="studentForm.controls['urlPhoto'].invalid && studentForm.controls['urlPhoto'].touched" [ngStyle]="{color: 'red', 'font-size':'13px'}">
+                    Champ obligatoire*
+                    </span>
+                </div>
+            </div>
+            <!-- ------------------------------------third column------------ -->
+
+            <div class="chil">
+                <div class="input">
+                    <label class="label form-label">Diplomes : </label> 
+                    <select class="form-select" formControlName="diplome" [class.is-invalid]="studentForm.get('diplome')!.invalid && studentForm.get('diplome')!.touched">
+                        <option  selected disabled value="">Choisir Le Diplome</option>
+                        <option *ngFor="let diplom of studentDiplomesOptions" [value]="diplom.key" >{{diplom.value}}</option>
+                    </select> 
+                  
+                </div>
+                <div class="input">
+                    <label class="label form-label">Series : </label> 
+                    <select class="form-select" formControlName="series" [class.is-invalid]="studentForm.get('series')!.invalid && studentForm.get('series')!.touched">
+                        <option  selected disabled value="">Choisir La Serie</option>
+                        <option *ngFor="let serie of studentSeriesOptions" [value]="serie.key" >{{serie.value}}</option>
+                    </select> 
+                  
+                </div>
+                <div class="input">
+                    <label class="label form-label">Accademies : </label> 
+                    <select class="form-select" formControlName="academies" [class.is-invalid]="studentForm.get('academies')!.invalid && studentForm.get('academies')!.touched">
+                        <option  selected disabled value="">Choisir L'Accademie</option>
+                        <option *ngFor="let academie of studentAccademieOptions" [value]="academie.key" >{{academie.value}}</option>
+                    </select> 
+                  
+                </div>
+
+                <div class="input">
+                    <label for="validationDefault02" class="label form-label">Matricule :</label>
+                    <input type="text" formControlName="matricule" class="input-with form-control"  pattern="[a-zA-Z0-9]{1,12}" [class.is-invalid]="studentForm.get('matricule')!.invalid && studentForm.get('matricule')!.touched"  placeholder="Numero matricule....">
+                    <span *ngIf="studentForm.controls['matricule'].invalid && studentForm.controls['matricule'].touched" [ngStyle]="{color: 'red', 'font-size': '13px'}">
+                    Champ bligatoire*
+                    </span>
+                    <span *ngIf="studentForm.controls['matricule'].hasError('pattern') && !studentForm.controls['matricule'].hasError('required')"
+                        [ngStyle]="{color: 'red', 'font-size':'13px'}">
+                        Maximum 12 caractères (lettres et chiffres) autorisés*
+                    </span>
+                </div>
+
+                <div class="input">
+                    <label  class="label form-label">Email :</label>
+                    <input type="email" formControlName="email" class=" input-with form-control" [class.is-invalid]="studentForm.get('email')!.invalid && studentForm.get('email')!.touched" placeholder="Email...">
+                    <span *ngIf="studentForm.controls['email'].invalid && studentForm.controls['email'].touched" [ngStyle]="{color: 'red', 'font-size': '13px'}">
+                    Champ bligatoire*
+                    </span>
+                    
+                </div>
+
+               
+            </div>
+            <!-- ------------------------------------forth column------------ -->
+             <div class="chil">
+                <div class="input">
+                    <label class="label form-label">Annee d'obtention : </label> 
+                    <select class="form-select" formControlName="anneeObtention" [class.is-invalid]="studentForm.get('anneeObtention')!.invalid && studentForm.get('anneeObtention')!.touched">
+                        <option  selected disabled value="">Choisir l'annee d'obtention</option>
+                        <option *ngFor="let ans of annees" [value]="ans" >{{ans}}</option>
+                    </select> 
+                  
+                </div>
+
+                <div class="input">
+                    <label for="numeroPlace" class="label form-label">N° de place :</label>
+                    <input type="text" formControlName="numeroPlace" class="form-control" [class.is-invalid]="studentForm.get('numeroPlace')!.invalid && studentForm.get('numeroPlace')!.touched" pattern="[0-9]{1,8}" placeholder="Numero de place....">
+                    <span *ngIf="studentForm.controls['numeroPlace'].hasError('required') && studentForm.controls['numeroPlace'].touched"
+                        [ngStyle]="{color: 'red', 'font-size': '13px'}">
+                        Champ obligatoire*
+                    </span>
+                    <span *ngIf="studentForm.controls['numeroPlace'].hasError('pattern') && !studentForm.controls['numeroPlace'].hasError('required')"
+                        [ngStyle]="{color: 'red', 'font-size': '13px'}">
+                        Maximum 8 chiffres autorisés*
+                    </span>
+                </div>
+
+                <div class="input">
+                    <label class="label form-label">Status : </label> 
+                    <select class="form-select" formControlName="status" [class.is-invalid]="studentForm.get('status')!.invalid && studentForm.get('status')!.touched">
+                        <option  selected disabled value="">Choisir Le status</option>
+                        <option *ngFor="let status of studentStatusOptions" [value]="status.key" >{{status.value}}</option>
+                    </select> 
+                  
+                </div>
+            
+            
+            
+                <div class="input">
+                    <label for="validationDefault03" class="label form-label">Niveaux :</label>
+                    <select class="form-select" formControlName="idNivau" placeholder="Choisir le niveau...."   [class.is-invalid]="studentForm.get('idNivau')!.invalid && studentForm.get('idNivau')!.touched">
+                        <option  selected disabled value="">Choisir Le niveau</option>
+                        <option *ngFor="let niveau of niveaux" [value]="niveau.id">{{niveau.nom?.toUpperCase()}} </option>
+                    </select>
+                    <span *ngIf="studentForm.controls['idNivau'].invalid && studentForm.controls['idNivau'].touched" [ngStyle]="{color: 'red', 'font-size':'13px'}">
+                    Champ obligatoire*
+                    </span>                    
+                </div>
+
+                <div class="input">
+                    <label  class="label form-label">Filieres :</label>
+                    <select class="form-select" formControlName="idFiliere" placeholder="Choisir une filiere...."   [class.is-invalid]="studentForm.get('idFiliere')!.invalid && studentForm.get('idFiliere')!.touched">
+                        <option  selected disabled value="">Choisir la filiere</option>
+                        <option *ngFor="let filiere of filieres" [value]="filiere.id">{{abreviateFiliereName(filiere.nomFiliere)}}</option>
+                    </select>
+                    <span *ngIf="studentForm.controls['idFiliere'].invalid && studentForm.controls['idFiliere'].touched" [ngStyle]="{color: 'red', 'font-size':'13px'}">
+                    Champ obligatoire*
+                    </span>                    
+                </div>
+
+             </div>
+            <!-- ------------------------------------fith column------------ -->
+        </div>
+        <div class="col-12">
+            <button class="btn " type="submit">Enregistrer</button>
+        </div>
+    </form>
+</main>

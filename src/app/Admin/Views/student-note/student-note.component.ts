@@ -1,8 +1,8 @@
 import { AfterContentInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Notes } from '../../Models/Notes';
-import { Inscription, Student } from '../../Models/Students';
+import { AddNoteDto, Notes } from '../../Models/Notes';
+import { Inscription, InscriptionNoteDto, Student } from '../../Models/Students';
 import { IconsService } from '../../../Services/icons.service';
-import { EtudeService } from '../etudiants/etude.service';
+import { EtudeService } from '../Etudiants/etude.service';
 import { ActivatedRoute, NavigationExtras, NavigationStart, Router } from '@angular/router';
 import { SemestreService } from '../../../Services/semestre.service';
 import { Semestres } from '../../Models/Semestre';
@@ -10,13 +10,18 @@ import { Module } from '../../Models/Module';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Students_Module } from '../../Models/studends_modules';
 import { SchoolService } from '../../../Services/school.service';
-import { SchoolInfo } from '../../Models/School-info';
+import { AnneeScolaire, SchoolInfo } from '../../Models/School-info';
 import { Location } from '@angular/common';
-import { NotesPages, StudentPages } from '../../Models/Pagination-module';
+import { AddNoteDtoPages, NotesPages, StudentPages } from '../../Models/Pagination-module';
 import { SideBarService } from '../../../sidebar/side-bar.service';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { environment } from '../../../../environments/environment';
 import { NoteService } from '../../../Services/note.service';
+import { InscriptionService } from '../../../Services/inscription.service';
+import { AdminUSER } from '../../Models/Auth';
+import { StudentSharedMethods } from '../Etudiants/Utils/Student-shared-methode';
+import { EventServiceService } from '../../../Services/event-service.service';
+import { StudentSessionService } from '../../../Services/student-session.service';
 
 @Component({
   selector: 'app-student-note',
@@ -25,126 +30,116 @@ import { NoteService } from '../../../Services/note.service';
 })
 export class StudentNoteComponent implements OnInit {
   searchTerm: string = '';
-  inscrits: Inscription [] = [];
-  studentIds: number [] = [];
-  inscrit_select!: Inscription
+  inscrits: AddNoteDto[] = [];
+  studentIds: number[] = [];
+  annees!: AnneeScolaire
   notes: Notes[] = [];
-  idUrl! : number;
-  moduleSelect!: any
+  idModule!: number;
+  idClasse!: number;
+  idAnnee!: number;
+  idSemestre!: number;
+  module!: string
+  classe!: string
 
-  semestres!: Semestres;
-  modules: Module[] = [];
+  semestres!: string;
+  // modules: Module[] = [];
 
-  moduleForm!: FormGroup;
-  update_note_form!: FormGroup;
-  student!: Student;
-  // showFormId: number | null = null;
-  schoolInfo!: SchoolInfo
-  modules_of_student: Students_Module[] = [];
-  isShow_modal: boolean = true
-  
-  
-  studentPages?: StudentPages;
+  // moduleForm!: FormGroup;
+  // update_note_form!: FormGroup;
+  noteForm!: FormGroup;
+  noteForms: { [key: string]: FormGroup } = {};
+  // modules_of_student: Students_Module[] = [];
+  // isShow_modal: boolean = true
+
+
+  studentPages?: AddNoteDtoPages;
   page = 0;
-  size = 10;
-  filteredItems : Inscription[] = []
+  size = 100;
+  filteredItems: AddNoteDto[] = [];
   pages: number[] = []
 
-  show_widget_add_note: boolean = false;
-  idSudent_select!: number; 
-  
-
-  constructor(public icons: IconsService, private fb: FormBuilder, private root: Router, private pageTitle: PageTitleService,
-    private studentService: EtudeService, private schoolService: SchoolService, private sideBarService: SideBarService,
-    private route: ActivatedRoute, private noteService: NoteService, private location: Location) {}
+  constructor(public icons: IconsService, private fb: FormBuilder, private sessionService: StudentSessionService, private pageTitle: PageTitleService,
+    private eventService: EventServiceService, public sharedMethod: StudentSharedMethods, private sideBarService: SideBarService,
+    private route: ActivatedRoute, private noteService: NoteService, private location: Location) { }
   ngOnInit(): void {
-    this.getSchoolInfo();
     this.loadStudents();
-  
-  //  --------------------------------filter methode
-  this.sideBarService.currentSearchTerm.subscribe(term => {
-    this.searchTerm = term;
-    this.filterStudents();
-  
-  });
-  }
 
-  goBack(){
-    this.location.back();
-  }
- 
-  // ---------------------------------get all module without notes
- 
-  loadStudents(){
+    //  --------------------------------filter methode
+    this.sideBarService.currentSearchTerm.subscribe(term => {
+      this.searchTerm = term;
+      console.log(term, "search");
+      this.filterStudents();
 
-    this.route.queryParams.subscribe(data =>{
-     this.idUrl = data['id'];
-     const idNivFiliere = data['idNivFil']
-     this.studentService.getStudent_ByIdClasse(this.page, this.size, this.idUrl).subscribe(data => {
-      this.inscrits = data.content;
-      this.inscrits.forEach((item, index) => {
-       
-        item.idEtudiant.urlPhoto = `${environment.urlPhoto}${item.idEtudiant.urlPhoto}`;
-        // this.noteService.getAllStudentIdsBySemestre()
-      })
-      this.studentPages = data;
-      this.filteredItems = this.inscrits;
-      this.pages = Array.from({ length: data.totalPages! }, (_, i) => i);
-
-      console.log(this.inscrits, "les etudiants inscrit")
     });
     
-   })
-  
-}
-    // ---------------------------------get module without not of student
-    load_module_without_note(inscrit: Inscription){
-      this.show_widget_add_note = ! this.show_widget_add_note
-      this.inscrit_select = inscrit!
-      this.root.navigate(['/r-scolarite/add-note-student'], {queryParams:{id: inscrit.id, idClasse: inscrit.idClasse.idFiliere?.id}})
-     
-    }
-    // ----------------------close widget add note modal
-    close_widget(){
-      this.load_module_without_note(this.inscrit_select)
-      this.loadStudents();
-      // this.loadSemestre();
-    }
-    //  -------------------------------load bulletin
-    load_bulletin(idStudent: number){
-      const navigationExtrat: NavigationExtras = {
-        queryParams: {
-          id: idStudent
-        }
-
-      }
-
-      this.root.navigate(['/r-scolarite/student-bulletin'], navigationExtrat);
-   
-    }
-// --------------------------------------------------------------------------method filter
-filterStudents() {
-  if (!this.searchTerm) {
-   return this.filteredItems = this.inscrits;
-  } else {
-  return  this.filteredItems = this.inscrits.filter(inscrit =>
-      inscrit.idEtudiant.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      inscrit.idEtudiant.prenom.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
   }
-}
-  // ----------------------------------------------------methode get school informations
-  getSchoolInfo() {
-    this.schoolService.getSchools().subscribe(data => {
-      this.schoolInfo = data;
+
+  goBack() {
+    this.location.back();
+    this.eventService.emitEvent(this.idSemestre);
+  }
+
+  //get all module without notes
+  loadStudents() {
+    this.route.queryParams.subscribe(data => {
+      this.idClasse = data['id'];
+      this.idModule = data['idModule']
+      this.idSemestre = data['idSemestre']
+      this.idAnnee = data['idAnnee']
+      this.noteService.getAllNotesInscriptionPagesByModule(this.idClasse, this.idAnnee, this.idSemestre, this.idModule, this.page, this.size).subscribe(data => {
+        this.inscrits = data.content;
+        console.log(data, "inscrit")
+        this.inscrits.forEach((inscrit: any, i) => {
+          this.semestres = inscrit.semestre
+          this.module = inscrit.nomModule
+          this.classe = inscrit.nomClasse
+          this.annees = inscrit.anneeScolaire
+          // this.noteForms[inscrit.idModule + '-' + i].get('classeNote')?.setValue(inscrit.classeNote)
+          // this.noteForms[inscrit.idModule + '-' + i].get('examNote')?.setValue(inscrit.examNote)
+        })
+
+        this.load_form(this.inscrits);
+
+        this.studentPages = data;
+        // this.filteredItems = this.inscrits;
+        this.pages = Array.from({ length: data.totalPages! }, (_, i) => i);
+      });
+
+    })
+
+  }
+  
+
+  // method filter
+  filterStudents() {
+    if (!this.searchTerm) {
+      return this.filteredItems = this.inscrits;
+    } else {
+      return this.filteredItems = this.inscrits.filter(i => i.inscriptions.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) || 
+      i.inscriptions.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      i.validate.toLowerCase().includes(this.searchTerm.toLowerCase())
+      )
+    }
+  }
+  // load form add
+  load_form(notes: AddNoteDto[]) {
+    // console.log(notes, 'Notes reçues pour initialisation des formulaires');
+    this.noteForms = {};
+    notes.forEach((note, index) => {
+      // Combiner l'index de l'étudiant et l'idModule comme clé unique
+      const key = `${note.idModule}-${index}`;
+      this.noteForms[key] = this.fb.group({
+        examNote: [note.examNote, [ Validators.min(-1), Validators.max(20)]],
+        classeNote: [note.classeNote, [ Validators.min(-1), Validators.max(20)]],
+        idModule: [note.idModule],
+        sessionNote: [note.sessionNote, [ Validators.min(-1), Validators.max(20)]]
+      });
+      // console.log(this.noteForms[key].value, `Formulaire généré pour clé ${key}`);
     });
   }
-  // ------------------------------------exit button
-  exit(){
-    this.moduleSelect = null
-    this.loadStudents();
-  }
-  // -----------------------button pagination
+
+
+  //button pagination
   setPage(page: number): void {
     if (page >= 0 && page < this.studentPages!.totalPages!) {
       this.page = page;
@@ -160,28 +155,88 @@ filterStudents() {
 
 
   // pages visibles
- getVisiblePages(): number[] {
-  const visiblePages: number[] = [];
-  const totalPages = this.studentPages!.totalPages!;
+  getVisiblePages(): number[] {
+    const visiblePages: number[] = [];
+    const totalPages = this.studentPages!.totalPages!;
 
-  const startPage = Math.max(0, this.page - 1); 
-  const endPage = Math.min(totalPages - 1, this.page + 1); 
+    const startPage = Math.max(0, this.page - 1);
+    const endPage = Math.min(totalPages - 1, this.page + 1);
 
-  for (let i = startPage; i <= endPage; i++) {
-    visiblePages.push(i);
+    for (let i = startPage; i <= endPage; i++) {
+      visiblePages.push(i);
+    }
+
+    return visiblePages;
   }
-
-  return visiblePages;
-}
   previousPage(): void {
     if (this.page > 0) {
       this.setPage(this.page - 1);
     }
   }
+  onSubmitSession(idModule: number, inscriptionId: number, formValue: any){
+    console.log('Module:', idModule);
+    console.log('Inscription ID:', inscriptionId);
+    console.log('Valeurs:', formValue);
+    const formData = formValue;
+    
+    const session: number = formData.sessionNote
+    this.sessionService.addSessionNote(inscriptionId, this.idSemestre, idModule, session).subscribe({
+      next: () => {
+        // this.loadStudents()
+      },
+      error: (err) => {
+        this.pageTitle.showErrorToast(err.error.message)
+      }
+      })
+  }
+  // sumit method
+  onSubmit(idModule: number, inscriptionId: number, formValue: any) {
+    console.log('Module:', idModule);
+    console.log('Inscription ID:', inscriptionId);
+    console.log('Valeurs:', formValue);
+    const formData = formValue;
+        const note = {
+          examNote: formData.examNote,
+          classeNote: formData.classeNote,
+          idInscription: inscriptionId,
+          idModule: formData.idModule!,
+          idSemestre: this.idSemestre,
+          idAdmin: AdminUSER()?.scolarite
+        }
+        console.log(note, "note")
 
-  // abrevigate filiere name
-  abrevigateFiliereName(filiereName: string): string {
-    const nameSplit = filiereName.split(' ');
-    return nameSplit.filter(word => word.length > 3).map(word => word[0].toUpperCase()).join('');
+        // return
+        this.noteService.add_note(note).subscribe({
+          next: (result) => {
+            // this.inscrits.push(result);
+            // this.filterStudents()
+            console.log(result, "le retour");
+          },
+          error: (err) => {
+            this.pageTitle.showErrorToast(err.error.message)
+          }
+
+        })
+  }
+
+  refresh(){
+    this.loadStudents()
+  }
+
+  shorted(event: any){
+    const value: keyof InscriptionNoteDto = event.target.value; // Obtenir la valeur de tri (nom ou prénom)
+    console.log(value, "value");
+    const filteredStudents = this.filterStudents();
+  
+    // Trier les étudiants filtrés en fonction du critère sélectionné
+    this.inscrits = filteredStudents.sort((a, b) => {
+      const valA = a.inscriptions[value]?.toString().toLowerCase() || ''; // Récupérer la valeur de a et la convertir en minuscule
+      const valB = b.inscriptions[value]?.toString().toLowerCase() || ''; // Récupérer la valeur de b et la convertir en minuscule
+      
+      if (valA < valB) return -1; 
+      if (valA > valB) return 1;
+      return 0;
+    });
+  
   }
 }

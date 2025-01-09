@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EnseiService } from '../../Admin/Views/enseignant/ensei.service';
+import { EnseiService } from '../../Admin/Views/Enseignant/ensei.service';
 import { PaieDTO } from '../../Admin/Models/paie';
 import { IconsService } from '../../Services/icons.service';
 import { SideBarService } from '../../sidebar/side-bar.service';

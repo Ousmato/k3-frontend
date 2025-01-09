@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CompteSidebarComponent } from './compte-sidebar.component';
-import { EtudiantsComponent } from '../../Admin/Views/etudiants/etudiants.component';
-import { StudentEditComponent } from '../../Admin/Component/student-edit/student-edit.component';
-import { StudentViewComponent } from '../../Admin/Component/student-view/student-view.component';
+import { EtudiantsComponent } from '../../Admin/Views/Etudiants/etudiants.component';
+import { StudentEditComponent } from '../../Admin/Views/Etudiants/CRUD/student-edit/student-edit.component';
+import { StudentViewComponent } from '../../Admin/Views/Etudiants/CRUD/student-view/student-view.component';
 import { CompteHomeComponent } from '../compte-home/compte-home.component';
 import { MyAccuntComponent } from '../../DG/my-accunt/my-accunt.component';
 import { NotificationComponent } from '../../Admin/notification/notification.component';

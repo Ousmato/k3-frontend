@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { finalize, Observable } from 'rxjs';
-import { ProfilDto, Teacher } from '../../Models/Teachers';
+import { Teacher } from '../../Models/Teachers';
 import { Teacher_presence } from '../../Models/objectPresence';
 import { Presence } from '../../Models/Teacher-presence';
 import { Paie, PaieDTO } from '../../Models/paie';
 import { Response_String } from '../../Models/Response_String';
-import { Paie_Pages, Presence_pages, Teacher_presence_pages, TeacherPages } from '../../Models/Pagination-module';
+import { Presence_pages, Teacher_presence_pages, TeacherPages } from '../../Models/Pagination-module';
 import { environment } from '../../../../environments/environment';
 import { LoaderService } from '../../../Services/loader.service';
 
@@ -32,12 +32,12 @@ export class EnseiService {
   }
 
   // -----------------------------add enseignant
-  create(dto: ProfilDto): Observable<Response_String> {
+  create(teacher: Teacher): Observable<Response_String> {
     // const formData = new FormData();
     // formData.append('teacher', JSON.stringify(teacher));
     // formData.append('file', photo!);
     this.loadingService.loading();
-    return this.http.post<Response_String>(this.baseUrl + 'add', dto).pipe(
+    return this.http.post<Response_String>(this.baseUrl + 'add', teacher).pipe(
       finalize(() => this.loadingService.stopLoading())
     );
 
@@ -116,4 +116,12 @@ export class EnseiService {
   getAllPaieByMonth(month: number) : Observable<PaieDTO[]>{
     return this.http.get<PaieDTO[]>(this.baseUrl+"all-paie-of-month/"+month)
   }
+
+  addTeacher(teachers: Teacher[], idAdmin: number) : Observable<Response_String> {
+    this.loadingService.loading();
+    return this.http.post<Response_String>(this.baseUrl+"add-teachers-import/"+idAdmin, teachers).pipe(
+      finalize(() => this.loadingService.stopLoading())
+    )
+  }
+ 
 }

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ServiceService } from '../../DER/emplois-du-temps/service.service';
+import { ServiceService } from '../../DER/EDT/emplois-du-temps/service.service';
 import { Semestres } from '../../Admin/Models/Semestre';
 import { SemestreService } from '../../Services/semestre.service';
 import { ClassRoom } from '../../Admin/Models/Classe';

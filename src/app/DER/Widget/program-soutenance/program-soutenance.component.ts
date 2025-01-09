@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Teacher } from '../../../Admin/Models/Teachers';
-import { EnseiService } from '../../../Admin/Views/enseignant/ensei.service';
+import { EnseiService } from '../../../Admin/Views/Enseignant/ensei.service';
 import { SalleService } from '../../../Services/salle.service';
 import { Salles } from '../../../Admin/Models/Salles';
 import { Jury, Jury_role, ProgramSoutenance, Soutenance } from '../../../Admin/Models/doc';
 import { IconsService } from '../../../Services/icons.service';
 import { ActivatedRoute } from '@angular/router';
-import { EtudeService } from '../../../Admin/Views/etudiants/etude.service';
+import { EtudeService } from '../../../Admin/Views/Etudiants/etude.service';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { DatePipe } from '@angular/common';
 import { debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs';

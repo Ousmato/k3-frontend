@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { EtudeService } from '../../Admin/Views/etudiants/etude.service';
+import { EtudeService } from '../../Admin/Views/Etudiants/etude.service';
 import { Router } from '@angular/router';
 import { ClassStudentService } from '../class-students/class-student.service';
-import { ServiceService } from '../../DER/emplois-du-temps/service.service';
+import { ServiceService } from '../../DER/EDT/emplois-du-temps/service.service';
 import { Emplois } from '../../Admin/Models/Emplois';
 
 @Component({

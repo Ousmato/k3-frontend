@@ -17,11 +17,11 @@
         </div>
     </div>
     
-    <table class="table table-hover">
+    <table class="table table-bordered">
         <thead>
             <tr>
                 <th>N°</th>
-                <th>Matricule</th>
+                <!-- <th>Matricule</th> -->
                 <th>Nom</th>
                 <th>Prénom</th>
                 <th>Groupe</th>
@@ -33,7 +33,7 @@
            @if(filteredInscription().length){
             <tr *ngFor="let inscrit of filteredInscription(); let i = index">
                 <td>{{i+1}}</td>
-                <td>{{inscrit.idEtudiant.matricule}}</td>
+                <!-- <td>{{inscrit.idEtudiant.matricule}}</td> -->
                 <td>{{inscrit.idEtudiant.nom}}</td>
                 <td>{{inscrit.idEtudiant.prenom}}</td>
                 <td>

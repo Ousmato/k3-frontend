@@ -27,41 +27,90 @@
                     <th>Prenom</th>
                     <th>Email</th>
                     <th>Telephone</th>
-                    <th>Role</th>
+                    <th>Poste</th>
                     <th>Etat</th>
                 </tr>
                
             </thead>
             <tbody>
                 @if(filteredAdmins().length){
-                    <tr *ngFor="let admin of filteredAdmins() let i = index">
-                        <td> <img [src]="admin.urlPhoto" (error)="onError($event)" alt=""></td>
-                        <td>{{admin.nom.charAt(0) + admin.nom.slice(1).toLowerCase()}}</td>
-                        <td>{{admin.prenom}}</td>
-                        <td>{{admin.email}}</td>
-                        <td>{{admin.telephone}}</td>
-                        <td>{{admin.role.toUpperCase()}}</td>
-                        <td [ngStyle]="{ color:admin.active ? 'green' : 'red'}"><fa-icon [icon]="icons.circle"></fa-icon>
-                            <span (click)="show_confirm(i)">{{admin.active? 'Désactiver' : 'Activer'}} </span>
-                            <span (click)="toEdit(admin.idAdministra!)">Editer <fa-icon [icon]="icons.edit"></fa-icon> </span>
+                    <tr *ngFor="let dto of filteredAdmins() let i = index">
+                        <td> <img [src]="dto.admin.urlPhoto" (error)="onError($event)" alt=""></td>
+                        <td>{{dto.admin.nom.charAt(0) + dto.admin.nom.slice(1).toLowerCase()}}</td>
+                        <td>{{dto.admin.prenom}}</td>
+                        <td>{{dto.admin.email}}</td>
+                        <td>{{dto.admin.telephone}}</td>
+                        <td [ngStyle]="{'font-size': '13px'}">
+                            {{dto.admin.idRole.nom.toUpperCase()}} <strong class="abreger">({{abrevigateName(dto.admin.idRole.nom)}})</strong> <br>
+                        
+                            @for (item of dto.roleNames; track $index) {
+                                {{item}} <br>
+                            }
+                        </td>
+                        <td [ngStyle]="{ color:dto.admin.active ? 'green' : 'red'}"><fa-icon [icon]="icons.circle"></fa-icon>
+                            <span (click)="show_confirm(i)">{{dto.admin.active? 'Désactiver' : 'Activer'}} </span>
+                            <span (click)="toEdit(dto.admin.idAdministra!)">Editer <fa-icon [icon]="icons.edit"></fa-icon> </span>
+                            <span (click)="postAffectation(dto.admin.idAdministra!, i)">Postes <fa-icon [icon]="icons.userCheck"></fa-icon> </span>
                         </td>
 
                         <ng-container *ngIf="isConfirm && i == index">
                             <div class="views">
                                 <h3 class="span">Confirmation</h3>
                                 <div class="container-views">
-                                    <p>Êtes-vous sûr de vouloir {{admin.active? 'Désactiver' : 'Activer'}} l'administrateur ?</p>
+                                    <p>Êtes-vous sûr de vouloir {{dto.admin.active? 'Désactiver' : 'Activer'}} l'administrateur ?</p>
                                     <div class="profil">
-                                    <img [src]="admin.urlPhoto" (error)="onError($event)" alt="">
+                                    <img [src]="dto.admin.urlPhoto" (error)="onError($event)" alt="">
                                     <div class="info-pofil">
-                                        <p>{{admin.nom}} {{admin.prenom}}</p>
-                                        <p class="text-muted small">{{admin.role.toUpperCase()}}</p>
+                                        <p>{{dto.admin.nom}} {{dto.admin.prenom}}</p>
+                                        <p class="text-muted small">{{dto.admin.idRole.nom.toUpperCase()}}</p>
                                     </div>
                                            
                                     </div>
                                         <div class="button-cash">
                                             <a type="button" (click)="exite()">Annuler</a>
-                                            <button type="button" (click)="changeEtat(admin.idAdministra!)">Confirmer</button>
+                                            <button type="button" (click)="changeEtat(dto.admin.idAdministra!)">Confirmer</button>
+                                        </div>
+                                    
+                                </div>
+                            </div>
+                        </ng-container>
+                        <!-- --------------- -->
+                        <ng-container *ngIf="isAfectPoste && i == index">
+                            <div class="views">
+                                <h3 class="span">Ajouter Poste</h3>
+                                <div class="container-views">
+                                    <div class="form-group">
+                                        <label for="poste">Poste : </label>
+                                        <select class="form-select" (change)="onRoleChange($event)" >
+                                            <option disabled selected value="">Choisir le Poste</option>
+                                            <option [ngStyle]="{'font-size': '13px'}" *ngFor="let role of roles" value="{{role.id}}">{{role.nom}}</option>
+                                        </select>
+                                    </div>
+                                        <div class="button-cash">
+                                            <a type="button" (click)="exite()">Annuler</a>
+                                            <button type="button" (click)="next(i)">Suivant</button>
+                                        </div>
+                                    
+                                </div>
+                            </div>
+                        </ng-container>
+                        <!-- -------------------------- -->
+                        <ng-container *ngIf="isAddPostConfirm && i == index">
+                            <div class="views">
+                                <h3 class="span">Avertissement</h3>
+                                <div class="container-views">
+                                    <p>Êtes-vous sûr de vouloir ajouter ce role <strong>{{abrevigateName(idRoleSelect.nom)}}</strong> a {{dto.admin.nom}} ?</p>
+                                    <div class="profil">
+                                    <img [src]="dto.admin.urlPhoto" (error)="onError($event)" alt="">
+                                    <div class="info-pofil">
+                                        <p>{{dto.admin.nom}} {{dto.admin.prenom}}</p>
+                                        <p class="text-muted small">{{dto.admin.idRole.nom.toUpperCase()}} <strong>({{abrevigateName(dto.admin.idRole.nom)}})</strong></p>
+                                    </div>
+                                           
+                                    </div>
+                                        <div class="button-cash">
+                                            <a type="button" (click)="exite()">Annuler</a>
+                                            <button type="button" (click)="submit(dto.admin.idAdministra!, idRoleSelect.id!)">Confirmer</button>
                                         </div>
                                     
                                 </div>
@@ -81,7 +130,7 @@
     
 
     <div class="app" *ngIf="show_add_form">
-        <app-add-admin (closeModal)="close()"></app-add-admin>
+        <app-add-admin [idAdminDg]="dg.idAdministra!" (closeModal)="close()"></app-add-admin>
     </div>
     <div class="overlay" *ngIf="overlay"></div>
 </main>

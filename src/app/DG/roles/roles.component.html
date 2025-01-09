@@ -1,0 +1,136 @@
+<main>
+    <div class="btn-contenair">
+        <div class="leftly">
+                
+    
+            <div class="input-search-class">
+                <input type="text" [(ngModel)]="searchTerm" class="search-input-class" placeholder="Rechercher...">
+                <!-- <button (click)="searchAdmin()">Rechercher</button> -->
+            </div>
+        </div>
+        
+        <div class="btn-add">
+            <button (click)="show_form()">Ajouter</button>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table class="table table-hover">
+            <thead>
+    
+                <tr>
+                     <th>N°</th>
+                    <th>Nom</th>
+                    <th>Action</th>
+                </tr>
+               
+            </thead>
+            <tbody>
+                @if(filteredRoles().length){
+                    <tr *ngFor="let role of filteredRoles() let i = index">
+                        <td>{{i + 1}} </td>
+                        <td>{{role.nom.toUpperCase()}} <strong>({{abrevigateName(role.nom)}})</strong></td>
+                        
+                        <td >
+                            <span (click)="show_confirm(i)">Supprimer <fa-icon [icon]="icons.delete"></fa-icon></span>
+                            <span (click)="toEdit(role)">Editer <fa-icon [icon]="icons.edit"></fa-icon> </span>
+                        </td>
+
+                        <ng-container *ngIf="isConfirm && i == index">
+                            <div class="views">
+                                <h3 class="span">Confirmation</h3>
+                                <div class="container-views">
+                                    <p>Êtes-vous sûr de vouloir supprimer ce role ?</p>
+                                    <div class="profil">
+                                    
+                                    <div class="info-pofil">
+                                        <p>{{role.nom.toUpperCase()}}</p>
+                                        <!-- <p class="text-muted small">{{admin.idRole.nom.toUpperCase()}}</p> -->
+                                    </div>
+                                           
+                                    </div>
+                                        <div class="button-cash">
+                                            <a type="button" (click)="exite()">Annuler</a>
+                                            <button type="button" (click)="deleted(role.id!)">Confirmer</button>
+                                        </div>
+                                    
+                                </div>
+                            </div>
+                        </ng-container>
+                    </tr>
+
+                }@else {
+                    <tr>
+                        <td colspan="9" class="text-center">Aucun administrateur trouvé</td>
+                    </tr>
+                }
+                
+            </tbody>
+        </table>
+    </div>
+    <div class="app" *ngIf="showAdd">
+
+        <div class="views">
+            <h3 class="span">Ajouter un role</h3>
+            <form [formGroup]="addForm" (ngSubmit)="addRole()">
+                <div class="container-views">
+                    <div class="form-group">
+                        <label for="nom">Nom du role</label>
+                        <input type="text" class="input-with form-control" formControlName="nom" id="nom" [class.is-invalid]="addForm.get('nom')!.invalid && addForm.get('nom')!.touched"  placeholder="Nom du role...">
+                        <span *ngIf="addForm.controls['nom']!.errors?.['required'] && addForm.controls['nom'].touched" [ngStyle]="{color: 'red', 'font-size': '11px'}">
+                            Champ obligatoire*
+                        </span>
+                        <span *ngIf="addForm.controls['nom'].hasError('maxlength') && addForm.controls['nom'].touched" [ngStyle]="{color: 'red', 'font-size': '11px'}">
+                            40 caractères maximum
+                          </span>
+                          <div *ngIf="addForm.controls['nom']!.errors?.['minlength']">
+                            <span [ngStyle]="{color: 'red', 'font-size': '11px'}">3 caractères minimum</span>
+                        </div>
+                    </div>
+                    <div class="button-cash">
+                        <a type="button" (click)="exite()">Annuler</a>
+                        <button type="submit">Enregistrer</button>
+                    </div>
+                </div>
+
+                
+            
+        </form>
+        </div>
+        
+    </div>
+    <!-- ---------------------------------- -->
+    <div class="app" *ngIf="showupdate">
+
+        <div class="views">
+            <h3 class="span">Modifier role</h3>
+            <form [formGroup]="updateForm" (ngSubmit)="update()">
+                <div class="container-views">
+                    <input type="number" formControlName="id" *ngIf="false">
+                    <input type="number" formControlName="idAdminDg" *ngIf="false">
+                    <div class="form-group">
+                        <label for="nom">Nom du role</label>
+                        <input type="text" class="input-with form-control" formControlName="nom" id="nom" [class.is-invalid]="updateForm.get('nom')!.invalid && updateForm.get('nom')!.touched"  placeholder="Nom du role...">
+                        <span *ngIf="updateForm.controls['nom']!.errors?.['required'] && updateForm.controls['nom'].touched" [ngStyle]="{color: 'red', 'font-size': '11px'}">
+                            Champ obligatoire*
+                        </span>
+                        <span *ngIf="updateForm.controls['nom'].hasError('maxlength') && updateForm.controls['nom'].touched" [ngStyle]="{color: 'red', 'font-size': '11px'}">
+                            40 caractères maximum
+                          </span>
+                          <div *ngIf="updateForm.controls['nom']!.errors?.['minlength']">
+                            <span [ngStyle]="{color: 'red', 'font-size': '11px'}">3 caractères minimum</span>
+                        </div>
+                    </div>
+                    <div class="button-cash">
+                        <a type="button" (click)="exite()">Annuler</a>
+                        <button type="submit">Enregistrer</button>
+                    </div>
+                </div>
+            
+        </form>
+        </div>
+        
+    </div>
+    
+    <!-- <div class="overlay" *ngIf="overlay"></div> -->
+</main>

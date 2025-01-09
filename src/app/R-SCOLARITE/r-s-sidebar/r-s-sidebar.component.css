@@ -58,7 +58,21 @@ p{
     /* transition: 0.5s; */
    
     }
-    .views .span{
+.views-switch{
+    background-color: white;
+    position: absolute;
+    width: 260px;
+    padding: 0;
+    bottom: 50%;
+    padding: 0;
+    right: 40%;
+    border-radius: 4px;
+    z-index: 10004;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15);
+    /* transition: 0.5s; */
+   
+    }
+    .views .span, .views-switch .span{
       background-color: var(--primary);
       color: var(--secondary);
       font-size: 14px;

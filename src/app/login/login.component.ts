@@ -44,34 +44,34 @@ export class LoginComponent implements OnInit {
       // console.log('ici')
       this.authService.login(email, password).subscribe({
         next: (data) =>{
-          console.log(data.user.role)
-          if (data.user.role == Admin_role.DG.toLocaleLowerCase()) {
+          console.log(data.user.idRole.nom, "role")
+          if (data.user.idRole.nom === "Admin") {
             this.route.navigate(["/sidebar"])
             console.log('Je suis admin', data.user.role);
             this.toastr.success('Connexion avec succès!!', 'Succès',{timeOut: 3000})
 
   
-          } else if (data.user.role === Admin_role.DGA.toLocaleLowerCase()) {
+          } else if (this.abreviateName(data.user.idRole.nom) === Admin_role.DGA.toString().toUpperCase()) {
          
             console.log('Je suis dga');
             this.route.navigate(['/dga'])
             this.toastr.success('Connexion avec succès!!', 'Succès',{timeOut: 3000})
 
 
-          }else if(data.user.role === Admin_role.SCOLARITE.toLocaleLowerCase()){
+          }else if(this.abreviateName(data.user.idRole.nom )=== Admin_role.SCOLARITE.toString().toUpperCase()){
        
             this.route.navigate(['/r-scolarite']);
             this.toastr.success('Connexion avec succès!!', 'Succès',{timeOut: 3000})
 
   
-          } else if (data.user.role === Admin_role.DER.toLocaleLowerCase()) {
+          } else if (this.abreviateName(data.user.idRole.nom) === Admin_role.DER.toString().toUpperCase()) {
             // const adminDataString = JSON.stringify(data);
             // sessionStorage.setItem("der", adminDataString);
             this.route.navigate(['/der']);
             this.toastr.success('Connexion avec succès!!', 'Succès',{timeOut: 3000})
 
   
-          } else if (data.user.role === Admin_role.COMPTABLE.toLocaleLowerCase()) {
+          } else if (this.abreviateName(data.user.idRole.nom) === Admin_role.COMPTABLE.toString().toUpperCase()) {
             // const adminDataString = JSON.stringify(data);
             // sessionStorage.setItem("comptable", adminDataString);
             this.route.navigate(['/comptable']);
@@ -83,7 +83,7 @@ export class LoginComponent implements OnInit {
             //   sessionStorage.setItem("dg", adminDataString);
             //   this.route.navigate(['/dg']);
             
-            }else if (data.user.role === Admin_role.SECRETAIRE.toLocaleLowerCase()) {
+            }else if (this.abreviateName(data.user.idRole.nom) === Admin_role.SECRETAIRE.toString().toUpperCase()) {
               // const adminDataString = JSON.stringify(data);
               // sessionStorage.setItem("secretaire", adminDataString);
               this.route.navigate(['/secretaire']);
@@ -91,7 +91,7 @@ export class LoginComponent implements OnInit {
 
 
           }else{
-            this.toastr.error('Identifiant ou mot de passe incorrect', 'Erreur',)
+            this.toastr.error('User introuvable', 'Erreur',)
           }
         },
         error: (erreur) =>{
@@ -116,6 +116,14 @@ export class LoginComponent implements OnInit {
 
 to_forgotPassword(){
   this.route.navigate(['/forgot-password']);
+}
+
+// abrevigate role name
+abreviateName(filiere: string): string {
+  const nameWord = filiere.split(' ');
+  const word = nameWord.filter(wd => wd.length > 3).map(word => word[0].toUpperCase()).join('')
+  // console.log("word", word)
+  return word;
 }
 }
 

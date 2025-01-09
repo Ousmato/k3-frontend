@@ -1,0 +1,96 @@
+<main class="emplois-main-contente">
+    <div class="btn-contenaire">
+        <button  type="button"  (click)="nouveau()"><fa-icon [icon]="icons.plus"></fa-icon> Nouveau</button>
+        <div class="views" *ngIf="show_add">
+            <h3 class="span">Ajouter une spécialité</h3>
+            <form [formGroup]="addSpecialiteForm" (ngSubmit)="addSpecialite()">
+                <div class="container-views">
+                    <div class="form-group">
+                        <label for="nom">Nom de la spécialité</label>
+                        <input type="text" class="input-with form-control" formControlName="nom" id="nom" [class.is-invalid]="addSpecialiteForm.get('nom')!.invalid && addSpecialiteForm.get('nom')!.touched"  placeholder="Nom de la spécialité...">
+                        <span *ngIf="addSpecialiteForm.controls['nom']!.errors?.['required'] && addSpecialiteForm.controls['nom'].touched" [ngStyle]="{color: 'red', 'font-size': '11px'}">
+                            Champ obligatoire*
+                        </span>
+                        <span *ngIf="addSpecialiteForm.controls['nom'].hasError('maxlength') && addSpecialiteForm.controls['nom'].touched" [ngStyle]="{color: 'red', 'font-size': '11px'}">
+                            40 caractères maximum
+                          </span>
+                          <div *ngIf="addSpecialiteForm.controls['nom']!.errors?.['minlength']">
+                            <span [ngStyle]="{color: 'red', 'font-size': '11px'}">3 caractères minimum</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group filiere-content">
+                        <label >Choisir les filières</label>
+                       <div class="input-content" *ngFor="let filiere of filieres">
+                            
+                        <input type="checkbox" id="{{filiere.id}}" (change)="filiere_check(filiere.id!, $event)"
+                                
+                               >
+                            <label for="{{filiere.id}}" style="margin-right: 10px;">{{abreviateFiliereName(filiere.nomFiliere)}}</label>
+                            
+                       
+                       </div>
+                           
+                        
+                    </div>
+                    <div class="button-cash">
+                        <a type="button" (click)="exite()">Annuler</a>
+                        <button type="submit">Enregistrer</button>
+                    </div>
+                </div>
+
+                
+            
+        </form>
+        </div>
+        
+        <div class="input-search">
+            <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..." class="search-input">
+          </div>
+   </div>
+    <div class="emplois-contente">
+        <div class="grid-container">
+            @if(filteredSpecialite().length){
+            <div class="grid-item" *ngFor="let specialite of filteredSpecialite(), let i = index">
+                <!-- <div class="section-folder"> -->
+                    <div class="emploi-item" >
+                      
+                        <div class="filiere-info">
+                            <h6 class="title">{{specialite.specialite.nom.toUpperCase()}}</h6>
+                            @if (show_filiere && i === index) {
+                                <div class="filiere-contentainer">
+                                    <div>
+                                        <p class="small" *ngFor="let filiere of specialite.filieres">
+                                            {{filiere.nomFiliere}} <b>({{abreviateFiliereName(filiere.nomFiliere)}})</b>
+                                        </p>
+                                    </div>
+                                     <a class="icon-up" (click)="showFilieres(i)"><fa-icon [icon]=" icons.angleUp"></fa-icon></a>
+                                </div>
+                           
+
+                            }
+                            
+                        </div>
+                        
+                            <div class="info-folder"> 
+                                <app-edit *ngIf="show_edit && i == index" [specialite]="specialite.specialite" (closeEdit)="exite()"></app-edit>
+                                @if (!show_filiere) {
+                                <a title="Ajouter des filières"> <fa-icon [icon]="icons.squarePlus"></fa-icon></a>
+                                <a title="Editer" (click)="show_edited(i)"><fa-icon [icon]=" icons.edit"></fa-icon></a>
+                                <a (click)="showFilieres(i)"><fa-icon [icon]=" icons.angleDown"></fa-icon></a>
+                                }
+                               
+
+                            </div>
+                               
+                       
+                        
+                    </div>
+                <!-- </div> -->
+            </div>
+        }@else {
+            <app-empty-widget></app-empty-widget>
+        }
+        </div>
+       </div>
+</main>

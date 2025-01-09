@@ -10,6 +10,8 @@
             </select>
             <button (click)="addUe()"><fa-icon [icon]="icons.plus"></fa-icon> Ajouter</button>
         </div>
+        <h6 *ngIf="semestre">{{classe.idFiliere?.idNiveau?.nom}} {{classe.idFiliere?.idFiliere?.nomFiliere?.toUpperCase()}}-{{semestre.nomSemetre}} {{classShared.extractAnnee(classe.idAnneeScolaire!)}}-{{classShared.extractAnnee(classe.idAnneeScolaire!) + 1}}</h6>
+
         <div class="input-search">
             <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..." class="search-input">
           </div>
@@ -17,56 +19,99 @@
     </div>
     
     <section class="content">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>N° D'ord</th>
-                    <th>Nom</th>
-                    <th>ECUE</th>
-                    <th class="coef">Coefficient</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody >
-                @if (filterUes().length) {
-                    <tr *ngFor="let ue of filterUes(); let i = index">
-                        <td class="numerotation-clumn" >{{i +1 }}</td>
-                        <td >{{ ue.idUe.nomUE }}</td>
-                        <td >
-                             @for (item of ue.modules; track $index) {
-                                
-                                {{item.nomModule}} <br>
-                             }
-                        </td>
-                        <td class="coef">
-                            @for (item of ue.modules; track $index) {
-                                
-                                {{item.coefficient}} <br>
-                             }
-                        </td>
-                        <td class="action">
-                            <div class="second-child">
-                                <a (click)="updated(ue)" ><fa-icon [icon]="icons.edit"></fa-icon> <span>Modifier</span></a>
-                                <a (click)="deleteted(ue)" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> <span >Supprimer</span></a>
-                               
-                            </div>
-                            
+        <div class="ue-table">
+            <!-- Ligne d'entête -->
+            <div class="table-header">
+              <div class="header-cell">UE</div>
+              <div class="header-cell">ECUE</div>
+              <div class="header-cell">CREDITS</div>
+              <div class="header-cell">OBJECTIF</div>
+              <div class="header-cell">Enseignements encadrés</div>
+            </div>
+          
+            <!-- Ligne de données -->
+             @if (filterUes().length) {
 
-                        </td>
-                       
-                    </tr>
-                }@else {
-                    <tr>
-                        <td colspan="9" class="text-center">Aucune UE trouvée</td>
-                    </tr>
-                }
-               
-            </tbody>
-        </table>
+             
+            <div class="table-row" *ngFor="let ue of filterUes(); let i = index">
+              <!-- Chaque module est une ligne -->
+              <div *ngFor="let module of ue.modules" class="module-row">
+                
+                <div class="table-cell">
+                    <div class="cell-content">
+                        <strong>{{ ue.idUe.nomUE }}</strong> ({{ ue.idUe.codeUE }})
+                        
+                    </div>
+                    <div class="action">
+                        <div class="second-child">
+                            <a *ngIf="!idAnnee" (click)="updated(ue)" ><fa-icon [icon]="icons.edit"></fa-icon> </a>
+                            <a *ngIf="!idAnnee" (click)="deleteted(ue)" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> </a>
+                            <a *ngIf="idAnnee" (click)="addNote(module)" ><fa-icon [icon]="icons.edit" ></fa-icon>Noter</a>
+                           
+                        </div>
+                        
+
+                    </div>
+                </div>
+                <div class="table-cell">
+                    <div class="cell-content">
+                        {{ module.nomModule }}
+                    </div>
+                  
+                </div>
+                <div class="table-cell">
+                    <div class="cell-content">
+                         {{ module.coefficient }}
+                    </div>
+                 
+                </div>
+                <div class="table-cell description-cell">
+                    <div class="cell-content">
+                        {{ module.description }}
+                   </div>
+                  
+                </div>
+                <div class="table-cell">
+                    <div class="last-child-head">
+                      <div class="volume-grid">
+                        <div class="volume-item">
+                          <strong>CM</strong>
+                          <p>20</p>
+                        </div>
+                        <div class="volume-item">
+                          <strong>TD</strong>
+                          <p>10</p>
+                        </div>
+                        <div class="volume-item">
+                          <strong>TP</strong>
+                          <p>0</p>
+                        </div>
+                        <div class="volume-item">
+                          <strong>VHT</strong>
+                          <p>30</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div class="table-cell">
+                    Controle continue : deux notes
+                  </div> -->
+                  
+              </div>
+              
+              
+            </div>
+        }@else {
+            <p class="empty">Veillez choisir le semestre</p>
+         }
+          </div>
+        
+          
         <div class="app">
             <app-ue-widget *ngIf="showUpdate || showDelete && idUeSelect" [show_update]="showUpdate" [ue]="idUeSelect" [show_deleted]="showDelete" (closeModale)="closeModalToAddUe()"></app-ue-widget>
 
             </div>
+           
     </section>
     <ng-container *ngIf="isShow_add_module">
         <div class="views-add-ues">

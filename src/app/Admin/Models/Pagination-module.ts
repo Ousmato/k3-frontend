@@ -1,13 +1,13 @@
 import { Docum, StudentDoc } from "./doc";
-import { Notes, StudentsNotesDto } from "./Notes";
+import { AddNoteDto, Notes, StudentsNotesDto } from "./Notes";
 import { Teacher_presence } from "./objectPresence";
 import { Paie } from "./paie";
-import { Inscription, Student } from "./Students";
+import { Inscription, InscriptionNoteDto, Student } from "./Students";
 import { Presence } from "./Teacher-presence";
-import { ProfilDto, Teacher } from "./Teachers";
+import { TeacherDto } from "./Teachers";
 
 export interface TeacherPages{
-    content: ProfilDto[];
+    content: TeacherDto[];
     totalElements: number;
     totalPages?: number;
     size: number;
@@ -16,6 +16,14 @@ export interface TeacherPages{
 
 export interface StudentPages{
     content: Inscription[];
+    totalElements: number;
+    totalPages?: number;
+    size: number;
+    number: number;
+
+}
+export interface AddNoteDtoPages{
+    content: AddNoteDto[];
     totalElements: number;
     totalPages?: number;
     size: number;

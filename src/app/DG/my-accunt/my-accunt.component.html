@@ -94,7 +94,7 @@
                         <div class="input">
                         <label class="label form-label" >Role : <span class="text-muted small" *ngIf="isEdit">Non modifiable</span> </label> 
                         <!-- <p *ngIf="!isEdit">{{admin.role.toUpperCase()}}</p> -->
-                        <input [attr.readonly]="admin.role ? true : null" type="text" class="input-control" value="{{admin.role.toUpperCase()}}">
+                        <input [attr.readonly]="admin.idRole.nom ? true : null" type="text" class="input-control" value="{{admin.idRole.nom.toUpperCase()}}">
                             <!-- <select class="input-control"  formControlName="role"  id="select" placeholder="role"   [class.is-invalid]="update_form.get('role')!.invalid && update_form.get('role')!.touched" *ngIf="isEdit">
                             <option  selected disabled value="">Choisir Le status</option>
                             <option *ngFor="let status of adminStatusOptions" [value]="status.value" >{{status.key}}</option>
@@ -108,7 +108,7 @@
             
                         <div class="radio input">
                             <label for="">Sexe : <span class="text-muted small" *ngIf="isEdit">Non modifiable</span> </label>
-                             <input [attr.readonly]="admin.role ? true : null" type="text" class="input-control" value="{{admin.sexe.toUpperCase()}}">
+                             <input [attr.readonly]="admin.idRole.nom ? true : null" type="text" class="input-control" value="{{admin.sexe.toUpperCase()}}">
 
                             <!-- <div class="radio-content input-control" *ngIf="!isEdit">
                                 <div class="form-check form-check-inline">
