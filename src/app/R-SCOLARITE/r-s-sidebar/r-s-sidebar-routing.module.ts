@@ -12,14 +12,13 @@ import { EtudiantsDeLaClasseComponent } from '../../Admin/Views/Etudiants/etudia
 import { AllNotesSemestreComponent } from '../../Admin/Views/all-notes-semestre/all-notes-semestre.component';
 import { StudentBulletinComponent } from '../../Admin/Component/student-bulletin/student-bulletin.component';
 import { RSReinscriptionComponent } from '../r-s-reinscription/r-s-reinscription.component';
-import { StudentReInscriptionComponent } from '../student-re-inscription/student-re-inscription.component';
 import { ViewUeComponent } from '../../Widget/ue-widget/view-ue/view-ue.component';
-import { ClassArchiveComponent } from '../../DGA/class-students/class-archive/class-archive.component';
 import { RSImportComponent } from '../r-s-import/r-s-import.component';
 import { MyAccuntComponent } from '../../DG/my-accunt/my-accunt.component';
 import { AddNoteWidgetComponent } from '../../Widget/add-note-widget/add-note-widget.component';
 import { NotificationComponent } from '../../Admin/notification/notification.component';
 import { StudentDetailsComponent } from '../../Admin/Views/Etudiants/student-details/student-details.component';
+import { SemestreMoyennesComponent } from '../../Admin/Views/semestre-moyennes/semestre-moyennes.component';
 
 const routes: Routes = [{path: '', component: RSSidebarComponent,
   children: [
@@ -28,12 +27,11 @@ const routes: Routes = [{path: '', component: RSSidebarComponent,
     {path: 'etudiant', component: EtudiantsComponent, data:{title: "Les Etudiants"}},
     {path: 'student-notes', component: StudentNoteComponent, data:{title: "NOTES DES ETUDIANS"}},
     {path: 're-inscription-list', component: RSReinscriptionComponent, data:{title: "REINCRIPTION"}},
-    {path: 're-inscription', component: StudentReInscriptionComponent, data:{title: "REINCRIPTION"}},
-    {path: 'class-archives', component: ClassArchiveComponent, data:{title: "Archives"}},
     {path: 'import', component: RSImportComponent, data:{title: "IMPORTER ETUDIANTS"}},
     {path: 'my-accunt', component: MyAccuntComponent, data:{title: "Compte"}},
     {path: 'add-note-student', component: AddNoteWidgetComponent, data:{title: "AJout des notes"}},
     {path: 'notifications', component: NotificationComponent, data:{title: "Notifications"}},
+    {path: 'semestre-moyenne', component: SemestreMoyennesComponent, data:{title: "Moyennes des semestres"}},
     
     {path: 'student-bulletin', component: StudentBulletinComponent, data:{title: "RELEVER DE NOTES"}},
     {path: 'all-notes', component: AllNotesSemestreComponent, data:{title: "NOTES DU SEMESTRE"}},

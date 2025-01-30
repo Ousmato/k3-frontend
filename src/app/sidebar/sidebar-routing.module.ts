@@ -8,7 +8,6 @@ import { EtudiantsComponent } from '../Admin/Views/Etudiants/etudiants.component
 import { SinginComponent } from '../Admin/Views/Etudiants/CRUD/singin/singin.component';
 import { EmploisSeanceComponent } from '../DER/EDT/emplois-seance/emplois-seance.component';
 import { EnseignantComponent } from '../Admin/Views/Enseignant/enseignant.component';
-import { EnseignantPrDetailsComponent } from '../Admin/Views/Enseignant/enseignant-pr-details/enseignant-pr-details.component';
 import { StudentNoteComponent } from '../Admin/Views/student-note/student-note.component';
 import { AllNotesSemestreComponent } from '../Admin/Views/all-notes-semestre/all-notes-semestre.component';
 import { EtudiantsDeLaClasseComponent } from '../Admin/Views/Etudiants/etudiants-de-la-classe/etudiants-de-la-classe.component';
@@ -50,7 +49,6 @@ const routes: Routes = [{path: "", component: SidebarComponent,
       {path: 'inscription', component: SinginComponent, data:{title: "Formulaire d'Inscription"}},
       {path: 'my-accunt', component: MyAccuntComponent, data:{title: "informations du compte"}},
       {path: 'emplois-seance', component: EmploisSeanceComponent, data:{title: "L'emploi du temps"}},
-      {path: 'enseignant-pre-detail', component: EnseignantPrDetailsComponent},
       {path: 'all-notes', component: AllNotesSemestreComponent, data:{title: "Notes du Semestre"}},
      
       {path: 'notifications', component: NotificationComponent, data:{title: "Notifications"}},

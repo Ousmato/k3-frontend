@@ -47,4 +47,10 @@ export class SchoolService {
   getSuperiorAnnee() : Observable<AnneeScolaire[]>{
     return this.http.get<AnneeScolaire[]>(this.baseUrl+"get-superior-annee");
   }
+
+  // get all anneenscolaire for techers have emploi
+  getAnneeScolaireOfTeacherHaveEmploi(idTeacher: number) : Observable<AnneeScolaire[]>{
+    return this.http.get<AnneeScolaire[]>(`${this.baseUrl}get-all-annee-scolaire-have-emploi-for-teacher/${idTeacher}`);
+  }
+  
 }

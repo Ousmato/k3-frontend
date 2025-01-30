@@ -66,9 +66,9 @@ export class ClasseroomWidgetComponent implements OnInit {
   delete_classe(idSelect: number){}
   // ----------------------------------load classes
   load_all_classe(){
-    this.classService.getAllCurrentClassOfYear().subscribe((res: ClassRoom[]) =>{
-      this.classes = res;
-    })
+    // this.classService.getAllCurrentClassOfYear().subscribe((res: ClassRoom[]) =>{
+    //   this.classes = res;
+    // })
   }
   get_nivFiliere(){
     this.classService.getAllNivFil().subscribe(data =>{

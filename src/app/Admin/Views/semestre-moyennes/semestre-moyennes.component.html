@@ -1,0 +1,90 @@
+<main id="idTable">
+    <div id="back" (click)="goback()" class="back-button">
+        <fa-icon [icon]="icons.back"></fa-icon>
+    </div>
+    <div id="idContent" class="head">
+        <div class="left">
+        
+        <button (click)="reInscritption()">Réinscription</button>
+        </div>
+        <!-- <div class="head-info" *ngIf="inscriptions.length">
+            <h6>Classe : {{inscriptions[0]}} {{sharedMethode.abreviateFiliereName(inscriptions[0].idClasse.idFiliere?.idFiliere?.nomFiliere!)}}</h6>
+        </div> -->
+        
+        <div class="input-search">
+            <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..." class="search-input">
+            
+        </div>
+    </div>
+    <div id="entete" class="entete">
+        
+        <div class="modulo" *ngIf="filteredSemestreMoyennes().length">
+            
+            <!-- <h6>Classe : {{sharedMethode.abrevigateNiveauName(semestreMoyennes[0].idClasse.idFiliere?.idNiveau?.nom!)}}-{{sharedMethode.abreviateFiliereName(semestreMoyennes[0].idClasse.idFiliere?.idFiliere?.nomFiliere!)}} {{sharedMethode.extractAnnee(semestreMoyennes[0].idClasse.idAnneeScolaire!)}} - {{sharedMethode.extractAnnee(semestreMoyennes[0].idClasse.idAnneeScolaire!) + 1}}</h6> -->
+            <!-- <h6>Semestre : {{groupes.semestre}}</h6> -->
+        </div>
+       
+    </div>
+    <section class="table-container">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>N°</th>
+              <!-- <th>Matricule</th> -->
+              <th>Nom</th>
+              <th>Prénom</th>
+              <th>Date de Naissance</th>
+              <th>Lieu de Naissance</th>
+              <th>Sexe</th>
+              <th>Moyenne S1</th>
+              <th >UE Validé S1</th>
+              <th>Moyenne S2</th>
+              <th >UE Validé S2</th>
+              <th>Observation</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (filteredSemestreMoyennes().length) {
+              @for (inscrit of filteredSemestreMoyennes(); track i; let i = $index) {
+                <tr>
+                  <td>{{ i + 1 }}</td>
+                  <!-- <td>{{ inscrit.idEtudiant.matricule }}</td> -->
+                  <td>{{ inscrit.nom }}</td>
+                  <td>{{ inscrit.prenom }}</td>
+                  <td>{{ inscrit.dateNaissance }}</td>
+                  <td>{{ inscrit.lieuNaissance }}</td>
+                  <td>{{ inscrit.sexe}}</td>
+      
+                  <!-- Données pour S1 -->
+                  @for (item of inscrit.ueValidate; track item.nomSemestre) {
+                    @if (item.nomSemestre.includes('S1')) {
+                      <td>{{ item.moyenSemestre }}</td>
+                      <td class="ueValid">{{ +item.percentUeSemestre !== 0 ? item.percentUeSemestre + '%' : '100%' }}</td>
+                    }
+                  }
+      
+                  <!-- Données pour S2 -->
+                  @for (item of inscrit.ueValidate; track item.nomSemestre) {
+                    @if (item.nomSemestre.includes('S2')) {
+                      <td>{{ item.moyenSemestre }}</td>
+                      <td class="ueValid">{{ +item.percentUeSemestre !== 0 ? item.percentUeSemestre + '%' : '100%' }}</td>
+                    }
+                  }
+      
+                  <!-- Observation -->
+                  <td class="Observation">{{getObservation(inscrit)}}</td>
+                </tr>
+              }
+            } @else {
+              <tr>
+                <td colspan="11" class="text-center">Aucune inscription pour ce groupe.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </section>
+      <div class="app" *ngIf="isConfirm">
+       <app-r-s-reinscription [idClasse]="idClasse" [list_checked]="listIds" (closeModale)="closeModale()"></app-r-s-reinscription>
+      </div>
+    
+</main>

@@ -38,7 +38,7 @@ export class SeancService {
   delete(id: number): Observable<Response_String>{
     return this.http.delete<Response_String>(this.baseUrl + 'delete/' + id);
   }
-  // --------------------------------update seance method 
+  //update seance method 
   update(seance: Seances) : Observable<Response_String>{
     return this.http.put<Response_String>(this.baseUrl+"update", seance);
   }

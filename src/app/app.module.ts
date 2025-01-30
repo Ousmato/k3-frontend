@@ -20,7 +20,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { }
 
 import localeFr from '@angular/common/locales/fr';
-import { EnseignantPrDetailsComponent } from './Admin/Views/Enseignant/enseignant-pr-details/enseignant-pr-details.component';
 import { StudentNoteComponent } from './Admin/Views/student-note/student-note.component';
 import { AllNotesSemestreComponent } from './Admin/Views/all-notes-semestre/all-notes-semestre.component';
 import { EtudiantsDeLaClasseComponent } from './Admin/Views/Etudiants/etudiants-de-la-classe/etudiants-de-la-classe.component';
@@ -52,9 +51,7 @@ import { CompteSidebarComponent } from './COMPTABLE/compte-sidebar/compte-sideba
 import { CompteHomeComponent } from './COMPTABLE/compte-home/compte-home.component';
 import { SecSidebarComponent } from './SECRETAIRE/sec-sidebar/sec-sidebar.component';
 import { SecHomeComponent } from './SECRETAIRE/sec-home/sec-home.component';
-import { StudentReInscriptionComponent } from './R-SCOLARITE/student-re-inscription/student-re-inscription.component';
 import { RSReinscriptionComponent } from './R-SCOLARITE/r-s-reinscription/r-s-reinscription.component';
-import { DgaArchivesComponent } from './DGA/dga-archives/dga-archives.component';
 import { SecSurveillanceComponent } from './SECRETAIRE/sec-surveillance/sec-surveillance.component';
 import { SecAddSurveillanceComponent } from './SECRETAIRE/sec-add-surveillance/sec-add-surveillance.component';
 import { DerPaiListComponent } from './DER/der-pai-list/der-pai-list.component';
@@ -74,7 +71,6 @@ import { SemestreWidgetComponent } from './Widget/semestre-widget/semestre-widge
 import { AddUeComponent } from './Widget/ue-widget/add-ue/add-ue.component';
 import { ViewUeComponent } from './Widget/ue-widget/view-ue/view-ue.component';
 import { AddClassPromotionComponent } from './Widget/classeroom-widget/add-class-promotion/add-class-promotion.component';
-import { ClassArchiveComponent } from './DGA/class-students/class-archive/class-archive.component';
 import { RSImportComponent } from './R-SCOLARITE/r-s-import/r-s-import.component';
 import { SoutenanceNoteComponent } from './DER/Widget/soutenance-note/soutenance-note.component';
 import { StudentGroupListComponent } from './DER/student-group-list/student-group-list.component';
@@ -97,6 +93,7 @@ import { SpecialitesComponent } from './DER/specialites/specialites.component';
 import { EditComponent } from './DER/specialites/CRUD/edit/edit.component';
 import { AddTeacherSpecialitesComponent } from './DER/specialites/CRUD/add-teacher-specialites/add-teacher-specialites.component';
 import { ImportEnseignantComponent } from './Admin/Views/Enseignant/import-enseignant/import-enseignant.component';
+import { SemestreMoyennesComponent } from './Admin/Views/semestre-moyennes/semestre-moyennes.component';
 registerLocaleData(localeFr);
 @NgModule({
   declarations: [
@@ -111,7 +108,6 @@ registerLocaleData(localeFr);
     EmploisDuTempsComponent,
     EmploisSeanceComponent,
     EnseignantComponent,
-    EnseignantPrDetailsComponent,
     StudentNoteComponent,
     AllNotesSemestreComponent,
     EtudiantsDeLaClasseComponent,
@@ -143,9 +139,7 @@ registerLocaleData(localeFr);
     CompteHomeComponent,
     SecSidebarComponent,
     SecHomeComponent,
-    StudentReInscriptionComponent,
     RSReinscriptionComponent,
-    DgaArchivesComponent,
     SecSurveillanceComponent,
     SecAddSurveillanceComponent,
     DerPaiListComponent,
@@ -165,10 +159,9 @@ registerLocaleData(localeFr);
     AddUeComponent,
     ViewUeComponent,
     AddClassPromotionComponent,
-    ClassArchiveComponent,
     RSImportComponent,
     EmptyWidgetComponent,
-    SoutenanceNoteComponent, StudentGroupListComponent, AdminListComponent, MyAccuntComponent, ForgotPasswordComponent, ResetPasswordComponent, SetNewPasswordComponent, SessionExpiredModalComponent, NotificationComponent, RolesComponent, StudentSuivisComponent, StudentDetailsComponent, SpecialitesComponent, EditComponent, AddTeacherSpecialitesComponent, ImportEnseignantComponent
+    SoutenanceNoteComponent, StudentGroupListComponent, AdminListComponent, MyAccuntComponent, ForgotPasswordComponent, ResetPasswordComponent, SetNewPasswordComponent, SessionExpiredModalComponent, NotificationComponent, RolesComponent, StudentSuivisComponent, StudentDetailsComponent, SpecialitesComponent, EditComponent, AddTeacherSpecialitesComponent, ImportEnseignantComponent, SemestreMoyennesComponent
   ],
   imports: [
     BrowserModule,

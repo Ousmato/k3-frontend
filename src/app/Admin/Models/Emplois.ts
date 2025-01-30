@@ -18,3 +18,17 @@ export interface Emplois{
     status?: string
     idAdmin: Admin
 }
+
+export interface TeacherEmplois{
+
+    semestre: string;
+
+    niveau: string;
+
+    filiere: string;
+
+    nomModule: string;
+    volHoraires: any[]
+    semaines: string;
+
+}

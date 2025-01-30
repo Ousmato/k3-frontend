@@ -76,15 +76,19 @@
                     <div id="cart-text" class="card-text">
                         <h5>Emplois du temps en cours</h5>
                         <h1>{{emploisCount}}</h1>
-                    <!-- </div> -->
-                    
-                </div>
+                    </div>
+
+                    <div class="input-search">
+                        <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..." class="search-input">
+                        
+                    </div>
             </div>
                 <div class="class-scrol">
-                    <ng-container *ngFor="let classe of emplois">
+                    <ng-container *ngFor="let classe of filteredEmplois()">
                         <div class="calendar-classes-content">
-                        <p>{{classe.idClasse.idFiliere?.idNiveau?.nom}} {{abrevigateNameFiliere(classe.idClasse.idFiliere?.idFiliere?.nomFiliere!)}}</p>
+                        <p>{{classe.idClasse.idFiliere?.idNiveau?.nom}} {{abrevigateNameFiliere(classe.idClasse.idFiliere?.idFiliere?.nomFiliere!)}}-{{classe.idSemestre.nomSemetre}}</p>
                        
+                        <p>{{classe.idModule.nomModule}}</p>
                         <progress id="file" [value]="classe.progess" max="100"></progress>
                         
                         <div class="date-content">

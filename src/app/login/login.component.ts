@@ -83,7 +83,7 @@ export class LoginComponent implements OnInit {
             //   sessionStorage.setItem("dg", adminDataString);
             //   this.route.navigate(['/dg']);
             
-            }else if (this.abreviateName(data.user.idRole.nom) === Admin_role.SECRETAIRE.toString().toUpperCase()) {
+            }else if (this.abreviateName(data.user.idRole.nom) === Admin_role.SECRET_P.toString().toUpperCase()) {
               // const adminDataString = JSON.stringify(data);
               // sessionStorage.setItem("secretaire", adminDataString);
               this.route.navigate(['/secretaire']);

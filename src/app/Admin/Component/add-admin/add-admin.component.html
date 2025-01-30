@@ -71,7 +71,7 @@
                 <label class="label form-label">Role de l'Administrateur</label> 
                     <select class="form-select" formControlName="idRole"   placeholder="role"   [class.is-invalid]="add_admin_form.get('idRole')!.invalid && add_admin_form.get('idRole')!.touched">
                     <option  selected disabled value="">Choisir Le role</option>
-                    <option *ngFor="let role of roles" value="{{role.id}}" >{{role.nom}}</option>
+                    <option *ngFor="let role of roles" value="{{role.id}}" >{{role.nom}} {{role.typeFiliere}}</option>
                     </select> 
                     <span class="small" *ngIf="add_admin_form.controls['idRole'].invalid && add_admin_form.controls['idRole'].touched" [ngStyle]="{color: 'red'}">
                         Champ obligatoire*

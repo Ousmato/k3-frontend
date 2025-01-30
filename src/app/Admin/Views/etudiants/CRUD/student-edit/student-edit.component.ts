@@ -13,6 +13,7 @@ import { AnneeScolaire } from '../../../../Models/School-info';
 import { environment } from '../../../../../../environments/environment';
 import { InscriptionService } from '../../../../../Services/inscription.service';
 import { Admin } from '../../../../Models/Admin';
+import { AdminUSER } from '../../../../Models/Auth';
 
 @Component({
   selector: 'app-student-edit',
@@ -46,9 +47,7 @@ export class StudentEditComponent implements OnInit {
     this.load_form();
     this.load_student();
     this.load_all_annee()
-
-    const adminData = sessionStorage.getItem("scolarite");
-    this.admin = JSON.parse(adminData!)
+    this.admin = AdminUSER()?.scolarite
   }
   goBack() {
     this.location.back();
@@ -103,7 +102,7 @@ export class StudentEditComponent implements OnInit {
   }
   // -----------------------load classRom
   load_class_rooms() {
-    this.classeService.getAllCurrentClassOfYear().subscribe((data: ClassRoom[]) => {
+    this.classeService.getAllCurrentClassOfYear(this.admin.idAdministra!).subscribe((data: ClassRoom[]) => {
       this.classRoom = data;
     })
   }

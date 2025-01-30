@@ -37,6 +37,7 @@ export interface GetNoteDto{
 
 export interface UeDto{
     id: number;
+    code: string
     nomUE: string
     modules: Module[];
 }
@@ -50,11 +51,13 @@ export interface NoteModuleDto{
 
 export interface StudentsNotesDto{
     noteDTO: GetNoteDto[];
+    id: number;
     nom: string;
     prenom: string;
     moyenGeneral: number;
     lieuNaissance: string;
-    date_naissance: Date;
+    date_naissance: string;
+    sexe: string
 }
 
 export interface AddNoteDto{
@@ -67,4 +70,10 @@ export interface AddNoteDto{
     sessionNote: number
     nbreSession: number
     inscriptions: InscriptionNoteDto
+}
+
+export interface StudentMoyenne{
+    moyenGenerale: number
+    idInscription: Inscription
+    idSemestre: Semestres
 }

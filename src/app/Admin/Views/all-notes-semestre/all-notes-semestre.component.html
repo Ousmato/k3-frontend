@@ -6,15 +6,20 @@
        </div>
        <div id="btn-contenair" class="btn-contenair">
            <div class="buttons">
-            <select class="select" (change)="onSelect($event)">
+            <div class="semestre" >
+                <p *ngFor="let item of semestres"><span (click)="onSelect(item.id!)" [ngClass]="{'active': idSemestre && item.id === idSemestre}">{{item.nomSemetre}}</span></p>
+              </div>
+            <!-- <select class="select" (change)="onSelect($event)">
                 <option selected disabled value="">Semestre</option>
                 <option *ngFor="let sem of semestres" [value]="sem.id">{{sem.nomSemetre}}</option>
-            </select>
+            </select> -->
                 <div class="btn-content">
                     <button *ngIf="notes.length > 0" (click)="downloadToPdf()" type="button">
-                        Imprimer</button>
+                        PDF</button>
             
                 </div>
+            <button *ngIf="students.length" (click)="calculate()">Calculer moyenne</button>
+
            </div>
            <div class="filter-content" *ngIf="students.length">
             <div class="trie-content">
@@ -49,19 +54,24 @@
     <!-- -------------------------------------------------- -->
     <section class="table-container">
         <div class="table-responsive">
-            <table class="table table-bordered">
+            <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">N°</th>
-                        <th scope="col">Nom et Prénom</th>
-                        <th scope="col">Date et lieu de naissance</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">Nom </th>
+                        
+                        <th scope="col">Date de naissance</th>
+                        <th scope="col">Lieu de naissance</th>
+                        <th scope="col">Sexe</th>
+
                         <ng-container *ngFor="let note of notes">
                             <ng-container *ngFor="let module of note.ues.modules">
                                 <th  class='vertical-header nom-module'>{{ module.nomModule }}</th>
     
     
                             </ng-container>
-                            <th scope="col" class='vertical-header' >{{ note.ues.nomUE }}</th>
+                            <th scope="col" class='vertical-header col-noteUe' > UE-{{ note.ues.code }}</th>
     
                         </ng-container>
                         
@@ -76,51 +86,55 @@
                 <tbody>
                     @if(students.length){
                     <ng-container *ngFor="let student of filterStudents(); let i = index">
-                        <tr>
-                            <td class="numerotation-clumn">{{ i + 1 }}</td>
-                            <td>{{ student.nom }} {{ student.prenom }}</td>
-                            <td>{{ student.date_naissance | date: 'dd/MM/yyyy' }}, {{ student.lieuNaissance }}</td>
-                    
-                            <!-- Itération sur les notes de l'étudiant -->
-                            <ng-container *ngFor="let ue of student.noteDTO">
-                                <!-- Itération sur les modules pour chaque UE de l'étudiant -->
-                                <ng-container *ngFor="let module of ue.ues.modules">
-                                    <!-- Affiche le module ici -->
-                                    <td></td>
+                        
+                        <!-- <ng-container *ngFor="let item of moyenne"> -->
+                            <tr>
+                                <td class="numerotation-clumn">{{ i + 1 }}</td>
+                                <td>{{ student.prenom }}</td>
+                                <td>{{ student.nom }}</td>
+                                
+                                <td>{{ student.date_naissance }}</td>
+                                <td>{{ student.lieuNaissance }}</td>
+                                <td>{{ student.sexe}}</td>
+                        
+                                <!-- Itération sur les notes de l'étudiant -->
+                                <ng-container *ngFor="let ue of student.noteDTO">
+                                    <!-- Itération sur les modules pour chaque UE de l'étudiant -->
+                                    <ng-container *ngFor="let module of ue.ues.modules">
+                                        <!-- Affiche le module ici -->
+                                        <td>
+                                            @if (student.moyenGeneral < 10 && module.noteModule! < 10) {
+                                                <span style="font-weight: bold;">X</span>
+                                            }
+                                        </td>
+                                    </ng-container>
+                                    <!-- Colonne avec la note de l'UE correspondante -->
+                                    <td class="col-noteUe">{{ ue.moyenUe }}</td>
                                 </ng-container>
-                                <!-- Colonne avec la note de l'UE correspondante -->
-                                <td>{{ ue.moyenUe }}</td>
-                            </ng-container>
-                    
-                            <td>{{ student.moyenGeneral }}</td>
-                            <td>
-                                @if (student.moyenGeneral >= 10 && student.moyenGeneral <= 20)
-                                {
-                                    <span>Admi</span>
-                                }
-                                @else if (student.moyenGeneral >= 3 && student.moyenGeneral < 10)
-                                {
-                                    <span>Ajourné</span>
-                                }
-                                <!-- @else if (student.moyenGeneral >= 14 && student.moyenGeneral < 16)
-                                {
-                                    <span>Bien</span>
-                                }
-                                @else if (student.moyenGeneral >= 12 && student.moyenGeneral < 14)
-                                {
-                                    <span>Assez bien</span>
-                                }
-                                @else if (student.moyenGeneral >= 10 && student.moyenGeneral < 12)
-                                {
-                                    <span>Passable</span>
-                                } -->
-                                @else
-                                {
-                                    <span>--</span> 
-                                }
-                            </td>
-                            
-                        </tr>
+                        
+                                <td>
+                                        {{ student.moyenGeneral }}
+                                    
+                                    </td>
+                                <td>
+                                    @if (student.moyenGeneral >= 10 && student.moyenGeneral <= 20)
+                                    {
+                                        <span>Admis</span>
+                                    }
+                                    @else if (student.moyenGeneral >= 3 && student.moyenGeneral < 10)
+                                    {
+                                        <span>Ajourné</span>
+                                    }
+                                   
+                                    @else
+                                    {
+                                        <span>--</span> 
+                                    }
+                                </td>
+                                
+                            </tr>
+                        <!-- </ng-container> -->
+                        
 
                     </ng-container>
                 }@else {

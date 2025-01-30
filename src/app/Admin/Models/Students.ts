@@ -1,5 +1,6 @@
 import { Admin } from "./Admin";
 import { ClassRoom } from "./Classe";
+import { AnneeScolaire } from "./School-info";
 
 export interface Student {
     numero?: number;
@@ -66,15 +67,34 @@ export interface  InscriptionNoteDto
     prenom: string;
     lieuNaissance: string
     dateNaissance: string
+    idClasse: ClassRoom;
     sexe: string
+    ueValidate: UeValidateDto[]
+
 }
 
+export interface UeValidateDto{
+    nomSemestre : string;
+    observation: string;
+    moyenSemestre: string;
+    percentUeSemestre: string;
+}
 export interface Participant{
     id?: number;
     idStudentGroup: Student_group;
     idInscription: Inscription
     idAdmin: Admin
 
+}
+
+export interface StudentGroupDto{
+    id?: number;
+    nom: string;
+    nomModule: string;
+    classe: string;
+    annee: AnneeScolaire
+    semestre: string;
+    inscriptions: InscriptionNoteDto[]
 }
 
 export interface Student_count{

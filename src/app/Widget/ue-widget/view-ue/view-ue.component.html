@@ -4,10 +4,10 @@
     </div>
     <div class="head-content">
         <div class="head-left">
-            <select   (change)="onSelect($event)" *ngIf="semestres.length">
-                <option  selected disabled value="">Semestre</option>
-                <option  *ngFor="let sem of semestres" [value]="sem.id">{{sem.nomSemetre}}</option>
-            </select>
+          <div class="semestre" >
+            <p *ngFor="let item of semestres"><span (click)="onSelect(item.id!)" [ngClass]="{'active': idSemestre && item.id === idSemestre}">{{item.nomSemetre}}</span></p>
+          </div>
+           
             <button (click)="addUe()"><fa-icon [icon]="icons.plus"></fa-icon> Ajouter</button>
         </div>
         <h6 *ngIf="semestre">{{classe.idFiliere?.idNiveau?.nom}} {{classe.idFiliere?.idFiliere?.nomFiliere?.toUpperCase()}}-{{semestre.nomSemetre}} {{classShared.extractAnnee(classe.idAnneeScolaire!)}}-{{classShared.extractAnnee(classe.idAnneeScolaire!) + 1}}</h6>
@@ -33,20 +33,23 @@
              @if (filterUes().length) {
 
              
-            <div class="table-row" *ngFor="let ue of filterUes(); let i = index">
+            <div class="table-row" *ngFor="let ue of filterUes()">
               <!-- Chaque module est une ligne -->
-              <div *ngFor="let module of ue.modules" class="module-row">
+              
+              <div  *ngFor="let module of ue.modules let i = index" class="module-row">
                 
                 <div class="table-cell">
+                  
                     <div class="cell-content">
                         <strong>{{ ue.idUe.nomUE }}</strong> ({{ ue.idUe.codeUE }})
                         
                     </div>
                     <div class="action">
                         <div class="second-child">
-                            <a *ngIf="!idAnnee" (click)="updated(ue)" ><fa-icon [icon]="icons.edit"></fa-icon> </a>
-                            <a *ngIf="!idAnnee" (click)="deleteted(ue)" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> </a>
-                            <a *ngIf="idAnnee" (click)="addNote(module)" ><fa-icon [icon]="icons.edit" ></fa-icon>Noter</a>
+                            <a *ngIf="der" (click)="updated(ue)" ><fa-icon [icon]="icons.edit"></fa-icon> </a>
+                            <a *ngIf="der" (click)="deleteted(module)" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> </a>
+                            <a *ngIf="!der" (click)="addNote(module, ue.idUe.codeUE!)" ><fa-icon [icon]="icons.edit" ></fa-icon>Noter</a>
+                            <a *ngIf="der" (click)="addModule(ue.idUe)" ><fa-icon [icon]="icons.squarePlus" ></fa-icon></a>
                            
                         </div>
                         
@@ -73,34 +76,53 @@
                 </div>
                 <div class="table-cell">
                     <div class="last-child-head">
-                      <div class="volume-grid">
-                        <div class="volume-item">
-                          <strong>CM</strong>
-                          <p>20</p>
+                      <form *ngIf="ueForms[module.id!]" [formGroup]="ueForms[module.id!]">
+                        <div class="volume-grid">
+                          <div class="volume-item">
+                            <strong>CM</strong>
+                            <input
+                              (change)="onSubmit(module.id!, 'volHCM', ueForms[module.id!].get('volHCM')?.value)"
+                              type="number"
+                              [class.is-invalid]="ueForms[module.id!].get('volHCM')?.invalid"
+                              formControlName="volHCM" />
+                            <span
+                              *ngIf="ueForms[module.id!].get('volHCM')?.errors?.['min'] || ueForms[module.id!].get('volHCM')?.errors?.['max']"
+                              style="color: red;">
+                              0 à 120.
+                            </span>
+                          </div>
+                          <div class="volume-item">
+                            <strong>TD</strong>
+                            <input
+                              (change)="onSubmit(module.id!, 'volHTD', ueForms[module.id!].get('volHTD')?.value)"
+                              type="number"
+                              [class.is-invalid]="ueForms[module.id!].get('volHTD')?.invalid"
+                              formControlName="volHTD" />
+                            <span
+                              *ngIf="ueForms[module.id!].get('volHTD')?.errors?.['min'] || ueForms[module.id!].get('volHTD')?.errors?.['max']"
+                              style="color: red;">
+                              0 à 80.
+                            </span>
+                          </div>
+                          <div class="volume-item">
+                            <strong>TP</strong>
+                            <p>0</p>
+                          </div>
+                          <div class="volume-item">
+                            <strong>VHT</strong>
+                            <p>{{module.volHCM! + module.volHTD!}}</p>
+                          </div>
                         </div>
-                        <div class="volume-item">
-                          <strong>TD</strong>
-                          <p>10</p>
-                        </div>
-                        <div class="volume-item">
-                          <strong>TP</strong>
-                          <p>0</p>
-                        </div>
-                        <div class="volume-item">
-                          <strong>VHT</strong>
-                          <p>30</p>
-                        </div>
-                      </div>
+                      </form>
+                      
                     </div>
                   </div>
-                  <!-- <div class="table-cell">
-                    Controle continue : deux notes
-                  </div> -->
                   
               </div>
               
               
             </div>
+            <p></p>
         }@else {
             <p class="empty">Veillez choisir le semestre</p>
          }
@@ -108,8 +130,8 @@
         
           
         <div class="app">
-            <app-ue-widget *ngIf="showUpdate || showDelete && idUeSelect" [show_update]="showUpdate" [ue]="idUeSelect" [show_deleted]="showDelete" (closeModale)="closeModalToAddUe()"></app-ue-widget>
-
+            <app-ue-widget *ngIf="showUpdate || showDelete" [ue]="idUeSelect!" [show_update]="showUpdate" [module]="moduleSelect" [show_deleted]="showDelete" (closeModale)="closeModalToAddUe()"></app-ue-widget>
+            <app-module-widget *ngIf="showAddModule" [Ue]="ueChecked" (closeModale)="closeModalToAddUe()"></app-module-widget>
             </div>
            
     </section>

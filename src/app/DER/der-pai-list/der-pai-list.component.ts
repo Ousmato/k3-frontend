@@ -7,6 +7,14 @@ import { SideBarService } from '../../sidebar/side-bar.service';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { SchoolService } from '../../Services/school.service';
+import { AnneeScolaire } from '../../Admin/Models/School-info';
+import { ActivatedRoute } from '@angular/router';
+import { TeacherEmplois } from '../../Admin/Models/Emplois';
+import { Class_shared } from '../../DGA/class-students/Utils/Class-shared-methods';
+import { TeacherDto } from '../../Admin/Models/Teachers';
+import { Admin } from '../../Admin/Models/Admin';
+import { AdminUSER } from '../../Admin/Models/Auth';
 
 @Component({
   selector: 'app-der-pai-list',
@@ -24,63 +32,56 @@ import { animate, style, transition, trigger } from '@angular/animations';
 export class DerPaiListComponent implements OnInit {
 
   searchTerm: string = ''
-  month: string = ''
-  filteredPai: PaieDTO[] = []
+  currentYear!: number
+  idTeacher!: number
+  admin!: Admin
+  annee_check!: AnneeScolaire
+  filteredIteme: TeacherEmplois[] = []
+  teacherEmploi: TeacherEmplois[] = []
   paies: PaieDTO[] = [];
-  months: { value: number, name: string }[] = []
+  annees: AnneeScolaire[] = []
+  emploisDto!: TeacherDto
 
-  constructor(private teacherService: EnseiService, public icons: IconsService, private sideBarService: SideBarService) { }
+
+  constructor(private teacherService: EnseiService, public sharedMethod: Class_shared,
+    private schoolService: SchoolService, private root: ActivatedRoute,
+    public icons: IconsService, private sideBarService: SideBarService) { }
 
   ngOnInit(): void {
-    this.getAllPaie();
-    this.sideBarService.currentSearchTerm.subscribe(term => {
+    this.admin = AdminUSER()?.der
+    this.root.queryParams.subscribe(params => {
+      this.idTeacher = params['id'];
+      this.getAllEmploiByIdTeacherAndCurrentYear();
+    })
+    this.getAllAnneeScolaire()
+
+    if(this.teacherEmploi != null && this.teacherEmploi.length){
+      this.sideBarService.currentSearchTerm.subscribe(term => {
       this.searchTerm = term;
-      this.filteredPaie();
-      this.initializeMonths();
+      this.filteredEmplois();
 
     });
-
-  }
-  // load all paie in month
-  getAllPaie() {
-    this.teacherService.getAllPaie().subscribe(result => {
-      // this.paies = result;
-      console.log("resultat : ", result)
-      result.forEach(res => {
-        if (!this.paies.some(p => p.idTeacher == res.idTeacher)) {
-          res.montant = res.coutHeure * res.nbreHeures
-          const formatter = Intl.NumberFormat(
-            'fr-FR',
-            {
-              style: 'currency',
-              currency: 'XOF',
-            },
-          )
-          res.montanFormat = formatter.format(res.montant);
-          const date = new Date(res.date);
-          this.month = date.toLocaleString('fr-FR', { month: 'long' });
-
-
-          this.paies.push(res);
-        }
-      })
-      console.log(this.paies, "paie--------------------------")
-    })
-  }
-  // -----------------------filter method
-  filteredPaie() {
-    if (!this.searchTerm) {
-      return this.filteredPai = this.paies
     }
-    return this.filteredPai = this.paies.filter(p => p.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      p.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()))
+    
+    const date = new Date();
+    this.currentYear = date.getFullYear();
+
+  }
+  
+  //filter method
+  filteredEmplois() {
+    if (!this.searchTerm && this.emploisDto.teacherEmploiList.length) {
+      return this.filteredIteme = this.emploisDto.teacherEmploiList
+    }
+    return this.filteredIteme = this.emploisDto.teacherEmploiList.filter(p => p.nomModule.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      p.filiere.toLowerCase().includes(this.searchTerm.toLowerCase()))
   }
   goBack() {
     this.searchTerm = ''
     window.history.back();
 
   }
-  //  ----------------------imprime button
+  //imprime button
   imprimer() {
     // const buttonContent = document.getElementById('button') as HTMLElement;
     // buttonContent.style.display = "none";
@@ -106,43 +107,52 @@ export class DerPaiListComponent implements OnInit {
       // data.style.fontSize = '16px'
     });
   }
-  // -----get all month
-  checkMonth(event: any) {
-    const month = event.target.value
-    this.paies = []
-    // console.log(month, "month")
-    this.teacherService.getAllPaieByMonth(month).subscribe(result => {
-      result.forEach(res => {
-        if (!this.paies.some(p => p.idTeacher == res.idTeacher)) {
-          res.montant = res.coutHeure * res.nbreHeures
-          const formatter = Intl.NumberFormat(
-            'fr-FR',
-            {
-              style: 'currency',
-              currency: 'XOF',
-            },
-          )
-          res.montanFormat = formatter.format(res.montant)
-          const date = new Date(res.date);
-          this.month = date.toLocaleString('fr-FR', { month: 'long' });
-          this.paies.push(res);
+  //get all month
+  checkYear(event: any) {
+    
+    const idAnnee = event.target.value
+    this.annee_check = this.annees.find(annee => annee.id == idAnnee)!;
+    this.teacherService.getAllEmploiOfTeacherByIdYear(idAnnee, this.idTeacher).subscribe(result => {
+        this.emploisDto = result;
+        this.teacherEmploi = this.emploisDto.teacherEmploiList
+      })
+   
+  }
+
+  getAllAnneeScolaire() {
+    this.schoolService.getAnneeScolaireOfTeacherHaveEmploi(this.idTeacher).subscribe(annees => {
+      
+      annees.forEach(an => {
+        if(!this.annees.some(anne => anne.id === an.id)){
+          this.annees.push(an);
         }
       })
-      this.filteredPai = this.paies
+      
+    })
+    // console.log(this.months, " months")
+  }
+  getAllEmploiByIdTeacherAndCurrentYear(){
+    this.teacherService.getAllEmploiOfTeacherOfCurrentYear(this.idTeacher).subscribe(result => {
+      
+      if(result.teacherEmploiList != null) {
+      this.teacherEmploi = result.teacherEmploiList
+
+      }else{
+        result.teacherEmploiList = []
+      }
+      this.emploisDto = result;
+      console.log(this.emploisDto, "emploisDto")
     })
   }
 
-  initializeMonths() {
-    for (let i = 0; i < 12; i++) {
-      const monthName = new Intl.DateTimeFormat('fr-FR', { month: 'long' }).format(new Date(2023, i));
-      this.months.push({ value: i + 1, name: monthName });
-    }
-    // console.log(this.months, " months")
+  // ---------------------get current date
+  getCurrentDate() : string{
+    const date = new Date();
+    const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long',  year: 'numeric'};
+    
+    // console.log(Intl.DateTimeFormat('fr-FR', options).format(date))
+    return new Intl.DateTimeFormat('fr-FR', options).format(date);
   }
-  // abrevigation
-  abrevigateName(name: string): string {
-    const splitName = name.split(' ')
-    const word = splitName.filter(wrd => wrd.length > 3).map(wrd => wrd[0].toUpperCase()).join('')
-    return word;
-  }
+ 
+ 
 }

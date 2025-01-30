@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AddNoteDto, Notes } from '../../Models/Notes';
 import { Inscription, InscriptionNoteDto, Student } from '../../Models/Students';
 import { IconsService } from '../../../Services/icons.service';
@@ -28,7 +28,7 @@ import { StudentSessionService } from '../../../Services/student-session.service
   templateUrl: './student-note.component.html',
   styleUrl: './student-note.component.css'
 })
-export class StudentNoteComponent implements OnInit {
+export class StudentNoteComponent implements OnInit, OnDestroy {
   searchTerm: string = '';
   inscrits: AddNoteDto[] = [];
   studentIds: number[] = [];
@@ -38,18 +38,13 @@ export class StudentNoteComponent implements OnInit {
   idClasse!: number;
   idAnnee!: number;
   idSemestre!: number;
+  codeUe!: string;
   module!: string
   classe!: string
 
   semestres!: string;
-  // modules: Module[] = [];
-
-  // moduleForm!: FormGroup;
-  // update_note_form!: FormGroup;
   noteForm!: FormGroup;
   noteForms: { [key: string]: FormGroup } = {};
-  // modules_of_student: Students_Module[] = [];
-  // isShow_modal: boolean = true
 
 
   studentPages?: AddNoteDtoPages;
@@ -61,6 +56,9 @@ export class StudentNoteComponent implements OnInit {
   constructor(public icons: IconsService, private fb: FormBuilder, private sessionService: StudentSessionService, private pageTitle: PageTitleService,
     private eventService: EventServiceService, public sharedMethod: StudentSharedMethods, private sideBarService: SideBarService,
     private route: ActivatedRoute, private noteService: NoteService, private location: Location) { }
+  ngOnDestroy(): void {
+    this.eventService.emitEvent(this.idSemestre);
+  }
   ngOnInit(): void {
     this.loadStudents();
 
@@ -75,8 +73,8 @@ export class StudentNoteComponent implements OnInit {
   }
 
   goBack() {
-    this.location.back();
-    this.eventService.emitEvent(this.idSemestre);
+    window.history.back();
+    
   }
 
   //get all module without notes
@@ -86,6 +84,7 @@ export class StudentNoteComponent implements OnInit {
       this.idModule = data['idModule']
       this.idSemestre = data['idSemestre']
       this.idAnnee = data['idAnnee']
+      this.codeUe = data['code']
       this.noteService.getAllNotesInscriptionPagesByModule(this.idClasse, this.idAnnee, this.idSemestre, this.idModule, this.page, this.size).subscribe(data => {
         this.inscrits = data.content;
         console.log(data, "inscrit")

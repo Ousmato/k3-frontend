@@ -75,7 +75,7 @@ export class AdminService {
   }
 
   // add role
-  addRole(role: string, idAdmin: number): Observable<Response_String>{
+  addRole(role: Roles, idAdmin: number): Observable<Response_String>{
     return this.http.post<Response_String>(`${this.baseUrl}add-role/${idAdmin}`, role);
   }
 

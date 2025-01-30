@@ -22,11 +22,7 @@ export class SetService {
   getAll_Niveau_filiere(): Observable<NivFiliere[]> {
     return this.http.get<NivFiliere[]>(this.baseUrl + "api-filiere/list-mentions");
   }
-  // ----------------------------all filiere
-  // // -------------------------------------------------update niveau filiere
-  // updateNiveauFiliere(nivFiliere: NivFiliere) : Observable<any>{
-  //   return this.http.put<any>(this.baseUrl+"filiere/update-niveau-filiere", nivFiliere);
-  // }
+ 
   createFiliere(filiere: Filiere): Observable<Response_String> {
     return this.http.post<Response_String>(this.baseUrl + "api-filiere/addFiliere", filiere);
   }
@@ -67,8 +63,8 @@ export class SetService {
     return this.http.put<Response_String>(this.baseUrl + "api-class/update-ue", ue);
   }
   // -----------------------------update module
-  updateModule(module: Module): Observable<Response_String> {
-    return this.http.put<Response_String>(this.baseUrl + "api-class/update-module", module);
+  addModule(module: Module): Observable<Response_String> {
+    return this.http.post<Response_String>(this.baseUrl + "api-class/add-module", module);
   }
   // -----------------------------delete module
   deleteModule(id: number): Observable<Response_String> {

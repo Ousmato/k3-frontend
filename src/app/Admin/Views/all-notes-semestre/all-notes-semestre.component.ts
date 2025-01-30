@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GetNoteDto, NoteDto, NoteModuleDto, Notes, StudentsNotesDto } from '../../Models/Notes';
+import { GetNoteDto, NoteDto, NoteModuleDto, Notes, StudentMoyenne, StudentsNotesDto } from '../../Models/Notes';
 import { EtudeService } from '../Etudiants/etude.service';
 import { ActivatedRoute } from '@angular/router';
 import { ClassStudentService } from '../../../DGA/class-students/class-student.service';
@@ -18,6 +18,8 @@ import { NoteService } from '../../../Services/note.service';
 import jspdf, { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import html2canvas from 'html2canvas';
+import { PageTitleService } from '../../../Services/page-title.service';
+import { EventServiceService } from '../../../Services/event-service.service';
 
 @Component({
   selector: 'app-all-notes-semestre',
@@ -28,10 +30,11 @@ export class AllNotesSemestreComponent implements OnInit {
   notes: GetNoteDto[] = []
   idClasse!: number
   idNivFiliere!: number
-  // m!: number
+  idAnnee!: number
   idSemestre!: number
   ueListe: Ue[] = []
   modules: Module[] = []
+  moyenne: StudentMoyenne[] = []
   students: StudentsNotesDto[] = []
   classe?: ClassRoom
   school?: SchoolInfo
@@ -40,13 +43,13 @@ export class AllNotesSemestreComponent implements OnInit {
   studentspage?: NotesPages;
   searchTerm: string = '';
   page = 0;
-  size = 20;
+  size = 100;
   anneeScolaire!: any
   semestreSelect?: Semestres
   filteredItems: StudentsNotesDto[] = []
   pages: number[] = []
 
-  constructor(private etudiantService: EtudeService, public icons: IconsService,
+  constructor(private pageTitle: PageTitleService, public icons: IconsService, private eventService: EventServiceService,
     private semestreService: SemestreService, private clasService: ClassStudentService, private noteService: NoteService,
     private route: ActivatedRoute, private schollService: SchoolService, private sideBarService: SideBarService) { }
   ngOnInit(): void {
@@ -60,6 +63,11 @@ export class AllNotesSemestreComponent implements OnInit {
       this.filterStudents();
 
     });
+    
+  }
+
+  ngOnDestroy(): void {
+    this.eventService.emitEvent(this.idAnnee);
   }
 
   //get information of school
@@ -73,6 +81,7 @@ export class AllNotesSemestreComponent implements OnInit {
     this.route.queryParams.subscribe(param => {
       this.idClasse = param['id'];
       this.idNivFiliere = param['idNivFiliere'];
+      this.idAnnee = param['idAnnee'];
     })
     this.semestreService.getCurrentSemestresByIdNivFiliere(this.idClasse).subscribe(result => {
       result.forEach(res => {
@@ -80,8 +89,12 @@ export class AllNotesSemestreComponent implements OnInit {
           this.semestres.push(res)
         }
       })
-      console.log(this.semestres, "semestre")
+      this.idSemestre = this.semestres[0].id!
+      this.getNotes_classe();
+      // console.log(this.semestres, "semestre")
+
     })
+
   }
   // -------------------------------------------get classe
   getClasse() {
@@ -126,14 +139,15 @@ export class AllNotesSemestreComponent implements OnInit {
   }
 
   // ------------------------select semestre
-  onSelect(event: any) {
-    this.idSemestre = event.target.value;
+  onSelect(idSemestre: number) {
+    this.idSemestre = idSemestre
     this.semestreSelect = this.semestres.find(sem => sem.id === this.idSemestre)!;
     this.getNotes_classe();
+
   }
 
   getNotes_classe() {
-    this.etudiantService.getAllNoteByClasse(this.page, this.size, this.idClasse, this.idSemestre, this.idNivFiliere).subscribe(data => {
+    this.noteService.getAllNoteByClasse(this.page, this.size, this.idClasse, this.idSemestre).subscribe(data => {
       this.studentspage = data;
       this.students = this.studentspage.content;
       console.log(this.students, "students notes")
@@ -148,12 +162,14 @@ export class AllNotesSemestreComponent implements OnInit {
             
             this.modules = nt.ues.modules;
           });
-          // console.log(this.modules, "modules");
+          console.log(this.modules, "modules");
           // console.log(this.notes, "notes");
         } else {
-          console.log(`Pas de modules pour ${stm.nom} ${stm.prenom}`);
+          // console.log(`Pas de modules pour ${stm.nom} ${stm.prenom}`);
         }
       });
+    this.getMoyenne(this.students);
+
       // console.log(this.studentspage, "student note page");
     });
   }
@@ -238,25 +254,40 @@ export class AllNotesSemestreComponent implements OnInit {
             tableData.push(row);
         });
 
-        // Ajouter le tableau au PDF
-        // autoTable(pdf, {
-        //     startY: imgHeight + 20, // Positionner le tableau en dessous de l'image
-        //     head: [tableHeaders], // En-têtes
-        //     body: tableData, // Données
-        //     theme: 'grid', // Style du tableau
-        //     styles: {
-        //         fontSize: 8, // Taille de la police pour éviter le débordement
-        //     },
-        // });
-
-        // // Enregistrer le fichier PDF
-        // pdf.save('releve_de_note.pdf');
-
-        // Réinitialiser les styles des éléments après la génération
         button.style.display = "block";
         head.style.display = "none";
     });
 }
+
+// calculer moyene
+calculate(){
+  this.noteService.calculateNote(this.idClasse, this.idSemestre).subscribe({
+    next: (data) => {
+     this.getNotes_classe()
+    },
+    error: (error) => {
+      this.pageTitle.showErrorToast(error.error.message);
+    }
+  })
+}
+
+// get all modules have session
+// getModulesSession(idClasse: number, idSemestre: number){
+//   this.noteService.getModulesSession(idClasse, idSemestre).subscribe({})
+// }
+
+// get moyenne of class
+getMoyenne(students: StudentsNotesDto[]){
+  this.noteService.getAllMoyenneByIdClassAndSemestre(this.idClasse, this.idSemestre).subscribe(moyenne =>{
+    this.moyenne = moyenne
+    students.forEach(st =>{
+      st.moyenGeneral = moyenne.find(m => m.idInscription.id! == st.id!)!.moyenGenerale
+    })
+    console.log("moyenne", students)
+  })
+}
+
+// close modal reinscription
 
 }
 

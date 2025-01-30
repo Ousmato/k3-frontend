@@ -6,6 +6,8 @@ import { AdminUSER } from '../../Admin/Models/Auth';
 import { IconsService } from '../../Services/icons.service';
 import { PageTitleService } from '../../Services/page-title.service';
 import { SideBarService } from '../../sidebar/side-bar.service';
+import { TypeFilieres } from '../../Admin/Models/Filieres';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-roles',
@@ -24,6 +26,7 @@ export class RolesComponent  implements OnInit{
   addForm!: FormGroup
   updateForm!: FormGroup
 
+  typeFilieresOption : {key: string, value: string}[] = []
   adminDG!: Admin
 
   constructor(private fb: FormBuilder, private pageTitle: PageTitleService, private sideBarService: SideBarService,
@@ -31,6 +34,7 @@ export class RolesComponent  implements OnInit{
 
   ngOnInit(): void {
       this.adminDG = AdminUSER()?.admin
+      this.typeFilieresOption = this.getTypeFilieresOptions();
       this.loadRoles();
       this.loadForm();
       this.load_update_form();
@@ -46,7 +50,8 @@ export class RolesComponent  implements OnInit{
   // load form add
   loadForm(){
     this.addForm = this.fb.group({
-      nom: ['', [Validators.required, Validators.maxLength(40), Validators.minLength(3)]]
+      nom: ['', [Validators.required, Validators.maxLength(40), Validators.minLength(3)]],
+      typeFiliere: ['', [Validators.required]]
     })
   }
 
@@ -54,7 +59,8 @@ export class RolesComponent  implements OnInit{
     this.updateForm = this.fb.group({
       id: ['', [Validators.required]],
       idAdminDg: ['', [Validators.required]],
-      nom: ['', [Validators.required, Validators.maxLength(40), Validators.minLength(3)]]
+      nom: ['', [Validators.required, Validators.maxLength(40), Validators.minLength(3)]],
+      typeFiliere: ['', [Validators.required]]
       
     })
   }
@@ -74,8 +80,9 @@ export class RolesComponent  implements OnInit{
   // submit form
   addRole(){
     const formData = this.addForm.value;
+    console.log(formData, "formData");
     if(this.addForm.valid){
-      this.adminService.addRole(formData.nom, this.adminDG.idAdministra!).subscribe({
+      this.adminService.addRole(formData, this.adminDG.idAdministra!).subscribe({
         next: (res) =>{
           this.pageTitle.showSuccessToast(res.message);
           this.loadRoles();
@@ -106,6 +113,7 @@ export class RolesComponent  implements OnInit{
   toEdit(role: Roles){
     this.showupdate = true;
     this.updateForm.get("nom")?.setValue(role.nom);
+    // this.updateForm.get("typeFiliere")?.setValue(role.typeFiliere);
     this.updateForm.get("id")?.setValue(role.id);
     this.updateForm.get("idAdminDg")?.setValue(this.adminDG.idAdministra!)
     
@@ -113,10 +121,12 @@ export class RolesComponent  implements OnInit{
 
   update(){
     const formData = this.updateForm.value;
+    console.log("formData", formData)
     const role : Roles ={
       id: formData.id,
       nom: formData.nom,
-      idAdminDg: formData.idAdminDg
+      idAdminDg: formData.idAdminDg,
+      typeFiliere: formData.typeFiliere!
     }
     if(this.updateForm.valid){
       this.adminService.updateRole(role).subscribe({
@@ -159,5 +169,12 @@ export class RolesComponent  implements OnInit{
   abrevigateName(name: string){
     const words = name.split(' ')
     return words.filter(words => words.length > 3).map(words => words[0].toUpperCase()).join('');
+  }
+
+  getTypeFilieresOptions(): {key: string, value: string}[]{
+    return Object.keys(TypeFilieres).map(key => ({
+      key : key ,
+      value: TypeFilieres[key as keyof typeof TypeFilieres]}))
+
   }
 }

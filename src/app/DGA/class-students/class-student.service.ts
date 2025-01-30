@@ -20,9 +20,9 @@ export class ClassStudentService {
   private baseUrl = `${environment.apiUrl}api-class/`;
 
   // ---------------------------------------
-  getAllCurrentClassOfYear(): Observable<ClassRoom[]> {
+  getAllCurrentClassOfYear(idAdmin: number): Observable<ClassRoom[]> {
     this.loadingService.loading();
-    return this.http.get<ClassRoom[]>(this.baseUrl + "list-class").pipe(
+    return this.http.get<ClassRoom[]>(this.baseUrl + "list-class/"+idAdmin).pipe(
       map(response => response),
       finalize(() => {
         // Arrêter le loader lorsque la requête est terminée
@@ -39,8 +39,8 @@ export class ClassStudentService {
     return this.http.get<ClassRoom[]>(this.baseUrl + "current-classe-with-ue");
   }
 
-  getAllClasse(idAnnee: number) : Observable<ClassRoom[]> {
-    return this.http.get<ClassRoom[]>(this.baseUrl + "get-all-classe-by-id-annee/"+idAnnee);
+  getAllClasse(idAnnee: number, idAdmin: number) : Observable<ClassRoom[]> {
+    return this.http.get<ClassRoom[]>(`${this.baseUrl}get-all-classe-by-id-annee/${idAnnee}/${idAdmin}`);
   }
   // -------------------------------------add modules in classroom
   createClassModule(modules: ClassModules): Observable<Response_String> {
@@ -124,10 +124,10 @@ export class ClassStudentService {
   updateProClasse(idClasse: number, idAnnee: number,): Observable<Response_String> {
     return this.http.get<Response_String>(this.baseUrl + "update-promotion-classe/" + idAnnee + "/" + idClasse);
   }
-  // ---------------------------get list of supperior class
-  getNextClasseByIdPrevious(idClasse: number): Observable<ClassRoom[]> {
-    return this.http.get<ClassRoom[]>(this.baseUrl + "get-all-next-classe-by-id/" + idClasse);
-  }
+  // // ---------------------------get list of supperior class
+  // getNextClasseByIdPrevious(idClasse: number): Observable<ClassRoom[]> {
+  //   return this.http.get<ClassRoom[]>(this.baseUrl + "get-all-next-classe-by-id/" + idClasse);
+  // }
 
   // update ue
   update_ue(ue: Ue): Observable<Response_String> {

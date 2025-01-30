@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Dto_scolarite, Inscription } from '../Admin/Models/Students';
+import { Dto_scolarite, Inscription, InscriptionNoteDto } from '../Admin/Models/Students';
 import { finalize, Observable } from 'rxjs';
 import { Response_String } from '../Admin/Models/Response_String';
 import { LoaderService } from './loader.service';
+import { AddNoteDto } from '../Admin/Models/Notes';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +20,8 @@ export class InscriptionService {
     return this.http.get<Inscription[]>(`${this.baseUrl}subscribe-by-class-id/${idAnnee}/${idClasse}`);
   }
   // list inscription by id groupe
-  getListInscriptionByIdGroup(idGroup: number) : Observable<Inscription[]>{
-    return this.http.get<Inscription[]>(this.baseUrl+"list-subscribe-by-group-id/"+idGroup)
+  getListInscriptionByIdGroup(idGroup: number, idEmploi: number) : Observable<AddNoteDto[]>{
+    return this.http.get<AddNoteDto[]>(`${this.baseUrl}list-subscribe-by-group-id/${idGroup}/${idEmploi}`)
   }
   // list inscriptions by id emploi
   getListInscriptionByIdEmploi(idEmploi: number) : Observable<Inscription[]>{

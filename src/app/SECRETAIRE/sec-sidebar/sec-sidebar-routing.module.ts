@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { SecSidebarComponent } from './sec-sidebar.component';
 import { SecHomeComponent } from '../sec-home/sec-home.component';
 import { EtudiantsComponent } from '../../Admin/Views/Etudiants/etudiants.component';
-import { EnseignantPrDetailsComponent } from '../../Admin/Views/Enseignant/enseignant-pr-details/enseignant-pr-details.component';
 import { FicheDePaieComponent } from '../../Admin/Component/fiche-de-paie/fiche-de-paie.component';
 import { EnseignantFichePaieComponent } from '../../Admin/Component/enseignant-fiche-paie/enseignant-fiche-paie.component';
 import { StudentViewComponent } from '../../Admin/Views/Etudiants/CRUD/student-view/student-view.component';
@@ -18,7 +17,6 @@ const routes: Routes = [{path: '', component: SecSidebarComponent,
   children: [
     {path: '', component: SecHomeComponent, data:{title: "ACCUEIL"}},
     {path: 'etudiant', component: EtudiantsComponent, data:{title: "Les etudiants"}},
-    {path: 'enseignant-pre-detail', component: EnseignantPrDetailsComponent},
     {path: 'fiche-de-paie-component', component: FicheDePaieComponent},
     {path: 'fiche-enseignant', component: EnseignantFichePaieComponent},
     {path: 'surveillance', component: SecSurveillanceComponent},

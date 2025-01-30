@@ -23,6 +23,7 @@ import { Salles } from '../../../Admin/Models/Salles';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { Admin } from '../../../Admin/Models/Admin';
 import { AdminUSER } from '../../../Admin/Models/Auth';
+import { Class_shared } from '../../../DGA/class-students/Utils/Class-shared-methods';
 
 @Component({
   selector: 'app-emplois-seance',
@@ -31,7 +32,7 @@ import { AdminUSER } from '../../../Admin/Models/Auth';
 })
 export class EmploisSeanceComponent  implements OnInit{
     idUrl!: number;
-    classId!: ClassRoom
+    classId!: number
     emplois?: Emplois;
     hasDeleted! : Journee
     admin!: Admin
@@ -44,7 +45,7 @@ export class EmploisSeanceComponent  implements OnInit{
     update_seance_form!: FormGroup
 
     
-    modules: Module[] = [];
+    // modules: Module[] = [];
     group!: string;
     journee : Journee[] = [];
     empModule : Module[] = [];
@@ -74,7 +75,7 @@ export class EmploisSeanceComponent  implements OnInit{
 
     constructor(private emploisService: ServiceService, public icons: IconsService, private toastr: ToastrService,
        private enseignantService: EnseiService,private cdr: ChangeDetectorRef, private router: Router, private studentService: EtudeService,
-      private fb: FormBuilder, private pageTitle: PageTitleService,private route: ActivatedRoute, private classService: ClassStudentService,private seanceService: SeancService ) { }
+      private fb: FormBuilder, private pageTitle: PageTitleService,private route: ActivatedRoute, public sharedMethodClasse: Class_shared,private seanceService: SeancService ) { }
     ngOnInit(): void {
       // ------------------------------get id in url path
       this.loadEmploisByClass();
@@ -126,7 +127,7 @@ export class EmploisSeanceComponent  implements OnInit{
             // this.getAllSeance(this.emplois.id!);
             this.getTeacherConf(this.emplois.id!)
             this.load_configure(this.emplois.id!);
-            this.loadModulesByClass(this.idUrl);
+            this.idEmplois = this.emplois.id!            // this.loadModulesByClass(this.idUrl);
           })
         })
        
@@ -140,14 +141,6 @@ export class EmploisSeanceComponent  implements OnInit{
         if(!this.journee.some(cf =>cf.plageHoraire == dat.plageHoraire && dat!.id == cf!.id) ){
             // console.log(dat, "dat")
            dat.plageHoraire = this.formatTimeString(dat.plageHoraire!)
-          //  console.log(dat.plageHoraire, "journee")
-          // if (dat.seanceType.toString().includes('td')) {
-          //   if (!dat.groupe) {
-          //       dat.groupe = [];
-          //   }
-          //   dat.groupe.push(dat.idParticipant!);
-          //   console.log(dat.groupe, "--------------grp")
-          // }
             this.journee.push(dat)
 
         }
@@ -221,15 +214,6 @@ export class EmploisSeanceComponent  implements OnInit{
       const options: Intl.DateTimeFormatOptions = { weekday: 'long' };
       // console.log(Intl.DateTimeFormat('fr-FR', options).format(dateObject))
       return new Intl.DateTimeFormat('fr-FR', options).format(dateObject);
-    }
-   
-    
-    // --------------------------------load all modules of class
-    loadModulesByClass(idClasse: number) : void{
-       this.classService.getAllModules(idClasse).subscribe((data: Module[]) => {
-        this.modules = data;
-      })
-       
     }
     // ---------------------get current month
     getMonth(): string {
@@ -388,7 +372,7 @@ export class EmploisSeanceComponent  implements OnInit{
   
 
 
-  // --------------------------------------button to imprime
+  // button to imprime
   imprimer() { 
     const buttonBack = document.getElementById('back') as HTMLElement;
     buttonBack.style.display = "none";
@@ -455,6 +439,18 @@ export class EmploisSeanceComponent  implements OnInit{
      
       console.log(this.teacherConf, "teacher conf")
     })
+  }
+
+  // go to groupe
+  goToGroupe(idGroup: number){
+    console.log(this.idEmplois)
+    const navigationExtras : NavigationExtras ={
+      queryParams: {
+        id : idGroup,
+        idEmploi: this.idEmplois
+      }
+    }
+    this.router.navigate(['/der/liste-groupe'], navigationExtras)
   }
 
 }

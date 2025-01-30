@@ -79,23 +79,10 @@ addStudentImport(studentImport: Inscription[]) : Observable<Response_String>{
     return this.http.get<GetNoteDto[]>(this.baseUrl_note + "all-note-and-moyen/" +id+"/"+ idSemestre);
    
   }
-  // ----------------------------------get all note of classe
-  // read-all-of-semestre/
-  getAllNoteByClasse(page: number, size: number, idClasse: number, idSemestre: number, idNivFiliere: number): Observable<NotesPages> {
-    this.loadingService.loading();
-    
-    return this.http.get<NotesPages>(`${this.baseUrl_note}read-all-of-semestre/${idClasse}/${idSemestre}/${idNivFiliere}?page=${page}&size=${size}`).pipe(
-      finalize(() => this.loadingService.stopLoading())
-    );
-  }
   // -----------------------------------------desactive student by id
   desactiveStudent(id: number): Observable<Response_String>{
     return this.http.get<Response_String>(this.baseUrl + "desable/" + id);
   }
-  // ------------------------get stuudent by id
-  // getStudent_by_id(idStudent: number) : Observable<Student>{
-  //   return this.http.get<Student>(this.baseUrl+"student-by-id/"+idStudent)
-  // }
   // ---------------------update student
   updateStudent(student: Inscription, file?: File): Observable<Response_String> {
     const formData = new FormData();
@@ -103,9 +90,12 @@ addStudentImport(studentImport: Inscription[]) : Observable<Response_String>{
     formData.append('file', file!);
     return this.http.put<Response_String>(this.baseUrl + 'update', formData);
   }
-  reInscriptionStudent(students: Inscription[], idClasse: number, idAdmin: number): Observable<Response_String> {
+  reInscriptionStudent(students: number[], idClasse: number, idAdmin: number): Observable<Response_String> {
     const url = `${this.baseUrl}re-inscription/${idClasse}/${idAdmin}`;
-    return this.http.post<Response_String>(url, students);
+    this.loadingService.loading()
+    return this.http.post<Response_String>(url, students).pipe(
+      finalize(() => this.loadingService.stopLoading())
+    );
 }
   // -----------------------update scolarite
   update_student_scolarite(idInscription: number, idAdmin: number, scolarite: number): Observable<Response_String> {

@@ -94,10 +94,10 @@ export class AddClassPromotionComponent implements OnInit {
 
   }
   getClasses(){
-    this.classService.getAllCurrentClassOfYear().subscribe(result =>{
-      this.classes = result;
-      // console.log(this.classes, "class");
-    })
+    // this.classService.getAllCurrentClassOfYear().subscribe(result =>{
+    //   this.classes = result;
+    //   // console.log(this.classes, "class");
+    // })
   }
   show_added(){
     this.get_annees();

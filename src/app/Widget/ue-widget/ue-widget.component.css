@@ -109,7 +109,11 @@ label{
     .coef{
         width: 55px;
     }
-input{
+    textarea{
+        margin-top: 8px;
+        resize: vertical;
+    }
+input, select, textarea{
     border: 1px solid var(--tertiary);
     border-radius: 3px;
 }
@@ -117,7 +121,7 @@ select{
     margin-bottom: 10px;
 }
 
-input:focus, select:focus {
+input:focus, textarea:focus, select:focus {
     border-color: var(--primary);
     outline: none;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);

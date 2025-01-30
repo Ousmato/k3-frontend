@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { AnneeScolaire } from "../../../Admin/Models/School-info";
 import { Filiere } from "../../../Admin/Models/Filieres";
 import { ClassRoom } from "../../../Admin/Models/Classe";
+import { Niveau } from "../../../Admin/Models/Niveau";
 
 @Injectable({
     providedIn: 'root'
@@ -45,4 +46,24 @@ export class Class_shared {
       public filieres() : string[]{
         return ['Auccun','AB', 'AG', 'CFA', 'GI', 'HT', 'MA', 'MC' , '3ER']
       }
+
+      public abrevigateNiveauName(Niv: string) : string{
+        const name = Niv;
+        let nameAbrev ;
+        switch (name){
+          case  "LICENCE 1":
+            nameAbrev = "L1";
+            break;
+          case 'LICENCE 2': 
+          nameAbrev = "L2";
+          break;
+          case 'LICENCE 3':
+            nameAbrev = "L3";
+            break;
+         
+          default:
+        }
+        return nameAbrev!;
+      }
+
 }

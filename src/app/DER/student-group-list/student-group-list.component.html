@@ -1,52 +1,72 @@
-<main>
-    <div (click)="goBack()" class="back-button">
+<main id="idTable">
+    <div id="back" (click)="goBack()" class="back-button">
         <fa-icon [icon]="icons.back"></fa-icon>
     </div>
-    <div class="head">
+    <div id="idContent" class="head">
         <div class="left">
-        <select  (change)="changeGroup($event)">
-            <option disabled selected value="">Groupe</option>
-            <option *ngFor="let g of groupes" [value]="g.id">{{g.nom}}</option>
-        </select>
-        <button>Imprimer</button>
+        
+        <button (click)="studentUtil.exportExcel(group)">Exporter en Excel</button>
         </div>
+        <!-- <div class="head-info" *ngIf="inscriptions.length">
+            <h6>Classe : {{inscriptions[0]}} {{sharedMethode.abreviateFiliereName(inscriptions[0].idClasse.idFiliere?.idFiliere?.nomFiliere!)}}</h6>
+        </div> -->
         
         <div class="input-search">
             <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..." class="search-input">
             
         </div>
     </div>
+    <div id="entete" class="entete">
+        
+        <div class="modulo" *ngIf="filteredInscription().length">
+            <h6>Module : {{groupes.nomModule}} </h6>
+            <h6 >Groupe : {{groupes.nom}} </h6>
+            <h6>{{groupes.classe}} {{sharedMethode.extractAnnee(groupes.annee)}} - {{sharedMethode.extractAnnee(groupes.annee) + 1}}</h6>
+            <h6>Semestre : {{groupes.semestre}}</h6>
+        </div>
+       
+    </div>
+    <section class="table-container" >
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>N°</th>
+                    <!-- <th>Matricule</th> -->
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Date de Naissance</th>
+                    <th>Lieux de Naissance</th>
+                    <th>Sexe</th>
+                    <th>Devoir</th>
+                    <th>Examen</th>
+                    <th>Emargement</th>
     
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>N°</th>
-                <!-- <th>Matricule</th> -->
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Groupe</th>
-                <th>Emargement</th>
-
-            </tr>
-        </thead>
-        <tbody>
-           @if(filteredInscription().length){
-            <tr *ngFor="let inscrit of filteredInscription(); let i = index">
-                <td>{{i+1}}</td>
-                <!-- <td>{{inscrit.idEtudiant.matricule}}</td> -->
-                <td>{{inscrit.idEtudiant.nom}}</td>
-                <td>{{inscrit.idEtudiant.prenom}}</td>
-                <td>
-                    {{group.nom}}
-                </td>
-                <td>----</td>
-            </tr>
-           }@else {
-            <tr>
-                <td colspan="9" class="text-center">Aucune inscription pour ce groupe.</td>
-            </tr>
-           }
-            
-        </tbody>
-    </table>
+                </tr>
+            </thead>
+            <tbody>
+               @if(filteredInscription().length){
+                <tr *ngFor="let inscrit of filteredInscription(); let i = index">
+                    <td>{{i+1}}</td>
+                    <!-- <td>{{inscrit.idEtudiant.matricule}}</td> -->
+                    <td>{{inscrit.nom}}</td>
+                    <td>{{inscrit.prenom}}</td>
+                    <td>
+                        {{inscrit.dateNaissance}}
+                    </td>
+                    <td>{{inscrit.lieuNaissance}}</td>
+                    <td>{{inscrit.sexe.includes('FEMME') ? 'F' : 'M'}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+               }@else {
+                <tr>
+                    <td colspan="9" class="text-center">Aucune inscription pour ce groupe.</td>
+                </tr>
+               }
+                
+            </tbody>
+        </table>
+    </section>
+    
 </main>

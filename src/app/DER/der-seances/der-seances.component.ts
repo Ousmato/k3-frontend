@@ -14,6 +14,7 @@ import { ClassRoom } from '../../Admin/Models/Classe';
 import { SalleService } from '../../Services/salle.service';
 import { Salles } from '../../Admin/Models/Salles';
 import { PageTitleService } from '../../Services/page-title.service';
+import { Admin } from '../../Admin/Models/Admin';
 
 @Component({
   selector: 'app-der-seances',
@@ -29,6 +30,7 @@ export class DerSeancesComponent implements OnInit {
   salles: Salles [] = [];
   emplois!: Emplois;
   idUrl!: number;
+  admin!: Admin
   dates_check: any[] = [];
   isShow_add_jour: boolean = false;
   // permission: boolean = false;
@@ -80,7 +82,7 @@ seanceTypeOptions: { key: string, value: string }[] = [];
 
   // ----------------------load class-room
   load_classe(){
-    this.classService.getAllCurrentClassOfYear().subscribe(data =>{
+    this.classService.getAllCurrentClassOfYear(this.admin.idAdministra!).subscribe(data =>{
       this.classes = data;
       // console.log(this.classes, "classes")
     })

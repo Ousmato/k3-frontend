@@ -29,7 +29,7 @@
                 @if(filteredRoles().length){
                     <tr *ngFor="let role of filteredRoles() let i = index">
                         <td>{{i + 1}} </td>
-                        <td>{{role.nom.toUpperCase()}} <strong>({{abrevigateName(role.nom)}})</strong></td>
+                        <td>{{role.nom.toUpperCase()}} <strong>({{abrevigateName(role.nom)}} {{role.typeFiliere ? "-" +role.typeFiliere : ""}})</strong></td>
                         
                         <td >
                             <span (click)="show_confirm(i)">Supprimer <fa-icon [icon]="icons.delete"></fa-icon></span>
@@ -87,6 +87,10 @@
                             <span [ngStyle]="{color: 'red', 'font-size': '11px'}">3 caractères minimum</span>
                         </div>
                     </div>
+                    <select formControlName="typeFiliere" class="form-control" [class.is-invalid]="addForm.get('typeFiliere')!.invalid && addForm.get('typeFiliere')!.touched" >
+                        <option selected disabled value="" >Type de Filières</option>
+                        <option *ngFor="let item of typeFilieresOption" value="{{item.key}}">{{item.value}}</option>
+                    </select>
                     <div class="button-cash">
                         <a type="button" (click)="exite()">Annuler</a>
                         <button type="submit">Enregistrer</button>
@@ -121,6 +125,10 @@
                             <span [ngStyle]="{color: 'red', 'font-size': '11px'}">3 caractères minimum</span>
                         </div>
                     </div>
+                    <select formControlName="typeFiliere" class="form-control" [class.is-invalid]="updateForm.get('typeFiliere')!.invalid && updateForm.get('typeFiliere')!.touched" >
+                        <option selected disabled value="" >Type de Filières</option>
+                        <option *ngFor="let item of typeFilieresOption" value="{{item.key}}">{{item.value}}</option>
+                    </select>
                     <div class="button-cash">
                         <a type="button" (click)="exite()">Annuler</a>
                         <button type="submit">Enregistrer</button>

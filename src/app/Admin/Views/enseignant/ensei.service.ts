@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { finalize, Observable } from 'rxjs';
-import { Teacher } from '../../Models/Teachers';
+import { Teacher, TeacherDto } from '../../Models/Teachers';
 import { Teacher_presence } from '../../Models/objectPresence';
 import { Presence } from '../../Models/Teacher-presence';
 import { Paie, PaieDTO } from '../../Models/paie';
@@ -9,6 +9,7 @@ import { Response_String } from '../../Models/Response_String';
 import { Presence_pages, Teacher_presence_pages, TeacherPages } from '../../Models/Pagination-module';
 import { environment } from '../../../../environments/environment';
 import { LoaderService } from '../../../Services/loader.service';
+import { TeacherEmplois } from '../../Models/Emplois';
 
 
 @Injectable({
@@ -123,5 +124,16 @@ export class EnseiService {
       finalize(() => this.loadingService.stopLoading())
     )
   }
+
+  
+  getAllEmploiOfTeacherOfCurrentYear(idTeacher: number): Observable<TeacherDto>{
+    return this.http.get<TeacherDto>(`${this.baseUrl}all-emplois-of-teacher-of-current-year/${idTeacher}`);
+  }
+
+  // all emploi of teacher by id year
+  getAllEmploiOfTeacherByIdYear(idAnnee: number, idTeacher: number) : Observable<TeacherDto>{
+    return this.http.get<TeacherDto>(`${this.baseUrl}all-emplois-of-teacher/${idAnnee}/${idTeacher}`);
+  }
+ 
  
 }

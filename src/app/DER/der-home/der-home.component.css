@@ -1,4 +1,6 @@
-
+main{
+    height: 80vh;
+}
 
 .first-container, .second-container {
     background-color: #fff;
@@ -42,12 +44,10 @@
 }
 .child-cards{
     display: flex;
-    padding: 8px;
-    justify-content: start; 
+    justify-content: space-between; 
+    align-items: end;
      gap: 10px;
      flex: 1;
-     /* border: 1px solid #ccc; */
-     /* box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.15); */
      transition: transform 0.3s, box-shadow 0.3s;
      margin-bottom: 10px;
      
@@ -107,7 +107,7 @@ p{
 
 .body-content {
     /* background-color: #e9ecef; */
-    padding: 20px;
+    padding: 10px;
     border-radius: 8px;
     border: #ccc 1px solid;
 }
@@ -168,3 +168,28 @@ fa-icon{
 .button-content fa-icon{
     color: var(--primary);
 }
+
+.class-scrol{
+    height: 40vh;
+    position: relative;
+    overflow-y: auto;
+}
+/* Personnalisation de la barre de défilement */
+.class-scrol::-webkit-scrollbar {
+  width: 5px; /* Largeur de la barre de défilement */
+}
+
+.class-scrol::-webkit-scrollbar-track {
+  background: white; /* Couleur de l'arrière-plan de la piste */
+  border-radius: 10px; /* Coins arrondis de la piste */
+}
+
+.class-scrol::-webkit-scrollbar-thumb {
+  background: var(--tertiary); /* Couleur de la barre de défilement */
+  border-radius: 10px; /* Coins arrondis de la barre */
+}
+
+.class-scrol::-webkit-scrollbar-thumb:hover {
+  background: var(--primary); /* Couleur de la barre au survol */
+}
+

@@ -78,14 +78,8 @@ td span {
 }
 
 select {
-  height: 35px;
-  width: 100px;
-  background-color: var(--primary);
-  color: var(--secondary);
-  border-radius: 5px;
-  padding: 0 5px;
-  outline: none;
-  border: none;
+  margin-top: 10px;
+  
 }
 
 .search-input-class {

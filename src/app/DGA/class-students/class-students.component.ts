@@ -16,6 +16,9 @@ import { SchoolService } from '../../Services/school.service';
 import { AdminUSER } from '../../Admin/Models/Auth';
 import { Admin } from '../../Admin/Models/Admin';
 import { Class_shared } from './Utils/Class-shared-methods';
+import { NoteService } from '../../Services/note.service';
+import { InscriptionNoteDto } from '../../Admin/Models/Students';
+import { EventServiceService } from '../../Services/event-service.service';
 
 @Component({
   selector: 'app-class-students',
@@ -31,9 +34,11 @@ export class ClassStudentsComponent implements OnInit {
   filteredClasse: ClassRoom[] = [];
   idNivFiliere!: number;
   annees: AnneeScolaire[] = []
+  inscriptions: InscriptionNoteDto[] = []
   annee_check !: number
 
   currentYear!: number
+  idAnnee!: number
 
   classeSelect!: ClassRoom | null
   sousClassSelect!: Specialite_Filiere | null
@@ -52,19 +57,22 @@ export class ClassStudentsComponent implements OnInit {
   classesSorted: ClassRoom[] = []
   permission: boolean = false
   der!: Admin
+  admin!: Admin
 
   constructor(private service: ClassStudentService, private sideBarService: SideBarService,
-    public sharedMethod: Class_shared, private infoSchool: SchoolService,
-    private router: Router, public icons: IconsService) {
+    public sharedMethod: Class_shared, private infoSchool: SchoolService, private noteService: NoteService,
+    private router: Router, public icons: IconsService, private eventService: EventServiceService) {
 
   }
   ngOnInit() {
+    this.der = AdminUSER()?.der
     this.getPermission();
     this.loadClasses();
     this.get_annees();
     const date = new Date();
     this.currentYear = date.getFullYear();
-    this.der = AdminUSER()?.der
+    
+    this.admin = AdminUSER()?.admin
     this.sideBarService.currentSearchTerm.subscribe(term => {
       this.searchTerm = term;
       console.log(this.searchTerm, "search")
@@ -73,6 +81,20 @@ export class ClassStudentsComponent implements OnInit {
       this.filterClasse_L3();
 
     });
+    this.eventService.event$.subscribe(event =>{
+      this.callBackUes(event)
+     })
+  }
+
+  callBackUes(event: any){
+    if(event != undefined && event != null && event != ""){
+      console.log("callBackUes", event)
+      this.promoSelect(event);
+      this.filterClasse_L1();
+      this.filterClasse_L2();
+      this.filterClasse_L3();
+    }
+    
   }
 
   isOpen = false;
@@ -91,20 +113,20 @@ export class ClassStudentsComponent implements OnInit {
   //get all classRoom
   loadClasses(): void {
 
-    this.service.getAllCurrentClassOfYear().subscribe((classRoms: ClassRoom[]) => {
+    this.service.getAllCurrentClassOfYear(this.der.idAdministra!).subscribe((classRoms: ClassRoom[]) => {
 
       this.classRoms = classRoms;
-      console.log(classRoms, "classroom")
+      // console.log(classRoms, "classroom")
 
       this.classes_L1 = classRoms.filter(clr => clr.idFiliere?.idNiveau.nom === "LICENCE 1");
-      console.log(this.classes_L1, "L1")
+      // console.log(this.classes_L1, "L1")
       this.classes_L2 = classRoms.filter(clr => clr.idFiliere?.idNiveau.nom === "LICENCE 2");
       this.classes_L3 = classRoms.filter(clr => clr.idFiliere?.idNiveau.nom === "LICENCE 3");
 
     });
   }
 
-  // ------------------------------------------get all ue by class id
+  //get all ue by class id
   getAll_ues(classe: ClassRoom) {
     this.isShow_add_module = true;
     this.isShow_link_modal = false
@@ -112,9 +134,9 @@ export class ClassStudentsComponent implements OnInit {
 
 
   }
-  // -----------------------------------------method de condition de navigation
+  //method de condition de navigation
   show_views(classe: ClassRoom) {
-    console.log(classe, "dois etre changer")
+    // console.log(classe, "dois etre changer")
     if (this.classeSelect === classe) {
       this.classeSelect = null; // Deselect if already selected
     } else {
@@ -122,13 +144,10 @@ export class ClassStudentsComponent implements OnInit {
 
     }
 
-    this.service.getAllArchivesByClasseIdNivFil(classe.idFiliere?.id!).subscribe(result => {
-      this.classesArchives = result
-      console.log(this.classesArchives, "arch99999999999999")
-    })
+    
   }
   show_views_sousFiliere(classe: Specialite_Filiere) {
-    console.log(classe, "dois etre changer")
+    // console.log(classe, "dois etre changer")
     if (this.sousClassSelect === classe) {
       this.classeSelect = null; // Deselect if already selected
     } else {
@@ -150,7 +169,7 @@ export class ClassStudentsComponent implements OnInit {
 
   toggle_to_view_ues(classe: ClassRoom) {
     const navigationExtras: NavigationExtras = {
-      queryParams: { id: classe?.id }
+      queryParams: { id: classe?.id, idAnnee: classe.idAnneeScolaire?.id }
 
     }
     if (this.der) {
@@ -170,7 +189,7 @@ export class ClassStudentsComponent implements OnInit {
 
   }
   archive(classe: ClassRoom) {
-    console.log(classe, "archive----------------s")
+    // console.log(classe, "archive----------------s")
     const navigationExtras: NavigationExtras = {
       queryParams: { id: classe.idFiliere?.id }
 
@@ -187,7 +206,7 @@ export class ClassStudentsComponent implements OnInit {
   // ----------------------- method go to add notes aux student
   toggle_to_notes(idClasse: number, idAnnee: number) {
     const navigationExtras: NavigationExtras = {
-      queryParams: { id: idClasse, query:idAnnee }
+      queryParams: { id: idClasse, idAnnee:idAnnee }
     };
     if (this.getPermission()) {
       console.log("scolarite")
@@ -201,9 +220,9 @@ export class ClassStudentsComponent implements OnInit {
   }
 
   //hover bottom button 
-  toggle_to_noteSemestre(idClasse: number, idNivFiliere: number) {
+  toggle_to_noteSemestre(classe: ClassRoom, idNivFiliere: number) {
     const navigationExtras: NavigationExtras = {
-      queryParams: { id: idClasse, idNivFiliere: idNivFiliere },
+      queryParams: { id: classe.id, idNivFiliere: idNivFiliere, idAnnee:classe.idAnneeScolaire?.id!  },
     };
     const dga = AdminUSER()?.dga
     if (this.getPermission()) {
@@ -290,23 +309,37 @@ export class ClassStudentsComponent implements OnInit {
 
   promoSelect(event: any) {
 
-    const idAnnee = event.target.value
-    const anneeSelect = this.annees.find(annee => annee.id == idAnnee);
-    this.annee_check = this.sharedMethod.extractAnnee(anneeSelect!);
-
-    this.service.getAllClasse(idAnnee).subscribe(classRoms => {
+    if(event && event.target && event.target.value){
+      this.idAnnee = event.target.value;
+      console.log("idAnnee event target", this.idAnnee);
+      
+   
+    }
+    else{
+      this.idAnnee = event;
+      console.log("idAnnee", this.idAnnee);
+    }
+    // const idAnnee = event.target.value
+    console.log(this.der," der")
+    this.service.getAllClasse(this.idAnnee, this.der.idAdministra!).subscribe(classRoms => {
       this.classRoms = []
       this.classRoms = classRoms;
       this.classesSorted = classRoms
-      console.log(this.sortedValue, "dans promo seleccion")
-      this.onSortByFiliere(this.sortedValue);
-      
-      console.log(this.classRoms, "is class selectm list")
+      // console.log(this.sortedValue, "dans promo seleccion")
+      console.log(this.classRoms, "list")
 
       this.classes_L1 = classRoms.filter(clr => clr.idFiliere?.idNiveau.nom === "LICENCE 1");
       this.classes_L2 = classRoms.filter(clr => clr.idFiliere?.idNiveau.nom === "LICENCE 2");
       this.classes_L3 = classRoms.filter(clr => clr.idFiliere?.idNiveau.nom === "LICENCE 3");
+      this.onSortByFiliere(this.sortedValue);
+      const anneeSelect = this.annees.find(annee => annee.id == this.idAnnee);
+      // console.log("anneeSelect", anneeSelect);
+  
+      this.annee_check = this.sharedMethod.extractAnnee(anneeSelect!);
+
+    
     })
+  
   }
   // sort students
   onSortByFiliere(event: any) {
@@ -328,4 +361,9 @@ export class ClassStudentsComponent implements OnInit {
    
   }
 
+ toggle_semestre_moyenne(idClasse: number){
+  this.router.navigate(['/r-scolarite/semestre-moyenne'], {queryParams : {id:idClasse, idAnnee: this.idAnnee}})
+ }
+
+ 
 }

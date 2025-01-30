@@ -50,8 +50,18 @@
     margin-top: 10px;
 }
 .input-time{
+        display: flex;
+        /* gap: 50px; */
+        justify-content: space-between;
+        width: 50%;
+        align-items: end;
+}
+.left{
     display: flex;
     gap: 20px;
+}
+.name-classe{
+    font-weight: bold;
 }
 .plage-days{
     display: flex;

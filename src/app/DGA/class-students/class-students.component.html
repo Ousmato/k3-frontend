@@ -1,7 +1,8 @@
 <main>
     <div class="main-head">
         <select (change)="promoSelect($event)">
-            <option selected disabled value="">Pro {{currentYear -1}}-{{currentYear}}</option>
+            <option selected disabled value="" *ngIf="!annee_check">Pro {{currentYear -1}}-{{currentYear}}</option>
+            <option selected disabled value=""*ngIf="annee_check">Pro {{annee_check}} - {{annee_check +1}}</option>
             <option *ngFor="let ans of annees" [value]="ans.id">Pro {{ans.ans}}-{{ans.nextYear}}</option>
         </select>
         <div class="input-search-class" >
@@ -50,16 +51,16 @@
                         <li *ngIf="!permission"> <a (click)="toggle_to_emplois(classeSelect)" > Consulter les EDT</a></li>
                         <!-- <li *ngIf="permission"><a (click)="getAll_ues(classeSelect)">Ajouter unité
                                 d'enseignament</a></li> -->
-                                <li ><a (click)="toggle_to_view_ues (classeSelect)">Unité
+                                <li *ngIf="!admin"><a (click)="toggle_to_view_ues (classeSelect)">Unité
                                     d'enseignement</a></li>
                         <li *ngIf="permission"><a (click)="toggle_to_notes(classeSelect.id!, classeSelect.idAnneeScolaire?.id!)">Ajouter Notes</a>
                         </li>
                         <li *ngIf="permission" ><a (click)="toggle_toStudentClasse(classeSelect.id!, classeSelect.idFiliere?.id!)">Liste des étudiants</a></li>
-                        <li *ngIf="permission" ><a  (click)="toggle_to_noteSemestre(classeSelect.id!, classeSelect.idFiliere?.id!)">Notes du semestre</a>
+                        <li *ngIf="permission" ><a  (click)="toggle_to_noteSemestre(classeSelect!, classeSelect.idFiliere?.id!)">Notes du semestre</a>
                         </li>
                         <!-- <li><a (click)="toggle_to_update_emplois (classeSelect.id!)" >Modifier l'emploi du temps</a></li> -->
                        
-                        <li *ngIf="classesArchives.length !== 0"> <a (click)="archive(classRom)">Archives</a></li>
+                        <!-- <li > <a (click)="getAllSemestreMoyens(classRom.id!)">Admins et Ajourné</a></li> -->
                     </div>
                 </ng-container>
             </div>
@@ -104,14 +105,15 @@
                                     <li *ngIf="!permission"> <a (click)="toggle_to_emplois(classeSelect)" > Consulter les EDT</a></li>
                                     <!-- <li *ngIf="permission"><a (click)="getAll_ues(classeSelect)">Ajouter unité
                                             d'enseignament</a></li> -->
-                                            <li ><a (click)="toggle_to_view_ues (classeSelect)">Unité
+                                            <li><a (click)="toggle_to_view_ues (classeSelect)">Unité
                                                 d'enseignement</a></li>
                                     <li *ngIf="permission"><a (click)="toggle_to_notes(classeSelect.id!, classeSelect.idAnneeScolaire?.id!)">Ajouter Notes</a>
                                     </li>
                                     <li *ngIf="permission" ><a (click)="toggle_toStudentClasse(classeSelect.id!, classeSelect.idFiliere?.id!)">Liste des étudiants</a></li>
-                                    <li *ngIf="permission" ><a  (click)="toggle_to_noteSemestre(classeSelect.id!, classeSelect.idFiliere?.id!)">Notes du semestre</a>
+                                    <li *ngIf="permission" ><a  (click)="toggle_to_noteSemestre(classeSelect!, classeSelect.idFiliere?.id!)">Notes du semestre</a>
                                     </li>
                                     <!-- <li><a (click)="toggle_to_update_emplois (classeSelect.id!)" >Modifier l'emploi du temps</a></li> -->
+                                    <li *ngIf="permission"> <a (click)="toggle_semestre_moyenne(classRom.id!)">Admins et Ajourné</a></li>
                                    
                                     <li *ngIf="classesArchives.length !== 0"> <a (click)="archive(classRom)">Archives</a></li>
                                 </div>
@@ -163,7 +165,7 @@
                                                         <li *ngIf="permission"><a (click)="toggle_to_notes(classeSelect!.id!, classeSelect!.idAnneeScolaire?.id!)">Ajouter des
                                                                 notes</a></li>
                                                         <li><a (click)="toggle_toStudentClasse(classeSelect!.id!, classeSelect!.idFiliere?.id!)">Liste des étudiants</a></li>
-                                                        <li><a (click)="toggle_to_noteSemestre(classeSelect!.id!, classeSelect!.idFiliere?.id!)">Notes du semestre</a></li>
+                                                        <li><a (click)="toggle_to_noteSemestre(classeSelect!, classeSelect!.idFiliere?.id!)">Notes du semestre</a></li>
                                                         <!-- <li *ngIf="permission"><a (click)="toggle_to_view_ues (classeSelect)">Consulté les unité
                                                                 d'enseignement</a></li>
                          -->
@@ -189,7 +191,7 @@
                                         <li *ngIf="permission"><a (click)="toggle_to_notes(classeSelect!.id!, classeSelect!.idAnneeScolaire?.id!)">Ajouter des
                                                 notes</a></li>
                                         <li><a (click)="toggle_toStudentClasse(classeSelect!.id!, classeSelect!.idFiliere?.id!)">Liste des étudiants</a></li>
-                                        <li><a (click)="toggle_to_noteSemestre(classeSelect!.id!, classeSelect!.idFiliere?.id!)">Notes du semestre</a></li>
+                                        <li><a (click)="toggle_to_noteSemestre(classeSelect!, classeSelect!.idFiliere?.id!)">Notes du semestre</a></li>
                                         <!-- <li *ngIf="permission"><a (click)="toggle_to_view_ues (classeSelect)">Consulté les unité
                                                 d'enseignement</a></li>
          -->
@@ -245,7 +247,7 @@
                                             <li *ngIf="permission"><a (click)="toggle_to_notes(classeSelect.id!, classeSelect.idAnneeScolaire?.id!)">Ajouter des
                                                     notes</a></li>
                                             <li><a (click)="toggle_toStudentClasse(classeSelect.id!, classeSelect.idFiliere?.id!)">Liste des étudiants</a></li>
-                                            <li><a (click)="toggle_to_noteSemestre(classeSelect.id!, classeSelect.idFiliere?.id!)">Notes du semestre</a></li>
+                                            <li><a (click)="toggle_to_noteSemestre(classeSelect!, classeSelect.idFiliere?.id!)">Notes du semestre</a></li>
                                             <!-- <li><a (click)="toggle_to_update_emplois (classeSelect.id!)" >Modifier l'emploi du temps</a></li> -->
                                             <!-- <li *ngIf="permission"><a (click)="toggle_to_view_ues (classeSelect)">Consulté les unité
                                                     d'enseignement</a></li> -->

@@ -1,6 +1,6 @@
 main{
     width: 100%;
-    padding: 10px 20px;
+    padding: 10px;
     height: 80vh;
 }
 .vertical-header{
@@ -19,14 +19,23 @@ main{
 table{
     font-size: 12px;
 }
+.col-noteUe, th{
+    background-color: var(--tertiary);
+    font-weight: bold;
+}
 
 th{
-    height: 130px;
+    height: 120px;
     text-overflow: ellipsis;
     overflow: hidden;
-    width: 150px;
+    /* width: 150px; */
     white-space: nowrap;
 
+}
+tr, td, th{
+    border: 1px solid black;
+    font-size: 12px !important;
+    padding: 3px;
 }
 
 p{
@@ -104,28 +113,10 @@ select:focus{
     gap: 10px;
 }
 
-select{
-    border: none;
-    /* margin-left: 10px; */
-}
-select:focus{
-    outline: none;
-    border: none;
-}
-.select {
-    height: 35px;
-    width: 100px;
-    /* margin-: 10px; */
-    background-color: var(--primary);
-    color: var(--secondary);
-    border-radius: 5px;
-    padding: 0 5px;
-    outline: none;
-    border: none;
-  }
+
 .btn-contenair button {
     height: 35px;
-    width: 100px;
+    /* width: 100px; */
     /* margin-: 10px; */
     background-color: var(--primary);
     color: var(--secondary);
@@ -140,3 +131,19 @@ select:focus{
         border: none;
     }
   }
+
+  .semestre {
+    display: flex;
+    gap: 10px;
+   }
+   .semestre p{
+     margin: 0;
+     font-weight: bold;
+     font-size: 16px;
+     cursor: pointer;
+   }
+   .active{
+    padding: 5px;
+     background-color: var(--secondary);
+     color: var(--primary);
+   }

@@ -1,52 +1,36 @@
 <main>
    
     <!-- ------------------------------------------ -->
-    <ng-container *ngIf="ishow_update">
+    <ng-container>
         <div class="views">
-            <h3 class="span">Modifier module</h3>
-            <form [formGroup]="update_module_form" (ngSubmit)="update()" > 
+            <h3 class="span">Ajouter Module</h3>
+            <form [formGroup]="addForm" (ngSubmit)="update()" > 
                <div class="container-views">
-                    <div class="form form-group">
-                        <label for="select-modules-multiple" class="label form-label">UE :</label>
-                        <select class="form-select" formControlName="idUe">
-                            <option selected disabled value="">Choisir l'ue</option>
-                            <option *ngFor="let ue of ueListe" [value]="ue.id">{{ue.nomUE}}</option>
-                        </select>
-                                            
-                    </div>
-                    <div class="form form-group">
-                        <input type="number" formControlName="id" *ngIf="false">
-                        <label for="select-modules-multiple" class="label form-label">Modules :</label>
-                        <select class="form-select" (change)="onModuleChange($event)">
-                            <option selected disabled value="">Choisir le module</option>
-                            <option *ngFor="let module of modules" [value]="module.id">{{module.nomModule}}</option>
-                        </select>
-                                            
-                    </div>
                     
-                    <div class="form form-group" *ngIf="isInputShow"> 
+                    
+                    <div class="form form-group"> 
                         <label for="nom">Nom module:</label> 
                         <input type="text" formControlName="nomModule" class="form-control" placeholder="Nom du module..."
-                            [class.is-invalid]="update_module_form.get('nomModule')!.invalid && update_module_form.get('nomModule')!.touched"> 
-                        <div *ngIf="update_module_form.get('nomModule')!.invalid && update_module_form.get('nomModule')!.touched" class="invalid-feedback">
-                            <div *ngIf="update_module_form.get('nomModule')!.errors?.['required']">
+                            [class.is-invalid]="addForm.get('nomModule')!.invalid && addForm.get('nomModule')!.touched"> 
+                        <div *ngIf="addForm.get('nomModule')!.invalid && addForm.get('nomModule')!.touched" class="invalid-feedback">
+                            <div *ngIf="addForm.get('nomModule')!.errors?.['required']">
                                 <span class="label-error">Le nom du module est requis.</span>
                             </div>
-                            <div *ngIf="update_module_form.get('nomModule')!.errors?.['maxlength']">
+                            <div *ngIf="addForm.get('nomModule')!.errors?.['maxlength']">
                                 <span class="label-error">Le nom du module ne doit pas dépasser 40 caractères.</span>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="form form-group" *ngIf="isInputShow"> 
+                    <div class="form form-group"> 
                         <label for="coefficient">Coefficient:</label> 
                         <input type="number" formControlName="coefficient" class="form-control" placeholder="Coefficient..."
-                            [class.is-invalid]="update_module_form.get('coefficient')!.invalid && update_module_form.get('coefficient')!.touched"> 
-                        <div *ngIf="update_module_form.get('coefficient')!.invalid && update_module_form.get('coefficient')!.touched" class="invalid-feedback">
-                            <div *ngIf="update_module_form.get('coefficient')!.errors?.['required']">
+                            [class.is-invalid]="addForm.get('coefficient')!.invalid && addForm.get('coefficient')!.touched"> 
+                        <div *ngIf="addForm.get('coefficient')!.invalid && addForm.get('coefficient')!.touched" class="invalid-feedback">
+                            <div *ngIf="addForm.get('coefficient')!.errors?.['required']">
                                 <span class="label-error">Le coefficient est requis.</span>
                             </div>
-                            <div *ngIf="update_module_form.get('coefficient')!.errors?.['min'] || update_module_form.get('coefficient')!.errors?.['max']">
+                            <div *ngIf="addForm.get('coefficient')!.errors?.['min'] || addForm.get('coefficient')!.errors?.['max']">
                                 <span class="label-error">Le coefficient doit être compris entre 1 et 6.</span>
                             </div>
                         </div>
@@ -62,41 +46,5 @@
     </ng-container>
 
     <!-- ------------------------------------- -->
-    <ng-container *ngIf="ishow_delete" >
-        <div class="views" >
-                <h3 class="span">Supprimer module</h3>
-               <div class="container-views">
-                <select  class="form-select"placeholder="Choisir la clase" (change)="onDelete($event)">
-                    <option  selected disabled value="">Choisir le module</option>
-                    <option  *ngFor="let mod of modules" [value]="mod.id">{{mod.nomModule}}</option>
-                </select>
-                    <div class="button-cash">
-                        <a (click)="close_delete()" class="submit"  ><span>Annuler</span></a>
-                        <button (click)="nextToConfirm()" ><span>Suivant</span><fa-icon [icon]="icons.nexte_circle"></fa-icon></button>
-                    </div> 
-               </div>
-        </div>
-       
-    </ng-container>
-    <div class="views" *ngIf="isConfirm">
-        <h3 class="span">Confirmation</h3>
-        <div class="container-views">
-            <p>Êtes-vous sûr de vouloir supprimer l'UE : {{moduleForDelete.nomModule}}?</p>
-            
-                <div class="button-cash">
-                    <a type="button" (click)="exitDelete()">Annuler</a>
-                    <button type="button" (click)="delete_module(moduleForDelete.id!)">Supprimer</button>
-                </div>
-            
-        </div>
-    </div>
-
-
-
-    <div class="second-child">
-        <a (click)="show_updated()" ><fa-icon [icon]="icons.edit"></fa-icon> <span>Modifier</span></a>
-        <a (click)="show_delete()" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> <span >Supprimer</span></a>
-       
-    </div>
-        
+    
 </main>

@@ -230,7 +230,7 @@ export class RSImportComponent implements OnInit {
 
   onSelect(event: any) {
     const idAnne = event.target.value
-    this.classService.getAllClasse(idAnne).subscribe(result => {
+    this.classService.getAllClasse(idAnne, this.admin.idAdministra!).subscribe(result => {
       this.classes = result;
       // console.log(this.classes, "class");
     })

@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { Inscription, Student, Student_group } from '../../Admin/Models/Students';
+import { InscriptionNoteDto, Student_group, StudentGroupDto } from '../../Admin/Models/Students';
 import { EtudeService } from '../../Admin/Views/Etudiants/etude.service';
 import { ActivatedRoute } from '@angular/router';
 import { IconsService } from '../../Services/icons.service';
 import { InscriptionService } from '../../Services/inscription.service';
 import { SideBarService } from '../../sidebar/side-bar.service';
+import { Class_shared } from '../../DGA/class-students/Utils/Class-shared-methods';
+import { AddNoteDto } from '../../Admin/Models/Notes';
+import { AnneeScolaire } from '../../Admin/Models/School-info';
+import { StudentSharedMethods } from '../../Admin/Views/Etudiants/Utils/Student-shared-methode';
+import { GroupeService } from '../../Services/groupe.service';
 
 @Component({
   selector: 'app-student-group-list',
@@ -14,13 +19,18 @@ import { SideBarService } from '../../sidebar/side-bar.service';
 export class StudentGroupListComponent  implements OnInit{
 
   searchTerm: string = ''
-  inscriptions: Inscription[] = []
-  filteredItem: Inscription[] = []
+  inscriptions: InscriptionNoteDto[] = []
+  filteredItem: InscriptionNoteDto[] = []
   group!: Student_group;
-  groupes: Student_group[] = [];
+  idGroup!: number
+  semestre!: string
+  classe!: string
+  modules!: string
+  annees!: AnneeScolaire
+  groupes!: StudentGroupDto;
   constructor(private studentService: EtudeService, private sidebareSevice: SideBarService,
-    private inscriptionService: InscriptionService,
-    private root: ActivatedRoute, public icons: IconsService) { }
+    private inscriptionService: InscriptionService, public sharedMethode: Class_shared, private grpService: GroupeService,
+    private root: ActivatedRoute, public icons: IconsService, public studentUtil: StudentSharedMethods) { }
   ngOnInit(): void {
       this.loadStudentGroup();
       this.sidebareSevice.currentSearchTerm.subscribe(term =>{
@@ -30,9 +40,11 @@ export class StudentGroupListComponent  implements OnInit{
   }
   loadStudentGroup() {
     this.root.queryParams.subscribe(param =>{
-      const idEmploi = param['id'];
-      this.studentService.getListGroupByIdEmploi(idEmploi).subscribe(data => {
+      this.idGroup = param['id'];
+      const idEmploi = param['idEmploi']
+      this.grpService.getParticipantsOfGroup(this.idGroup, idEmploi).subscribe(data => {
       this.groupes = data;
+      this.inscriptions = this.groupes.inscriptions
       
       console.log(this.groupes, "groupes")
     });
@@ -40,17 +52,7 @@ export class StudentGroupListComponent  implements OnInit{
     
   }
 
-  // ----------------------load all students by id group
-  changeGroup(event: any){
-    const idGroup = +event.target.value;
-    this.load_students_by_group(+event.target.value);
-    this.group = this.groupes.find(g => g.id === idGroup)!;
-  }
-  load_students_by_group(idGroup: number){
-    this.inscriptionService.getListInscriptionByIdGroup(idGroup).subscribe(data => {
-      this.inscriptions = data;
-    })
-  }
+
   // --------------back button
   goBack(){
     window.history.back();
@@ -59,9 +61,13 @@ export class StudentGroupListComponent  implements OnInit{
   filteredInscription(){
     if(!this.searchTerm){
       return this.filteredItem = this.inscriptions
-    }
-    return this.filteredItem = this.inscriptions.filter(ins =>ins.idEtudiant.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+    }else{
+      console.log(this.inscriptions, "invalid search term")
+      return this.filteredItem = this.inscriptions.filter(ins => ins.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) || 
+      ins.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()))
   
-   ins.idEtudiant.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()))
+    }
+    
+   
   }
 }

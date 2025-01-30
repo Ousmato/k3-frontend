@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Emplois } from '../../../Admin/Models/Emplois';
+import { Emplois, TeacherEmplois } from '../../../Admin/Models/Emplois';
 import { Observable } from 'rxjs';
 import { Response_String } from '../../../Admin/Models/Response_String';
 import { environment } from '../../../../environments/environment';
@@ -118,6 +118,6 @@ sortByDay(dates: { day: string, date: string }[]) {
   updateEmplois(emplois: Emplois): Observable<Response_String>{
     return this.http.put<Response_String>(`${this.baseUrl}update`, emplois);
   }
- 
+
 }
 

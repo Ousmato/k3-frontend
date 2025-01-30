@@ -5,58 +5,103 @@
     <div class="head-content">
         <div class="btn-contente">
             <button (click)="imprimer()">Imprimer</button>
-            <select (change)="checkMonth($event)">
-                <option selected disabled value="">Archives</option>
-                <option *ngFor="let month of months" value="{{month.value}}">{{month.name.toUpperCase()}}</option>
+            <select (change)="checkYear($event)">
+                <option selected disabled value="">{{currentYear -1}}-{{currentYear}}</option>
+                <option *ngFor="let an of annees" value="{{an.id}}">
+                    {{sharedMethod.extractAnnee(an)}}-{{sharedMethod.extractAnnee(an) + 1}}</option>
             </select>
         </div>
         <div class="logo">
             <img src="assets/logounivsegou.png" alt="">
         </div>
+
     </div>
-    
+    <div class="table-head-info" *ngIf="emploisDto">
+        <div class="child">
+            <h6>Nom: <span>{{emploisDto.nom}}</span></h6>
+            <h6>Diplome: <span>{{emploisDto.diplome.includes('M2') ? 'Master II' : emploisDto.diplome}}</span></h6>
+        </div>
+        <div class="child">
+            <h6>Prénom: <span>{{emploisDto.prenom}}</span></h6>
+            <h6>Statut: <span>{{emploisDto.status}}</span></h6>
+        </div>
+        <div class="child">
+            <h6>Date de Naissance: <span>{{emploisDto.dateNaissance}}</span></h6>
+            <h6>Année scolaire: <span>@if(annee_check){
+                    {{sharedMethod.extractAnnee(annee_check)}}-{{sharedMethod.extractAnnee(annee_check) + 1}}}@else {
+                    {{currentYear -1}}-{{currentYear}}}
+                </span></h6>
+        </div>
+    </div>
+
 
     <div class="table-container" id="idTable">
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Mois</th>
-                    <th>Nom</th>
-                    <th>Prenom</th>
+                    <th>Semmaines</th>
+                    <th>Modules</th>
+                    <th>Classes</th>
                     <!-- <th>Mentions</th> -->
                     <!-- <th>Type</th> -->
                     <!-- <th>Module</th> -->
-                    <th>Heures/Sv</th>
-                    <th>Montant</th>
-                    <th>Emergement</th>
+                    <th>Volume Horaire/CM</th>
+                    <th>Volume Horaire/TD</th>
+                    <!-- <th>Montant</th>
+                    <th>Emergement</th> -->
                 </tr>
             </thead>
             <tbody>
-                <ng-container *ngIf="paies.length; else notFund">
-                    <ng-container *ngFor="let paie of filteredPaie()">
+                @if (filteredEmplois().length) {
+                    <ng-container *ngFor="let emp of filteredEmplois()">
                         <tr>
-                            <td>{{month.toUpperCase()}}</td>
-                            <td>{{paie.nom}}</td>
-                            <td>{{paie.prenom}}</td>
+                            <td>{{emp.semaines}}</td>
+                            <td>{{emp.nomModule}}</td>
+                            <td>{{sharedMethod.abreviateFiliereName(emp.filiere)}} {{emp.niveau}}-{{emp.semestre}} </td>
                             <!-- <td>{{abrevigateName(paie.filiere)}}</td> -->
                             <!-- <td>{{paie.type.toLocaleUpperCase()}}</td> -->
                             <!-- <td>{{paie.module}}</td> -->
 
-                            <td>{{paie.nbreHeures}} Heures</td>
-                            <td>{{paie.montanFormat}}</td>
-                            <td></td>
+
+                            <td>
+                                @for (item of emp.volHoraires; track $index) {
+                                @if (item.typeCours.includes('CM')) {
+                                {{item.volumeHoraire}}H
+                                }
+                                }
+
+                            </td>
+                            <td>@for (item of emp.volHoraires; track $index) {
+                                @if (item.typeCours.includes('TD')) {
+                                {{item.volumeHoraire}}H
+                                }
+                                }
+
+                            </td>
                         </tr>
                     </ng-container>
-
-                </ng-container>
-                <ng-template #notFund>
+                }@else {
                     <tr>
-                        <td colspan="9" class="text-center">Aucun résultat trouvé</td>
+                        <td colspan="5" class="text-center">Aucun résultat trouvé</td>
                     </tr>
-                </ng-template>
+                }
 
             </tbody>
         </table>
+        <div class="footer">
+            <p>Heures Total : {{emploisDto.heureTotal}}</p>
+            <p>Heures dues : 20</p>
+            <p>Heures supplementaires : 120</p>
+            <div class="signature">
+                <p>Ségou le, {{getCurrentDate()}}<br>
+                  Le chéf de Département
+                </p>
+                <p>Dr {{admin.nom.charAt(0).toLocaleUpperCase()}} {{admin.prenom.toLocaleUpperCase()}}<br>
+                  Maître assistant
+                </p>
+              </div>
+        </div>
     </div>
+    
 
 </main>

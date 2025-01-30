@@ -4,8 +4,6 @@
     <div class="right">
       <button type="button" *ngIf="permission" (click)="addTeacher()">Ajouter enseignant <fa-icon
           [icon]="icons.had_point_down"></fa-icon></button>
-      <button type="button" *ngIf="permission" (click)="timeWorks()">Heure éffectuer <fa-icon
-          [icon]="icons.had_point_down"></fa-icon></button>
     </div>
     <div class="input-search">
       <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..." class="search-input">
@@ -58,7 +56,7 @@
                 <a (click)="showForm(i)"><fa-icon [icon]="icons.books"></fa-icon><span>Ajouter spécialité</span></a>
                 <a (click)="toggle_toEdit(pr.idEnseignant!)"><fa-icon
                     [icon]="icons.eye"></fa-icon><span>Details</span></a>
-                <a (click)="toggle_toEdit(pr.idEnseignant!)"><fa-icon
+                <a *ngIf="permission" (click)="toggle_toHours(pr.idEnseignant!)"><fa-icon
                     [icon]="icons.eye"></fa-icon><span>H/effectuées</span></a>
               </div>
             </td>

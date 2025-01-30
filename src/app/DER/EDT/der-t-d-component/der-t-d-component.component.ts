@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { EnseiService } from '../../../Admin/Views/Enseignant/ensei.service';
 import { Teacher, teacherConfigureDto } from '../../../Admin/Models/Teachers';
-import { Participant } from '../../../Admin/Models/Students';
+import { Inscription, Participant, Student_group, StudentGroupDto } from '../../../Admin/Models/Students';
 import { EtudeService } from '../../../Admin/Views/Etudiants/etude.service';
 import { Emplois } from '../../../Admin/Models/Emplois';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -16,6 +16,8 @@ import { Admin } from '../../../Admin/Models/Admin';
 import { SideBarService } from '../../../sidebar/side-bar.service';
 import { IconsService } from '../../../Services/icons.service';
 import { AdminUSER } from '../../../Admin/Models/Auth';
+import { GroupeService } from '../../../Services/groupe.service';
+import { Class_shared } from '../../../DGA/class-students/Utils/Class-shared-methods';
 
 @Component({
   selector: 'app-der-t-d-component',
@@ -37,27 +39,28 @@ export class DerTDComponentComponent implements OnInit {
   list_checked: any[] = [];
   enseignants: Teacher[] = [];
   filteredItems: Teacher[] = [];
+  studentOldGroup: Participant[] = [];
   list_enseignant_checked: Teacher[] = []
   listParticip_checked: Participant[] = []
   participants: Participant[] = []
   form_config!: FormGroup
   salles: Salles[] = []
   teacherConf: teacherConfigureDto[] = []
-  showPerTeacher: { [teacherId: number]: boolean } = {};
+  showPerTeacher: { [teacherId: string]: boolean } = {};
 
   seanceTypeOptions: { key: string, value: string }[] = []
-  selectedGroup: { [teacherId: number]: number | null } = {};
-  selectedGroupAndRoom: { [teacherId: number]: { groupId: number, roomId: number,  seance: type_seance,  date: any[] } } = {};
+  selectedGroup: { [teacherId: string]: number | null } = {};
+  selectedGroupAndRoom: { [teacherId: string]: { groupId: number, roomId: number,  seance: type_seance,  date: any[] } } = {};
 
 
   constructor(private teacherService: EnseiService, private salleService: SalleService, private sideBareService: SideBarService,
-    private studentService: EtudeService, private seanceService: SeancService, public icons: IconsService,
-    private fb: FormBuilder, private root: ActivatedRoute, private pageTitle: PageTitleService) { }
+    private studentService: EtudeService, private seanceService: SeancService, public icons: IconsService, public sharedMethod: Class_shared,
+    private fb: FormBuilder, private root: ActivatedRoute, private pageTitle: PageTitleService, private studentGroupService: GroupeService) { }
   ngOnInit(): void {
     // this.getAllTeacherByIdUe();
     this.load_DtoList();
     this.load_salles();
-    this.load_form();
+    // this.load_form();
     this.getPermission();
     this.getStatusOptions()
 
@@ -76,14 +79,24 @@ export class DerTDComponentComponent implements OnInit {
 
   //  ------------------load form
   load_form() {
-    this.form_config = this.fb.group({
-      idParticipant: [''],
-      idSalle1: [''],
-      idSalle2: [''],
-      seanceType1: [''],
-      seanceType2: [''],
-      heureDebut: ['', Validators.required],
-      heureFin: ['', Validators.required],
+    // this.form_config = this.fb.group({
+    //   idParticipant: [''],
+    //   idSalle1: [''],
+    //   idSalle2: [''],
+    //   seanceType1: [''],
+    //   seanceType2: [''],
+    //   heureDebut: ['', Validators.required],
+    //   heureFin: ['', Validators.required],
+    // })
+
+    this.list_enseignant_checked.forEach(eck => {
+      this.form_config = this.fb.group({
+        idParticipant: [''],
+        idSalle: [''],
+        seanceType: [''],
+        heureDebut: ['', Validators.required],
+        heureFin: ['', Validators.required],
+      })
     })
   }
   // ----------------------get all teachers
@@ -97,7 +110,7 @@ export class DerTDComponentComponent implements OnInit {
     })
   }
 
-  // -------------------------------load all participation by idEmploi
+  //load all participation by idEmploi
   load_participation_by_emploi(idEmploi: number) {
     this.studentService.getParticipantsByEmploiId(idEmploi).subscribe((data) => {
       data.forEach(part => {
@@ -111,27 +124,31 @@ export class DerTDComponentComponent implements OnInit {
   }
 
   teacher_check(idTeacher: number) {
-    
+   const pass = this.generateRandomPassword(8);
+   console.log(pass, "pass");
     const teacher_fund = this.enseignants.find(t => t.idEnseignant == idTeacher);
     const emploi = this.currentEmploi;
 
     this.load_participation_by_emploi(emploi.id!);
+    this.getAllStudentGroups(emploi.idClasse.id!)
     if (teacher_fund) {
-      if (!this.list_enseignant_checked.some(teacher => teacher.idEnseignant == idTeacher) ) {
-        if(this.list_enseignant_checked.length >= 2){
-          this.list_enseignant_checked = [teacher_fund]
+       // Créer une nouvelle copie de l'enseignant pour éviter la liaison d'instances
+        const newTeacher = Object.assign({}, teacher_fund);
+        newTeacher.password = pass;
+        if(this.list_enseignant_checked.length >= 3){
+          this.list_enseignant_checked = [newTeacher]
         }else
-          this.list_enseignant_checked.push(teacher_fund);
-      }
+          this.list_enseignant_checked.push(newTeacher);
       
       console.log(this.list_enseignant_checked, "checked", "unchecked");
+      this.load_form();
     }
   }
-  // -------------------------check plag horaire
-  group_check(idEnseignant: number, idStudentGroup: number, event: any) {
+  //check plag horaire
+  group_check(pass: string, idStudentGroup: number, event: any) {
     if (event.target.checked) {
-      this.selectedGroupAndRoom[idEnseignant] = {
-        ...this.selectedGroupAndRoom[idEnseignant],
+      this.selectedGroupAndRoom[pass] = {
+        ...this.selectedGroupAndRoom[pass],
         groupId: idStudentGroup
       };
     }
@@ -139,19 +156,19 @@ export class DerTDComponentComponent implements OnInit {
   }
 
 // ---------------seance type cv\hange
-onTypeChange(idEnseignant: number, event: any, i: number) {
+onTypeChange(pass: string, event: any, i: number) {
   
   const seance = event.target.value;
-  this.selectedGroupAndRoom[idEnseignant] = {
-    ...this.selectedGroupAndRoom[idEnseignant],
+  this.selectedGroupAndRoom[pass] = {
+    ...this.selectedGroupAndRoom[pass],
     seance: seance
   };
   console.log(this.selectedGroupAndRoom, "seance selected");
 }
-onRoomChange(idEnseignant: number, event: any) {
+onRoomChange(pass: string, event: any) {
     const roomId = event.target.value;
-    this.selectedGroupAndRoom[idEnseignant] = {
-      ...this.selectedGroupAndRoom[idEnseignant],
+    this.selectedGroupAndRoom[pass] = {
+      ...this.selectedGroupAndRoom[pass],
       roomId: roomId
     };
     console.log(this.selectedGroupAndRoom, "room selected");
@@ -166,8 +183,8 @@ onRoomChange(idEnseignant: number, event: any) {
   }
 
   //  // Vérifie si un groupe est sélectionné pour un enseignant
-  isGroupSelected(teacherId: number, participantId: number): boolean {
-    return this.selectedGroup[teacherId] === participantId;
+  isGroupSelected(pass: string, participantId: number): boolean {
+    return this.selectedGroup[pass] === participantId;
   }
 
   isGroupAlreadySelected(groupId: number): boolean {
@@ -189,8 +206,11 @@ onRoomChange(idEnseignant: number, event: any) {
     for (const teacherId in this.selectedGroupAndRoom) {
       if (this.selectedGroupAndRoom.hasOwnProperty(teacherId)) {
         const selection = this.selectedGroupAndRoom[teacherId];
-        const teacher_fund = this.enseignants.find(tf => tf.idEnseignant == +teacherId);
-        const group_fund = this.participants.find(pt => pt.id == selection.groupId);
+        console.log(selection, "selected")
+        const teacher_fund = this.list_enseignant_checked.find(tf => tf.password == teacherId);
+        const group_fund = this.participants.find(pt => pt.id == selection.groupId) || this.studentOldGroup.find(old => old.id == selection.groupId);
+        console.log(group_fund, "group old")
+
         const salle_fund = this.salles.find(sal => sal.id == selection.roomId);
        
         // Créer une séance pour chaque date sélectionnée
@@ -233,7 +253,6 @@ onRoomChange(idEnseignant: number, event: any) {
       console.log(this.form_config.value, "inavlod")
     }
     
-
   }
   getStatusOptions() {
     const objet = Object.keys(type_seance).map(key => ({
@@ -248,8 +267,8 @@ onRoomChange(idEnseignant: number, event: any) {
     })
   }
 
-  chose_teacher(teacher: Teacher) {
-    this.teacher_check(teacher.idEnseignant!);
+  chose_teacher(teacher: Teacher,) {
+    this.teacher_check(teacher.idEnseignant!,);
     this.is_Teacher_checked(teacher)
     this.show_views = false
   }
@@ -262,11 +281,11 @@ onRoomChange(idEnseignant: number, event: any) {
   }
 
 
-  day_check(teacherId: number, date: string, event: any) {
-   
-    console.log(date, "date check")
+  day_check(pass: string, date: string, event: any) {
+   const ensei = this.list_enseignant_checked.find(e=>e.password==pass);
+    console.log(ensei, "ensei")
 
-    const teacherConfig = this.selectedGroupAndRoom[teacherId] || { groupId: 0, roomId: 0, date: [] };
+    const teacherConfig = this.selectedGroupAndRoom[pass] || { groupId: 0, roomId: 0, date: [] };
 
     if (event.target.checked) {
       if (!teacherConfig.date.includes(date)) {
@@ -277,14 +296,15 @@ onRoomChange(idEnseignant: number, event: any) {
     }
 
 
-    this.showPerTeacher[teacherId] = teacherConfig.date.length > 0;
-    this.selectedGroupAndRoom[teacherId] = teacherConfig;
-    console.log(this.selectedGroupAndRoom, "abject----")
+    this.showPerTeacher[pass!] = teacherConfig.date.length > 0;
+    this.selectedGroupAndRoom[pass!] = teacherConfig;
+    console.log(this.selectedGroupAndRoom, "abject")
   }
 
-  is_checked(teacherId: number, date?: string): boolean {
+  is_checked(pass: string, date?: string): boolean {
     
-    const teacherConfig = this.selectedGroupAndRoom[teacherId];
+  //  const ensei = this.list_enseignant_checked.find(e=>e.password==pass);
+    const teacherConfig = this.selectedGroupAndRoom[pass!];
     
     return teacherConfig?.date.includes(date) || false;
   }
@@ -332,5 +352,37 @@ onRoomChange(idEnseignant: number, event: any) {
     this.show_views = false;
     this.enseignants = []
   }
+
+  getAllStudentGroups(idClasse: number){
+    this.studentGroupService.getAllParticipantsOfClasse(idClasse).subscribe(data => {
+    console.log("les grp trouver:", data)
+      data.forEach(part => {
+        if (!this.studentOldGroup.some(d => d.idStudentGroup.id === part.idStudentGroup.id)) {
+          this.studentOldGroup.push(part)
+        }
+      })
+      
+    })
+  }
+
+  // select group
+  onSelectOldGrp(event: any, pass: string){
+    const idGroup = event.target.value;
+    this.selectedGroupAndRoom[pass].groupId = idGroup;
+    console.log(this.selectedGroupAndRoom,"selected")
+
+  }
+
+  generateRandomPassword(length: number): string {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+   
+    let password = "";
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        password += characters[randomIndex];
+    }
+    return password;
+}
+
  
 }

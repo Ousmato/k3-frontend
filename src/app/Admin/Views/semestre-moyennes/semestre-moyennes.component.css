@@ -44,25 +44,6 @@ th {
   background: var(--primary); /* Couleur de la barre au survol */
 }
 
-
-select{
-    border: none;
-}
-
-select:focus{
-    outline: none;
-    box-shadow: none;
-}
-select {
-    height: 35px;
-    width: 100px;
-    background-color: var(--primary);
-    color: var(--secondary);
-    border-radius: 8px;
-    padding: 0 5px;
-    outline: none;
-    border: none;
-  }
   button{
     /* width: 100px; */
     height: 35px;
@@ -95,7 +76,7 @@ select {
 .entete{
   margin-top: 5px;
   border-top: 1px solid var(--tertiary);
-  padding: 0 20px;
+  /* padding: 0 20px; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -111,4 +92,15 @@ p{
     display: flex;
     justify-content: space-between;
     
+}
+.ueValid{
+    background-color: #f1f1f1;
+    /* color: #eeeeee; */
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+}
+.Observation{
+    font-weight: bold;
 }

@@ -38,7 +38,7 @@ export class AppComponent  implements OnInit {
         this.alerMinutea = false
         console.log(this.showModal, "state modal d'expiration")
         return;
-      }else if(event.includes('expire date.')){
+      }else if(typeof event === 'string' && event.includes('expire date.')){
 
         this.value = event
         this.heure = this.value.split('T')[1].split('.')[0]; // Récupérer l'heure avant la fraction de seconde

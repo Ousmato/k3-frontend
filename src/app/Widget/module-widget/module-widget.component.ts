@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PageTitleService } from '../../Services/page-title.service';
 import { IconsService } from '../../Services/icons.service';
@@ -17,18 +17,12 @@ export class ModuleWidgetComponent implements OnInit {
 
 
   @Output() closeModale = new EventEmitter<any>();
+  @Input () Ue !: Ue
 
-  ishow_add: boolean = false
-  ishow_update: boolean = false
-  ishow_delete: boolean = false
-  isInputShow: boolean = false
-  isConfirm: boolean = false
-  isEcue: boolean = false
-  addModule!: FormGroup;
-  update_module_form!: FormGroup;
-  ueListe : Ue[] = []
-  modules : Module[] = []
-  classes : ClassRoom[] = []
+  addForm!: FormGroup;
+  // ueListe : Ue[] = []
+  // modules : Module[] = []
+  // classes : ClassRoom[] = []
   moduleForDelete!: Module
 
   constructor(private fb: FormBuilder,  private pageTitle: PageTitleService,
@@ -36,98 +30,48 @@ export class ModuleWidgetComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.load_ues();
-    this.loadUpdateModuleForm();
+    console.log(this.Ue, "ue checked")
+    this.loadForm();
   }
 
-  // load all ue
-  load_ues() {
-    this.service.getAll_ue_all().subscribe(response =>{
-      this.ueListe = response;
-    
-    })
-  }
 
   // ------------------load form add module
  
 
-  loadUpdateModuleForm() {
-    this.update_module_form = this.fb.group({
-      id: ['', Validators.required],
+  loadForm() {
+    this.addForm = this.fb.group({
       nomModule : ['',[Validators.required, Validators.maxLength(40)]],
       coefficient : ['', [Validators.required, Validators.min(1), Validators.max(6)]],
-      idUe : ['', Validators.required]
+      idUe : [this.Ue.id, Validators.required]
 
     })
    
   }
 
-  // module change
-  onModuleChange(event: any){
-    this.isInputShow = true
-    const idSelect = event.target.value;
-    const module = this.modules.find(m =>m.id == idSelect)
-    this.update_module_form.get('id')?.setValue(module?.id);
-    this.update_module_form.get('nomModule')?.setValue(module?.nomModule);
-    this.update_module_form.get('coefficient')?.setValue(module?.coefficient);
-    // this.update_module_form.get('idUe')?.setValue(this.moduleFind?.idUe.nomUE);
-  }
-
-  onDelete(event: any){
-    const idSelect = event.target.value;
-    this.moduleForDelete = this.modules.find(m => m.id == idSelect)!
-    this.isConfirm = true
-    this.closeModale.emit();
-  }
-
-  // --------------------------delete methode
-  delete_module(idUe: number){
-    this.service.deleteModule(idUe).subscribe({
-      next: (response) => {
-        this.pageTitle.showSuccessToast(response.message);
-        this.isConfirm = false
-        this.load_module();
-      },
-      error: (erreur) => {
-        this.pageTitle.showErrorToast(erreur.error.message);
-      }
-    })
-  }
-   // load modules liste
-   load_module(){
-    this.classService.allModuleWithoutNotes().subscribe((mods: Module[]) => {
-      this.modules = mods; 
-      // console.log("les modules")
-    
-    })
-   }
   //  method update
   update(){
-    const formData = this.update_module_form.value
-    const idUe = this.ueListe.find(ue => ue.id == formData.idUe)
+    const formData = this.addForm.value
+    // const idUe = this.ueListe.find(ue => ue.id == formData.idUe)
     const module : Module = {
-     id: formData.id,
      nomModule: formData.nomModule,
      coefficient: formData.coefficient,
-     idUe: idUe!
+     idUe: this.Ue!
     }
     // console.log(module, "mmmmmm")
    //  return
-   if(this.update_module_form.valid){
-      this.service.updateModule(module!).subscribe({
+   if(this.addForm.valid){
+      this.service.addModule(module!).subscribe({
         next: (data) => {
           this.pageTitle.showSuccessToast(data.message);
-          this.update_module_form.reset();
-          this.load_module();
-          this.isInputShow = false
-          // this.ishow_module = false;
+          this.addForm.reset();
+          this.closeModale.emit();
         },
         error: (erreur) => {
           this.pageTitle.showErrorToast(erreur.error.message);
         }
       })
     }else{
-      this.update_module_form.markAllAsTouched();
+      this.addForm.markAllAsTouched();
     }                                                        
      
    }
@@ -135,37 +79,8 @@ export class ModuleWidgetComponent implements OnInit {
  
   close_update(){
     this.closeModale.emit();
-    this.ishow_update = false
-    this.isInputShow = false
   }
-  close_delete(){
-    
-    this.ishow_delete = false
-    this.closeModale.emit();
-  }
-
-  exitDelete(){
-    this.isConfirm = false;
-    this.closeModale.emit()
-  }
-  // ---------------------show form
  
-  show_updated(){
-    this.load_module();
-    this.ishow_update = true;
-    this.closeModale.emit();
-  }
-  show_delete(){
-    this.load_module();
-    this.ishow_delete = true
-    this.closeModale.emit();
-  }
-
-  nextToConfirm(){
-    this.isConfirm = true
-    this.closeModale.emit();
-  }
-
   // ------------------------------
  
 }

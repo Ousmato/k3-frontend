@@ -11,7 +11,7 @@ import { SemestreService } from '../../Services/semestre.service';
 import { Semestres } from '../../Admin/Models/Semestre';
 import { Admin } from '../../Admin/Models/Admin';
 import { AdminUSER } from '../../Admin/Models/Auth';
-import { Module } from '../../Admin/Models/Module';
+import { Ecue, Module } from '../../Admin/Models/Module';
 
 @Component({
   selector: 'app-ue-widget',
@@ -26,6 +26,7 @@ export class UeWidgetComponent implements OnInit {
   // module!: FormGroup
 
   ueList: Ue[] = []
+  @Input() module!: Ecue
   @Input() ue!: AddUeDto
   // semestre: Semestres[] = []
   @Input() show_update: boolean = false;
@@ -43,7 +44,10 @@ export class UeWidgetComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.show_deleted, "show_deleted")
-    this.load_formUpdate();
+    if(this.ue != null){
+      this.load_formUpdate();
+    }
+    
     this.admin = AdminUSER()?.scolarite
   }
 
@@ -52,7 +56,7 @@ export class UeWidgetComponent implements OnInit {
   load_formUpdate(){
     this.update_ue_form = this.fb.group({
       id: [this.ue.idUe.id],
-      nomUE: [this.ue.idUe.nomUE, [Validators.required, Validators.maxLength(40)]],
+      nomUE: [this.ue.idUe.nomUE, [Validators.required, Validators.maxLength(120)]],
       modules: this.fb.array([])
     });
 
@@ -70,7 +74,7 @@ export class UeWidgetComponent implements OnInit {
       id: [module.id],
       coefficient: [module.coefficient, [Validators.required, Validators.min(1), Validators.max(10)]],
       nomModule: [module.nomModule, [Validators.required, Validators.maxLength(40)]],
-      
+      description: [module.description, [Validators.required]]
     });
   }
  
@@ -121,8 +125,8 @@ export class UeWidgetComponent implements OnInit {
    
   }
 
-  deleteUe(idUe: number){
-    this.setService.deleteUe(idUe).subscribe({
+  deleteUe(idModule: number){
+    this.setService.deleteModule(idModule).subscribe({
       next: (response) => {
         this.pageTitle.showSuccessToast(response.message);
         this.show_deleted = false

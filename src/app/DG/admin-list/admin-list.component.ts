@@ -170,7 +170,11 @@ export class AdminListComponent implements OnInit {
   // abrevigate name
   abrevigateName(name: string){
     const words = name.split(' ')
-    return words.filter(words => words.length > 3).map(words => words[0].toUpperCase()).join('');
+   let w = words.filter(words => words.length > 3).map(words => words[0].toUpperCase()).join('');
+    if(w === "A"){
+      w = "ADMIN"
+    }
+    return w
   }
 
   submit(idAdminDefault: number, idRole: number){

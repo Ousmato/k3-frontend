@@ -1,10 +1,8 @@
 main{
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    height: 80vh;
+    width: 100%;
     padding: 10px;
-    transition: box-shadow 0.3s ease-in-out, padding 0.3s ease-in-out;
-    /* opacity: 0; */
-    transform: translateY(20px); /* Déplacer légèrement vers le bas */
-
+   
 }
 .head-content{
     display: flex;
@@ -13,24 +11,10 @@ main{
     margin-bottom: 10px;
 }
 .logo img{
-    width: 100px;
+    width: 70px;
     height: auto;
 }
-.back-button{
-    width: 30px;
-    height: 30px;
-    display: flex;
-    /* align-items: center; */
-    padding: 8px;
-    font-size: 20px;
-    &:hover{
-        background-color: var(--tertiary);
-        color: var(--primary);
-        border: none;
-        border-radius: 50%;
-    }
 
-}
 button{
     border: none;
     padding: 5px;
@@ -50,7 +34,60 @@ select{
     font-size: 14px;
 }
 
-select:focus{
+
+.table-container{
+    height: 60%;
+    position: relative;
+    overflow-y: auto;
+}
+.table thead {
+    background-color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+/* Personnalisation de la barre de défilement */
+.table-container::-webkit-scrollbar {
+  width: 5px; /* Largeur de la barre de défilement */
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: white; /* Couleur de l'arrière-plan de la piste */
+  border-radius: 10px; /* Coins arrondis de la piste */
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: var(--tertiary); /* Couleur de la barre de défilement */
+  border-radius: 10px; /* Coins arrondis de la barre */
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: var(--primary); /* Couleur de la barre au survol */
+}
+
+select {
+    height: 30px;
+    width: 100px;
+    margin-left: 10px;
+    background-color: var(--primary);
+    color: var(--secondary);
+    border-radius: 5px;
+    padding: 0 5px;
     outline: none;
-    box-shadow: none;
+    border: none;
+  }
+
+.table-head-info{
+    display: flex;
+    justify-content: space-between;
+}
+h6 span{
+    font-weight: normal;
+}
+
+.footer{
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
 }

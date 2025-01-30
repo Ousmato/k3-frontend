@@ -42,15 +42,19 @@
                     <th>Date Naissance</th>
                     <th>Lieu Naissance</th>
                     <th>Sexe</th>
-                    <th>Note Classe</th>
+                    @if (codeUe.toLowerCase().includes('lib')) {
+                      <th>Note</th>
+                      <th>UE-Libre</th>
+                    }@else {
+                    <th>Devoir</th>
 
-                    <th>Note Examen</th>
+                    <th>Examen</th>
                     <th>Note Sess</th>
                     <th>Session</th>
                     <th>Note UE</th>
                     <th>Val UE</th>
                     <!-- <th>Emargement</th> -->
-
+                    }
                 </tr>
             </thead>
             <tbody>
@@ -63,6 +67,31 @@
                           <td>{{ incrit.inscriptions.dateNaissance }}</td>
                           <td>{{ incrit.inscriptions.lieuNaissance }}</td>
                           <td>{{ incrit.inscriptions.sexe}}</td>
+                          @if (codeUe.toLowerCase().includes('lib')) {
+                            <td> 
+                              <form [formGroup]="noteForms[incrit.idModule + '-' + i]">
+                              <input
+                                (change)="onSubmit(incrit.idModule, incrit.inscriptions.id!, noteForms[incrit.idModule + '-' + i].value)"
+                                type="number"
+                                [class.is-invalid]="noteForms[incrit.idModule + '-' + i].get('classeNote')?.invalid"
+                                formControlName="classeNote"/>
+                              <span
+                                *ngIf="noteForms[incrit.idModule + '-' + i]?.get('classeNote')?.errors?.['min'] || noteForms[incrit.idModule + '-' + i]?.get('classeNote')?.errors?.['max']"
+                                style="color: red;">
+                                0 à 20.
+                              </span>
+                              <span
+                                *ngIf="noteForms[incrit.idModule + '-' + i]?.get('classeNote')?.errors?.['required']"
+                                style="color: red;">
+                                Requise
+                              </span>
+                            </form>
+                          </td>
+                          <td [ngStyle]="{'background-color': incrit.validate.includes('ACQUIS') ? 'green' : 'red', 'color': 'white'}">
+                            {{ incrit.validate }}
+                          </td>
+                          }@else {
+
                           
                           <td>
                             <form [formGroup]="noteForms[incrit.idModule + '-' + i]">
@@ -124,10 +153,12 @@
                               </form>
                           </td>
                           <td>{{incrit.nbreSession}}</td>
+                          
                           <td>{{incrit.noteUe}}</td>
                           <td [ngStyle]="{'background-color': incrit.validate.includes('AD') ? 'green' : 'red', 'color': 'white'}">
                             {{ incrit.validate }}
                           </td>
+                        }
                           <!-- <td>--------</td> -->
                         </tr>
                       </ng-container>

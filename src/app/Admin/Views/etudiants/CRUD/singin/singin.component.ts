@@ -50,7 +50,7 @@ export class SinginComponent implements OnInit {
   ngOnInit(): void {
     this.get_all_niveau();
     this.get_all_filiere();
-
+    this.admin = AdminUSER()?.scolarite
     this.studentStatusOptions = this.getStatusOptions();
     this.studentDiplomesOptions = this.getDiplomesOptions();
     this.studentAccademieOptions = this.getAccademiesOptions();
@@ -89,7 +89,7 @@ export class SinginComponent implements OnInit {
     });
     // ----------------------------------------------------------------------
 
-    this.classeService.getAllCurrentClassOfYear().subscribe(data => {
+    this.classeService.getAllCurrentClassOfYear(this.admin.idAdministra!).subscribe(data => {
       this.classRoom = data;
       console.log(this.classRoom);
     });

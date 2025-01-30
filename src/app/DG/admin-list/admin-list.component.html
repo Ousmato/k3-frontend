@@ -25,7 +25,7 @@
                      <th>Photo</th>
                     <th>Nom</th>
                     <th>Prenom</th>
-                    <th>Email</th>
+                    <th>Sexe</th>
                     <th>Telephone</th>
                     <th>Poste</th>
                     <th>Etat</th>
@@ -38,10 +38,10 @@
                         <td> <img [src]="dto.admin.urlPhoto" (error)="onError($event)" alt=""></td>
                         <td>{{dto.admin.nom.charAt(0) + dto.admin.nom.slice(1).toLowerCase()}}</td>
                         <td>{{dto.admin.prenom}}</td>
-                        <td>{{dto.admin.email}}</td>
+                        <td>{{dto.admin.sexe.includes('F') ? 'F' : 'M'}}</td>
                         <td>{{dto.admin.telephone}}</td>
                         <td [ngStyle]="{'font-size': '13px'}">
-                            {{dto.admin.idRole.nom.toUpperCase()}} <strong class="abreger">({{abrevigateName(dto.admin.idRole.nom)}})</strong> <br>
+                            {{dto.admin.idRole.nom.toUpperCase()}} <strong class="abreger">({{abrevigateName(dto.admin.idRole.nom)}} {{dto.admin.idRole.typeFiliere}})</strong> <br>
                         
                             @for (item of dto.roleNames; track $index) {
                                 {{item}} <br>

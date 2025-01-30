@@ -11,10 +11,8 @@ import { StudentNoteComponent } from '../../Admin/Views/student-note/student-not
 import { AllNotesSemestreComponent } from '../../Admin/Views/all-notes-semestre/all-notes-semestre.component';
 import { EtudiantsDeLaClasseComponent } from '../../Admin/Views/Etudiants/etudiants-de-la-classe/etudiants-de-la-classe.component';
 import { StudentBulletinComponent } from '../../Admin/Component/student-bulletin/student-bulletin.component';
-import { DgaArchivesComponent } from '../dga-archives/dga-archives.component';
 import { SchoolEditWidgetComponent } from '../../Widget/school-edit-widget/school-edit-widget.component';
 import { ViewUeComponent } from '../../Widget/ue-widget/view-ue/view-ue.component';
-import { ClassArchiveComponent } from '../class-students/class-archive/class-archive.component';
 import { MyAccuntComponent } from '../../DG/my-accunt/my-accunt.component';
 import { NotificationComponent } from '../../Admin/notification/notification.component';
 
@@ -25,13 +23,11 @@ const routes: Routes = [{path: '', component: DgaSidebarComponent,
     {path: 'setting', component: SettingsComponent, data:{title: "PARAMETRE ET CONFIDENTIALITE"}},
     {path: 'etudiant', component: EtudiantsComponent},
     {path: 'student-notes', component: StudentNoteComponent},
-    {path: 'archive-scolaire', component: DgaArchivesComponent},
     // {path: 'all-notes', component: AllNotesSemestreComponent, data:{title: "Notes du Semestre"}},
     {path: 'etudiant-de-la-classe', component : EtudiantsDeLaClasseComponent, data:{title: "Etudiants de la classe"}},
     {path: 'student-bulletin', component: StudentBulletinComponent},
     {path: 'update-school', component: SchoolEditWidgetComponent, data:{title: "Information de l'Etablissement"}},
 
-    {path: 'class-archives', component: ClassArchiveComponent},
     {path: 'view-ues', component: ViewUeComponent, data:{title: "LES UNITES D'ENSEIGNEMENT"}},
     {path: 'all-notes', component: AllNotesSemestreComponent, data:{title: "NOTES DU SEMESTRE"}},
     {path: 'my-accunt', component: MyAccuntComponent, data:{title: "Mon Compte"}},

@@ -1,4 +1,5 @@
 import { Admin } from "./Admin";
+import { TeacherEmplois } from "./Emplois";
 import { Filiere, Specialites } from "./Filieres";
 import { type_seance } from "./Seances";
 import { Ue } from "./UE";
@@ -38,10 +39,13 @@ export interface TeacherDto{
     nom: string;
     prenom: string;
     email: string;
+    dateNaissance: string
     sexe: string;
+    heureTotal: number
     diplome: Diplomes;
     telephone: number;
     urlPhoto?: string;
+    teacherEmploiList: TeacherEmplois[]
     status: TeachersStatus;
     specialitesList: Specialites[]
 }
@@ -52,5 +56,6 @@ export interface teacherConfigureDto{
     prenom: string;
     salle : string;
     groupe: string;
-    seanceType: type_seance[];
+    seanceType: string;
+    idGroupe: number
 }

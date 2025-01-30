@@ -1,17 +1,9 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
-import { Inscription, Student, Type_status } from '../../Admin/Models/Students';
-import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { EtudeService } from '../../Admin/Views/Etudiants/etude.service';
 import { IconsService } from '../../Services/icons.service';
 import { PageTitleService } from '../../Services/page-title.service';
-import { SideBarService } from '../../sidebar/side-bar.service';
-import { Admin } from '../../Admin/Models/Admin';
-import { StudentPages } from '../../Admin/Models/Pagination-module';
 import { ClassStudentService } from '../../DGA/class-students/class-student.service';
-import { ClassRoom } from '../../Admin/Models/Classe';
-import { Niveau } from '../../Admin/Models/Niveau';
-import { environment } from '../../../environments/environment';
+import { Admin } from '../../Admin/Models/Admin';
 import { AdminUSER } from '../../Admin/Models/Auth';
 
 @Component({
@@ -21,235 +13,39 @@ import { AdminUSER } from '../../Admin/Models/Auth';
 })
 export class RSReinscriptionComponent implements OnInit {
 
-  searchTerm: string = '';
-  inscription: Inscription[] = [];
-  studentsInscrit: Inscription[] = [];
-  list_checked: Inscription[] = [];
-  idClasse!: any
-  classRoom: ClassRoom[] = []
-  niveau?: Niveau
-  NextClassRoom: ClassRoom[] = []
-  NextClass!: ClassRoom
-  newEvent = new EventEmitter<any>();
-
-  filteredItems: Inscription[] = []
-
+  @Input() list_checked: number[] = [];
+  @Input() idClasse!: number
   admin!: Admin
-  idAnne!: number
-  permission: boolean = false
-  is_show: boolean = false
-  update_student_form!: FormGroup
-  classeStudent: Student[] = []
-  inscrit?: Inscription;
+  @Output() closeModale = new EventEmitter<any>();
 
-  constructor(private service: EtudeService, private rout: ActivatedRoute, private sideBarService: SideBarService,
-    private classeService: ClassStudentService, public icons: IconsService, private router: Router,
+  constructor(private service: EtudeService,
+    private classeService: ClassStudentService, public icons: IconsService,
     private pageTitle: PageTitleService) { }
 
   ngOnInit(): void {
-    this.getPermission();
-    // this.loadStudents();
-    this.load_classes();
-    this.sideBarService.currentSearchTerm.subscribe(term => {
-      this.searchTerm = term;
-      this.filterStudents();
-
-
-    });
+    this.admin = AdminUSER()?.scolarite
+   
   }
-  // ----------------------------------get permission
-  getPermission(): boolean {
-    const autorize = AdminUSER()?.scolarite;
-    this.admin = autorize
-    if (autorize) {
-      this.permission = true
-      return true;
-    }
-    return false
-  }
-  // ------------------------------filter students
-  filterStudents() {
-    if (!this.searchTerm) {
-      return this.filteredItems = this.inscription;
-    } else {
-      return this.filteredItems = this.inscription.filter(inscrit =>
-        inscrit.idEtudiant.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        inscrit.idEtudiant.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-       
-        inscrit.idClasse.idFiliere?.idFiliere.nomFiliere.toLowerCase().includes(this.searchTerm.toLowerCase())
-      );
-    }
-  }
-
-
-  // -----------------------load all classe 
-
-  load_classes() {
-    this.rout.queryParams.subscribe(param => {
-      this.idAnne = param['id']
-    })
-    this.classeService.getAllClasse(this.idAnne).subscribe(result => {
-      this.classRoom = result;
-    })
-  }
-
-  // ------------------------------------------------------------
-  getStudentView(inscrits: Inscription[]) {
-    this.is_show = true
-    // this.inscrit = inscrit
-    // this.inscrit.idEtudiant.urlPhoto = `${environment.urlPhoto}${inscrit.idEtudiant.urlPhoto}`
-    console.log(this.inscrit, "student 000")
-    
-  }
-
  
-  // -------------------reinscription
-  confirmInscription(students: Inscription[], idClasse: number){
-    console.log(students, "student", idClasse,"idClasse")
-    // return
-    this.service.reInscriptionStudent(students!, idClasse!, this.admin.idAdministra!).subscribe({
-      next: (result) => {
-        this.pageTitle.showSuccessToast(result.message)
-        // this.changeClasse(idClasse);
-        
-      },
-      error: (error) => {
-        this.pageTitle.showErrorToast(error.error.message)
-      }
-    })
-  }
-  // ----------------------------------------------------------
-  deleted_student(id: number) {
-    this.service.desactiveStudent(id).subscribe(
-      {
-        next: (response) => {
-          this.pageTitle.showSuccessToast(response.message);
-        },
-        error: (erreur) => {
-          this.pageTitle.showErrorToast(erreur.error.message);
-        }
-      }
-    )
-  }
-
 
   // close modal
   exitConfirm() {
     console.log("-------------------id select", this.idClasse)
-    this.changeClasse(this.idClasse);
-    this.is_show = false;
+   this.list_checked = []
+   this.closeModale.emit();
   }
 
-  // -------------------------go back
-  goBack() {
-    window.history.back();
-  }
-  changeClasse(eventOrIdClasse: any) {
-    if (eventOrIdClasse.target) {
-      // Si c'est un événement, obtenir la valeur de target
-      this.idClasse = eventOrIdClasse.target.value ? eventOrIdClasse.target.value : undefined;
-    } else {
-        // Si ce n'est pas un événement, assumer que c'est un idClasse
-        this.idClasse = eventOrIdClasse ? eventOrIdClasse : undefined;
-    }
-    this.rout.queryParams.subscribe(param => {
-      this.idAnne = +param['id']
-    })
-    console.log(this.idClasse, "id classe")
-
-    this.service.getStudentListByIdAnneeAndIdClasse(this.idAnne, +this.idClasse).subscribe(data => {
-      this.inscription = data
-      
-      this.filteredItems = data;
-     
-      console.log(this.inscription, "students id anne id classe")
-    });
-    this.load_nextClasse(this.idClasse);
-
-  }
-
-  load_nextClasse(idClasse: number) {
-    this.classeService.getNextClasseByIdPrevious(idClasse).subscribe(result => {
-      this.NextClassRoom = result;
-
-      
-      console.log(result, "next class")
-
-      this.NextClassRoom.forEach(ncls => {
-        this.NextClass = ncls
-        this.niveau = ncls.idFiliere?.idNiveau
-        // this.service.getStudentListByIdAnneeAndIdClasse(ncls.idAnneeScolaire?.id! ,ncls.id!).subscribe(result => {
-        //   this.studentsInscrit = result
-        //   console.log(this.studentsInscrit, "les incrits")
-        // })
-      })
-    })
-
-  }
-  // ----------------methode to compare liste studentInscrit and students
-  check(idInscription: number, active: boolean) {
-    return this.studentsInscrit.some(e => e.idEtudiant.idEtudiant == idInscription && e.active == active);
-    
-  }
-
-  // -----------------change state
-  changeState(idEtudiant: number, idClasse: number) {
-   const idInscription = this.studentsInscrit.find(si =>si.idEtudiant.idEtudiant == idEtudiant);
-    this.service.changeStateStudentInscription(idInscription?.id!, idClasse).subscribe({
+  confirmInscription(ids: number[]){
+    this.service.reInscriptionStudent(ids, this.idClasse, this.admin.idAdministra!).subscribe({
       next: (result) => {
         this.pageTitle.showSuccessToast(result.message)
-        this.load_classes();
+        this.list_checked = []
+        this.closeModale.emit()
+
       },
       error: (error) => {
         this.pageTitle.showErrorToast(error.error.message)
       }
     })
-
-  }
-  // ---------------abrevigate
-  abrevigateFiliere(name: string) : string{
-    const wordAbreviate = name.split(' ');
-    const word = wordAbreviate.filter(word =>word.length > 3).map(word => word[0].toUpperCase()).join('');
-    return word;
-  }
-
-  onError(event: Event) {
-    const target = event.target as HTMLImageElement;
-    target.src = 'assets/business-professional-icon.svg';
-  }
-  // student select
-  student_check(idInscription: number, event: any) {
-    const student_fund = this.inscription.find(inscrit => inscrit.id === idInscription);
-
-
-    if (student_fund) {
-      if(student_fund.idEtudiant.status == Type_status.PROFESSIONNEL_PRIVEE){
-        
-        console.log("status: " + student_fund.idEtudiant.status)
-      }
-      if (event.target.checked) {
-        if (!this.list_checked.some(st => st.id === idInscription)) {
-          this.list_checked.push(student_fund);
-        }
-      } else {
-        this.list_checked = this.list_checked.filter(st => st.id !== student_fund.id);
-      }
-    }
-    console.log(this.list_checked, "student list checked");
-  }
-  // select all students
-  selectAll(event: any) {
-    if (event.target.checked) {
-      this.list_checked = [...this.inscription];
-    } else {
-      this.list_checked = [];
-    }
-  }
-  is_checked(idStudent: number): boolean {
-    return this.list_checked.some(st => st.id === idStudent);
-  }
-
-  areAllChecked(): boolean {
-    return this.list_checked.length === this.inscription.length;
   }
 }

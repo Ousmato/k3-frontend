@@ -71,7 +71,13 @@ export class EnseignantComponent implements OnInit {
     }else{
       this.root.navigate(['/sidebar/t-edit'], navigationExtras)
     }
+
    
+  }
+
+  toggle_toHours(id: number){
+    
+    this.root.navigate(['/der/paiement'], {queryParams : {id:id}})
   }
   // -----------------------------load teacher by pages
   loadTeachers(): void {
@@ -114,14 +120,6 @@ export class EnseignantComponent implements OnInit {
     }
   }
 
-  timeWorks() {
-    this.searchTerm = '';
-    if (this.getPermission()) {
-        this.root.navigate(['/der/paiement']);
-    } else {
-        this.root.navigate(['/sidebar/paiement']);
-    }
-}
 
   addTeacher() {
     this.root.navigate(['/der/t-singin']);

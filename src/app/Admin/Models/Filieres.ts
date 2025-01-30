@@ -13,6 +13,10 @@ export enum FiliereNiveau{
     L3 = "LICENCE 3",
 }
 
+export enum TypeFilieres{
+    GESTIONS = "GESTIONS",
+    SCIENTIFIQUES = "SCIENTIFIQUES",
+}
 export interface Specialites{
     id?:number;
     nom: string

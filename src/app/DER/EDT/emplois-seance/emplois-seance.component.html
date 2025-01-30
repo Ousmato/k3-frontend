@@ -18,9 +18,7 @@
     </div>
     <div id="idContent" class="btn-contenaire">
       <div class="child-1">
-        <button *ngIf="permission && group !== null " (click)="go_toList(emplois?.id!)" class="btn btn-valid-emplois"
-          type="button"><fa-icon [icon]="icons.list"></fa-icon>
-          Groupe Listes</button>
+
         <button *ngIf="permission" (click)="imprimer()" class="btn btn-valid-emplois" type="button"><fa-icon
             [icon]="icons.pdf" class="pdf-icon"></fa-icon> Imprimer</button>
         <button *ngIf="permission" (click)="to_show_button()" class="btn btn-valid-emplois" type="button"><fa-icon
@@ -33,7 +31,7 @@
         <button class="btn btn-show-form" *ngIf="scolarite || permission || secretaire" type="button"
           (click)="to_configure()"><fa-icon [icon]="icons.setting"></fa-icon> Configurer</button>
       </div>
-      
+
 
     </div>
 
@@ -41,25 +39,44 @@
 
   <div class="entete-content">
     <div class="children">
-      <h4>FILIERE : {{emplois?.idClasse?.idFiliere?.idFiliere?.nomFiliere}}</h4>
+      <h4>FILIERE : {{sharedMethodClasse.abreviateFiliereName(emplois?.idClasse?.idFiliere?.idFiliere?.nomFiliere!)}}
+      </h4>
     </div>
     <div class="children">
-      <h4>NIVEAU : {{emplois?.idClasse?.idFiliere?.idNiveau?.nom}}</h4>
+      <h4>NIVEAU : {{emplois?.idClasse?.idFiliere?.idNiveau?.nom}}-{{emplois?.idSemestre?.nomSemetre}}</h4>
     </div>
     <div class="children">
       <h4>Annee : {{formattedDate}}</h4>
     </div>
-    <div class="children">
+    <!-- <div class="children">
       @for (salle of listSalle; track $index) {
         @for (item of salle.typeSeance; track $index) {
           @if (item.toString().toLocaleUpperCase() == 'CM') {
-          <h4>Salle CM : {{salle.salle.nom}} </h4>
+          <h4>Salle CM :  <span *ngFor="let config of teacherConf let i = index">
+            @if (config.seanceType.toLowerCase() === 'cm') {
+              {{ salle.salle.nom ? config.salle : ""}}
+           
+            } @else if(i == 0) {
+              {{listSalle[0].salle.nom }}
+            }
+          </span>
+          </h4>
           }
         }
 
       }
+    </div> -->
+    <div class="children" *ngIf="teacherConf.length == 0">
+      @for (salle of listSalle; track $index) {
+        @for (item of salle.typeSeance; track $index) {
+          @if (item.toString().toLocaleUpperCase() == 'CM') {
+          <h4>Salle CM :  {{salle.salle.nom}}</h4>
+          }
+        }
+
+      }
+
     </div>
-    <!-- <div class="children"></div> -->
   </div>
   <section class="content">
 
@@ -107,13 +124,18 @@
                           </span><br>
                           @if (seance.seanceType.toString() == 'td') {
 
-                            @for (jour of journee; track $index) {
+                            @if(teacherConf.length == 0){
+                          {{seance.nomTeacher.charAt(0).toUpperCase()}}. {{seance.prenomTeacher}}
+
+                            }
+                          <!-- @for (jour of journee; track $index) {
                               @if ($index == 0) {
                                 @for (gp of jour.groupes; track $index) {
                                   {{gp.nom}} 
+                                  
                                 }
                             }
-                          }
+                          } -->
                           <!-- {{seance.groupe ? seance.groupe : ""}} <br> -->
                           <!-- {{seance.idParticipant}} <br>
                                   {{seance.nomTeacher}} -->
@@ -158,38 +180,23 @@
         <div class="f-contenair">
           @for (seance of teacherConf; track $index) {
           <div class="footer">
-            <p >{{seance.nom}} {{seance.prenom}} :</p>
-
-            @for (item of seance.seanceType; track $index) {
-            <p> @if (item.toString() === 'cm') {
-               {{item.toLocaleUpperCase()}} {{ec}}
-              }
-
-            </p>
-            @if (item.toString() === 'td') {
-            {{item.toLocaleUpperCase()}}_{{seance.groupe}}
-            }
-
-            }
+            <p>{{seance.nom}} {{seance.prenom}} : {{seance.seanceType}}</p>
           </div>
 
           }
+          @for (sal of teacherConf; track $index) {
           <div class="footer salle-footer">
-            Salle TD :
-            @for (sal of teacherConf; track $index) {
+            <!-- @if (sal.seanceType) {} -->
+            {{sal.seanceType.includes('TD') ? "Salle TD : " : " Salle CM :"}}
+
             <div class="salle-row">
-              @for (item of sal.seanceType; track $index) {
-
-              @if (item.toString() == 'td') {
-              <p class="group">{{sal.groupe}} : </p>
-
+              <p class="group" (click)="goToGroupe(sal.idGroupe)">{{ sal.groupe}} : </p>
               <p class="salle"> {{sal.salle}};</p>
 
-              }
-              }
             </div>
-            }
+
           </div>
+          }
         </div>
         <div class="signature">
           <p>Ségou le, {{getCurrentDate()}}<br>

@@ -110,11 +110,6 @@ export class AddGroupStudentComponent implements OnInit {
       this.groupes = data
       console.log(this.groupes, "groupes")
     })
-    // this.inscriptionService.getListInscriptionByIdEmploi(this.idEmploi).subscribe(inscrit => {
-    //   this.inscriptions = inscrit
-    //   // this.filteredItem = inscrit
-    //   console.log(inscrit, "touts les incrits")
-    // })
     this.load_participation_by_emploi(this.idEmploi);
   }
   // load all participation by idEmploi

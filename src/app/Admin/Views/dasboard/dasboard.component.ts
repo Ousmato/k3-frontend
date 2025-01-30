@@ -11,6 +11,7 @@ import { NotificationService } from '../../../Services/notification.service';
 import { Admin } from '../../Models/Admin';
 import { Notifications_gestion } from '../../Models/Notifications-gestion';
 import { NavigationExtras, Router } from '@angular/router';
+import { AdminUSER } from '../../Models/Auth';
 
 @Component({
   selector: 'app-dasboard',
@@ -34,7 +35,7 @@ export class DasboardComponent implements OnInit {
     private notifiService: NotificationService, private emploisService: ServiceService, private fb: FormBuilder,
     public icons: IconsService, private etudiantService: EtudeService, private classeService: ClassStudentService) { }
   ngOnInit(): void {
-
+    this.admin =  AdminUSER()?.admin
     this.noti_form = this.fb.group({
       description: [''],
       // date: [''],
@@ -57,7 +58,7 @@ export class DasboardComponent implements OnInit {
   }
   // -----------------------------count number of classe
   countClasses() {
-    this.classeService.getAllCurrentClassOfYear().subscribe(res => {
+    this.classeService.getAllCurrentClassOfYear(this.admin.idAdministra!).subscribe(res => {
       this.classesCount = res.length;
       // console.log(this.classesCount);
     });
@@ -88,15 +89,7 @@ export class DasboardComponent implements OnInit {
   // -----------------------------------add notification
   add_notification() {
     const formData = this.noti_form.value
-    const adminData = localStorage.getItem("admin");
-
-    if (adminData) {
-      // Convertir les données JSON en objet JavaScript
-      this.admin = JSON.parse(adminData);
-
-    } else {
-      console.log("Aucune donnée d'administrateur trouvée dans le localStorage.");
-    }
+   
     const notifi: Notifications_gestion = {
       description: formData.description,
       // date: formData.date,

@@ -1,3 +1,5 @@
+import { TypeFilieres } from "./Filieres";
+
 export interface Admin{
     idAdministra?:number;
     nom:string;
@@ -33,6 +35,7 @@ export interface Roles {
     id?: number
     nom: string
     idAdminDg: number
+    typeFiliere?: TypeFilieres
 
 }
 

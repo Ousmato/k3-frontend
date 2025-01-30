@@ -12,7 +12,7 @@
                                 <span class="label-error">Le nom de l'UE est requis.</span>
                             </div>
                             <div *ngIf="update_ue_form.get('nomUE')!.errors?.['maxlength']">
-                                <span class="label-error">40 caractères autorisé.</span>
+                                <span class="label-error">120 caractères autorisé.</span>
                             </div>
                         </div>
                         <div formArrayName="modules">
@@ -35,6 +35,7 @@
                                 </div>
                                    
                                 </div>
+                                <textarea class="form-control" id="nomModule-{{i}}" formControlName="description" [class.is-invalid]="moduleControl.get('description')!.invalid && moduleControl.get('description')!.touched"> </textarea>
                                 
                                 
                               </div>
@@ -57,11 +58,11 @@
     <div class="views" *ngIf="show_deleted">
         <h3 class="span">Confirmation</h3>
         <div class="container-views">
-            <p>Êtes-vous sûr de vouloir supprimer l'UE : {{ue.idUe.nomUE}}?</p>
+            <p>Êtes-vous sûr de vouloir supprimer le module : {{module.nomModule}}?</p>
             
                 <div class="button-cash">
                     <a type="button" (click)="exitDelete()">Annuler</a>
-                    <button type="button" (click)="deleteUe(ue.idUe.id!)">Supprimer</button>
+                    <button type="button" (click)="deleteUe(module.id!)">Supprimer</button>
                 </div>
             
         </div>

@@ -8,6 +8,7 @@ import { SalleService } from '../../Services/salle.service';
 import { EnseiService } from '../../Admin/Views/Enseignant/ensei.service';
 import { IconsService } from '../../Services/icons.service';
 import { ClassRoom } from '../../Admin/Models/Classe';
+import { SideBarService } from '../../sidebar/side-bar.service';
 
 @Component({
   selector: 'app-der-home',
@@ -19,20 +20,28 @@ export class DerHomeComponent  implements OnInit{
   teacherCount: number = 0;
   studentNumber_noInscrit: number = 0;
   salle: number = 0
+  searchTerm: string = ""
   memoire: number = 0
   rapport: number = 0
   salleOccuper: number = 0
   emplois : Emplois[]=[]
+  emploiFiltered : Emplois[]=[]
   classes: ClassRoom[] = []
   emploisCount!: number
   constructor(public icons: IconsService, private emploisService: ServiceService, private studentService: EtudeService,
-    private router: Router, private enseignantService: EnseiService, private salleService: SalleService){}
+    private router: Router, private enseignantService: EnseiService, private sideBarService: SideBarService,
+    private salleService: SalleService){}
 
   ngOnInit(): void {
       this.load_cunt();
       this.salleNumber();
       this.docNumber();
       this.countEmplois();
+
+      this.sideBarService.currentSearchTerm.subscribe(term =>{
+        this.searchTerm = term
+       this.filteredEmplois()
+      })
   }
   
   load_cunt(){
@@ -146,5 +155,13 @@ export class DerHomeComponent  implements OnInit{
 
     // Vérifie si aujourd'hui est dans l'intervalle
     return today >= dateDebutParsed && today <= dateFinParsed;
+}
+filteredEmplois(){
+  if(!this.searchTerm){
+    return this.emploiFiltered = this.emplois
+  }else{
+    return this.emploiFiltered = this.emplois.filter(emploi => emploi.idModule.nomModule.toLowerCase().includes(this.searchTerm.toLowerCase()) || 
+    this.abrevigateNameFiliere(emploi.idClasse.idFiliere?.idFiliere.nomFiliere!).toLowerCase().includes(this.searchTerm.toLowerCase()))
+  }
 }
 }

@@ -1,34 +1,10 @@
 <main>
-  <div (click)="goBack()" class="back-button">
-    <fa-icon [icon]="icons.back"></fa-icon>
-  </div>
-
-  <div class="head-content">
-
-    <div class="left">
-      <div class="form form-group">
-        <select (change)="changeClasse($event)">
-          <option class="option" selected disabled value="">Ancien classe</option>
-          <option *ngFor="let cl of classRoom" value="{{cl.id}}">{{cl.idFiliere?.idNiveau?.nom}}
-            {{abrevigateFiliere(cl.idFiliere?.idFiliere?.nomFiliere!)}} </option>
-        </select>
-      </div>
-    </div>
-
-    <div class="right">
-      <div class="input-search">
-        <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..." class="search-input">
-      </div>
-    </div>
-  </div>
-
-  <div class="table-container">
-    <div class="views" *ngIf="is_show">
+    <div class="views" *ngIf="list_checked.length">
       <h3 class="span">Confirmation de réinscription</h3>
       <div class="container-views">
         <p>Êtes-vous sûr de vouloir faire cette Opération de ré-inscription  dans cette classe,
-          <span> {{NextClass.idFiliere?.idNiveau?.nom}}
-            {{abrevigateFiliere(NextClass.idFiliere?.idFiliere?.nomFiliere!)}}?</span>
+          <!-- <span> {{NextClass.idFiliere?.idNiveau?.nom}}
+            {{abrevigateFiliere(NextClass.idFiliere?.idFiliere?.nomFiliere!)}}?</span> -->
         </p>
         <!-- <div class="profil">
           <img [src]="inscrit?.idEtudiant?.urlPhoto" (error)="onError($event)" alt="photo">
@@ -40,76 +16,15 @@
 
         <div class="button-cash">
           <a type="button" (click)="exitConfirm()">Annuler</a>
-          <button type="button" (click)="confirmInscription(list_checked!, NextClass.id!)">Confirmer</button>
+          <button type="button" (click)="confirmInscription(list_checked!)">Confirmer</button>
         </div>
 
       </div>
     </div>
     
 
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th>N°</th>
-          <th *ngIf="NextClassRoom.length">Cocher</th>
-          <th>Nom</th>
-          <th>Prenom</th>
-          <th>Niveau</th>
-          <th>Filiere</th>
-          <th>Status</th>
-          <!-- <th>Inscrit</th> -->
-          <!-- <th>Action</th> -->
-
-        </tr>
-      </thead>
-      <tbody>
-        <ng-container *ngIf="filterStudents().length ; else noResults">
-          <tr *ngFor="let inscrit of filterStudents(); let i = index">
-            <td class="numerotation-clumn">{{i + 1}}</td>
-            <td *ngIf="NextClassRoom.length" class="numerotation-clumn"><input type="checkbox" (change)="student_check(inscrit.id!, $event)"
-              [checked]="is_checked(inscrit.id!)"></td>
-            <td>{{inscrit.idEtudiant.nom}}</td>
-            <td>{{inscrit.idEtudiant.prenom}}</td>
-
-            <td class="class-name" title="{{inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}">
-              {{inscrit.idClasse.idFiliere?.idNiveau?.nom}}</td>
-            <td class="class-name" title="{{inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}">
-              {{abrevigateFiliere(inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere!)}}</td>
-
-            <td>{{inscrit.idEtudiant.status.toUpperCase()}}</td>
-            <!-- <td>
-              <a>
-                <fa-icon [icon]="inscrit.payer ? icons.circle : icons.circle"
-                  [ngStyle]="{ color: check(inscrit.idEtudiant.idEtudiant!, inscrit?.active!)  ? 'green' : 'red' }"></fa-icon>
-                <span class="text-muted small">{{ check(inscrit.idEtudiant.idEtudiant!, inscrit?.active!) ? 'inscrit(e)' : 'Non Inscrit(e)' }}</span>
-              </a>
-            </td> -->
-
-            <!-- <td>
-              <div class="btn-contenaire">
-                @if(!check(inscrit.idEtudiant.idEtudiant!, inscrit?.active!)){
-
-                }@else {
-                <button id="annuler" (click)="getStudentView(inscrit) ">Annuler</button>
-
-                }
-
-              </div>
-            </td> -->
-
-          </tr>
-        </ng-container>
-        <ng-template #noResults>
-          <tr>
-            <td colspan="9" class="text-center">Veillez sélectionner une classe</td>
-          </tr>
-        </ng-template>
-
-      </tbody>
-    </table>
-  </div>
-
+<!--    
         <button class="btn-valide" *ngIf="list_checked.length"  (click)="getStudentView(list_checked) ">Valider</button>
-      <p class="footer-NB" *ngIf="!NextClassRoom.length && inscription.length">NB: Accune classe supperieure n'est disponible pour la re-inscription</p>
+      <p class="footer-NB" *ngIf="!NextClassRoom.length && inscription.length">NB: Accune classe supperieure n'est disponible pour la re-inscription</p> -->
   <!-- <div class="overlay" ></div> -->
 </main>

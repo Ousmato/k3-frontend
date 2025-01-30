@@ -15,6 +15,8 @@ import { SalleService } from '../../../Services/salle.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Seances } from '../../../Admin/Models/Seances';
 import { NivFiliere } from '../../../Admin/Models/NivFiliere';
+import { Admin } from '../../../Admin/Models/Admin';
+import { AdminUSER } from '../../../Admin/Models/Auth';
 
 @Component({
   selector: 'app-der-edit-seance',
@@ -39,6 +41,7 @@ export class DerEditSeanceComponent implements OnInit{
   enseig?: Teacher;
   salle?: Salles;
   nomModule?: Module;
+  admin!: Admin
 
   form_seance?: FormGroup
   constructor(private emploisService: ServiceService, public icons: IconsService,
@@ -48,6 +51,7 @@ export class DerEditSeanceComponent implements OnInit{
 
   ngOnInit(): void {
     this.load_form(); 
+    this.admin = AdminUSER()?.der
     this.get_by_id();
       this.load_classe();
       this.load_enseignants();
@@ -103,7 +107,7 @@ export class DerEditSeanceComponent implements OnInit{
 
   // ----------------------load class-room
   load_classe(){
-    this.classService.getAllCurrentClassOfYear().subscribe(data =>{
+    this.classService.getAllCurrentClassOfYear(this.admin.idAdministra!).subscribe(data =>{
       this.classes = data;
     })
   }
