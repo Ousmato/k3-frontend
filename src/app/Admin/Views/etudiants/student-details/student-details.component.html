@@ -5,15 +5,19 @@
         </div>
         <div class="tab-app">
             <a (click)="getView()" [ngStyle]="{'color': isView ? 'white' : 'var(--primary)'}"> <fa-icon [icon]="icons.info"></fa-icon> Details étudiant</a>
+            <a (click)="getEdit()" [ngStyle]="{'color': isEdit ? 'white' : 'var(--primary)'}"> <fa-icon [icon]="icons.edit"></fa-icon> Editer étudiant</a>
             <a (click)="getSuivis()" [ngStyle]="{'color': isSuivis ? 'white' : 'var(--primary)'}"> <fa-icon [icon]="icons.chartArea"></fa-icon> Suivis étudiant</a>
         </div>
       
     </div>
      <div class="views-app" > 
-            <app-student-view *ngIf="isView"></app-student-view>
+            <app-student-view [inscrit]="inscrit" *ngIf="isView && inscrit"></app-student-view>
         </div>
         <!-- ------------ -->
         <div class="suivis-app" >
             <app-student-suivis *ngIf="isSuivis"></app-student-suivis>
+        </div>
+        <div class="edit-app" >
+            <app-student-edit [inscrit]="inscrit" *ngIf="isEdit && inscrit" (event)="load_student()"></app-student-edit>
         </div>
 </main>

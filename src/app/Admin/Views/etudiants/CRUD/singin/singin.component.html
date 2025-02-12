@@ -111,23 +111,11 @@
                         <label class="label form-label">Quartier : </label> 
                         <select class="form-select" formControlName="quartier" [class.is-invalid]="studentForm.get('quartier')!.invalid && studentForm.get('quartier')!.touched">
                             <option  selected disabled value="">Choisir Le Quartier</option>
-                            <option *ngFor="let quartier of studentQuartierOptions" [value]="quartier.key" >{{quartier.value}}</option>
+                            <option *ngFor="let quartier of quartierOptions" [value]="quartier.value" >{{quartier.value}}</option>
                         </select> 
                       
                     </div>
                      
-                     <!-- <div class="input">
-                        <label for="validationDefault02" class="label form-label">Mot de Passe :</label>
-                        <div class="pass-chec position-relative">
-                            <input type="{{ passwordVisible ? 'text' : 'password' }}" class="form-control" formControlName="password" [class.is-invalid]="studentForm.get('password')!.invalid && studentForm.get('password')!.touched" id="password" placeholder="Mot de passe....">
-                            <span *ngIf="studentForm.controls['password'].invalid && studentForm.controls['password'].touched" [ngStyle]="{color: 'red'}">
-                                Champ obligatoire*
-                            </span>
-                            <fa-icon [icon]="passwordVisible ? icons.eyeSlash : icons.eye" class="toggle-password position-absolute" id="togglePassword" [ngStyle]="{cursor: 'pointer', right: '10px', top: '50%', transform: 'translateY(-50%)'}" (click)="togglePasswordVisibility()"></fa-icon>
-                        </div>
-                    </div> -->
-                    
-                
                     
                     <div class="input">
                         <label for="validationDefault0" class="label form-label">Lieu/Naissance :</label>
@@ -176,7 +164,7 @@
                     <label for="validationDefault05" class="label form-label">Photo :</label>
                     <div class="img-contenaire">
                         <img [src]="imageUrl || 'assets/default-image.png'" 
-                        (click)="triggerFileInput()" 
+                        (click)="studen_shared_methods.triggerFileInput()" 
                         (error)="onError($event)" >
                     </div>
                     <input type="file" #fileInput  formControlName="urlPhoto" accept="image/*" class="input-with"  id="inputPhoto" (change)="onFileSelected($event)"  >
@@ -192,7 +180,7 @@
                     <label class="label form-label">Diplomes : </label> 
                     <select class="form-select" formControlName="diplome" [class.is-invalid]="studentForm.get('diplome')!.invalid && studentForm.get('diplome')!.touched">
                         <option  selected disabled value="">Choisir Le Diplome</option>
-                        <option *ngFor="let diplom of studentDiplomesOptions" [value]="diplom.key" >{{diplom.value}}</option>
+                        <option *ngFor="let diplom of diblomeOptions" [value]="diplom.key" >{{diplom.value}}</option>
                     </select> 
                   
                 </div>
@@ -200,7 +188,7 @@
                     <label class="label form-label">Series : </label> 
                     <select class="form-select" formControlName="series" [class.is-invalid]="studentForm.get('series')!.invalid && studentForm.get('series')!.touched">
                         <option  selected disabled value="">Choisir La Serie</option>
-                        <option *ngFor="let serie of studentSeriesOptions" [value]="serie.key" >{{serie.value}}</option>
+                        <option *ngFor="let serie of serieOptions" [value]="serie.value" >{{serie.value}}</option>
                     </select> 
                   
                 </div>
@@ -208,7 +196,7 @@
                     <label class="label form-label">Accademies : </label> 
                     <select class="form-select" formControlName="academies" [class.is-invalid]="studentForm.get('academies')!.invalid && studentForm.get('academies')!.touched">
                         <option  selected disabled value="">Choisir L'Accademie</option>
-                        <option *ngFor="let academie of studentAccademieOptions" [value]="academie.key" >{{academie.value}}</option>
+                        <option *ngFor="let academie of accademiesOptions" [value]="academie.value" >{{academie.value}}</option>
                     </select> 
                   
                 </div>
@@ -264,7 +252,7 @@
                     <label class="label form-label">Status : </label> 
                     <select class="form-select" formControlName="status" [class.is-invalid]="studentForm.get('status')!.invalid && studentForm.get('status')!.touched">
                         <option  selected disabled value="">Choisir Le status</option>
-                        <option *ngFor="let status of studentStatusOptions" [value]="status.key" >{{status.value}}</option>
+                        <option *ngFor="let status of enum_options.getStatusOptions()" [value]="status.key" >{{status.value}}</option>
                     </select> 
                   
                 </div>
@@ -286,7 +274,7 @@
                     <label  class="label form-label">Filieres :</label>
                     <select class="form-select" formControlName="idFiliere" placeholder="Choisir une filiere...."   [class.is-invalid]="studentForm.get('idFiliere')!.invalid && studentForm.get('idFiliere')!.touched">
                         <option  selected disabled value="">Choisir la filiere</option>
-                        <option *ngFor="let filiere of filieres" [value]="filiere.id">{{abreviateFiliereName(filiere.nomFiliere)}}</option>
+                        <option *ngFor="let filiere of filieres" [value]="filiere.id">{{class_shared.abreviateFiliereName(filiere.nomFiliere)}}</option>
                     </select>
                     <span *ngIf="studentForm.controls['idFiliere'].invalid && studentForm.controls['idFiliere'].touched" [ngStyle]="{color: 'red', 'font-size':'13px'}">
                     Champ obligatoire*

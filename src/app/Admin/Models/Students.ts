@@ -47,11 +47,12 @@ export interface Student_reinscription{
 
 export enum Type_status{
     REGULIER = "REGULIER",
+    CANDIDAT_LIBRE = "CANDIDAT LIBRE",
     PROFESSIONNEL_ETAT = "PROFESSIONNEL D'ETAT",
     PROFESSIONNEL_COLLECTIVITE = "PROFESSIONNEL DE COLLECTIVITE",
     PROFESSIONNEL_PRIVEE = "PROFESSIONNEL PRIVEE",
     FORMATION_CONTINUE = "FORMATION CONTINUE",
-    CANDIDAT_LIBRE = "CANDIDAT LIBRE",
+   
    
 }
 
@@ -123,6 +124,7 @@ export interface Inscription{
     date?: Date
     active?: boolean;
     payer?: boolean
+    totalPaie?: boolean
     scolarite?: number
     numeroInscrit?: number
     // idFiliere?: number
@@ -216,7 +218,19 @@ export enum Diplome{
 
 export interface Dto_scolarite{
     id? : number
-    scolarite: number
-    payer: number
-    reliquat: number
+    scolarite?: number
+    payer?: number
+    reliquat?: number
+    type?: Type_status;
+    datePaiement?: Date;
+    updateDate?: Date;
+}
+export interface paiement{
+    id?: number
+    montant?: number
+    dateDePaiement?: Date;
+    idInscription: Inscription
+    idAdmin: Admin
+    updateDate?: Date
+    montantXof? :string
 }

@@ -13,8 +13,6 @@ import { AllNotesSemestreComponent } from '../Admin/Views/all-notes-semestre/all
 import { EtudiantsDeLaClasseComponent } from '../Admin/Views/Etudiants/etudiants-de-la-classe/etudiants-de-la-classe.component';
 import { TeachersEditComponent } from '../Admin/Views/Enseignant/CRUD/teachers-edit/teachers-edit.component';
 import { StudentBulletinComponent } from '../Admin/Component/student-bulletin/student-bulletin.component';
-import { FicheDePaieComponent } from '../Admin/Component/fiche-de-paie/fiche-de-paie.component';
-import { EnseignantFichePaieComponent } from '../Admin/Component/enseignant-fiche-paie/enseignant-fiche-paie.component';
 import { SchoolEditWidgetComponent } from '../Widget/school-edit-widget/school-edit-widget.component';
 import { AddAdminComponent } from '../Admin/Component/add-admin/add-admin.component';
 import { DerPaiListComponent } from '../DER/der-pai-list/der-pai-list.component';
@@ -41,8 +39,6 @@ const routes: Routes = [{path: "", component: SidebarComponent,
       {path: 't-edit', component: TeachersEditComponent, data:{title: "INFORMATIONS DE L'ENSEIGNANT"}},
 
       {path: 'student-bulletin', component: StudentBulletinComponent, data:{title: "Relever de note"}},
-      {path: 'fiche-de-paie-component', component: FicheDePaieComponent},
-      {path: 'fiche-enseignant', component: EnseignantFichePaieComponent},
       {path: 'add-admin', component: AddAdminComponent},
       {path: 'update-school', component: SchoolEditWidgetComponent, data:{title: "Information de l'Etablissement"}},
 

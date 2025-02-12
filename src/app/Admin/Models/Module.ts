@@ -15,7 +15,9 @@ export interface Ecue{
     nomModule: string;
     VHT?: number
     volHCM?: number
+    volTPE?: number
     volHTD?: number
+    volTP?: number
     description?: string
     coefficient: number;
 }

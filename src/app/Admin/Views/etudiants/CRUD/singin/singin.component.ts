@@ -15,6 +15,9 @@ import { Niveau } from '../../../../Models/Niveau';
 import { Filiere } from '../../../../Models/Filieres';
 import { FiliereService } from '../../../../../Services/filiere.service';
 import { InscriptionService } from '../../../../../Services/inscription.service';
+import { Student_Enum_Options } from '../../Utils/Student-enum-options';
+import { StudentSharedMethods } from '../../Utils/Student-shared-methode';
+import { Class_shared } from '../../../../../DGA/class-students/Utils/Class-shared-methods';
 
 
 @Component({
@@ -23,13 +26,6 @@ import { InscriptionService } from '../../../../../Services/inscription.service'
   styleUrl: './singin.component.css'
 })
 export class SinginComponent implements OnInit {
-  // adminConnect: 
-
-  studentStatusOptions: { key: string, value: string }[] = [];
-  studentDiplomesOptions: { key: string, value: string }[] = [];
-  studentAccademieOptions: { key: string, value: string }[] = [];
-  studentSeriesOptions: { key: string, value: string }[] = [];
-  studentQuartierOptions: { key: string, value: string }[] = [];
 
   @Output() titleEvent = new EventEmitter<string>();
   studentForm!: FormGroup;
@@ -39,23 +35,31 @@ export class SinginComponent implements OnInit {
   filieres: Filiere[] = [];
   fileName!: File;
   admin!: Admin;
+  accademiesOptions: {key: string, value: string}[] = []
+  statusOptions: {key: string, value: string}[] = []
+  quartierOptions: {key: string, value: string}[] = []
+  diblomeOptions: {key: string, value: string}[] = []
+  serieOptions: {key: string, value: string}[] = []
   annees : any [] = [];
   anneeScolaire: AnneeScolaire[] = []
   promotion!: number
   passwordVisible: boolean = false
 
   constructor(private formBuilder: FormBuilder, private pageTitle: PageTitleService, private niveauService: NiveauService,
-    private inscriptionService: InscriptionService, public icons: IconsService, private infoSchool: SchoolService, private filiereService: FiliereService,
+    private inscriptionService: InscriptionService, public icons: IconsService, public enum_options: Student_Enum_Options, 
+    private filiereService: FiliereService, public studen_shared_methods: StudentSharedMethods, public class_shared: Class_shared,
     private classeService: ClassStudentService) { }
   ngOnInit(): void {
+
+    this.accademiesOptions = this.enum_options.getAccademiesOptions();
+    this.statusOptions = this.enum_options.getStatusOptions();
+    this.quartierOptions = this.enum_options.getQuartierOptions();
+    this.diblomeOptions = this.enum_options.getDiplomesOptions();
+    this.serieOptions = this.enum_options.getSeriesOptions();
+
     this.get_all_niveau();
     this.get_all_filiere();
     this.admin = AdminUSER()?.scolarite
-    this.studentStatusOptions = this.getStatusOptions();
-    this.studentDiplomesOptions = this.getDiplomesOptions();
-    this.studentAccademieOptions = this.getAccademiesOptions();
-    this.studentSeriesOptions = this.getSeriesOptions();
-    this.studentQuartierOptions = this.getQuartierOptions();
     // this.studentStatusOptions = Object.keys(Type_status);
     this.studentForm = this.formBuilder.group({
       nom: ['', [Validators.required,Validators.minLength(3),Validators.maxLength(30)]],
@@ -106,8 +110,6 @@ export class SinginComponent implements OnInit {
   load_all_annee() {
     const date = new Date();
     const currentYear = date.getFullYear();
-    const fiveYearsAgo = currentYear - 5;
-    
     // Create an array to hold the last 5 years
     const years = [];
     
@@ -148,41 +150,7 @@ export class SinginComponent implements OnInit {
       console.log("filiere", filiere)
     })
   }
-  // get status options
-  getStatusOptions(): { key: string, value: string }[] {
-    return Object.keys(Type_status).map(key => ({
-      key: key,
-      value: Type_status[key as keyof typeof Type_status]
-    }));
-  }
-  // get series options
-  getSeriesOptions(): { key: string, value: string }[] {
-    return Object.keys(seriesType).map(key => ({
-      key: key,
-      value: seriesType[key as keyof typeof seriesType]
-    }));
-  }
-  // get accademies options
-  getAccademiesOptions(): { key: string, value: string }[] {
-    return Object.keys(Accademies).map(key => ({
-      key: key,
-      value: Accademies[key as keyof typeof Accademies]
-    }));
-  }
-  // get diplomes options
-  getDiplomesOptions(): { key: string, value: string }[] {
-    return Object.keys(Diplome).map(key => ({
-      key: key,
-      value: Diplome[key as keyof typeof Diplome]
-    }));
-  }
-  // get quartier options
-  getQuartierOptions(): { key: string, value: string }[] {
-    return Object.keys(Quartier).map(key => ({
-      key: key,
-      value: Quartier[key as keyof typeof Quartier]
-    }));
-  }
+ 
   singin() {
 
     const formData = this.studentForm.value;
@@ -247,7 +215,8 @@ export class SinginComponent implements OnInit {
       console.log("Veuillez remplir tous les champs correctement!");
     }
   }
-  // --------------------------back button
+  
+  //back button
   goBack() {
     window.history.back();
   }
@@ -256,25 +225,6 @@ export class SinginComponent implements OnInit {
     this.imageUrl = 'assets/default-image.png';
     // const target = event.target as HTMLImageElement;
     // target.src = 'assets/business-professional-icon.svg';
-  }
-
-  triggerFileInput(): void {
-    const fileInput = document.querySelector<HTMLInputElement>('#inputPhoto');
-    if (fileInput) {
-      fileInput.click(); // Déclencher un clic programmatique
-    }
-  }
-  // abrevigate filiere name
-  abreviateFiliereName(filiereName: string) : string{
-    const words = filiereName.split(' ');
-    // Garder uniquement les mots de plus de 3 lettres pour l'abréviation
-    const abbreviation = words.filter(word => word.length > 3)
-     .map(word => word[0].toUpperCase())
-     .join('');
-     if(abbreviation.includes('EEER')){
-      return '3ER'
-     }
-    return abbreviation;
   }
 
 }

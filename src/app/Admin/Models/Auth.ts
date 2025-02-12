@@ -42,10 +42,12 @@ export const AdminUSER = () => {
       }
     }
   
-    return null; // Si l'utilisateur ou la scolarité n'existent pas, retourner null
+    return null; 
 
      function abrevigate(name: string){
       const nameSplit = name.split(' ');
       return nameSplit.filter(word => word.length > 3).map(w => w[0].toUpperCase()).join('');
      }
   }
+
+  

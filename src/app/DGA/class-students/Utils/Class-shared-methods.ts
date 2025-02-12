@@ -1,8 +1,6 @@
 import { Injectable } from "@angular/core";
 import { AnneeScolaire } from "../../../Admin/Models/School-info";
-import { Filiere } from "../../../Admin/Models/Filieres";
-import { ClassRoom } from "../../../Admin/Models/Classe";
-import { Niveau } from "../../../Admin/Models/Niveau";
+import { Admin } from "../../../Admin/Models/Admin";
 
 @Injectable({
     providedIn: 'root'
@@ -44,7 +42,7 @@ export class Class_shared {
       }
 
       public filieres() : string[]{
-        return ['Auccun','AB', 'AG', 'CFA', 'GI', 'HT', 'MA', 'MC' , '3ER']
+        return ['Filtrer','AB', 'AG', 'CFA', 'GI', 'HT', 'MA', 'MC' , '3ER']
       }
 
       public abrevigateNiveauName(Niv: string) : string{
@@ -64,6 +62,11 @@ export class Class_shared {
           default:
         }
         return nameAbrev!;
+      }
+
+      public getUseSessionStorage() : Admin{
+        const admin: Admin = JSON.parse(sessionStorage.getItem('user')!);
+        return admin;
       }
 
 }

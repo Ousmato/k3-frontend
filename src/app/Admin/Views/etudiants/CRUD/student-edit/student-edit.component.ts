@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IconsService } from '../../../../../Services/icons.service';
 import { ClassRoom } from '../../../../Models/Classe';
@@ -14,6 +14,9 @@ import { environment } from '../../../../../../environments/environment';
 import { InscriptionService } from '../../../../../Services/inscription.service';
 import { Admin } from '../../../../Models/Admin';
 import { AdminUSER } from '../../../../Models/Auth';
+import { Class_shared } from '../../../../../DGA/class-students/Utils/Class-shared-methods';
+import { Student_Enum_Options } from '../../Utils/Student-enum-options';
+import { StudentSharedMethods } from '../../Utils/Student-shared-methode';
 
 @Component({
   selector: 'app-student-edit',
@@ -22,7 +25,7 @@ import { AdminUSER } from '../../../../Models/Auth';
 })
 export class StudentEditComponent implements OnInit {
 
-  imageUrl: string = ''
+  imageUrl!: string | ArrayBuffer | null
   studentForm!: FormGroup
   filename!: File
   photoSelect!: File
@@ -31,51 +34,67 @@ export class StudentEditComponent implements OnInit {
   isEdit: boolean = false
   isUpdate: boolean = false
   idStudent!: number
-  inscrit?: Inscription
+  accademiesOptions: {key: string, value: string}[] = []
+  statusOptions: {key: string, value: string}[] = []
+  quartierOptions: {key: string, value: string}[] = []
+  diblomeOptions: {key: string, value: string}[] = []
+  serieOptions: {key: string, value: string}[] = []
   admin!: Admin 
   urlImage!: string | ArrayBuffer
   anneeScolaire: AnneeScolaire[] = []
 
+  @Input() inscrit!: Inscription
+  @Output() event = new EventEmitter();
+
 
   constructor(private formBuilder: FormBuilder, private infoSchool: SchoolService, private inscriptionService: InscriptionService,
-    private studentService: EtudeService, private classeService: ClassStudentService,
-    private router: ActivatedRoute, private root: Router, public icons: IconsService, private pageTitle: PageTitleService, private location: Location) { }
+    private studentService: EtudeService, public enum_options: Student_Enum_Options, public studen_shared_methods: StudentSharedMethods,
+    public shared_method: Class_shared, private root: Router, public icons: IconsService, private pageTitle: PageTitleService, private location: Location) { }
 
   ngOnInit(): void {
     this.imageUrl = this.inscrit?.idEtudiant?.urlPhoto || 'assets/business-professional-icon.svg';
-    this.load_class_rooms();
+    this.accademiesOptions = this.enum_options.getAccademiesOptions();
+    this.statusOptions = this.enum_options.getStatusOptions();
+    this.quartierOptions = this.enum_options.getQuartierOptions();
+    this.diblomeOptions = this.enum_options.getDiplomesOptions();
+    this.serieOptions = this.enum_options.getSeriesOptions();
     this.load_form();
-    this.load_student();
-    this.load_all_annee()
+    // this.load_student();
     this.admin = AdminUSER()?.scolarite
   }
   goBack() {
     this.location.back();
   }
-  // --------------get all annee
-  load_all_annee() {
-    this.infoSchool.getAll_annee().subscribe(data => {
-      this.anneeScolaire = data;
-    })
-  }
-  togglePasswordVisibility() {
-    this.passwordVisible = !this.passwordVisible
-  }
+
   // ---------------------------load update
   load_form() {
     this.studentForm = this.formBuilder.group({
-      id: ['', Validators.required],
-      nom: ['', Validators.required],
-      prenom: ['', Validators.required],
-      sexe: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      telephone: ['', Validators.required],
-      password: [''],
-      matricule: ['', Validators.required],
+      id: [this.inscrit.id, Validators.required],
+      nom: [this.inscrit.idEtudiant.nom, Validators.required],
+      prenom: [this.inscrit.idEtudiant.prenom, Validators.required],
+      sexe: [this.inscrit.idEtudiant.sexe, Validators.required],
+      email: [this.inscrit.idEtudiant.email, [ Validators.email]],
+      telephone: [this.inscrit.idEtudiant.telephone, Validators.required],
+      // password: [''],
+      urlPhoto: [''],
+      matricule: [this.inscrit.idEtudiant.matricule],
       // scolarite: ['', Validators.required],
-      idClasse: ['', Validators.required],
-      lieuNaissance: ['', Validators.required],
-      dateNaissance: ['', Validators.required],
+      idClasse: [''],
+      lieuNaissance: [this.inscrit.idEtudiant.lieuNaissance, Validators.required],
+      dateNaissance: [this.inscrit.idEtudiant.dateNaissance, Validators.required],
+      numeroPlace: [this.inscrit.idEtudiant.numeroPlace],
+      lastNameFather: [this.inscrit.idEtudiant.lastNameFather],
+      anneeObtention: [this.inscrit.idEtudiant.anneeObtention],
+      motherName: [this.inscrit.idEtudiant.motherName],
+      commNaissance: [this.inscrit.idEtudiant.commNaissance],
+      cercleNaissance: [this.inscrit.idEtudiant.cercleNaissance],
+      nationalite: [this.inscrit.idEtudiant.nationalite, Validators.required],
+      residenceParent: [this.inscrit.idEtudiant.residenceParent],
+      diplome: [this.inscrit.idEtudiant.diplome],
+      status: [this.inscrit.idEtudiant.status],
+      academies: [this.inscrit.idEtudiant.academies],
+      series: [this.inscrit.idEtudiant.series],
+      quartier: [this.inscrit.idEtudiant.quartier],
       // admin: [''] 
     });
   }
@@ -86,51 +105,19 @@ export class StudentEditComponent implements OnInit {
   }
   // ----------------------select file
   onFileSelected(event: any) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        this.imageUrl = e.target?.result!; // Met à jour l'image affichée
+      };
+      reader.readAsDataURL(file);
     this.filename = event.target.files[0];
   }
+}
 
-  onPhotoSelected(event: any) {
-
-    console.log(this.filename, "fill")
-    this.photoSelect = event.target.files[0];
-    // console.log(this.photoSelect, "photo select")
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      this.urlImage = e.target.result;
-    };
-    reader.readAsDataURL(this.photoSelect);
-  }
-  // -----------------------load classRom
-  load_class_rooms() {
-    this.classeService.getAllCurrentClassOfYear(this.admin.idAdministra!).subscribe((data: ClassRoom[]) => {
-      this.classRoom = data;
-    })
-  }
-  load_student() {
-    this.router.queryParams.subscribe(param => {
-      this.idStudent = param['id']
-    })
-    this.inscriptionService.getInscriptionById(this.idStudent).subscribe(data => {
-      this.inscrit = data;
-      // this.studentForm.get('urlPhoto')?.setValue(this.student!.urlPhoto);
-      this.inscrit.idEtudiant.urlPhoto = `${environment.urlPhoto}${this.inscrit.idEtudiant.urlPhoto}`
-
-      // console.log(this.inscrit.password, "ppppppp");
-      this.studentForm.get('id')?.setValue(this.inscrit.id!);
-      this.studentForm.get('nom')?.setValue(this.inscrit!.idEtudiant.nom);
-      this.studentForm.get('prenom')?.setValue(this.inscrit!.idEtudiant.prenom);
-      this.studentForm.get('sexe')?.setValue(this.inscrit!.idEtudiant.sexe);
-      this.studentForm.get('email')?.setValue(this.inscrit!.idEtudiant.email);
-      this.studentForm.get('password')?.setValue(this.inscrit!.idEtudiant.password);
-      this.studentForm.get('telephone')?.setValue(this.inscrit!.idEtudiant.telephone);
-      this.studentForm.get('lieuNaissance')?.setValue(this.inscrit!.idEtudiant.lieuNaissance);
-      this.studentForm.get('dateNaissance')?.setValue(this.inscrit!.idEtudiant.dateNaissance);
-      this.studentForm.get('matricule')?.setValue(this.inscrit!.idEtudiant.matricule);
-      // this.studentForm.get('scolarite')?.setValue(this.inscrit!.scolarite);
-      this.studentForm.get('idClasse')?.setValue(this.inscrit!.idClasse?.id);
-
-    })
-  }
+  
   update() {
     const formData = this.studentForm.value
     console.log(formData, "formdata")
@@ -146,14 +133,14 @@ export class StudentEditComponent implements OnInit {
       idAdmin: this.admin
     }
     console.log(inscrit, "student")
-
+    // return
     if (this.studentForm.valid) {
       if (this.isUpdate) {
         console.log("consoler")
         this.studentService.updateStudent(inscrit, this.filename).subscribe({
           next: (response) => {
             this.pageTitle.showSuccessToast(response.message)
-            this.load_student();
+            this.event.emit()
           },
           error: (erreur) => {
             this.pageTitle.showErrorToast(erreur.error.message)

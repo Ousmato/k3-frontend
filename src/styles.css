@@ -17,6 +17,7 @@ main{
   font-size: 14px;
 }
 
+
 .numerotation-clumn{
   /* width: 20px; */
   min-width: 40px;
@@ -51,7 +52,7 @@ tr td{
 /* Wrapper to maintain the sidebar and content layout */
 .wrapper {
   display: flex;
-
+  font-size: 13px;
   width: 100%;
   height: 95vh;
   transition: all 0.3s;
@@ -173,7 +174,7 @@ strong {
 
 
 .menu-link a span {
-  font-size: 16px;
+  font-size: 14px;
 
   &:hover {
     color: var(--secondary);

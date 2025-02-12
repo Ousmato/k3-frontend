@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { finalize, Observable } from 'rxjs';
-import { Inscription, montantsCount, Participant, Student, Student_count, Student_group, Student_import, Student_reinscription } from '../../Models/Students';
+import { Dto_scolarite, Inscription, montantsCount, Participant, Student, Student_count, Student_group, Student_import, Student_reinscription } from '../../Models/Students';
 import { GetNoteDto, NoteDto, Notes } from '../../Models/Notes';
 import { Module } from '../../Models/Module';
 import { Response_String } from '../../Models/Response_String';
@@ -98,9 +98,9 @@ addStudentImport(studentImport: Inscription[]) : Observable<Response_String>{
     );
 }
   // -----------------------update scolarite
-  update_student_scolarite(idInscription: number, idAdmin: number, scolarite: number): Observable<Response_String> {
-    const url = `${this.baseUrl}update-scolarite/${idInscription}/${idAdmin}`;
-    return this.http.put<Response_String>(url, { scolarite });
+  update_student_scolarite(dto: Dto_scolarite, idAdmin: number): Observable<Response_String> {
+    const url = `${this.baseUrl}update-scolarite/${idAdmin}`;
+    return this.http.put<Response_String>(url, dto );
   }
   // ----------------------------------lad teacher by pagination
   getSudents(page: number, size: number): Observable<StudentPages> {

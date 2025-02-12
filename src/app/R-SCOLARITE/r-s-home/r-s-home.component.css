@@ -1,9 +1,14 @@
 
-
+main{
+    padding: 10px;
+}
+select{
+    margin-bottom: 10px;
+}
 .first-container, .second-container {
     background-color: #fff;
     margin-bottom: 20px;
-    padding: 10px;
+    
     border-radius: 8px;
     
 }
@@ -12,7 +17,7 @@
     display: flex;
     justify-content: space-between;
     gap: 25px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 
@@ -108,7 +113,7 @@ p{
 
 .body-content {
     /* background-color: #e9ecef; */
-    padding: 20px;
+    padding: 10px;
     border-radius: 8px;
     border: #ccc 1px solid;
 }

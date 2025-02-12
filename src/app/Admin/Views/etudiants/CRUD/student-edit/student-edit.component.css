@@ -2,14 +2,16 @@
 main{
     display: flex;
     flex-direction: column;
+    height: 78vh;
     /* justify-content: center; */
     /* align-items: center; */
     
 }
 button{
     color: var(--secondary);
-    margin-top: 20px;
-    padding: 5px 10px;
+    margin-top: 10px;
+    padding: 5px 30px;
+    cursor: pointer;
     border-radius: 5px;
     background-color: var(--primary);
     border: none;
@@ -23,89 +25,114 @@ form{
     padding: 10px;
     justify-content: center;
     /* border: 1px solid #ccc; */
-    border-radius: 8px;
+    overflow-y: auto;
+    height: 90%;
 }
 
 
-.input{
+/* -------------------- */
+.childs-school{
+    width: 100%;
     margin-top: 10px;
-}
-.label{
-    font-weight: bold;
-    margin-right: 30px;
-}
-.label-nom-prenom{
-    font-weight: bold;
-}
-.chil{
-    width: 30%;
-}
-.position-relative {
-    position: relative;
-}
-
-.position-absolute {
-    position: absolute;
-}
-.radio-button{
-    display: flex;
-}
-a{
-    color: rgb(101, 101, 253);
-}
-#btn-label{
-    display: flex;
-    flex-direction: column;
-    padding-left: 20%;
-   margin-top: 10px;
-}
-
-
-.contenaires{
-    display: flex;
-    justify-content: space-between;
-}
-label span{
-    font-size: 12px;
-    color: var(--tertiary);
-    font-weight: 300;
-}
-.image-column{
-    margin-top: 37px;
     display: flex;
     gap: 10px;
-    align-items: flex-end;
 }
-
-.pop-img img{
-    height: 120px;
-    width: auto;
-    border: #ccc 1px solid;
-    border-radius: 0;
+.childs-school .first{
+    width: 90%;
+    /* border: 1px solid red; */
 }
-.input-nom-prenom{
+.childs-school .second{
+    width: 10%;
+    /* border: 1px solid red; */
+}
+.childs-school input, .paiement input{
+    text-align: center !important;
+    letter-spacing: 1px;
+    margin-top: 8px;
+    width: 100%;
+    padding: 3px;
     border: none;
-    border-bottom: 1px solid var(--tertiary);
+    border: 1px solid var(--tertiary);
 }
-.back-button{
-    width: 30px;
-    height: 30px;
+.left-content{
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.left-content .input{
+   text-align: center;
+    width: 100%;
+}
+.left-content .input-radio{
+    text-align: center;
+}
+label{
+    font-weight: bold;
+    margin-right: 10px;
+}
+.name{
+    width: 50%;
     display: flex;
     align-items: center;
-    padding: 8px;
-    font-size: 20px;
-    margin: 10px 0;
-    &:hover{
-        background-color: var(--tertiary);
-        color: var(--primary);
-        border: none;
-        border-radius: 50%;
-    }
-
+    gap: 10px;
 }
 
 input:focus, select:focus{
     border-color: var(--primary);
     outline: none;
     box-shadow: 0 0 5px var(--primary);
+  }
+
+.pop-img img{
+    height: 106px;
+    width: 106px;
+    border: #ccc 1px solid;
+    border-radius: 0;
+    /* object-fit: cover; */
+    /* aspect-ratio: 1/1; */
 }
+/* ---------------------birtday------------ */
+.grid-item{
+    /* border: 1px solid; */
+    /* padding: 8px; */
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+}
+.childs-school .box{
+    text-align: center;
+}
+.paiement{
+    /* border: 1px dashed green; */
+    background-color: var(--secondary);
+    color: var(--primary);
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.paiement label{
+    width: 50%;
+}
+
+/* Personnalisation de la barre de défilement */
+form::-webkit-scrollbar {
+    width: 5px; /* Largeur de la barre de défilement */
+  }
+  
+  form::-webkit-scrollbar-track {
+    background: white; /* Couleur de l'arrière-plan de la piste */
+    border-radius: 10px; /* Coins arrondis de la piste */
+  }
+  
+  form::-webkit-scrollbar-thumb {
+    background: var(--tertiary); /* Couleur de la barre de défilement */
+    border-radius: 10px; /* Coins arrondis de la barre */
+  }
+  
+  form::-webkit-scrollbar-thumb:hover {
+    background: var(--primary); /* Couleur de la barre au survol */
+  }

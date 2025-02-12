@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { ClassStudentService } from '../class-students/class-student.service';
 import { ServiceService } from '../../DER/EDT/emplois-du-temps/service.service';
 import { Emplois } from '../../Admin/Models/Emplois';
+import { Admin } from '../../Admin/Models/Admin';
+import { AdminUSER } from '../../Admin/Models/Auth';
 
 @Component({
   selector: 'app-dga-home',
@@ -16,17 +18,19 @@ export class DgaHomeComponent implements OnInit{
   studentNumber_noInscrit: number = 0;
   class_Number: number = 0
   emplois : Emplois[]=[]
+  dga!: Admin
   emploiCount!: number
   constructor(private studentService: EtudeService, private emploisService: ServiceService,
     private router: Router, private classService: ClassStudentService){}
 
   ngOnInit(): void {
+     this.dga = AdminUSER()?.dga;  // get admin user info from local storage.
       this.load_cunt();
       this.classNumber();
       this.load_all_emplois_actif();
   }
   load_all_emplois_actif(){
-    this.emploisService.getAllEmploisActifs().subscribe(data =>{
+    this.emploisService.getAllEmploisActifs(this.dga.idAdministra!).subscribe(data =>{
       this.emplois = data;
       this.emploiCount = data.length;
     })

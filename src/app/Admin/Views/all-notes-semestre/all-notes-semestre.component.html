@@ -1,9 +1,15 @@
 
 <main id="bulletin__content">
+    <div class="header">
+        <div (click)="goBack()" class="back-button" title="Retour">
+             <fa-icon [icon]="icons.back"></fa-icon>            
+        </div>
+        <div class="classe-name">
+            <p>Classe : {{classe!.idFiliere?.idNiveau?.nom!}}-{{share_methode.abreviateFiliereName(classe!.idFiliere?.idFiliere?.nomFiliere!)}} {{share_methode.extractAnnee(classe?.idAnneeScolaire!)}}-{{share_methode.extractAnnee(classe?.idAnneeScolaire!) + 1}}</p>
+        </div>
+      </div>
     <div id="head-header">
-        <div id="back-button" (click)="goBack()" class="back-button">
-       <fa-icon [icon]="icons.back"></fa-icon>
-       </div>
+        
        <div id="btn-contenair" class="btn-contenair">
            <div class="buttons">
             <div class="semestre" >

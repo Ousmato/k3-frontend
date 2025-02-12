@@ -75,6 +75,8 @@ export class ViewUeComponent implements OnInit, OnDestroy  {
           id: [module.id],
           volHCM: [module.volHCM, [Validators.min(0), Validators.max(120)]],
           volHTD: [module.volHTD, [Validators.min(0), Validators.max(80)]],
+          volTPE: [module.volTPE, [Validators.min(0), Validators.max(80)]],
+          volTP: [module.volTP, [Validators.min(0), Validators.max(80)]],
         });
         // console.log(this.ueForms, "form");
       });
@@ -146,7 +148,6 @@ export class ViewUeComponent implements OnInit, OnDestroy  {
     this.semestre = this.semestres.find(s => s.id == this.idSemestre)!
      this.classService.getAll_ue(this.idClasseNivFil,this.idSemestre).subscribe(result =>{
      this.ues = result;
-     console.log(this.ues, "ues")
     this.load_form()
    
       })

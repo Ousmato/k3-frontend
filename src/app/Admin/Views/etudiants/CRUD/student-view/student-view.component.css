@@ -3,8 +3,6 @@ main{
     display: flex;
     flex-direction: column;
     height: 78vh;
-    /* justify-content: center; */
-    /* align-items: center; */
     
 }
 button{
@@ -40,14 +38,17 @@ input:focus{
     outline: none;
     box-shadow: none;
 }
+.left{
+    width: 50%;
+    /* border: 1px solid var(--primary);; */
+}
 .footer{
     position: relative;
     margin: 10px;
+    width: 50%;
     padding: 10px;
-
     border-radius: 5px;
     background-color: var(--secondary);
-    width: 98%;
     text-align: center;
 }
 .footer p{
@@ -58,19 +59,19 @@ input:focus{
     font-weight: bold;
 }
 .float-end p{
-    text-decoration: none;
-    color: var(--primary);
+    color: var(--secondary);
+    background-color: var(--primary);
     font-weight: bold;
     cursor: pointer;
-    padding: 5px;
+    padding: 8px;
+    
     margin: 0;
     border-radius: 5px;
-    margin-top: -30px;
-    /* &:hover{
+    &:hover{
         color: var(--secondary);
         background-color: var(--primary);
         
-    } */
+    }
 }
 .footer .views{
     width: 250px;
@@ -79,12 +80,20 @@ input:focus{
     border: 1px solid #ddd;
     border-radius: 4px;
     right: 20px;
-    top: 50px;
+    top: -181px;
     z-index: 10001;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15);
     
     }
-   
+   .float-end a{
+    text-decoration: none;
+    color: var(--primary);
+    cursor: pointer;
+    &:hover{
+        color: white;
+        text-decoration: underline;
+    }
+   }
     .scolarite-input{
         width: 100%;
         padding: 5px;
@@ -96,9 +105,9 @@ input:focus{
         display: flex;
         gap: 20px;
         justify-content: end;
-        
        
     }
+
    
     .button-cash button{
         color: var(--secondary);
@@ -108,7 +117,7 @@ input:focus{
         margin-top: 8px;
         padding: 5px;
         border-radius: 5px;
-        /* background-color: var(--primary); */
+        background-color: var(--primary);
         
         cursor: pointer;
         &:hover{
@@ -117,31 +126,10 @@ input:focus{
         }
        
     }
-    .button-cash button span{
-        color: var(--secondary);
-        &:hover{
-            color: var(--primary);
-        }
-    }
+   
     .views form input{
         cursor: text;
     }
-.back-button{
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    padding: 8px;
-    font-size: 20px;
-    margin: 10px 0;
-    &:hover{
-        background-color: var(--tertiary);
-        color: var(--primary);
-        border: none;
-        border-radius: 50%;
-    }
-
-}
 
 
 /* -------------------- */
@@ -182,12 +170,12 @@ input:focus{
 .left-content .input-radio{
     text-align: center;
 }
-label{
+.name label{
     font-weight: bold;
     margin-right: 10px;
+    width: 50%;
 }
 .name{
-    width: 50%;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -201,10 +189,8 @@ label{
     /* object-fit: cover; */
     /* aspect-ratio: 1/1; */
 }
-/* ---------------------birtday------------ */
+/* ----birtday*/
 .grid-item{
-    /* border: 1px solid; */
-    /* padding: 8px; */
     display: grid;
     grid-template-columns: repeat(3,1fr);
 }
@@ -212,18 +198,14 @@ label{
     text-align: center;
 }
 .paiement{
-    /* border: 1px dashed green; */
+    display: flex;
+    /* border: 1px dashed rgb(111, 7, 230); */
     background-color: var(--secondary);
     color: var(--primary);
     width: 100%;
     padding: 8px;
     margin-top: 10px;
-    display: flex;
-    flex-direction: column;
     gap: 10px;
-}
-.paiement label{
-    width: 50%;
 }
 
 /* Personnalisation de la barre de défilement */

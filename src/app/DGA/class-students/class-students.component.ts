@@ -19,6 +19,7 @@ import { Class_shared } from './Utils/Class-shared-methods';
 import { NoteService } from '../../Services/note.service';
 import { InscriptionNoteDto } from '../../Admin/Models/Students';
 import { EventServiceService } from '../../Services/event-service.service';
+import { Specialites } from '../../Admin/Models/Filieres';
 
 @Component({
   selector: 'app-class-students',
@@ -56,7 +57,7 @@ export class ClassStudentsComponent implements OnInit {
   classes_L3: ClassRoom[] = []
   classesSorted: ClassRoom[] = []
   permission: boolean = false
-  der!: Admin
+  // der!: Admin
   admin!: Admin
 
   constructor(private service: ClassStudentService, private sideBarService: SideBarService,
@@ -65,14 +66,18 @@ export class ClassStudentsComponent implements OnInit {
 
   }
   ngOnInit() {
-    this.der = AdminUSER()?.der
+    // this.der = AdminUSER()?.der
+    this.admin = this.sharedMethod.getUseSessionStorage();
+    // console.log(this.admin, "admin")
     this.getPermission();
     this.loadClasses();
     this.get_annees();
     const date = new Date();
     this.currentYear = date.getFullYear();
     
-    this.admin = AdminUSER()?.admin
+    // this.admin = AdminUSER()?.admin
+    
+
     this.sideBarService.currentSearchTerm.subscribe(term => {
       this.searchTerm = term;
       console.log(this.searchTerm, "search")
@@ -113,7 +118,7 @@ export class ClassStudentsComponent implements OnInit {
   //get all classRoom
   loadClasses(): void {
 
-    this.service.getAllCurrentClassOfYear(this.der.idAdministra!).subscribe((classRoms: ClassRoom[]) => {
+    this.service.getAllCurrentClassOfYear(this.admin.idAdministra!).subscribe((classRoms: ClassRoom[]) => {
 
       this.classRoms = classRoms;
       // console.log(classRoms, "classroom")
@@ -146,12 +151,14 @@ export class ClassStudentsComponent implements OnInit {
 
     
   }
-  show_views_sousFiliere(classe: Specialite_Filiere) {
+  show_views_sousFiliere(classe: ClassRoom, Souclasse: Specialite_Filiere) {
     // console.log(classe, "dois etre changer")
-    if (this.sousClassSelect === classe) {
+    if (this.sousClassSelect === Souclasse || this.classeSelect === classe) {
+      this.classeSelect = null
       this.classeSelect = null; // Deselect if already selected
     } else {
-      this.sousClassSelect = classe; // Select the clicked item
+      this.classeSelect = classe; // Select the clicked item
+      this.sousClassSelect = Souclasse; // Select the clicked item
 
     }
 
@@ -167,12 +174,12 @@ export class ClassStudentsComponent implements OnInit {
     return false
   }
 
-  toggle_to_view_ues(classe: ClassRoom) {
+  toggle_to_view_ues(classe?: ClassRoom) {
     const navigationExtras: NavigationExtras = {
-      queryParams: { id: classe?.id, idAnnee: classe.idAnneeScolaire?.id }
+      queryParams: { id: classe?.id, idAnnee: classe!.idAnneeScolaire?.id }
 
     }
-    if (this.der) {
+    if (AdminUSER()?.der) {
       this.router.navigate(['/der/view-ues'], navigationExtras)
       return
     }
@@ -180,31 +187,17 @@ export class ClassStudentsComponent implements OnInit {
 
   }
 
-  toggle_to_emplois(classe: ClassRoom) {
+  toggle_to_emplois(classe?: ClassRoom) {
     const navigationExtras: NavigationExtras = {
-      queryParams: { id: classe?.id }
+      queryParams: { id: classe?.id, idAnnee: classe!.idAnneeScolaire?.id }
 
     }
     this.router.navigate(['/der/emplois-du-temps'], navigationExtras)
 
   }
-  archive(classe: ClassRoom) {
-    // console.log(classe, "archive----------------s")
-    const navigationExtras: NavigationExtras = {
-      queryParams: { id: classe.idFiliere?.id }
 
-    }
-    if (this.getPermission()) {
-      this.router.navigate(['/r-scolarite/class-archives'], navigationExtras)
-
-    } else {
-      this.router.navigate(['/dga/class-archives'], navigationExtras)
-
-    }
-
-  }
   // ----------------------- method go to add notes aux student
-  toggle_to_notes(idClasse: number, idAnnee: number) {
+  toggle_to_notes(idClasse?: number, idAnnee?: number, ) {
     const navigationExtras: NavigationExtras = {
       queryParams: { id: idClasse, idAnnee:idAnnee }
     };
@@ -320,8 +313,8 @@ export class ClassStudentsComponent implements OnInit {
       console.log("idAnnee", this.idAnnee);
     }
     // const idAnnee = event.target.value
-    console.log(this.der," der")
-    this.service.getAllClasse(this.idAnnee, this.der.idAdministra!).subscribe(classRoms => {
+    // console.log(this.der," der")
+    this.service.getAllClasse(this.idAnnee, this.admin.idAdministra!).subscribe(classRoms => {
       this.classRoms = []
       this.classRoms = classRoms;
       this.classesSorted = classRoms
@@ -353,7 +346,7 @@ export class ClassStudentsComponent implements OnInit {
     this.sortedValue = this.sortedValue || 'Auccun';
   }
     console.log(this.sortedValue, "value avec even");
-   if(this.sortedValue.toString() === "Auccun"){
+   if(this.sortedValue.toString() === "Filtrer"){
     this.classesSorted = []
     return
    }

@@ -1,0 +1,62 @@
+<main>
+    
+    <div class="top-content">
+        <div class="top-content-body">
+               
+            <div class="left" >
+                <p>Nombres de paiement par status </p>
+                <div class="status-content" *ngFor="let status of statusInscrits; let i = index">
+                    <span (click)="choseIndex(i)" [ngClass]="{'active' : showStatus[i]}" >{{status.status}} <fa-icon [icon]="showStatus[i] ? icons.angleUp : icons.angleDown"></fa-icon></span>
+                    <div class="status-body" *ngIf="showStatus[i]">
+                        <div class="content">
+                            <div class="color-carre" style="background-color: green;"> </div>
+                            <p (click)="toggle_to_status_student(status.status, 1)">{{status.numbreInscit}} Payer </p>
+                
+                        </div>
+                        <div class="content" >
+                            <div class="color-carre" style="background-color: red;"></div>
+                            <p (click)="toggle_to_status_student(status.status, 2)">{{status.numberNotIncrit}} Non Payer </p>
+                
+                        </div>
+                        <div class="content">
+                            <div class="color-carre" style="background-color: gray;"></div>
+                            <p (click)="toggle_to_status_student(status.status, 3)">{{status.dette}} Avec Dette </p>
+                
+                        </div>
+                    </div>
+                    
+                </div>
+            
+            </div>
+        </div>
+        
+        <div class="right">
+            <canvas id="myChart" width="330" height="300"></canvas>
+            <!-- statistique circle -->
+        </div>
+    </div>
+    <div class="bottom-content" *ngIf="filiereInscrit.length">
+        <div class="left" >
+            <p>Nombres des inscriptions par filière  </p>
+            <div class="status-content" *ngFor="let filiere of filiereInscrit; let i = index">
+                <span (click)="choseIndexFiliere(i)" [ngClass]="{'active' : showFilieres[i]}" >{{filiere.filiereName}} <fa-icon [icon]="showFilieres[i] ? icons.angleUp : icons.angleDown"></fa-icon></span>
+                <div class="status-body" *ngIf="showFilieres[i]">
+                    <div class="content">
+                        <div class="color-carre" style="background-color: green;"> </div>
+                        <p (click)="toggle_to_filiere_student(filiere.idFiliere, true)">{{filiere.numbreInscrit}} Payer </p>
+            
+                    </div>
+                    <div class="content" >
+                        <div class="color-carre" style="background-color: red;"></div>
+                        <p (click)="toggle_to_filiere_student(filiere.idFiliere, false)">{{filiere.numberNotInscrit}} non Payer </p>
+            
+                    </div>
+                    
+                </div>
+                
+            </div>
+        
+        </div>
+    </div>
+    
+</main>

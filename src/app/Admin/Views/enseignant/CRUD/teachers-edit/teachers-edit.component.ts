@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { EnseiService } from '../../ensei.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PageTitleService } from '../../../../../Services/page-title.service';
@@ -6,9 +6,9 @@ import { IconsService } from '../../../../../Services/icons.service';
 import { Diplomes, Teacher, TeachersStatus } from '../../../../Models/Teachers';
 import { ActivatedRoute } from '@angular/router';
 import { SetService } from '../../../settings/set.service';
-import { Ue } from '../../../../Models/UE';
 import { Admin } from '../../../../Models/Admin';
 import { AdminUSER } from '../../../../Models/Auth';
+import { TeacherUtils } from '../../Utils/teacher-utils';
 
 @Component({
   selector: 'app-teachers-edit',
@@ -25,65 +25,46 @@ export class TeachersEditComponent implements OnInit {
   passwordVisible : boolean = false
   idEnseignant!: number
   admin!: Admin
-  ueList : Ue [] = []
+  // ueList : Ue [] = []
   isEdit: boolean = false
+  isAddGrade: boolean = false
   isUpdate: boolean = false
+  gradesOptions: {key: string, value: string}[] = []
 
-  
+
   teacherStatusOptions!: string[];
   teacherDiplomOptions: {key: string, value: string}[] = [];
 
   constructor(private enseignantService: EnseiService, private root: ActivatedRoute, private pageTitle: PageTitleService,
-    public icons: IconsService, private fb: FormBuilder, private setService: SetService) { }
+    public icons: IconsService, private fb: FormBuilder, private setService: SetService, public teacherUtils: TeacherUtils) { }
 
 
   ngOnInit(): void {
-    this.load_update_form();
+   this.teacher_form = this.teacherUtils.InitializeForm(this.fb);
     this.getTeacher();
-    this.load_ues();
-    this.getStatusOptions();
+     this.teacherDiplomOptions = this.teacherUtils.getDiplomesOptions();
     this.admin = AdminUSER()?.der
+    this.gradesOptions = this.teacherUtils.getGradesOptions()
       
   }
 
-  // ------------------------load form
+  //load form
   load_update_form(){
-    this.teacher_form = this.fb.group({
-      idEnseignant: ['', Validators.required],
-      
-        nom: [''],
-        prenom: [''],
-        email: [''],
-        sexe: [""],
-        password: [''],
-        telephone: [''],
-        urlPhoto: [''],
-        idUe: [''],
-        diplome: [''],
-        status: ['', Validators.required]
-  
-    })
+    if (this.enseignant) {
+      this.teacher_form.patchValue({
+        idEnseignant: this.enseignant.idEnseignant,
+        nom: this.enseignant.nom,
+        prenom: this.enseignant.prenom,
+        email: this.enseignant.email,
+        sexe: this.enseignant.sexe,
+        telephone: this.enseignant.telephone,
+        dateNaissance: this.enseignant.dateNaissance,
+        diplome: this.enseignant.diplome,
+        status: this.enseignant.status,
+        grade: this.enseignant.grade || '', // Utilisez une valeur par défaut si nécessaire
+      });
+    }
    
-  }
-   // -----------------------load all ues
-   load_ues(){
-    this.setService.getAll_ue_all().subscribe(response =>{
-      this.ueList = response;
-    
-    })
-  
-  }
-  getStatusOptions() {
-    const objet = Object.keys(Diplomes).map(key => ({
-      
-      key: key,
-      value: Diplomes[key as keyof typeof Diplomes] 
-    }));
-    objet.forEach(o => {
-      if(o.value != Diplomes.L1 && o.value != Diplomes.L2 ){
-        this.teacherDiplomOptions.push(o)
-      }
-    })
   }
   // -----------------------------------------
   getTeacher(){
@@ -91,50 +72,22 @@ export class TeachersEditComponent implements OnInit {
     this.root.queryParams.subscribe(params => {
       this.idEnseignant = +params['id'];
       console.log(this.idEnseignant, "id----")
-      this.enseignantService.getTeacher_by_id(this.idEnseignant).subscribe(
-        {
-          next : (response) =>{
-            this.enseignant = response;
-            console.log(this.enseignant, "ense")
+      this.enseignantService.getTeacher_by_id(this.idEnseignant).subscribe( result =>{
+        this.enseignant = result;
+        console.log(this.enseignant, "ense")
+        this.load_update_form();
 
-            this.teacher_form.get('nom')?.setValue(this.enseignant.nom);
-            this.teacher_form.get('idEnseignant')?.setValue(this.enseignant.idEnseignant);
-            this.teacher_form.get('prenom')?.setValue(this.enseignant.prenom);
-            this.teacher_form.get('email')?.setValue(this.enseignant.email);
-            this.teacher_form.get('sexe')?.setValue(this.enseignant.sexe);
-            this.teacher_form.get('telephone')?.setValue(this.enseignant.telephone);
-          },
-          error : (erreur) =>{
-            this.pageTitle.showErrorToast(erreur.error.message)
-          }
-        }
+      }
+        
       );
     });
    
-  }
-
-  // ---------------------------------update teacher
-
-  onFileSelected(event: any)  {
-    this.fileName = event.target.files[0];
-  }
-
-  onPhotoSelected(event: any){
-    
-    console.log(this.fileName, "fill")
-    this.photoSelect = event.target.files[0];
-    // console.log(this.photoSelect, "photo select")
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      this.urlImage = e.target.result;
-    };
-    reader.readAsDataURL(this.photoSelect);
   }
   update_enseignant(){
     if(this.isUpdate){
       const formData = this.teacher_form.value
       console.log(formData, "fomData");
-      const idUe = this.ueList.find(ue =>ue.id == formData.idUe);
+      // const idUe = this.ueList.find(ue =>ue.id == formData.idUe);
 
       const enseignant : Teacher ={
         idEnseignant: formData.idEnseignant,
@@ -145,6 +98,9 @@ export class TeachersEditComponent implements OnInit {
         telephone: formData.telephone,
         status: formData.status,
         diplome: formData.diplome,
+        grade: formData.grade!,
+        dateNaissance: formData.dateNaissance,
+        
         admin: this.admin
 
         
@@ -178,12 +134,31 @@ export class TeachersEditComponent implements OnInit {
   goBack(){
     window.history.back();
   }
-  // -----------------------------------password visible
-  togglePasswordVisibility(): void {
-    this.passwordVisible = !this.passwordVisible;
-}
+ 
 
 toggle_toChageEdit(){
   this.isEdit =! this.isEdit
 }
+show_grade(){
+  this.isAddGrade =! this.isAddGrade
+}
+exitConfirm(){
+  this.isAddGrade = false
+}
+
+confirmer(idTeacher: number){
+  this.enseignantService.desableTeacher(idTeacher!).subscribe({
+    next: (response) => {
+      this.pageTitle.showSuccessToast(response.message)
+      this.teacher_form.reset();
+      window.history.back();
+    },
+    error: (erreur) => {
+      this.pageTitle.showErrorToast(erreur.error.message)
+      
+      
+    }
+  })
+}
+
 }

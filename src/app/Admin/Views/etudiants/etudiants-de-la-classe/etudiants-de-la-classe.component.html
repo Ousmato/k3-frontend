@@ -1,18 +1,40 @@
 <main>
-    <div (click)="goBack()" class="back-button">
-            <fa-icon [icon]="icons.back"></fa-icon>
-          </div>
+    <div class="header">
+        <div (click)="goBack()" class="back-button" title="Retour">
+             <fa-icon [icon]="icons.back"></fa-icon>            
+        </div>
+        <div class="classe-name">
+            <p>Classe : {{shared_methode.abrevigateNiveauName(Classe.idFiliere?.idNiveau?.nom!)}}-{{shared_methode.abreviateFiliereName(Classe.idFiliere?.idFiliere?.nomFiliere!)}}</p>
+        </div>
+    </div>
+    
     <div class="head">
-        <select class="select">
+        <div class="left">
+            
+            <!-- <select class="select">
             <option selected disabled value="">Exporter</option>
             <option  value="PDF">PDF</option>
             <option  value="EXCEL">EXCEL</option>
-        </select>
-    
-        <div class="input-search">
-            <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..."  class="search-input">
-        <!-- <fa-icon [icon]="icons.recherche" class="search-icon"></fa-icon> -->
+        </select> -->
+            <p (click)="allInscrit()" [ngClass]="{'active' : idSouFiiere == null }" class="speciality-link">Tout</p>
+           @for (item of Classe.specialites; track $index) {
+            <p (click)="getSpecialite(item.id!, $index)" [ngClass]="{'active' : idSouFiiere != null && $index == indexSelect }" class="speciality-link">{{shared_methode.abreviateFiliereName (item.nomSousFiliere)}}</p>
+           }
+            
         </div>
+       
+       <!-- ----------------- -->
+    <div class="input-search">
+        <div class="trie-content">
+          <label for="tri"><fa-icon [icon]="icons.filter" ></fa-icon> </label>
+          <select id="tri" (change)="sharedMethod.onSorted($event, inscrits)">
+              <option disabled selected value="">Trier</option>
+              <option value="nom">Nom</option>
+              <option value="prenom">Prénom</option>
+          </select>
+      </div>
+        <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..." class="search-input">
+      </div>
     </div>
     
     <div class="table-container">
@@ -23,9 +45,11 @@
                     <!-- <th>Photo</th> -->
                     <th>Nom</th>
                     <th>Prenom</th>
-                    <th>Classe</th>
-                    <th>Telephone</th>
+                    <th>Lieu de Naissance</th>
+                    <th>Date Naissance</th>
+                    <th>Sexe</th>
                     <th>Status</th>
+
                     <th>Etat</th>
                     <th *ngIf="!adminDga">Action</th>
                 </tr>
@@ -37,25 +61,39 @@
                         <!-- <td><img src="{{ student.urlPhoto }}" alt=""></td> -->
                         <td>{{ inscrit.idEtudiant.nom }}</td>
                         <td>{{ inscrit.idEtudiant.prenom }}</td>
-                        <td class="class-name" title="{{ inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere }}">
-                            {{ inscrit.idClasse.idFiliere?.idNiveau?.nom }}  {{ abrevigateFiliereName(inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere!)}}
+                        <td class="class-name">
+                            {{inscrit.idEtudiant.lieuNaissance}}
                         </td>
                         
-                        <td>{{ inscrit.idEtudiant.telephone }}</td>
-                        <td>{{ inscrit.idEtudiant.status.toUpperCase() }}</td>
-                        <td>
-                            <a>
-                                <fa-icon [icon]="inscrit.payer ? icons.circle : icons.circle" [ngStyle]="{ color: inscrit.payer ? 'green' : 'red' }"></fa-icon>
-                                
-                            </a>
+                        <td>{{ inscrit.idEtudiant.dateNaissance }}</td>
+                        <td>{{ inscrit.idEtudiant.sexe.includes('FEMME') ? "F" : "M" }}</td>
+                        <td>{{sharedMethod.statusMapper(inscrit.idEtudiant.status)}}</td>
+                        <td title="{{ inscrit.totalPaie ? 'Payer' : (inscrit.payer ? 'Créditer' : 'Non Payer') }}"><a>
+                            <fa-icon [icon]="inscrit.payer ? icons.circle : icons.circle "
+                              [ngStyle]="{color: inscrit.totalPaie ? 'green' : (inscrit.payer ? 'gray' : 'red') }"></fa-icon><span></span></a>
                         </td>
+
                         <td *ngIf="!adminDga">
                             <div class="btn-contenaire">
                                 <a (click)="load_bulletin(inscrit.id!)" ><fa-icon  [icon]="icons.eye" class="icons"></fa-icon><span>Rélever</span></a>
-                           
+                                <a  *ngIf="inscrit.idClasse.specialites.length" (click)="show_specialite(inscrit.id!)"><fa-icon [icon]="icons.paperClip"></fa-icon> Spécialiés</a> 
                                 
+                                <div class="views" *ngIf="idInscritSelect === inscrit.id">
+                                    <div class="input-content" *ngFor="let filiere of inscrit.idClasse.specialites">
+        
+                                        <input type="checkbox" id="{{filiere.id}}" (change)="filiere_check(filiere.id!, $event)">
+                                        <label for="{{filiere.id}}"
+                                            style="margin-left: 10px;">{{shared_methode.abreviateFiliereName (filiere.nomSousFiliere)}}</label>
+        
+        
+                                    </div> 
+                                </div>
                             </div>
+
+                           
+                            
                         </td>
+                        
                     </tr>
                 </ng-container>
                 <ng-template #noResults>

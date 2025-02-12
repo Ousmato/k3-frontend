@@ -11,6 +11,7 @@ import { Admin } from '../../../../Models/Admin';
 import { AdminUSER } from '../../../../Models/Auth';
 import { FiliereService } from '../../../../../Services/filiere.service';
 import { SpecialiteService } from '../../../../../Services/specialite.service';
+import { TeacherUtils } from '../../Utils/teacher-utils';
 
 @Component({
   selector: 'app-teachers-singin',
@@ -23,6 +24,7 @@ export class TeachersSinginComponent implements OnInit {
   fileName!: File
   teacherStatusOptions!: string[];
   teacherDiplomOptions: { key: string, value: string }[] = []
+  gradesOptions: { key: string, value: string }[] = []
   specialites: Specialites[] = [];
   // filiereNumbers: number[] = [1];
   // listFilieresSelect: Filiere[] = []
@@ -31,12 +33,13 @@ export class TeachersSinginComponent implements OnInit {
   passwordVisible: boolean = false
 
   constructor(private enseignantService: EnseiService, private pageTitle: PageTitleService, private filiereService: FiliereService,
-    public icons: IconsService, private fb: FormBuilder, private specialiteService: SpecialiteService) { }
+    public icons: IconsService, private fb: FormBuilder, public teacherUtils: TeacherUtils) { }
 
   ngOnInit(): void {
     this.loa_teacher_form();
-    this.getStatusOptions();
+     this.teacherDiplomOptions = this.teacherUtils.getDiplomesOptions();
     this.admin = AdminUSER()?.der
+    this.gradesOptions = this.teacherUtils.getGradesOptions();
 
   }
   // -------------------------load teacher add form
@@ -49,7 +52,8 @@ export class TeachersSinginComponent implements OnInit {
       sexe: ["", Validators.required],
       password: ['', Validators.required],
       telephone: ['', Validators.required],
-      
+      dateNaissance: ['', Validators.required],
+      grade: ['', Validators.required],
 
       diplome: ['', Validators.required],
       status: ['', Validators.required]
@@ -79,6 +83,7 @@ export class TeachersSinginComponent implements OnInit {
       sexe: formData.sexe,
       status: formData.status,
       diplome: formData.diplome,
+      dateNaissance: formData.dateNaissance,
       admin: this.admin
     }
     if (this.teacher_form.valid) {
@@ -104,51 +109,7 @@ export class TeachersSinginComponent implements OnInit {
     }
 
   }
-  getStatusOptions() {
-    const objet = Object.keys(Diplomes).map(key => ({
 
-      key: key,
-      value: Diplomes[key as keyof typeof Diplomes]
-    }));
-    objet.forEach(o => {
-      if (o.value != Diplomes.L1 && o.value != Diplomes.L2) {
-        this.teacherDiplomOptions.push(o)
-      }
-    })
-  }
-
-  // ----------------incremente and decremente filieres number
-  // decrement() {
-  //   if (this.count > 1) {
-  //     this.teacher_form.get("idFiliere" + this.count)?.setValue("");
-  //     this.count--;
-  //     this.filiereNumbers.splice(this.count)
-  //     console.log(this.filiereNumbers, "tab ecue after")
-  //   }
-  // // }
-  // increment() {
-
-  //   console.log("is cont")
-  //   if (this.count <= 2) {
-  //     this.count++;
-  //     this.filiereNumbers.push(this.count)
-  //     console.log(this.filiereNumbers, "tab ecue")
-  //     // this.getEcues(this.count)
-  //     // this.getFiliereSelectList(this.count)
-  //   }
-  // }
-
-  // getFiliereSelectList(count: number): Filiere {
-  //   const idFiliere = this.teacher_form.get("idFiliere" + count)?.value;
-  //   const fil = this.filieres.find(fl => fl.id == idFiliere);
-  //   console.log(fil, "id filiere")
-  //   return fil!
-  // }
-
-  onSelect(event: any, index: number) {
-    var errorr = document.getElementById('error') as HTMLElement;
-    errorr.style.display = "none";
-  }
   //  -------------------------------back button
   goBack() {
     window.history.back();

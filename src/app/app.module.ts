@@ -30,8 +30,6 @@ import { TeachersSinginComponent } from './Admin/Views/Enseignant/CRUD/teachers-
 import { TeachersEditComponent } from './Admin/Views/Enseignant/CRUD/teachers-edit/teachers-edit.component';
 import { AddNoteWidgetComponent } from './Widget/add-note-widget/add-note-widget.component';
 import { StudentBulletinComponent } from './Admin/Component/student-bulletin/student-bulletin.component';
-import { FicheDePaieComponent } from './Admin/Component/fiche-de-paie/fiche-de-paie.component';
-import { EnseignantFichePaieComponent } from './Admin/Component/enseignant-fiche-paie/enseignant-fiche-paie.component';
 import { SchoolEditWidgetComponent } from './Widget/school-edit-widget/school-edit-widget.component';
 import { AdminSettingWidgetComponent } from './Widget/admin-setting-widget/admin-setting-widget.component';
 import { AddAdminComponent } from './Admin/Component/add-admin/add-admin.component';
@@ -94,6 +92,9 @@ import { EditComponent } from './DER/specialites/CRUD/edit/edit.component';
 import { AddTeacherSpecialitesComponent } from './DER/specialites/CRUD/add-teacher-specialites/add-teacher-specialites.component';
 import { ImportEnseignantComponent } from './Admin/Views/Enseignant/import-enseignant/import-enseignant.component';
 import { SemestreMoyennesComponent } from './Admin/Views/semestre-moyennes/semestre-moyennes.component';
+import { StudentPaiementRapportComponent } from './Admin/Views/Etudiants/student-paiement-rapport/student-paiement-rapport.component';
+import { StudentStatistiqueComponent } from './Admin/Views/Etudiants/student-statistique/student-statistique.component';
+import { StatistiqueSudentsValuesComponent } from './Admin/Views/Etudiants/statistique-sudents-values/statistique-sudents-values.component';
 registerLocaleData(localeFr);
 @NgModule({
   declarations: [
@@ -118,8 +119,6 @@ registerLocaleData(localeFr);
     TeachersEditComponent,
     AddNoteWidgetComponent,
     StudentBulletinComponent,
-    FicheDePaieComponent,
-    EnseignantFichePaieComponent,
     SchoolEditWidgetComponent,
     AdminSettingWidgetComponent,
     AddAdminComponent,
@@ -161,6 +160,9 @@ registerLocaleData(localeFr);
     AddClassPromotionComponent,
     RSImportComponent,
     EmptyWidgetComponent,
+    StudentPaiementRapportComponent,
+    StudentStatistiqueComponent,
+    StatistiqueSudentsValuesComponent,
     SoutenanceNoteComponent, StudentGroupListComponent, AdminListComponent, MyAccuntComponent, ForgotPasswordComponent, ResetPasswordComponent, SetNewPasswordComponent, SessionExpiredModalComponent, NotificationComponent, RolesComponent, StudentSuivisComponent, StudentDetailsComponent, SpecialitesComponent, EditComponent, AddTeacherSpecialitesComponent, ImportEnseignantComponent, SemestreMoyennesComponent
   ],
   imports: [

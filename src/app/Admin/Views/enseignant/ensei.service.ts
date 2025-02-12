@@ -43,42 +43,14 @@ export class EnseiService {
     );
 
   }
-  // ------------------------------get enseignant detaille  emplois by id 
-  getTeacherPresence(id: number): Observable<Teacher_presence> {
-    return this.http.get<Teacher_presence>(this.baseUrl + 'detaille/' + id);
-  }
-  // -------------------------------method to add presence
-  addPresence(idSeance: Presence): Observable<Response_String> {
-    return this.http.post<Response_String>(this.baseUrl + "add-presence", idSeance);
-  }
-  // ------------------------------method pour absenter un teacher
-  chage_observation(idSeance: Presence): Observable<Response_String> {
-    console.log(idSeance, "service")
-    return this.http.post<Response_String>(this.baseUrl + "change-observation", idSeance);
-  }
-  // ------------get status
-  getStatus(idTeacher: number): Observable<Presence[]> {
-    return this.http.get<Presence[]>(this.baseUrl + "status/" + idTeacher);
-  }
-  // ---------------------------------get All teacher in presence
-  getAllPresence(): Observable<Presence[]> {
-    return this.http.get<Presence[]>(this.baseUrl + 'list-presence');
-  }
+
+ 
   // --------------------------------add paie
   getAll_Teacher_By_IdUe(idFiliere: number): Observable<Teacher[]> {
     return this.http.get<Teacher[]>(this.baseUrl + "list-teacher-by-filiere/" + idFiliere);
   }
-  // -----------------------------------get all paie
-  // getAllPaie(page: number, size: number) : Observable<Paie_Pages>{
-  //   return this.http.get<Paie_Pages>(`${this.baseUrl}list-paie?page=${page}&size=${size}`);
-  // }
-  getAllPaie(): Observable<PaieDTO[]> {
-    return this.http.get<PaieDTO[]>(this.baseUrl + "list-paie")
-  }
-  // ----------------------get all hours paie of teacher
-  getPaieBy_Enseignant_id(idEnseignant: number): Observable<Paie[]> {
-    return this.http.get<Paie[]>(this.baseUrl + "all-hours-paie-of-teacher/" + idEnseignant)
-  }
+  
+ 
   // -------------------------------------------update teacher
   updateTeacher(teacher: Teacher): Observable<Response_String> {
 
@@ -92,14 +64,8 @@ export class EnseiService {
   getTeachers(page: number, size: number): Observable<TeacherPages> {
     return this.http.get<TeacherPages>(`${this.baseUrl}all-techer-by-with-profile?page=${page}&size=${size}`);
   }
-  // -----------------------------------method pour appeller tous les presence du mois
-  getAll_presence_ofMonth(page: number, size: number): Observable<Presence_pages> {
-    return this.http.get<Presence_pages>(`${this.baseUrl}list-presence?page=${page}&size=${size}`);
-  }
-  // ------------------------get presence by id seance
-  getPresence_by_seance(idSeance: number): Observable<Presence> {
-    return this.http.get<Presence>(this.baseUrl + "presence-by-idseance/" + idSeance)
-  }
+  
+ 
 
   // ---------------------------get nombre enseignant
   countTeacherNumber(): Observable<number> {
@@ -113,10 +79,6 @@ export class EnseiService {
     return this.http.post<Teacher[]>(this.baseUrl + "teachers-filtered-list", searchTerm);
   }
 
-  // ----------------get all paie of month
-  getAllPaieByMonth(month: number) : Observable<PaieDTO[]>{
-    return this.http.get<PaieDTO[]>(this.baseUrl+"all-paie-of-month/"+month)
-  }
 
   addTeacher(teachers: Teacher[], idAdmin: number) : Observable<Response_String> {
     this.loadingService.loading();
@@ -133,6 +95,10 @@ export class EnseiService {
   // all emploi of teacher by id year
   getAllEmploiOfTeacherByIdYear(idAnnee: number, idTeacher: number) : Observable<TeacherDto>{
     return this.http.get<TeacherDto>(`${this.baseUrl}all-emplois-of-teacher/${idAnnee}/${idTeacher}`);
+  }
+  // desable teacher 
+  desableTeacher(idTeacher: number): Observable<Response_String> {
+    return this.http.put<Response_String>(`${this.baseUrl}desable-teacher/${idTeacher}`, null);
   }
  
  

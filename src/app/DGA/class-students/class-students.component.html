@@ -34,24 +34,24 @@
                     </div>
 
                     <div class="info-folder">
-                        <h2 class="title">Nivau : {{classRom.idFiliere?.idNiveau?.nom}} </h2>
-                        <p class="title">Filiere :
+                        <h2 class="title">Niveau : {{classRom.idFiliere?.idNiveau?.nom}} </h2>
+                        <p class="title">Filière :
                             {{sharedMethod.abreviateFiliereName(classRom.idFiliere?.idFiliere?.nomFiliere!)}}</p>
                         
                             <p *ngIf="classRom.specialites.length">Spécialité : @for (item of classRom.specialites; track $index) {
                                 <a >{{sharedMethod.abreviateFiliereName(item.nomSousFiliere)}}</a>    
                             }
                         </p>
-                        <a (click)="show_views(classRom)">Clique ici<fa-icon [icon]="icons.angleDown"></fa-icon></a>
+                        <a (click)="show_views(classRom)">Clique ici<fa-icon [icon]="icons.angleDown"></fa-icon> </a>
                     </div>
-                    <p class="effectifs">Effs : {{classRom.effectifs}}</p>
+                    <p class="effectifs"></p>
                 </div>
                 <ng-container *ngIf=" classRom === classeSelect">
                     <div class="views" *ngIf="isShow_link_modal">
                         <li *ngIf="!permission"> <a (click)="toggle_to_emplois(classeSelect)" > Consulter les EDT</a></li>
                         <!-- <li *ngIf="permission"><a (click)="getAll_ues(classeSelect)">Ajouter unité
                                 d'enseignament</a></li> -->
-                                <li *ngIf="!admin"><a (click)="toggle_to_view_ues (classeSelect)">Unité
+                                <li *ngIf="!permission"><a (click)="toggle_to_view_ues (classeSelect)">Unité
                                     d'enseignement</a></li>
                         <li *ngIf="permission"><a (click)="toggle_to_notes(classeSelect.id!, classeSelect.idAnneeScolaire?.id!)">Ajouter Notes</a>
                         </li>
@@ -88,34 +88,34 @@
                                 </div>
         
                                 <div class="info-folder">
-                                    <h2 class="title">Nivau : {{classRom.idFiliere?.idNiveau?.nom}} </h2>
-                                    <p class="title">Filiere :
+                                    <h2 class="title">Niveau : {{classRom.idFiliere?.idNiveau?.nom}} </h2>
+                                    <p class="title">Filière :
                                         {{sharedMethod.abreviateFiliereName(classRom.idFiliere?.idFiliere?.nomFiliere!)}}</p>
                                     
                                         <p *ngIf="classRom.specialites.length">Spécialité : @for (item of classRom.specialites; track $index) {
-                                            <a >{{sharedMethod.abreviateFiliereName(item.nomSousFiliere)}}</a>    
+                                            <a  (click)="show_views_sousFiliere(classRom,item)">{{sharedMethod.abreviateFiliereName(item.nomSousFiliere)}}</a>    
                                         }
                                     </p>
-                                    <a (click)="show_views(classRom)">Clique ici<fa-icon [icon]="icons.angleDown"></fa-icon></a>
+                                    <div class="bottom-folder">
+                                        <a (click)="show_views(classRom)">Clique ici<fa-icon [icon]="icons.angleDown"></fa-icon> </a>Total : {{classRom.effectifs}}
+
+                                    </div>
                                 </div>
-                                <p class="effectifs">Effs : {{classRom.effectifs}}</p>
+                                
                             </div>
                             <ng-container *ngIf=" classRom === classeSelect">
                                 <div class="views" *ngIf="isShow_link_modal">
                                     <li *ngIf="!permission"> <a (click)="toggle_to_emplois(classeSelect)" > Consulter les EDT</a></li>
                                     <!-- <li *ngIf="permission"><a (click)="getAll_ues(classeSelect)">Ajouter unité
                                             d'enseignament</a></li> -->
-                                            <li><a (click)="toggle_to_view_ues (classeSelect)">Unité
-                                                d'enseignement</a></li>
+                                            <li *ngIf="!permission" ><a (click)="toggle_to_view_ues (classeSelect)">Unité d'enseignement</a></li>
                                     <li *ngIf="permission"><a (click)="toggle_to_notes(classeSelect.id!, classeSelect.idAnneeScolaire?.id!)">Ajouter Notes</a>
                                     </li>
                                     <li *ngIf="permission" ><a (click)="toggle_toStudentClasse(classeSelect.id!, classeSelect.idFiliere?.id!)">Liste des étudiants</a></li>
-                                    <li *ngIf="permission" ><a  (click)="toggle_to_noteSemestre(classeSelect!, classeSelect.idFiliere?.id!)">Notes du semestre</a>
-                                    </li>
+                                    <li *ngIf="permission" ><a  (click)="toggle_to_noteSemestre(classeSelect!, classeSelect.idFiliere?.id!)">Notes du semestre</a></li>
                                     <!-- <li><a (click)="toggle_to_update_emplois (classeSelect.id!)" >Modifier l'emploi du temps</a></li> -->
                                     <li *ngIf="permission"> <a (click)="toggle_semestre_moyenne(classRom.id!)">Admins et Ajourné</a></li>
                                    
-                                    <li *ngIf="classesArchives.length !== 0"> <a (click)="archive(classRom)">Archives</a></li>
                                 </div>
                             </ng-container>
                         </div>
@@ -148,11 +148,11 @@
                                     </div>
         
                                     <div class="info-folder">
-                                        <h2 class="title">Nivau : {{classRom.idFiliere?.idNiveau?.nom}} </h2>
-                                        <p class="title">Filiere :
+                                        <h2 class="title">Niveau : {{classRom.idFiliere?.idNiveau?.nom}} </h2>
+                                        <p class="title">Filière :
                                             {{sharedMethod.abreviateFiliereName(classRom.idFiliere?.idFiliere?.nomFiliere!)}}</p>
                                             <p *ngIf="classRom.specialites.length">Spécialité : @for (item of classRom.specialites; track $index) {
-                                                <a (click)="show_views_sousFiliere(item)">{{sharedMethod.abreviateFiliereName(item.nomSousFiliere)}}
+                                                <a (click)="show_views_sousFiliere(classRom, item)">{{sharedMethod.abreviateFiliereName(item.nomSousFiliere)}}
     
                                                 </a> 
                                                 <ng-container *ngIf=" item === sousClassSelect">
@@ -160,45 +160,33 @@
                                                         <!-- <li *ngIf="getPermission()"> <a (click)="toggle_to_emplois(classeSelect)" > Consulter l'emploi du temps</a></li> -->
                                                         <!-- <li *ngIf="permission"><a (click)="getAll_ues(classeSelect)">Ajouter unité
                                                                 d'enseignament</a></li> -->
-                                                                <li *ngIf="permission"><a (click)="toggle_to_view_ues (classeSelect!)">Unité
+                                                                <li *ngIf="!permission"><a (click)="toggle_to_view_ues (classeSelect!)">Unité
                                                                     d'enseignement</a></li>
                                                         <li *ngIf="permission"><a (click)="toggle_to_notes(classeSelect!.id!, classeSelect!.idAnneeScolaire?.id!)">Ajouter des
                                                                 notes</a></li>
                                                         <li><a (click)="toggle_toStudentClasse(classeSelect!.id!, classeSelect!.idFiliere?.id!)">Liste des étudiants</a></li>
                                                         <li><a (click)="toggle_to_noteSemestre(classeSelect!, classeSelect!.idFiliere?.id!)">Notes du semestre</a></li>
-                                                        <!-- <li *ngIf="permission"><a (click)="toggle_to_view_ues (classeSelect)">Consulté les unité
-                                                                d'enseignement</a></li>
-                         -->
-                                                        <li *ngIf="classesArchives.length !== 0"> <a (click)="archive(classRom)">Archives</a>
-                                                        </li>
-                        
-                        
+                                                       
                                                     </div>
                                                 </ng-container>   
                                             }
                                         </p>
-                                        <a (click)="show_views(classRom)">Clique ici<fa-icon [icon]="icons.angleDown"></fa-icon></a>
+                                        <div class="bottom-folder">
+                                            <a (click)="show_views(classRom)">Clique ici<fa-icon [icon]="icons.angleDown"></fa-icon> </a>Total : {{classRom.effectifs}}
+    
+                                        </div>
                                     </div>
-                                    <p class="effectifs">Effs : {{classRom.effectifs}}</p>
+                                    <!-- <p class="effectifs">Effs : {{classRom.effectifs}}</p> -->
                                 </div>
                                 <ng-container *ngIf=" classRom === classeSelect">
                                     <div class="views" *ngIf="isShow_link_modal">
-                                        <!-- <li *ngIf="getPermission()"> <a (click)="toggle_to_emplois(classeSelect)" > Consulter l'emploi du temps</a></li> -->
-                                        <!-- <li *ngIf="permission"><a (click)="getAll_ues(classeSelect)">Ajouter unité
-                                                d'enseignament</a></li> -->
-                                                <li *ngIf="permission"><a (click)="toggle_to_view_ues (classeSelect!)">Unité
+                                                <li *ngIf="!permission"><a (click)="toggle_to_view_ues (classeSelect!)">Unité
                                                     d'enseignement</a></li>
                                         <li *ngIf="permission"><a (click)="toggle_to_notes(classeSelect!.id!, classeSelect!.idAnneeScolaire?.id!)">Ajouter des
                                                 notes</a></li>
                                         <li><a (click)="toggle_toStudentClasse(classeSelect!.id!, classeSelect!.idFiliere?.id!)">Liste des étudiants</a></li>
                                         <li><a (click)="toggle_to_noteSemestre(classeSelect!, classeSelect!.idFiliere?.id!)">Notes du semestre</a></li>
-                                        <!-- <li *ngIf="permission"><a (click)="toggle_to_view_ues (classeSelect)">Consulté les unité
-                                                d'enseignement</a></li>
-         -->
-                                        <li *ngIf="classesArchives.length !== 0"> <a (click)="archive(classRom)">Archives</a>
-                                        </li>
-        
-        
+                                 
                                     </div>
                                 </ng-container>
                             </div>
@@ -226,34 +214,28 @@
                                         </div>
             
                                         <div class="info-folder">
-                                            <h2 class="title">Nivau : {{classRom.idFiliere?.idNiveau?.nom}} </h2>
-                                            <p class="title">Filiere :
+                                            <h2 class="title">Niveau : {{classRom.idFiliere?.idNiveau?.nom}} </h2>
+                                            <p class="title">Filière :
                                                 {{sharedMethod.abreviateFiliereName(classRom.idFiliere?.idFiliere?.nomFiliere!)}}</p>
                                                 <p *ngIf="classRom.specialites.length">Spécialité : @for (item of classRom.specialites; track $index) {
                                                     <a >{{sharedMethod.abreviateFiliereName(item.nomSousFiliere)}}</a>    
                                                 }
                                             </p>
-                                            <a (click)="show_views(classRom)">Clique ici<fa-icon [icon]="icons.angleDown"></fa-icon></a>
+                                            <div class="bottom-folder">
+                                                <a (click)="show_views(classRom)">Clique ici<fa-icon [icon]="icons.angleDown"></fa-icon> </a>Total : {{classRom.effectifs}}
+        
+                                            </div>
                                         </div>
-                                        <p class="effectifs">Effs : {{classRom.effectifs}}</p>
                                     </div>
                                     <ng-container *ngIf=" classRom === classeSelect">
                                         <div class="views" *ngIf="isShow_link_modal">
-                                            <!-- <li *ngIf="getPermission()"> <a (click)="toggle_to_emplois(classeSelect)" > Consulter l'emploi du temps</a></li> -->
-                                            <!-- <li *ngIf="permission"><a (click)="getAll_ues(classeSelect)">Ajouter unité
-                                                    d'enseignament</a></li> -->
-                                                    <li *ngIf="permission"><a (click)="toggle_to_view_ues (classeSelect)">Unité
+                                                    <li *ngIf="!permission"><a (click)="toggle_to_view_ues (classeSelect)">Unité
                                                         d'enseignement</a></li>
                                             <li *ngIf="permission"><a (click)="toggle_to_notes(classeSelect.id!, classeSelect.idAnneeScolaire?.id!)">Ajouter des
                                                     notes</a></li>
                                             <li><a (click)="toggle_toStudentClasse(classeSelect.id!, classeSelect.idFiliere?.id!)">Liste des étudiants</a></li>
                                             <li><a (click)="toggle_to_noteSemestre(classeSelect!, classeSelect.idFiliere?.id!)">Notes du semestre</a></li>
-                                            <!-- <li><a (click)="toggle_to_update_emplois (classeSelect.id!)" >Modifier l'emploi du temps</a></li> -->
-                                            <!-- <li *ngIf="permission"><a (click)="toggle_to_view_ues (classeSelect)">Consulté les unité
-                                                    d'enseignement</a></li> -->
-            
-                                            <li *ngIf="classesArchives.length !== 0"> <a (click)="archive(classRom)">Archives</a>
-                                            </li>
+                                    
             
                                         </div>
                                     </ng-container>

@@ -1,17 +1,18 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { ServiceService } from '../emplois-du-temps/service.service';
 import { Emplois } from '../../../Admin/Models/Emplois';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { IconsService } from '../../../Services/icons.service';
 import { SideBarService } from '../../../sidebar/side-bar.service';
 import { AdminUSER } from '../../../Admin/Models/Auth';
+import { EventServiceService } from '../../../Services/event-service.service';
 
 @Component({
   selector: 'app-der-emploi-du-temps',
   templateUrl: './der-emploi-du-temps.component.html',
   styleUrl: './der-emploi-du-temps.component.css'
 })
-export class DerEmploiDuTempsComponent implements OnInit {
+export class DerEmploiDuTempsComponent implements OnInit, OnDestroy {
 
   searchTerm: string = '';
   emplois: Emplois[] = [];
@@ -20,15 +21,18 @@ export class DerEmploiDuTempsComponent implements OnInit {
   @Output() refresh = new EventEmitter<any>();
   permission: boolean = false
   idClasse!: number
+  idAnnee!: number
   show_add: boolean = false
   show_update: boolean = false
   constructor(private emploisService: ServiceService, private sideBarService: SideBarService, private root: ActivatedRoute,
-    private router: Router, public icons: IconsService) { }
+    private router: Router, public icons: IconsService, private eventService: EventServiceService) { }
 
   ngOnInit(): void {
     this.getPermission()
     this.root.queryParams.subscribe(params =>{
       this.idClasse = params['id'];
+      this.idAnnee = +params['idAnnee'];
+
      })
       this.load_all_emplois_actif();
       this.sideBarService.currentSearchTerm.subscribe(term => {
@@ -38,6 +42,9 @@ export class DerEmploiDuTempsComponent implements OnInit {
   
       });
    
+  }
+  ngOnDestroy(): void {
+      this.eventService.emitEvent(this.idAnnee);
   }
 
   load_all_emplois_actif() {

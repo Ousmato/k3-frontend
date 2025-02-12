@@ -12,7 +12,6 @@ import { EmploisDuTempsComponent } from '../EDT/emplois-du-temps/emplois-du-temp
 import { EmploisSeanceComponent } from '../EDT/emplois-seance/emplois-seance.component';
 import { DerEditSeanceComponent } from '../Widget/der-edit-seance/der-edit-seance.component';
 import { AddGroupStudentComponent } from '../Widget/add-group-student/add-group-student.component';
-import { EnseignantFichePaieComponent } from '../../Admin/Component/enseignant-fiche-paie/enseignant-fiche-paie.component';
 import { DerPaiListComponent } from '../der-pai-list/der-pai-list.component';
 import { DerEDTComponent } from '../EDT/der-e-d-t/der-e-d-t.component';
 import { DerDocComponent } from '../der-doc/der-doc.component';
@@ -37,7 +36,6 @@ const routes: Routes = [{path: '', component: DerSidebarComponent,
     {path: 'doc', component: DerDocComponent, data:{title: "RAPPORTS ET MEMOIRES"}},
     {path: 'add-doc', component: AddDocComponent, data:{title: "Deposer documment"}},
     {path: 't-edit', component: TeachersEditComponent, data:{title: "INFORMATIONS DE L'ENSEIGNANT"}},
-    {path: 'fiche-enseignant', component: EnseignantFichePaieComponent},
     {path: 'ajouter-seance', component: DerSeancesComponent},
     {path: 'emplois-du-temps', component: DerEmploiDuTempsComponent, data:{title: "EMPLOI DU TEMPS EN COURS"}},
     {path: 'emplois-seances', component: EmploisSeanceComponent, data:{title: "EMPLOI DU TEMPS"}},

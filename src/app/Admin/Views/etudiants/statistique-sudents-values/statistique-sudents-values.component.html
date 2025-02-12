@@ -1,0 +1,95 @@
+<main>
+    <div class="header">
+        <div (click)="goBack()" class="back-button" title="Retour">
+             <fa-icon [icon]="icons.back"></fa-icon>            
+        </div>
+        <div class="input-search">
+            
+            <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..." class="search-input">
+        </div>
+    </div>
+    <div class="table-container">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th>Date Naissance</th>
+                    <th>Lieu Naissance</th>
+                    <th>Sexe</th>
+                    <th>Status</th>
+                    <th>Classe</th>
+            
+                    <th>Payer</th>
+                    <th>Non Payer</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (students.length) {
+                    @for (item of filterStudents(); track $index) {
+                        <tr>
+                            <td>{{item.nom}}</td>
+                            <td>{{item.prenom}}</td>
+                            <td>{{item.dateNaissance}}</td>
+                            <td>{{item.lieuNaissance}}</td>
+                            <td>{{item.sexe.includes('FEMME') ? 'F' : 'M'}}</td>
+                            <td>{{studentShared.statusMapper(item.status)}}</td>
+                            <td>{{item.classe}}</td>
+                            <td  style="color: green; border: 1px solid #ccc; text-align: center;">{{item.payer == 0 + ' FCFA'? '-' : item.payer}} 
+                                <fa-icon *ngIf="item.payer !== item.seuil" (click)="update(item.idInscrit)" title="Payer" [icon]=" icons.edit" class="isNot-paye"> </fa-icon> 
+                                <fa-icon *ngIf="item.payer === item.seuil" [icon]="icons.circle_check" class="is-paye"></fa-icon>
+                            </td>
+                            <td style="color: red; border: 1px solid #ccc;  text-align: center;">{{item.reliquat}}</td>
+                            <td style=" text-align: center;">{{item.seuil}}</td>
+                            
+                        </tr>
+
+                        <!-- modal to update payer -->
+                        <div class="views" *ngIf="idInscritSelect == item.idInscrit">
+                            <form [formGroup]="form" (ngSubmit)="update_paie_student(item)">
+                                <!-- <input type="number" formControlName="idEtudiant" *ngIf="false"> -->
+                                <div class="input">
+                                    <label for="validationDefault03" class="label form-label">Scolarité : <span>(Montant en
+                                            FCFA)</span> </label>
+                                    <input type="text" formControlName="scolarite" class="scolarite-input form-control"
+                                        placeholder="La scolarite...."
+                                        [class.is-invalid]="form.get('scolarite')!.invalid && form.get('scolarite')!.touched"
+                                        pattern="[0-9]{1,7}">
+                                    <span
+                                        *ngIf="form.controls['scolarite'].invalid && form.controls['scolarite'].touched"
+                                        [ngStyle]="{color: 'red'}">
+                                        Champ obligatoire*
+                                    </span>
+                                    <span class="small"
+                                        *ngIf="form.controls['scolarite'].hasError('pattern') && !form.controls['scolarite'].hasError('required')"
+                                        [ngStyle]="{color: 'red'}">
+                                        Maximum 7 chiffres autorisés*
+                                    </span>
+                                    <span class="small"
+                                        *ngIf="form.get('scolarite')?.value > 6000 && studentShared.statusMapper(item.status) === 'REG'"
+                                        [ngStyle]="{color: 'red'}">
+                                        Frais invalide*
+                                    </span>
+                                </div>
+        
+        
+                                <div class="button-cash">
+                                    <button class="submit" type="submit"><span>Payer</span><fa-icon
+                                            [icon]="icons.nexte_circle"></fa-icon></button>
+                                </div>
+                            </form>
+                        </div>
+                    }
+                }@else {
+                    <tr>
+                        <td colspan="10">Aucun etudiant n'a été trouvé.</td>
+                    </tr>
+                }
+                
+                
+            </tbody>
+        </table>
+    </div>
+    
+</main>

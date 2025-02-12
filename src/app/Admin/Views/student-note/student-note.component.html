@@ -1,15 +1,15 @@
 <main>
+  <div class="header">
+    <div (click)="goBack()" class="back-button" title="Retour">
+         <fa-icon [icon]="icons.back"></fa-icon>            
+    </div>
+    <div class="classe-name">
+        <p *ngIf="classe">Classe : {{classe}} {{sharedMethod.extractAnnee(annees)}}-{{sharedMethod.extractAnnee(annees) + 1}}</p>
+    </div>
+  </div>
     <div class="head">
-        <div (click)="goBack()" class="back-button">
-            <fa-icon [icon]="icons.back"></fa-icon>
-        </div>
-        
-        <div class="input-search">
-            <a (click)="refresh()" class="btn-refresh" >
-                <fa-icon [icon]="icons.actualise"></fa-icon>
-                Actualiser
-            </a>
-            <a >
+        <div class="left">
+           <a >
                 <fa-icon [icon]="icons.filter"></fa-icon>
                 <select (change)="shorted($event)">
                     <option selected disabled value="">Trier</option>
@@ -18,6 +18,14 @@
                 </select>
 
             </a>
+            <a (click)="refresh()" class="btn-refresh" >
+              <fa-icon [icon]="icons.actualise"></fa-icon>
+              Actualiser
+          </a>
+        </div>
+           
+        
+        <div class="input-search">
             <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..."  class="search-input">
         <!-- <fa-icon [icon]="icons.recherche" class="search-icon"></fa-icon> -->
         </div>
@@ -26,7 +34,7 @@
         
         <div class="modulo">
             <h6>Module : {{module}}</h6>
-            <h6>{{classe}} {{sharedMethod.extractAnnee(annees)}} - {{sharedMethod.extractAnnee(annees) + 1}}</h6>
+            
             <h6>Semestre : {{semestres}}</h6>
         </div>
        

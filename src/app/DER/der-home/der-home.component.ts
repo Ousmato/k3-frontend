@@ -9,6 +9,8 @@ import { EnseiService } from '../../Admin/Views/Enseignant/ensei.service';
 import { IconsService } from '../../Services/icons.service';
 import { ClassRoom } from '../../Admin/Models/Classe';
 import { SideBarService } from '../../sidebar/side-bar.service';
+import { Admin } from '../../Admin/Models/Admin';
+import { AdminUSER } from '../../Admin/Models/Auth';
 
 @Component({
   selector: 'app-der-home',
@@ -26,6 +28,7 @@ export class DerHomeComponent  implements OnInit{
   salleOccuper: number = 0
   emplois : Emplois[]=[]
   emploiFiltered : Emplois[]=[]
+  der! : Admin
   classes: ClassRoom[] = []
   emploisCount!: number
   constructor(public icons: IconsService, private emploisService: ServiceService, private studentService: EtudeService,
@@ -33,6 +36,7 @@ export class DerHomeComponent  implements OnInit{
     private salleService: SalleService){}
 
   ngOnInit(): void {
+    this.der = AdminUSER()?.der
       this.load_cunt();
       this.salleNumber();
       this.docNumber();
@@ -85,7 +89,7 @@ export class DerHomeComponent  implements OnInit{
   }
 
   countEmplois() {
-    return this.emploisService.getAllEmploisActifs().subscribe(res => {
+    return this.emploisService.getAllEmploisActifs(this.der.idAdministra!).subscribe(res => {
       this.emploisCount = res.length;
       this.emplois = res
       const toDay = new Date();
@@ -97,7 +101,7 @@ export class DerHomeComponent  implements OnInit{
        item.toDay = this.isDateInRange(item.dateDebut, item.dateFin)
         // console.log(item.progess, "------------k-k-k-k-k-kk--");
       })
-      // console.log(res);
+      console.log(res, "---------emploi");
     });
   }
 

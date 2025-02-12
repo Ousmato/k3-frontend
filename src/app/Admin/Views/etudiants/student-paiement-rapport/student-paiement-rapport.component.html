@@ -1,0 +1,71 @@
+<main>
+    <div class="header">
+        <div (click)="goBack()" class="back-button" title="Retour">
+             <fa-icon [icon]="icons.back"></fa-icon>            
+        </div>
+        <div class="head-info" *ngIf="paiement.length">
+           <div class="info">
+                <p>Nom : {{paiement[0].idInscription.idEtudiant.nom}}</p>
+                <p>Prénom : {{paiement[0].idInscription.idEtudiant.prenom}}</p>
+                <p>Sexe : {{paiement[0].idInscription.idEtudiant.sexe.includes('FEMME') ? 'F' : 'M'}}</p>
+
+                
+           </div>
+            <div class="info">
+                <p>Lieu de naissance : {{paiement[0].idInscription.idEtudiant.lieuNaissance}}</p>
+                <p>Date de naissance : {{paiement[0].idInscription.idEtudiant.dateNaissance}}</p>
+                <p>Classe : {{class_shared.abrevigateNiveauName(paiement[0].idInscription.idClasse.idFiliere?.idNiveau?.nom!)}}-{{class_shared.abreviateFiliereName(paiement[0].idInscription.idClasse.idFiliere?.idFiliere?.nomFiliere!)}}</p>
+                
+            </div>
+           <div class="pop-img">
+            <img [src]="imageUrl" (error)="onError($event!)" alt="PHOTO">
+            <!-- <img [src]="student?.urlPhoto ? student?.urlPhoto : 'assets/business-professional-icon.svg'" alt="Profile Image"> -->
+
+        </div>
+            <!-- <p>Classe : {{shared_methode.abrevigateNiveauName(Classe.idFiliere?.idNiveau?.nom!)}}-{{shared_methode.abreviateFiliereName(Classe.idFiliere?.idFiliere?.nomFiliere!)}}</p> -->
+        </div>
+    </div>
+    <div class="content">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Date de paiement</th>
+                    <th>Dernière modification</th>
+                    <th>Montant</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (paiement.length){
+                    <tr *ngFor="let item of paiement ; let i = index">
+                        <td>{{item.dateDePaiement}}</td>
+                        <td>{{item.updateDate}}</td>
+                        <td *ngIf="idPaiementSelect != item.id">{{item.montantXof}}</td>
+                        <td *ngIf="idPaiementSelect == item.id">
+                            <form [formGroup]="form">
+                                <input type="number" formControlName="montant" (change)="onChange($event, item.id!)">
+
+                            </form>
+                        </td>
+                        <td>
+                            <a (click)="update(item.id!)">
+                                <fa-icon [icon]="icons.edit"></fa-icon>
+                                Modifier
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="text-center">Total</td>
+                        <td colspan="2"  class="text-center">{{montantTota}}</td>
+                    </tr>
+                }@else {
+                    <tr>
+                        <td colspan="4" class="text-center">Aucun paiement effectué</td>
+                    </tr>
+                }
+                
+            </tbody>
+
+        </table>
+    </div>
+</main>

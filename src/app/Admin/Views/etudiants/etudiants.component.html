@@ -17,7 +17,7 @@
     <div class="input-search">
       <div class="trie-content">
         <label for="tri"><fa-icon [icon]="icons.filter" ></fa-icon> </label>
-        <select id="tri" (change)="onSorted($event)">
+        <select id="tri" (change)="sharedMethod.onSorted($event, inscrits)">
             <option disabled selected value="">Trier</option>
             <option value="nom">Nom</option>
             <option value="prenom">Prénom</option>
@@ -35,12 +35,11 @@
           <!-- <th>Photo</th> -->
           <th>Nom</th>
           <th>Prenom</th>
-
-          <th>Classe</th>
-
-          <th>Telephone</th>
-          <th>Status</th>
+          <th>Lieu Naissance</th>
+          <th>Date Naissance</th>
           <th>Sexe</th>
+          <th>Status</th>
+          <th>Classe</th>
 
           <th>Etat</th>
           <th *ngIf="!dg  && !secretaire">Action</th>
@@ -54,25 +53,22 @@
             <!-- <td><img src="{{studens.urlPhoto}}" alt=""></td> -->
             <td>{{inscrit.idEtudiant.nom}}</td>
             <td>{{inscrit.idEtudiant.prenom}}</td>
-
+            <td>{{inscrit.idEtudiant.lieuNaissance}}</td>
+            <td>{{inscrit.idEtudiant.dateNaissance}}</td>
+            <td>{{inscrit.idEtudiant.sexe.includes('FEMME') ? 'F' : 'M'}}</td>
+            <td>{{sharedMethod.statusMapper(inscrit.idEtudiant.status)}}</td>
             <td class="class-name" title="{{inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}">
               {{inscrit.idClasse.idFiliere?.idNiveau?.nom}}  {{sharedMethod.abreviateFiliereName(inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere!)}}</td>
            
-
-            <td>{{inscrit.idEtudiant.telephone}}</td>
-            <td>{{sharedMethod.statusMapper(inscrit.idEtudiant.status)}}</td>
-            <td>{{inscrit.idEtudiant.sexe.charAt(0)}}</td>
-            <td title="{{ inscrit.payer ? 'Valider' : 'Non Valider' }}"><a>
+            <td title="{{ inscrit.totalPaie ? 'Payer' : (inscrit.payer ? 'Créditer' : 'Non Payer') }}"><a>
                 <fa-icon [icon]="inscrit.payer ? icons.circle : icons.circle "
-                  [ngStyle]="{ color: inscrit.payer ? 'green' : 'red' }"></fa-icon><span></span></a>
+                  [ngStyle]="{color: inscrit.totalPaie ? 'green' : (inscrit.payer ? 'gray' : 'red') }"></fa-icon><span></span></a>
             </td>
             <td *ngIf="!dg && ! secretaire">
               <div class="btn-contenaire">
 
-                <a (click)="getStudent(inscrit)" *ngIf="!secretaire"><fa-icon
-                    [icon]="permission ? icons.eye : icons.userCheck"></fa-icon><span>{{permission ? 'Editer' :
-                    'Valider'}}</span></a>
-                <a *ngIf="permission" (click)="getStudentView(inscrit.id!)">Details</a>
+                <!-- <a (click)="getStudent(inscrit)" *ngIf="permission"><fa-icon  [icon]="icons.userCheck"></fa-icon><span>Valider</span></a> -->
+                <a *ngIf="permission" (click)="getStudentView(inscrit.id!)"> <fa-icon [icon]="icons.eye"></fa-icon> Details</a>
 
               </div>
             </td>

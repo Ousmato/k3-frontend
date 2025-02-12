@@ -1,0 +1,42 @@
+
+main{
+    display: flex;
+}
+.color-carre{
+    height: 15px;
+    width: 15px;
+}
+.content{
+    margin-left: 15px;
+    display: flex;
+    gap: 5px;
+}
+.content p{
+    cursor: pointer;
+    font-size: 12px;
+    margin-bottom: 4px;
+    &:hover{
+        color: var(--secondary);
+        text-decoration: underline;
+    }
+}
+.top-content{
+    width: 70%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.status-content span{
+    font-weight: 700;
+    font-size: 12px;
+    margin: 5px;
+    cursor: pointer;
+    &:hover{
+        color: var(--primary);
+    }
+}
+.active{
+    color: var(--primary) !important;
+    background-color: transparent !important;
+    box-shadow: none;
+}

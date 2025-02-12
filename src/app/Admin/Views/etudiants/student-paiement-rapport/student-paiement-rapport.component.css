@@ -1,0 +1,60 @@
+main{
+    width: 100%;
+    height: 80vh;
+
+}
+.head-info{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 10px;
+}
+
+.pop-img img{
+    height: 106px;
+    width: 106px;
+    border: #ccc 1px solid;
+    border-radius: 0;
+}
+.info p{
+    margin: 0;
+    padding: 5px;
+}
+
+.content{
+    height: 70%;
+    position: relative;
+    overflow-y: auto;
+    width: 100%;
+}
+.table thead {
+    position: sticky;
+    background-color: white;
+    top: 0;
+    z-index: 1;
+}
+td a{
+    color: var(--primary);
+    cursor: pointer;
+    &:hover{
+        color: var(--secondary);
+    }
+}
+/* Personnalisation de la barre de défilement */
+.content::-webkit-scrollbar {
+    width: 5px; /* Largeur de la barre de défilement */
+  }
+  
+  .content::-webkit-scrollbar-track {
+    background: white; /* Couleur de l'arrière-plan de la piste */
+    border-radius: 10px; /* Coins arrondis de la piste */
+  }
+  
+  .content::-webkit-scrollbar-thumb {
+    background: var(--tertiary); /* Couleur de la barre de défilement */
+    border-radius: 10px; /* Coins arrondis de la barre */
+  }
+  
+  .content::-webkit-scrollbar-thumb:hover {
+    background: var(--primary); /* Couleur de la barre au survol */
+  }

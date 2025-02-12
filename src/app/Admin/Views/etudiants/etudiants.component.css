@@ -231,6 +231,7 @@ select{
 
 
 tr td{
+    padding: 3px;
     font-size: 14px;
     /* width: 100px; */
     overflow: hidden;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { EtudeService } from '../etude.service';
 import { ClassStudentService } from '../../../../DGA/class-students/class-student.service';
 import { IconsService } from '../../../../Services/icons.service';
@@ -9,6 +9,11 @@ import { SideBarService } from '../../../../sidebar/side-bar.service';
 import { environment } from '../../../../../environments/environment';
 import { Admin } from '../../../Models/Admin';
 import { AdminUSER } from '../../../Models/Auth';
+import { ClassRoom } from '../../../Models/Classe';
+import { InscriptionService } from '../../../../Services/inscription.service';
+import { PageTitleService } from '../../../../Services/page-title.service';
+import { Class_shared } from '../../../../DGA/class-students/Utils/Class-shared-methods';
+import { StudentSharedMethods } from '../Utils/Student-shared-methode';
 
 @Component({
   selector: 'app-etudiants-de-la-classe',
@@ -22,6 +27,10 @@ export class EtudiantsDeLaClasseComponent implements OnInit{
   // students!: Student [];
   student!: Student;
   idClasse !: number
+  idSouFiiere !: number | null
+  indexSelect !: number | null
+  idInscritSelect !: number | null
+  Classe !: ClassRoom
 
   adminDga!: Admin
   studentspage?: StudentPages;
@@ -31,8 +40,9 @@ export class EtudiantsDeLaClasseComponent implements OnInit{
   pages: number[] = []
   permission : boolean =false
   
-  constructor(private service: EtudeService, private route: ActivatedRoute, private router: Router,
-    private sideBarService: SideBarService, public icons: IconsService) { }
+  constructor(private service: EtudeService, private route: ActivatedRoute, public sharedMethod: StudentSharedMethods, 
+    private router: Router, private pageTitle: PageTitleService,
+    private sideBarService: SideBarService, public icons: IconsService, private inscriptionService: InscriptionService, public shared_methode: Class_shared) { }
 
   ngOnInit(): void {
     this.loadStudents();
@@ -61,7 +71,8 @@ export class EtudiantsDeLaClasseComponent implements OnInit{
       this.filteredItems = this.inscrits;
       this.pages = Array.from({ length: data.totalPages! }, (_, i) => i);
 
-      // console.log(this.students, "pagenation teachers")
+      this.Classe = this.inscrits[0].idClasse;
+      console.log(this.inscrits, "inscrit of class")
     });
   }
 
@@ -135,9 +146,45 @@ export class EtudiantsDeLaClasseComponent implements OnInit{
 
     return visiblePages;
   }
-  // -------------abrevigate name filiere
-  abrevigateFiliereName(name: string): string{
-    const nameSplit = name.split(' ');
-    return nameSplit.filter(word =>word.length > 3).map(w =>w[0].toUpperCase()).join('');
+
+  // get classe 
+  getSpecialite(idSpecialite: number, index: number){
+    this.indexSelect = index;
+    this.idSouFiiere = idSpecialite;
+    this.inscriptionService.getInscriptionsByidSousFiliere(idSpecialite).subscribe(data =>{
+      this.inscrits = data.inscriptions;
+    })
   }
+
+  show_specialite( idInscrit: number){
+    if(this.idInscritSelect == null){
+    this.idInscritSelect = idInscrit;
+    }else{
+      this.idInscritSelect = null;
+    }
+  }
+
+  allInscrit(){
+    this.loadStudents();
+    this.idSouFiiere = null;
+  }
+
+  filiere_check(idSouFiliere: number, event: any){
+    if(event.target.checked){
+      console.log(idSouFiliere, "check idSouFiliere")
+      // return
+      this.inscriptionService.addInscriptionsToSubfilieres(this.idInscritSelect!, idSouFiliere).subscribe({
+        next: (data) => {
+          this.pageTitle.showSuccessToast(data.message)
+          this.idInscritSelect = null
+          this.loadStudents();
+        },
+        error: (error) => {
+          this.pageTitle.showErrorToast(error.error.message)
+        }
+      })
+      
+    }
+  }
+
 }

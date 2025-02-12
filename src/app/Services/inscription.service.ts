@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Dto_scolarite, Inscription, InscriptionNoteDto } from '../Admin/Models/Students';
+import { Dto_scolarite, Inscription, InscriptionNoteDto, paiement } from '../Admin/Models/Students';
 import { finalize, Observable } from 'rxjs';
 import { Response_String } from '../Admin/Models/Response_String';
 import { LoaderService } from './loader.service';
 import { AddNoteDto } from '../Admin/Models/Notes';
+import { Paie } from '../Admin/Models/paie';
 
 @Injectable({
   providedIn: 'root'
@@ -64,6 +65,57 @@ export class InscriptionService {
   // get all subscriptions by current year
   getInscriptionByCurrentYear() : Observable<Inscription[]>{
     return this.http.get<Inscription[]>(this.baseUrl +"all-subscribe-by-current-year");
+  }
+  // add inScriptions to sous filieres
+  addInscriptionsToSubfilieres(idInscrit: number, idSouFiliere: number): Observable<Response_String>{
+    return this.http.get<Response_String>(`${this.baseUrl}add-inscit-to-sous-filiere/${idInscrit}/${idSouFiliere}`)
+  }
+
+  // get inscritptions by id sous filieres
+  getInscriptionsByidSousFiliere(idSousFiliere: number) : Observable<any>{
+    return this.http.get(`${this.baseUrl}get-inscriptions-by-filiere-specialite/${idSousFiliere}`)
+  }
+
+  // get all paiement 
+  getAllPaiement(idInscrit: number) : Observable<paiement[]>{
+    return this.http.get<paiement[]>(`${this.baseUrl}list-paiement-scolarite-by-idInscrit/${idInscrit}`)
+  }
+
+  // update paiement
+  updatePaiement(idPaiement: number, scolarite: Dto_scolarite, idAdmin: number) : Observable<Response_String>{
+    return this.http.put<Response_String>(`${this.baseUrl}update-paiement/${idPaiement}/${idAdmin}`, scolarite)
+  }
+
+  // get students statistic of current year
+  getInscritStatistiquesOfCurrentYear(idAdmin: number) : Observable<any>{
+    this.loadingService.loading()
+    return this.http.get<any>(`${this.baseUrl}statistique-of-current-year/${idAdmin}`).pipe(
+      finalize(() => this.loadingService.stopLoading())
+    )
+  }
+
+  // get students statistic of year by idYear
+  getInscritStatistiquesBYIdOfYear(idAnnee: number, idAdmin: number) : Observable<any>{
+    this.loadingService.loading()
+    return this.http.get<any>(`${this.baseUrl}statistique-by-id-annee/${idAnnee}/${idAdmin}`).pipe(
+      finalize(() => this.loadingService.stopLoading())
+    )
+  }
+
+  // get students inscrit by filiere and ispaye
+  getInscriptionByFiliere(idFiliere: number, idAdmin: number, idAnnee: number, isPaye: boolean) : Observable<any>{
+    this.loadingService.loading()
+    return this.http.get<any>(`${this.baseUrl}inscriptions-by-filiere-and-ispaye/${idFiliere}/${idAdmin}/${idAnnee}/${isPaye}`).pipe(
+      finalize(() => this.loadingService.stopLoading())
+    )
+  }
+
+  // get students inscrit by status and ispaye
+  getInscriptionByStatus(status: string, idAdmin: number, idAnnee: number, isPaye: number) : Observable<any>{
+    this.loadingService.loading()
+    return this.http.get<any>(`${this.baseUrl}inscriptions-by-status-and-ispaye/${status}/${idAdmin}/${idAnnee}/${isPaye}`).pipe(
+      finalize(() => this.loadingService.stopLoading())
+    )
   }
 
 }

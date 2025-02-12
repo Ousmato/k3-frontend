@@ -71,7 +71,7 @@ export class DasboardComponent implements OnInit {
   }
   // -------------------------------count number of emplois
   countEmplois() {
-    return this.emploisService.getAllEmploisActifs().subscribe(res => {
+    return this.emploisService.getAllEmploisActifs(this.admin.idAdministra!).subscribe(res => {
       this.emploisCount = res.length;
       this.emplois = res
       const toDay = new Date();

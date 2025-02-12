@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Dto_scolarite, Inscription, Student, StudentEtat, Type_status } from '../../../../Models/Students';
 import { ClassStudentService } from '../../../../../DGA/class-students/class-student.service';
 import { EtudeService } from '../../etude.service';
@@ -7,10 +7,11 @@ import { IconsService } from '../../../../../Services/icons.service';
 import { PageTitleService } from '../../../../../Services/page-title.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
-import { environment } from '../../../../../../environments/environment';
 import { Admin } from '../../../../Models/Admin';
 import { AdminUSER } from '../../../../Models/Auth';
 import { InscriptionService } from '../../../../../Services/inscription.service';
+import { Class_shared } from '../../../../../DGA/class-students/Utils/Class-shared-methods';
+import { Student_Enum_Options } from '../../Utils/Student-enum-options';
 
 @Component({
   selector: 'app-student-view',
@@ -18,7 +19,7 @@ import { InscriptionService } from '../../../../../Services/inscription.service'
   styleUrl: './student-view.component.css'
 })
 export class StudentViewComponent implements OnInit {
-  inscrit?: Inscription;
+  @Input() inscrit!: Inscription;
   idInscritption!: number
   type_status!: Type_status[]
   montantRestant!: number
@@ -33,15 +34,16 @@ export class StudentViewComponent implements OnInit {
 
   public typeStatus = Type_status;
   
-  constructor(  private studentService: EtudeService, private location: Location, private fb: FormBuilder,
-    private router: ActivatedRoute, private inscriptionService: InscriptionService, public icons: IconsService, private pageTitle: PageTitleService){}
+  constructor(  private studentService: EtudeService, private location: Location, private fb: FormBuilder, public shared_method: Class_shared, public enum_options: Student_Enum_Options,
+    private router: Router, private inscriptionService: InscriptionService, public icons: IconsService, private pageTitle: PageTitleService){}
 
   ngOnInit(): void {
+    console.log(this.inscrit, "inscrit")
     this.getPermission();
     this.loadForm();
-    // this.imageUrl = this.inscrit.idEtudiant?.urlPhoto || 'assets/business-professional-icon.svg';
-    this.loadStudent();
-    this.statusOptions = this.getStatusOptions()
+    this.imageUrl = this.inscrit.idEtudiant?.urlPhoto || 'assets/business-professional-icon.svg';
+    
+    this.statusOptions = this.enum_options.getStatusOptions()
     this.getScolarite()
     
   }
@@ -49,13 +51,7 @@ export class StudentViewComponent implements OnInit {
     this.location.back();
   }
  
-  // status options
-  getStatusOptions(): { key: string, value: string }[] {
-    return Object.keys(Type_status).map(key => ({
-      key: key,
-      value: Type_status[key as keyof typeof Type_status]
-    }));
-  }
+ 
   // ------------------label to specifie type student status
   getLabel(): string {
     if (this.inscrit!.idEtudiant.status === Type_status.REGULIER) {
@@ -66,40 +62,14 @@ export class StudentViewComponent implements OnInit {
   }
   // --------------------permission to pay
   getPermission(): boolean {
-    const autorize = AdminUSER()?.comptable;
+    const autorize = AdminUSER()?.scolarite;
     this.admin = autorize;
     if(autorize){
       this.permission = true;
     }
     return false
   }
-// -----------------------------load student
-  loadStudent() {
-    this.router.queryParams.subscribe(params => {
-      this.idInscritption = +params['id'];
-      this.inscriptionService.getInscriptionById(this.idInscritption).subscribe(data =>{
-        this.inscrit! = data;
-       console.log( this.inscrit! , "l'inscrit")
-        this.inscrit!.idEtudiant.urlPhoto = `${environment.urlPhoto}${this.inscrit!.idEtudiant.urlPhoto}`
-      
-      
-      const montant_payer = this.inscrit!.scolarite;
-      console.log(montant_payer, "payer")
-      const school_scolarite = this.inscrit!.idClasse?.idFiliere?.scolarite;
-      console.log(school_scolarite, "scolarite")
-      if(this.inscrit.idEtudiant.status === Type_status.REGULIER){
-      this.montantRestant = 6000 - +montant_payer!
-      }else{
-      this.montantRestant = +school_scolarite! - +montant_payer!
 
-      }
-      console.log(this.montantRestant, "montant restant")
-
-      });
-      
-    });
-    
-  }
   // -------load form
   loadForm() {
       this.update_paie_student_form = this.fb.group({
@@ -109,12 +79,18 @@ export class StudentViewComponent implements OnInit {
   }
   update_paie_student(inscrit: Inscription){
     const formData = this.update_paie_student_form.value
-    console.log(formData)
+    const dto: Dto_scolarite ={
+      id: inscrit.id,
+      payer: formData.scolarite,
+      type: this.inscrit.idEtudiant.status,
+    }
+    console.log(dto)
+    
     if(this.update_paie_student_form.valid){
-      this.studentService.update_student_scolarite(inscrit.id!, this.admin.idAdministra!, +formData.scolarite).subscribe({
+      this.studentService.update_student_scolarite( dto, this.admin.idAdministra!).subscribe({
       next: (response) =>{
         this.pageTitle.showSuccessToast(response.message);
-        this.loadStudent();
+        
         this.getScolarite();
         this.isShow = false;
       },
@@ -142,10 +118,17 @@ export class StudentViewComponent implements OnInit {
 
   // get scolarite
   getScolarite(){
-    this.inscriptionService.getScolarite(this.idInscritption).subscribe(result =>{
+    console.log( "scolarite")
+
+    this.inscriptionService.getScolarite(this.inscrit.id!).subscribe(result =>{
       this.scolarites = result
       console.log(result, "scolarite")
       // this.inscrit!.scolarite = result.scolarite;
     })
+  }
+ 
+  // toggle to rapport
+  toggle_to_rapport(){
+    this.router.navigate(['/r-scolarite/rapport-paiement/'], {queryParams: {id: this.inscrit.id}});
   }
 }

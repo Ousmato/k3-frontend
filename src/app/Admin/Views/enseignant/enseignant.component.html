@@ -23,6 +23,7 @@
           <th>Telephone</th>
           <th>Status</th>
           <th>Spécialité </th>
+          <th>Etat</th>
           <th>Actions</th>
 
         </tr>
@@ -50,6 +51,10 @@
               }
 
             </td>
+            <td title="{{ pr.desable ? 'Active' : 'Non Active' }}"><a>
+              <fa-icon [icon]="pr.desable ? icons.circle : icons.circle "
+                [ngStyle]="{ color: pr.desable ? 'green' : 'red' }"></fa-icon><span></span></a>
+          </td>
             <td>
               <div class="btn-contenaire">
                 <!-- <a data-bs-toggle="modal" [attr.data-bs-target]="'#enseignantDetail_' + enseign.idEnseignant" ><fa-icon [icon]="icons.eye"></fa-icon><span>Details</span></a> -->
@@ -57,7 +62,8 @@
                 <a (click)="toggle_toEdit(pr.idEnseignant!)"><fa-icon
                     [icon]="icons.eye"></fa-icon><span>Details</span></a>
                 <a *ngIf="permission" (click)="toggle_toHours(pr.idEnseignant!)"><fa-icon
-                    [icon]="icons.eye"></fa-icon><span>H/effectuées</span></a>
+                    [icon]="icons.clockRotate"></fa-icon><span>H/effectuées</span></a>
+                
               </div>
             </td>
             <!-- ------------------------------------------------------------------------ -->
@@ -75,6 +81,7 @@
     </table>
   </div>
 
+  
   <div class="pagination" *ngIf="enseignants.length !== 0">
     <button (click)="previousPage()" [disabled]="page === 0">
       <fa-icon [icon]="icons.previous"></fa-icon>

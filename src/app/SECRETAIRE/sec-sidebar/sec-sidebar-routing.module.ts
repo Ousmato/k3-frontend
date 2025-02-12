@@ -3,8 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { SecSidebarComponent } from './sec-sidebar.component';
 import { SecHomeComponent } from '../sec-home/sec-home.component';
 import { EtudiantsComponent } from '../../Admin/Views/Etudiants/etudiants.component';
-import { FicheDePaieComponent } from '../../Admin/Component/fiche-de-paie/fiche-de-paie.component';
-import { EnseignantFichePaieComponent } from '../../Admin/Component/enseignant-fiche-paie/enseignant-fiche-paie.component';
 import { StudentViewComponent } from '../../Admin/Views/Etudiants/CRUD/student-view/student-view.component';
 import { SecSurveillanceComponent } from '../sec-surveillance/sec-surveillance.component';
 import { DerEmploiDuTempsComponent } from '../../DER/EDT/der-emploi-du-temps-list/der-emploi-du-temps.component';
@@ -17,8 +15,6 @@ const routes: Routes = [{path: '', component: SecSidebarComponent,
   children: [
     {path: '', component: SecHomeComponent, data:{title: "ACCUEIL"}},
     {path: 'etudiant', component: EtudiantsComponent, data:{title: "Les etudiants"}},
-    {path: 'fiche-de-paie-component', component: FicheDePaieComponent},
-    {path: 'fiche-enseignant', component: EnseignantFichePaieComponent},
     {path: 'surveillance', component: SecSurveillanceComponent},
     {path: 'emplois-seances', component: EmploisSeanceComponent, data:{title: "SEANCES DE L'EMPLOI DU TEMPS"}},
     {path: 'ajouter-seance', component: SecAddSurveillanceComponent},

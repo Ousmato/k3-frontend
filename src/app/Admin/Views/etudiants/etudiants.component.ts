@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EtudeService } from './etude.service';
-import { Inscription, Student, StudentEtat } from '../../Models/Students';
+import { Dto_scolarite, Inscription, Student, StudentEtat } from '../../Models/Students';
 import { IconsService } from '../../../Services/icons.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Route, Router } from '@angular/router';
@@ -30,8 +30,6 @@ export class EtudiantsComponent implements OnInit {
   size = 100;
   filteredItems: Inscription[] = []
   pages: number[] = []
-
-  // admin!: Admin
   dg!: Admin
   secretaire!: Admin
   permission: boolean = false
@@ -39,13 +37,14 @@ export class EtudiantsComponent implements OnInit {
   student!: Student;
   currentYear!: number
   idAnnee!: number
+  scolarites!: Dto_scolarite
   value_toEvent: any = 0
   annees: AnneeScolaire[] = []
   student_etats: { key: string, value: any }[] = []
   // urlImage!: string | ArrayBuffer
 
-  constructor(private service: EtudeService, private inscriptionService: InscriptionService, 
-    private sideBarService: SideBarService, private route: ActivatedRoute, public sharedMethod: StudentSharedMethods,
+  constructor(private service: EtudeService,
+    private sideBarService: SideBarService, private route: ActivatedRoute, public sharedMethod: StudentSharedMethods, private inscritService: InscriptionService,
     private root: Router, public icons: IconsService, private pageTitle: PageTitleService, private infoSchool: SchoolService) { }
 
   ngOnInit(): void {
@@ -63,7 +62,7 @@ export class EtudiantsComponent implements OnInit {
 
     });
   }
-  // ----------------------------------get permission
+  //get permission
   getPermission(): boolean {
     const autorize = AdminUSER()?.scolarite;
     this.dg = AdminUSER()?.dg;
@@ -75,7 +74,8 @@ export class EtudiantsComponent implements OnInit {
     }
     return false
   }
-  // ------------------------------filter students
+
+  //filter students
   filterStudents() {
     if (!this.searchTerm) {
       return this.filteredItems = this.inscrits;
@@ -90,32 +90,25 @@ export class EtudiantsComponent implements OnInit {
       );
     }
   }
-  // ----------------------load students
+
+  //load students
   onChange(event: any) {
     this.event_toSetPage = true
     this.inscrits = []
     this.page = 0
     this.idAnnee = event.target.value
-    // this.inscriptionService.getAllInscriptionsOfYear(this.idAnnee).subscribe(ins => {
-    //   this.inscrits = ins;
-    //   // this.formatedDataStudent(ins);
-    // })
     this.service.getAll_by_idAnnee(this.idAnnee, this.page, this.size).subscribe(data => {
       this.formatedDataStudent(data);
 
     });
   }
   loadStudents(): void {
-    // this.inscriptionService.getInscriptionByCurrentYear().subscribe(data => {
-    //   this.inscrits = data
-    // })
-    
     this.service.getSudents(this.page, this.size).subscribe(data => {
       this.formatedDataStudent(data);
 
     });
   }
-  // ------------------------------next page
+  //next page
   setPage(page: number): void {
     if (page >= 0 && page < this.studentspage!.totalPages!) {
       this.page = page;
@@ -153,7 +146,8 @@ export class EtudiantsComponent implements OnInit {
       this.setPage(this.page - 1);
     }
   }
-  // ------------------------------pages visibles
+
+  //pages visibles
   getVisiblePages(): number[] {
     const visiblePages: number[] = [];
     const totalPages = this.studentspage!.totalPages!;
@@ -167,7 +161,8 @@ export class EtudiantsComponent implements OnInit {
 
     return visiblePages;
   }
-  // ------------------------------------------------------------
+
+  
   get_annees() {
     this.infoSchool.getAll_annee().subscribe(data => {
       this.annees = data;
@@ -285,24 +280,6 @@ export class EtudiantsComponent implements OnInit {
   }
  
 
-  // sort students
-  onSorted(event: any) {
-    const value: keyof Student = event.target.value; // Obtenir la valeur de tri (nom ou prénom)
-    console.log(value, "value");
-    const filteredStudents = this.filterStudents();
-  
-    // Trier les étudiants filtrés en fonction du critère sélectionné
-    this.inscrits = filteredStudents.sort((a, b) => {
-      const valA = a.idEtudiant[value]?.toString().toLowerCase() || ''; // Récupérer la valeur de a et la convertir en minuscule
-      const valB = b.idEtudiant[value]?.toString().toLowerCase() || ''; // Récupérer la valeur de b et la convertir en minuscule
-      
-      if (valA < valB) return -1; // a avant b
-      if (valA > valB) return 1;  // a après b
-      return 0; // égalité
-    });
-  
-    // console.log(this.inscrits, "inscrits après tri");
-  }
-  
+ 
 
 }

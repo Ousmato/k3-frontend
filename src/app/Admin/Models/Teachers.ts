@@ -1,21 +1,21 @@
 import { Admin } from "./Admin";
 import { TeacherEmplois } from "./Emplois";
 import { Filiere, Specialites } from "./Filieres";
-import { type_seance } from "./Seances";
-import { Ue } from "./UE";
 
 export interface Teacher {
     numero?: number;
     idEnseignant?: number;
     nom: string;
+    grade?: string;
     prenom: string;
     email: string;
+    dateNaissance: string;
     sexe: string;
     diplome: Diplomes;
     password?: string;
     telephone: number;
     urlPhoto?: string;
-    isDeleted?: boolean;
+    active?: boolean;
     status: TeachersStatus;
     admin: Admin
 }
@@ -33,6 +33,14 @@ export enum Diplomes{
     Doctorat = 'Doctorat'
 }
 
+export enum TeacherGrade{
+    ASSISTANT = "ASSISTANT",
+    M_CONFERENCE = "MAITRE DE CONFERENCES",
+    M_ASSISTANT = "MAITRE ASSISTANT",
+    PROFESSEUR = "PROFESSEUR"
+
+}
+
 export interface TeacherDto{
     numero?: number;
     idEnseignant?: number;
@@ -41,6 +49,7 @@ export interface TeacherDto{
     email: string;
     dateNaissance: string
     sexe: string;
+    desable: boolean;
     heureTotal: number
     diplome: Diplomes;
     telephone: number;

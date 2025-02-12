@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { GetNoteDto, NoteDto, NoteModuleDto, Notes, StudentMoyenne, StudentsNotesDto } from '../../Models/Notes';
 import { EtudeService } from '../Etudiants/etude.service';
 import { ActivatedRoute } from '@angular/router';
@@ -16,17 +16,17 @@ import { Module } from '../../Models/Module';
 import { NoteService } from '../../../Services/note.service';
 
 import jspdf, { jsPDF } from 'jspdf';
-import autoTable from 'jspdf-autotable';
 import html2canvas from 'html2canvas';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { EventServiceService } from '../../../Services/event-service.service';
+import { Class_shared } from '../../../DGA/class-students/Utils/Class-shared-methods';
 
 @Component({
   selector: 'app-all-notes-semestre',
   templateUrl: './all-notes-semestre.component.html',
   styleUrl: './all-notes-semestre.component.css'
 })
-export class AllNotesSemestreComponent implements OnInit {
+export class AllNotesSemestreComponent implements OnInit, OnDestroy {
   notes: GetNoteDto[] = []
   idClasse!: number
   idNivFiliere!: number
@@ -51,9 +51,8 @@ export class AllNotesSemestreComponent implements OnInit {
 
   constructor(private pageTitle: PageTitleService, public icons: IconsService, private eventService: EventServiceService,
     private semestreService: SemestreService, private clasService: ClassStudentService, private noteService: NoteService,
-    private route: ActivatedRoute, private schollService: SchoolService, private sideBarService: SideBarService) { }
+    private route: ActivatedRoute, public share_methode: Class_shared, private sideBarService: SideBarService) { }
   ngOnInit(): void {
-    this.getSchoolInfo();
     this.load_semestre();
     this.getClasse();
 
@@ -70,13 +69,6 @@ export class AllNotesSemestreComponent implements OnInit {
     this.eventService.emitEvent(this.idAnnee);
   }
 
-  //get information of school
-  getSchoolInfo() {
-    this.schollService.getSchools().subscribe(data => {
-      this.school = data;
-
-    })
-  }
   load_semestre() {
     this.route.queryParams.subscribe(param => {
       this.idClasse = param['id'];

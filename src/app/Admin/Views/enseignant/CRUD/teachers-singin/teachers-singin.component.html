@@ -40,6 +40,8 @@
                         <fa-icon [icon]="passwordVisible ? icons.eyeSlash : icons.eye" class="toggle-password position-absolute" id="togglePassword" [ngStyle]="{cursor: 'pointer', right: '10px', top: '50%', transform: 'translateY(-50%)'}" (click)="togglePasswordVisibility()"></fa-icon>
                     </div>
                 </div>
+
+                
                 
             </div>
             <div class="column-f">
@@ -57,28 +59,15 @@
                     </span>
                 </div>
 
-                <!-- button radio sexe start -->
                 
-
-                <div class="form form-group">
-                    <label>Status :</label> 
-                    <select class="form-select" formControlName="status"  id="enseignant" placeholder="Status"  required>
-                        <option  selected disabled value="">Choisir Le status</option>
-                        <option *ngFor="let status of teacherStatusOptions" [value]="status" >{{status}}</option>
-                    </select>
-                    <span *ngIf="teacher_form.controls['status'].invalid && teacher_form.controls['status'].touched" [ngStyle]="{color: 'red'}">
-                        Champ obligatoire*
-                    </span> 
-                </div>
-
-                <!-- <div class="input">
-                    <label for="validationDefault05" class="label form-label">Photo :</label>
-                    <input type="file"  accept="image/*" class="input-with form-control"  (change)="onFileSelected($event)"  required>
-                    <span *ngIf="teacher_form.controls['urlPhoto'].invalid && teacher_form.controls['urlPhoto'].touched" [ngStyle]="{color: 'red'}">
-                    Champ obligatoire*
+                <div class="input">
+                    <label  class="label form-label">Date de Naissance :</label>
+                    <input type="text" formControlName="dateNaissance" class=" input-with form-control" [class.is-invalid]="teacher_form.get('dateNaissance')!.invalid && teacher_form.get('dateNaissance')!.touched" placeholder="Date de Naissance...">
+                    <span *ngIf="teacher_form.controls['dateNaissance'].invalid && teacher_form.controls['dateNaissance'].touched" [ngStyle]="{color: 'red'}">
+                    Champ bligatoire*
                     </span>
-                </div> -->
-
+                    
+                </div>
                 <div class="radio">
                     <label for="">Choisir le sexe :</label>
                     <div class="radio-content">
@@ -96,6 +85,7 @@
                     
                 </div>
                 
+                
             </div>
             <div class="column-f">
                 <div class="form form-group">
@@ -109,7 +99,27 @@
                     </span> 
                 </div>
 
+                <div class="form form-group">
+                    <label>Grades :</label> 
+                    <select class="form-select" formControlName="grade"   required>
+                        <option  selected disabled value="">Choisir Le Grade</option>
+                        <option *ngFor="let grade of gradesOptions" [value]="grade.value" >{{grade.value}}</option>
+                    </select>
+                    <span *ngIf="teacher_form.controls['grade'].invalid && teacher_form.controls['grade'].touched" [ngStyle]="{color: 'red'}">
+                        Champ obligatoire*
+                    </span> 
+                </div>
 
+                <div class="form form-group">
+                    <label>Status :</label> 
+                    <select class="form-select" formControlName="status"  id="enseignant" placeholder="Status"  required>
+                        <option  selected disabled value="">Choisir Le status</option>
+                        <option *ngFor="let status of teacherStatusOptions" [value]="status" >{{status}}</option>
+                    </select>
+                    <span *ngIf="teacher_form.controls['status'].invalid && teacher_form.controls['status'].touched" [ngStyle]="{color: 'red'}">
+                        Champ obligatoire*
+                    </span> 
+                </div>
                 
 
             </div>

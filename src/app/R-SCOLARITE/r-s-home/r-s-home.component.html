@@ -1,4 +1,8 @@
 <main>
+    <select id="promo-seclect" (change)="onChange($event)">
+        <option selected disabled value="">Pro {{currentYear -1}} {{currentYear}}</option>
+        <option *ngFor="let annee of annees" [value]="annee.id">Pro {{annee.ans}} {{annee.ans! + 1}}</option>
+    </select>
     <div class="first-container">
         <div class="head-card-content">
             <div class="child-card" (click)="toggle_studentInscrit()">
@@ -8,7 +12,7 @@
                     </div>
                     <div class="card-text" >
                         <p>Les Etudiants Inscrit</p>
-                        <h1>{{studentNumber_inscrit}}</h1>
+                        <h1>{{statistics.inscrit}}</h1>
                     </div>
                     
                 </div>
@@ -21,7 +25,7 @@
                     </div>
                     <div class="card-text">
                         <p>Les Etudiants non Inscrit</p>
-                        <h1>{{studentNumber_noInscrit}}</h1>
+                        <h1>{{statistics.nonInscrit}}</h1>
                     </div>
                     
                 </div>
@@ -42,49 +46,12 @@
                 
                 
             </div>
-            
-
-            <!-- <div class="child-card" (click)="toggle_toEmploi()">
-                <div class="child-card-content">
-                    <div class="card-img">
-                        <img src="assets/booking-confirmed-icon.svg" alt="Logo">
-                    </div>
-                    <div class="card-text" >
-                        <p>Les emplois du temps actif</p>
-                        <h1>{{emploiCount}}</h1>
-                    </div>
-                    
-                </div>
-                
-                
-            </div> -->
-           
+        
         </div>
         <!-- -------------------------------------------------------------- -->
-        <!-- <div class="body-content">
-            <div class="child-cards">
-                    <div  id="card-img">
-                        <img id="calendar" src="assets/booking-confirmed-icon.svg" alt="Logo">
-                    </div>
-                    <div id="cart-text" class="card-text">
-                        <h5>Emplois Actifs</h5>
-                        <h1></h1>
-                    </div>
-            </div> -->
-                <!-- <div class="class-scrol">
-                    <ng-container *ngFor="let classe of emplois">
-                        <div class="calendar-classes-content">
-                        <p>{{classe.idClasse.idFiliere?.idNiveau?.nom}} ({{classe.idClasse.idFiliere?.idFiliere?.nomFiliere}})</p>
-                        <div class="date-content">
-                            <p> Debuté le : {{classe.dateDebut}}</p>
-                            <p> Prend fin le : <span id="span">{{classe.dateFin}}</span></p>
-                        </div>
-                    </div>
-                    </ng-container>
-                </div> -->
+         <div class="body-content">
             
-            <!-- <h2>Body Content</h2>
-            <p>Here you can add more detailed information, graphs, tables, etc.</p> -->
-        <!-- </div> -->
+          <app-student-statistique  [statistics]="statistics"  [idAnnee]="idAnnee"></app-student-statistique>
+         </div> 
     </div>
 </main>

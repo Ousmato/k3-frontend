@@ -6,19 +6,33 @@ main{
     justify-content: flex-start;
     width: 100%;
     height: 85vh;
-    padding-top: 10px;
 }
 a button{
     margin-bottom: 30px;
 }
-
+.back-button{
+   margin: 0;
+}
+.header{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+select{
+    margin-top: 8px;
+    border: none;
+     outline: none;
+}
 /* Styler l'en-tête du tableau */
 th {
+    /* padding: 5px; */
     background: linear-gradient(180deg, #ffffff, #d4d4d4);
 }
 
 tr td{
-    font-size: 16px;
+    padding: 3px;
+    font-size: 14px;
     text-overflow: ellipsis;
 }
 
@@ -72,6 +86,10 @@ img{
 .btn-contenaire{
     cursor: pointer;
 }
+.btn-contenaire{
+    display: flex;
+    gap: 8px;
+}
 .btn-contenaire a{
     font-size: 12px;
     padding: 5px;
@@ -108,6 +126,28 @@ img{
     display: flex;
     justify-content: space-between;
     padding: 0 10px;
+}
+.left{
+    display: flex;
+    gap: 10px;
+}
+.left p {
+    display: inline;
+    margin-right: 8px;
+    color: var(--primary);
+    cursor: pointer;
+    &:hover{
+      color: var(--secondary);
+      background-color: var(--primary);
+      text-decoration: underline;
+    }
+  }
+.views{
+    background-color: var(--primary);
+    padding: 8px;
+    color: var(--secondary);
+    position: absolute;
+    right: 44px;
 }
 /* -----------------------------------------------pagination style */
 .footer{
@@ -159,5 +199,55 @@ img{
   .pagination button:hover:not(.disabled):not(.active) {
     background-color: var(--secondary);
     color: var(--primary);
+  }
+  
+  .classe-name  p{
+   color: var(--secondary);
+   background-color: var(--primary);
+   padding: 5px 8px;
+   border-radius: 5px;
+   letter-spacing: 1px;
+   font-size: 14px;
+   font-weight: 600;
+   margin-right: 10px;
+   margin-top: 10px;
+
+}
+
+  /* Style global des liens de spécialités */
+.speciality-link {
+    font-weight: 600;
+    text-align: center;
+    padding: 5px;
+    /* margin: 10px; */
+    background-color: #f2f2f2; /* Couleur de fond claire */
+    color: #333; /* Texte sombre */
+    border-radius: 10px; /* Coins arrondis */
+    cursor: pointer;
+    transition: all 0.3s ease; /* Transition douce pour tous les effets */
+  }
+  
+  /* Effet sur le lien quand il est survolé */
+  .speciality-link:hover {
+    background-color: #3498db; /* Couleur de fond lors du survol */
+    color: white; /* Texte en blanc lors du survol */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre douce */
+  }
+  
+  /* Ajout de la classe "active" pour les éléments sélectionnés */
+  .speciality-link.active {
+    background-color: #3498db; /* Couleur de fond pour l'élément actif */
+    color: white; /* Texte en blanc pour l'élément actif */
+    font-weight: bold; /* Rendre le texte plus épais quand l'élément est actif */
+  }
+  
+  /* Style spécifique pour le premier "Tout" */
+  .speciality-link:first-of-type {
+    background-color: #2ecc71; /* Couleur spéciale pour "Tout" */
+    color: white;
+  }
+  
+  .speciality-link:first-of-type:hover {
+    background-color: #27ae60; /* Couleur différente lors du survol */
   }
   

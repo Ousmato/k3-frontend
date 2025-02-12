@@ -105,11 +105,11 @@ sortByDay(dates: { day: string, date: string }[]) {
 }
 
   // ----------------------------------------grt all emplois actifs
-  getAllEmploisActifs(): Observable<Emplois[]>{
-    return this.http.get<Emplois[]>(`${this.baseUrl}all-actifs-emplois`);
+  getAllEmploisActifs(idAdmin: number): Observable<Emplois[]>{
+    return this.http.get<Emplois[]>(`${this.baseUrl}all-actifs-emplois/${idAdmin}`);
   }
   getAllEmploisActifsByidClasse(idClasse: number): Observable<Emplois[]>{
-    return this.http.get<Emplois[]>(`${this.baseUrl}all-actifs-emplois/${idClasse}`);
+    return this.http.get<Emplois[]>(`${this.baseUrl}all-actifs-emplois-of-classe/${idClasse}`);
   }
   getAllEmploisActifs_with_seances(): Observable<Emplois[]>{
     return this.http.get<Emplois[]>(`${this.baseUrl}all-actifs-emplois-with-seances`);

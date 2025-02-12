@@ -1,14 +1,24 @@
-import { Inject, Injectable } from "@angular/core";
-import { Student_group, Type_status } from "../../../Models/Students";
+import { Inject, Injectable, OnDestroy } from "@angular/core";
+import { Inscription, Student, Student_group, Type_status } from "../../../Models/Students";
 import { AnneeScolaire } from "../../../Models/School-info";
 
 import jspdf, { jsPDF } from 'jspdf';  
 import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
+import { Chart, registerables } from "chart.js";
+Chart.register(...registerables)
 @Injectable({
     providedIn: 'root',
 })
-export class StudentSharedMethods{
+export class StudentSharedMethods implements OnDestroy{
+  private myChart: any
+    inscrits: Inscription[] = [];
+
+    ngOnDestroy(): void {
+      if (this.myChart) {
+        this.myChart.destroy();
+      }
+    }
     public statusMapper(status: string): string {
         switch (status) {
             case "REGULIER":
@@ -17,7 +27,7 @@ export class StudentSharedMethods{
                 return "CL"; // Abréviation
             case "FORMATION CONTINUE":
                 return "FC"; // Abréviation
-            case "PROFESSIONNEL DE COLLECTIVITE":
+            case "PROFESSIONNEL COLLECTIVITE":
                 return "Pro. Collect"; // Abréviation
             case "PROFESSIONNEL ETAT":
                 return "Pro. ETAT"; // Abréviation
@@ -33,6 +43,7 @@ export class StudentSharedMethods{
   public abreviateFiliereName(filiere: string): string {
     const nameWord = filiere.split(' ');
     const word = nameWord.filter(wd => wd.length > 3).map(word => word[0].toUpperCase()).join('')
+    if(word === 'EER') return'3ER';
     return word;
   }
 
@@ -151,4 +162,72 @@ exportExcel(group: Student_group) {
 }
 
 
+ // sort students
+ onSorted(event: any, Inscriptions : Inscription[]) : any{
+    const value: keyof Student = event.target.value; // Obtenir la valeur de tri (nom ou prénom)
+    console.log(value, "value");
+    const filteredStudents = Inscriptions;
+  
+    // Trier les étudiants filtrés en fonction du critère sélectionné
+    this.inscrits = filteredStudents.sort((a, b) => {
+      const valA = a.idEtudiant[value]?.toString().toLowerCase() || ''; // Récupérer la valeur de a et la convertir en minuscule
+      const valB = b.idEtudiant[value]?.toString().toLowerCase() || ''; // Récupérer la valeur de b et la convertir en minuscule
+      
+      if (valA < valB) return -1; // a avant b
+      if (valA > valB) return 1;  // a après b
+      return 0; // égalité
+    });
+  
+    // console.log(this.inscrits, "inscrits après tri");
+  }
+
+//select file
+triggerFileInput(): void {
+    const fileInput = document.querySelector<HTMLInputElement>('#inputPhoto');
+    if (fileInput) {
+      fileInput.click(); // Déclencher un clic programmatique
+    }
+  }
+  
+// circle statistique students
+createChart(statistic: any): void {
+  if (this.myChart) {
+    this.myChart.destroy(); // Détruire l'ancien graphique
+  }
+  this.myChart = new Chart('myChart', {
+    type: 'pie',
+    data: {
+      labels: ['Payer', 'Non Payer', 'Avec Dette'],
+      datasets: [{
+        label: 'Pourcentage de Paiement ',
+        // Utiliser des valeurs numériques sans le symbole %
+        data: [statistic.dettePurcent, statistic.notPayePurcent, statistic.payePurcent],
+        backgroundColor: ['green', 'red', 'gray'],
+        hoverOffset: 4
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom',
+        },
+        title: {
+          display: true,
+          text: 'Pourcentage de Paiement des Étudiants/ans',
+        },
+        // Ajouter le formatage des tooltips
+        tooltip: {
+          callbacks: {
+            label: (context) => {
+                const label = context.label || '';
+                const value = context.raw || 0;
+                return `${label}: ${value}%`; // Ajouter le symbole % dans le tooltip
+            }
+          }
+        }
+      }
+    },
+  });
+  }
 }

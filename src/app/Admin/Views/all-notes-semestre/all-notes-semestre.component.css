@@ -1,6 +1,6 @@
 main{
     width: 100%;
-    padding: 10px;
+    padding: 0px 10px;
     height: 80vh;
 }
 .vertical-header{
@@ -16,6 +16,23 @@ main{
     align-items: center;
     /* border: 1px solid; */
 }
+.header{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    /* border: 1px solid; */
+}
+.classe-name  p{
+    color: var(--secondary);
+    background-color: var(--primary);
+    padding: 5px 8px;
+    border-radius: 5px;
+    letter-spacing: 1px;
+    font-size: 14px;
+    font-weight: 600;
+ 
+ }
 table{
     font-size: 12px;
 }

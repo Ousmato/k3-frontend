@@ -17,11 +17,6 @@ export class SetService {
   constructor(private http: HttpClient) { }
   private baseUrl = 'http://localhost:8080/';
 
-
-  
-  getAll_Niveau_filiere(): Observable<NivFiliere[]> {
-    return this.http.get<NivFiliere[]>(this.baseUrl + "api-filiere/list-mentions");
-  }
  
   createFiliere(filiere: Filiere): Observable<Response_String> {
     return this.http.post<Response_String>(this.baseUrl + "api-filiere/addFiliere", filiere);
@@ -41,23 +36,7 @@ export class SetService {
   createUe(dto: AddUeDto): Observable<Response_String> {
     return this.http.post<Response_String>(this.baseUrl + "api-class/add-ue", dto);
   }
-  // -----------------------------------------get all ue by class id
-  getAll_ue_not_associate_class(idClasse: number): Observable<Ue[]> {
-    return this.http.get<Ue[]>(`${this.baseUrl}api-class/list-ue/${idClasse}`);
-  }
 
-  // -----------------------------------get all module
-  getAll_module(): Observable<Module[]> {
-    return this.http.get<Module[]>(this.baseUrl + "api-class/list-module");
-  }
-  // -------------------------get all ue
-  getAll_ue_all(): Observable<Ue[]> {
-    return this.http.get<Ue[]>(`${this.baseUrl}api-class/all-ue`);
-  }
-  // -------------------------get all ue
-  getAll_ue_all_without_module_and_classe(): Observable<Ue[]> {
-    return this.http.get<Ue[]>(`${this.baseUrl}api-class/all-ues-without-modules-and-classe`);
-  }
   // -----------------------------update ue
   updateUe(ue: AddUeDto): Observable<Response_String> {
     return this.http.put<Response_String>(this.baseUrl + "api-class/update-ue", ue);
