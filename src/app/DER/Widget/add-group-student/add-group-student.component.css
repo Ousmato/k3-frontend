@@ -1,9 +1,29 @@
 
 /* ---------------------table scrol style */
-main{width: 100%;
+main{
+    width: 100%;
+    padding: 0px 10px;
     height: 80vh;
 
 }
+.head{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+p{
+    margin: 0;
+}
+.classe-name  p{
+    color: var(--secondary);
+    background-color: var(--primary);
+    padding: 5px 8px;
+    border-radius: 5px;
+    letter-spacing: 1px;
+    font-size: 14px;
+    font-weight: 600;
+ 
+ }
 a button{
     margin-bottom: 30px;
 }
@@ -50,7 +70,7 @@ tr td{
 /* -------------------------- */
 .input-count{
     /* width: 50%; */
-    padding: 10px;
+    padding: 10px 0;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -77,33 +97,14 @@ tr td{
     
     accent-color: var(--primary)
  }
-label{
-    font-weight: 500;
-    margin-bottom: 5px;
-}
 .button-cash{
     display: flex;
     justify-content: end;
     gap: 20px;
     align-items: flex-end;
-    margin-top: 20px;
 }
-.button-cash button{
-    border: none;
-    height: 35px;
-    gap: 8px;
-    /* margin-top: 8px; */
-    padding: 5px 20px;
-    border-radius: 5px;
-    background-color: var(--primary);
-    color: var(--secondary);
-    cursor: pointer;
-    &:hover{
-        background-color: var(--secondary);
-        color: var(--primary);
-    }
-   
-}
+
+
 .views p{
     font-size: 16px;
     background-color: var(--primary);
@@ -129,6 +130,32 @@ label{
      }
      
  }
+ .grp-btn{
+    text-decoration: none;
+    color: var(--secondary);
+    margin-left: 10px;
+    border-radius: 5px;
+    padding: 4px 8px;
+    background-color: var(--primary);
+    cursor: pointer;
+    &:hover{
+        border: 1px solid var(--primary) !important;
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+
+}
+.select{
+    padding: 4px 8px;
+    border-radius: 5px;
+    background-color: var(--primary);
+    color: var(--secondary);
+    cursor: pointer;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+}
  .overlay {
      position: fixed;
      top: 0;
@@ -138,28 +165,29 @@ label{
      z-index: 999;
      background: transparent;
    }
+   .button-cash button{
+    border: none;
+    height: 35px;
+    gap: 8px;
+    /* margin-top: 8px; */
+    padding: 5px 20px;
+    border-radius: 5px;
+    background-color: var(--primary);
+    color: var(--secondary);
+    cursor: pointer;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+   
+}
 
 input:focus, select:focus{
     border-color: var(--primary);
     outline: none;
     box-shadow: 0 0 5px var(--primary);
 }
-/* ----------------------back button style */
-.back-button{
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    padding: 8px;
-    font-size: 20px;
-    margin: 10px 0;
-    &:hover{
-        background-color: var(--tertiary);
-        color: var(--primary);
-        border: none;
-        border-radius: 50%;
-    }
-}
+
 .views{
     background-color: white;
     position: absolute;

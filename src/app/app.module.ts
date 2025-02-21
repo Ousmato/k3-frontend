@@ -21,7 +21,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import localeFr from '@angular/common/locales/fr';
 import { StudentNoteComponent } from './Admin/Views/student-note/student-note.component';
-import { AllNotesSemestreComponent } from './Admin/Views/all-notes-semestre/all-notes-semestre.component';
 import { EtudiantsDeLaClasseComponent } from './Admin/Views/Etudiants/etudiants-de-la-classe/etudiants-de-la-classe.component';
 import { StudentEditComponent } from './Admin/Views/Etudiants/CRUD/student-edit/student-edit.component';
 import { StudentViewComponent } from './Admin/Views/Etudiants/CRUD/student-view/student-view.component';
@@ -71,7 +70,6 @@ import { ViewUeComponent } from './Widget/ue-widget/view-ue/view-ue.component';
 import { AddClassPromotionComponent } from './Widget/classeroom-widget/add-class-promotion/add-class-promotion.component';
 import { RSImportComponent } from './R-SCOLARITE/r-s-import/r-s-import.component';
 import { SoutenanceNoteComponent } from './DER/Widget/soutenance-note/soutenance-note.component';
-import { StudentGroupListComponent } from './DER/student-group-list/student-group-list.component';
 import { AdminListComponent } from './DG/admin-list/admin-list.component';
 import { MyAccuntComponent } from './DG/my-accunt/my-accunt.component';
 import { ForgotPasswordComponent } from './Password/forgot-password/forgot-password.component';
@@ -95,6 +93,8 @@ import { SemestreMoyennesComponent } from './Admin/Views/semestre-moyennes/semes
 import { StudentPaiementRapportComponent } from './Admin/Views/Etudiants/student-paiement-rapport/student-paiement-rapport.component';
 import { StudentStatistiqueComponent } from './Admin/Views/Etudiants/student-statistique/student-statistique.component';
 import { StatistiqueSudentsValuesComponent } from './Admin/Views/Etudiants/statistique-sudents-values/statistique-sudents-values.component';
+import { AllNotesSemestreComponent } from './Admin/Views/Etudiants/all-notes-semestre/all-notes-semestre.component';
+import { StudentGroupListComponent } from './Admin/Views/Etudiants/student-group-list/student-group-list.component';
 registerLocaleData(localeFr);
 @NgModule({
   declarations: [

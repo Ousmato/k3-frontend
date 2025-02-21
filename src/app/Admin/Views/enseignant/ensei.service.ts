@@ -2,14 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { finalize, Observable } from 'rxjs';
 import { Teacher, TeacherDto } from '../../Models/Teachers';
-import { Teacher_presence } from '../../Models/objectPresence';
-import { Presence } from '../../Models/Teacher-presence';
-import { Paie, PaieDTO } from '../../Models/paie';
 import { Response_String } from '../../Models/Response_String';
-import { Presence_pages, Teacher_presence_pages, TeacherPages } from '../../Models/Pagination-module';
+import { TeacherPages } from '../../Models/Pagination-module';
 import { environment } from '../../../../environments/environment';
 import { LoaderService } from '../../../Services/loader.service';
-import { TeacherEmplois } from '../../Models/Emplois';
 
 
 @Injectable({
@@ -23,13 +19,6 @@ export class EnseiService {
   // -----------------------------get all enseignants
   getAll(): Observable<Teacher[]> {
     return this.http.get<Teacher[]>(this.baseUrl + 'list-all');
-  }
-  // --------------------get all enseignants have emplois active
-  getAllHaveEmplois(): Observable<Teacher_presence[]> {
-    return this.http.get<Teacher_presence[]>(this.baseUrl + 'all_teacher_seance_actif');
-  }
-  getPage_teacher_HaveEmplois(page: number, size: number): Observable<Teacher_presence_pages> {
-    return this.http.get<Teacher_presence_pages>(`${this.baseUrl}get-page-teacher-seance-actif?page=${page}&size=${size}`);
   }
 
   // -----------------------------add enseignant

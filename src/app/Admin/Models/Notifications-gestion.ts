@@ -1,5 +1,5 @@
 import { Admin } from "./Admin";
-import { Emplois } from "./Emplois";
+import { Emplois } from "../../DER/EDT/Models/Emplois";
 import { Teacher } from "./Teachers";
 
 export interface Notifications_gestion{ 

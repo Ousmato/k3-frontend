@@ -1,7 +1,22 @@
 main{
-    padding:  10px;
+    padding: 0 10px;
     height: 80vh;
 }
+.head{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.classe-name  p{
+    color: var(--secondary);
+    background-color: var(--primary);
+    padding: 5px 8px;
+    border-radius: 5px;
+    letter-spacing: 1px;
+    font-size: 14px;
+    font-weight: 600;
+ 
+ }
 th{
     text-align: center;
 }
@@ -39,22 +54,7 @@ td{
     align-items: center;
     justify-content: center;
 }
-.back-button{
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    padding: 8px;
-    font-size: 20px;
-    margin: 10px 0;
-    &:hover{
-        background-color: var(--tertiary);
-        color: var(--primary);
-        border: none;
-        border-radius: 50%;
-    }
 
-}
 .next-col{
     display: flex;
     justify-content: space-between;
@@ -70,7 +70,6 @@ p{
 .btn-contenaire button{
     border: none;
     cursor: pointer;
-    padding: 5px 15px;
     margin-bottom: 10px;
     border-radius: 5px;
     background-color: var(--primary);
@@ -93,7 +92,6 @@ p{
     width: 100%;
     display: flex;
     justify-content: space-between;
-    padding: 0 10px;
     height: 45px;
 }
  a{
@@ -111,8 +109,6 @@ p{
 }
 .grid-container {
     position: relative;
-    /* padding: 10px; */
-    margin: 0 10px;
     border-radius: 8px;
     display: grid;
     grid-template-columns: repeat(1, 1fr);

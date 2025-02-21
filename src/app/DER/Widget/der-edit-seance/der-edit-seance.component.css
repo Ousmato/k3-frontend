@@ -1,5 +1,24 @@
 main{
-    padding: 10px 20px;
+    background-color: white;
+    position: absolute;
+    border-radius: 4px;
+    left: 45%;
+    z-index: 10001;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15);
+}
+.h4{
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    background: var(--primary);
+    padding: 8px;
+    color: var(--secondary);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+form{
+    /* width: 300px; */
+    padding: 10px;
 }
 .div-content{
     display: flex;
@@ -10,17 +29,20 @@ main{
     display: flex;
     gap: 30px;
 }
-.input-content{
-    width: 50%;
-    
-}
 
-.form-group{
-    margin-top: 15px;
-}
+
+
 label{
     font-weight: 500;
-    margin-bottom: 5px;
+    margin: 5px 0;
+}
+.button-cash{
+    display: flex;
+    justify-content: space-between;
+
+}
+.input-content{
+    text-align: justify;
 }
 .button-cash button{
     border: none;
@@ -43,21 +65,4 @@ input:focus, select:focus{
     border-color: var(--primary);
     outline: none;
     box-shadow: 0 0 5px var(--primary);
-}
-/* ----------------------back button style */
-.back-button{
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    padding: 8px;
-    font-size: 20px;
-    margin: 10px 0;
-    &:hover{
-        background-color: var(--tertiary);
-        color: var(--primary);
-        border: none;
-        border-radius: 50%;
-    }
-
 }

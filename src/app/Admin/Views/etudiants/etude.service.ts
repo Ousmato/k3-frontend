@@ -131,9 +131,7 @@ addStudentImport(studentImport: Inscription[]) : Observable<Response_String>{
   getListGroupByIdEmploi(idEmploi: number) : Observable<Student_group[]>{
     return this.http.get<Student_group[]>(this.baseUrl+"list-group-by-idEmploi/"+idEmploi)
   }
-  getListStudentsByIdGroup(idGroup: number) : Observable<Student[]>{
-    return this.http.get<Student[]>(this.baseUrl+"list-students-by-group-id/"+idGroup)
-  }
+  
   // ----------------add participant
   addParticipant(participants: Participant[]) : Observable<Response_String>{
     return this.http.post<Response_String>(this.baseUrl+"add-more-participant", participants);
@@ -175,7 +173,10 @@ addStudentImport(studentImport: Inscription[]) : Observable<Response_String>{
   }
 
   getStudentListByIdAnneeAndIdClasse(idAnnee: number, idClass: number) : Observable<Inscription[]>{
-    return this.http.get<Inscription[]>(`${this.baseUrl}get-list-student-by-idAnnee-and-idClasse/${idAnnee}/${idClass}`)
+    this.loadingService.loading()
+    return this.http.get<Inscription[]>(`${this.baseUrl}get-list-student-by-idAnnee-and-idClasse/${idAnnee}/${idClass}`).pipe(
+      finalize(() => this.loadingService.stopLoading())
+    )
   }
   // -----------------------annuler le programme de soutenance
   annulerProgramme(idDoc: number):Observable<boolean>{

@@ -1,26 +1,27 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { GetNoteDto, NoteDto, NoteModuleDto, Notes, StudentMoyenne, StudentsNotesDto } from '../../Models/Notes';
-import { EtudeService } from '../Etudiants/etude.service';
-import { ActivatedRoute } from '@angular/router';
-import { ClassStudentService } from '../../../DGA/class-students/class-student.service';
-import { Ue } from '../../Models/UE';
-import { ClassRoom } from '../../Models/Classe';
-import { SchoolService } from '../../../Services/school.service';
-import { SchoolInfo } from '../../Models/School-info';
-import { SemestreService } from '../../../Services/semestre.service';
-import { Semestres } from '../../Models/Semestre';
-import { IconsService } from '../../../Services/icons.service';
-import { NotesPages, StudentPages } from '../../Models/Pagination-module';
-import { SideBarService } from '../../../sidebar/side-bar.service';
-import { Module } from '../../Models/Module';
-import { NoteService } from '../../../Services/note.service';
+
 
 import jspdf, { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
-import { PageTitleService } from '../../../Services/page-title.service';
-import { EventServiceService } from '../../../Services/event-service.service';
-import { Class_shared } from '../../../DGA/class-students/Utils/Class-shared-methods';
-
+import { GetNoteDto, StudentMoyenne, StudentsNotesDto } from '../../../Models/Notes';
+import { Module } from '../../../Models/Module';
+import { Ue } from '../../../Models/UE';
+import { ClassRoom } from '../../../Models/Classe';
+import { Semestres } from '../../../Models/Semestre';
+import { SchoolInfo } from '../../../Models/School-info';
+import { NotesPages } from '../../../Models/Pagination-module';
+import { PageTitleService } from '../../../../Services/page-title.service';
+import { SemestreService } from '../../../../Services/semestre.service';
+import { ActivatedRoute } from '@angular/router';
+import { EventServiceService } from '../../../../Services/event-service.service';
+import { IconsService } from '../../../../Services/icons.service';
+import { ClassStudentService } from '../../../../DGA/class-students/class-student.service';
+import { Class_shared } from '../../../../DGA/class-students/Utils/Class-shared-methods';
+import { NoteService } from '../../../../Services/note.service';
+import { SideBarService } from '../../../../sidebar/side-bar.service';
+import { JsonExcelFileService } from '../../../../Services/json-excel-file.service';
+import { StudentSharedMethods } from '../Utils/Student-shared-methode';
+import { Admin } from '../../../Models/Admin';
 @Component({
   selector: 'app-all-notes-semestre',
   templateUrl: './all-notes-semestre.component.html',
@@ -37,7 +38,8 @@ export class AllNotesSemestreComponent implements OnInit, OnDestroy {
   moyenne: StudentMoyenne[] = []
   students: StudentsNotesDto[] = []
   classe?: ClassRoom
-  school?: SchoolInfo
+  admin!: Admin
+  specialite?: string
   semestres: Semestres[] = []
 
   studentspage?: NotesPages;
@@ -49,10 +51,11 @@ export class AllNotesSemestreComponent implements OnInit, OnDestroy {
   filteredItems: StudentsNotesDto[] = []
   pages: number[] = []
 
-  constructor(private pageTitle: PageTitleService, public icons: IconsService, private eventService: EventServiceService,
-    private semestreService: SemestreService, private clasService: ClassStudentService, private noteService: NoteService,
+  constructor(private pageTitle: PageTitleService, public icons: IconsService, private eventService: EventServiceService, private jsonExcelService: JsonExcelFileService,
+    private semestreService: SemestreService, private clasService: ClassStudentService, private noteService: NoteService, public student_shared: StudentSharedMethods,
     private route: ActivatedRoute, public share_methode: Class_shared, private sideBarService: SideBarService) { }
   ngOnInit(): void {
+    this.admin = this.share_methode.getUseSessionStorage()
     this.load_semestre();
     this.getClasse();
 
@@ -82,6 +85,7 @@ export class AllNotesSemestreComponent implements OnInit, OnDestroy {
         }
       })
       this.idSemestre = this.semestres[0].id!
+      this.semestreSelect = this.semestres[0]
       this.getNotes_classe();
       // console.log(this.semestres, "semestre")
 
@@ -154,7 +158,7 @@ export class AllNotesSemestreComponent implements OnInit, OnDestroy {
             
             this.modules = nt.ues.modules;
           });
-          console.log(this.modules, "modules");
+          // console.log(this.modules, "modules");
           // console.log(this.notes, "notes");
         } else {
           // console.log(`Pas de modules pour ${stm.nom} ${stm.prenom}`);
@@ -182,74 +186,11 @@ export class AllNotesSemestreComponent implements OnInit, OnDestroy {
     });
   }
   // downlod to pdf
-  downloadToPdf() {
-    const button = document.getElementById('head-header') as HTMLElement;
-    const head = document.getElementById('head') as HTMLElement;
-    const data = document.getElementById('bulletin__content')!;
-
-    // Cacher les éléments qui ne doivent pas apparaître dans le PDF
-    button.style.display = "none";
-    head.style.display = "flex";
-
-    const doc = new jsPDF()
-    html2canvas(data, { scale: 2 }).then(canvas => {
-        const imgWidth = 297; // Largeur de la page A4 en paysage
-        const imgHeight = (canvas.height * imgWidth) / canvas.width; // Adapter la hauteur
-        const contentDataURL = canvas.toDataURL('image/png');
-
-        const pdf = new jsPDF('l', 'mm', 'a4'); // Orientation paysage
-
-        // Ajouter l'image du contenu principal
-        pdf.addImage(contentDataURL, 'PNG', 0, 10, imgWidth, imgHeight);
-
-        // Préparer les en-têtes du tableau
-        const tableHeaders = [
-            'N°',
-            'Nom et Prénom',
-            'Date et lieu de naissance',
-            ...this.notes.flatMap(note => note.ues.modules.map(module => module.nomModule)), // Noms des modules
-            ...this.notes.map(note => note.ues.nomUE), // Noms des UEs
-            'Moyenne',
-            'Observation'
-        ];
-
-        // Préparer les données du tableau
-        const tableData: any[] = [];
-        this.filterStudents().forEach((student, index) => {
-            const row = [
-                index + 1, // Numérotation
-                `${student.nom} ${student.prenom}`, // Nom et prénom
-                `${student.date_naissance}, ${student.lieuNaissance}` // Date et lieu de naissance
-            ];
-
-            // Ajouter les notes des modules pour chaque UE
-            this.notes.forEach(note => {
-                note.ues.modules.forEach(module => {
-                    row.push('');
-                });
-
-                // Ajouter la moyenne de l'UE
-                const ueNote = student.noteDTO
-                    ?.find(n => n.ues.nomUE === note.ues.nomUE)?.moyenUe || '';
-                row.push(ueNote);
-            });
-
-            // Ajouter la moyenne générale et l'observation
-            row.push(student.moyenGeneral || '');
-            const observation = student.moyenGeneral >= 10 && student.moyenGeneral <= 20
-                ? 'Admis'
-                : student.moyenGeneral >= 3 && student.moyenGeneral < 10
-                ? 'Ajourné'
-                : '--';
-            row.push(observation);
-
-            tableData.push(row);
-        });
-
-        button.style.display = "block";
-        head.style.display = "none";
-    });
-}
+  downloadToPdf(){
+    this.jsonExcelService.exportAsExcelFile_all_semestre_note(
+      this.notes, this.students, this.classe!,
+       this.specialite!, this.semestreSelect!);
+  }
 
 // calculer moyene
 calculate(){

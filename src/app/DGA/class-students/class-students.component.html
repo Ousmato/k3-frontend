@@ -38,7 +38,7 @@
                         <p class="title">Filière :
                             {{sharedMethod.abreviateFiliereName(classRom.idFiliere?.idFiliere?.nomFiliere!)}}</p>
                         
-                            <p *ngIf="classRom.specialites.length">Spécialité : @for (item of classRom.specialites; track $index) {
+                            <p *ngIf="classRom.specialites!.length">Spécialité : @for (item of classRom.specialites; track $index) {
                                 <a >{{sharedMethod.abreviateFiliereName(item.nomSousFiliere)}}</a>    
                             }
                         </p>
@@ -92,7 +92,7 @@
                                     <p class="title">Filière :
                                         {{sharedMethod.abreviateFiliereName(classRom.idFiliere?.idFiliere?.nomFiliere!)}}</p>
                                     
-                                        <p *ngIf="classRom.specialites.length">Spécialité : @for (item of classRom.specialites; track $index) {
+                                        <p *ngIf="classRom.specialites!.length">Spécialité : @for (item of classRom.specialites; track $index) {
                                             <a  (click)="show_views_sousFiliere(classRom,item)">{{sharedMethod.abreviateFiliereName(item.nomSousFiliere)}}</a>    
                                         }
                                     </p>
@@ -111,7 +111,7 @@
                                             <li *ngIf="!permission" ><a (click)="toggle_to_view_ues (classeSelect)">Unité d'enseignement</a></li>
                                     <li *ngIf="permission"><a (click)="toggle_to_notes(classeSelect.id!, classeSelect.idAnneeScolaire?.id!)">Ajouter Notes</a>
                                     </li>
-                                    <li *ngIf="permission" ><a (click)="toggle_toStudentClasse(classeSelect.id!, classeSelect.idFiliere?.id!)">Liste des étudiants</a></li>
+                                    <li ><a (click)="toggle_toStudentClasse(classeSelect.id!, classeSelect.idFiliere?.id!)">Liste des étudiants</a></li>
                                     <li *ngIf="permission" ><a  (click)="toggle_to_noteSemestre(classeSelect!, classeSelect.idFiliere?.id!)">Notes du semestre</a></li>
                                     <!-- <li><a (click)="toggle_to_update_emplois (classeSelect.id!)" >Modifier l'emploi du temps</a></li> -->
                                     <li *ngIf="permission"> <a (click)="toggle_semestre_moyenne(classRom.id!)">Admins et Ajourné</a></li>
@@ -151,7 +151,7 @@
                                         <h2 class="title">Niveau : {{classRom.idFiliere?.idNiveau?.nom}} </h2>
                                         <p class="title">Filière :
                                             {{sharedMethod.abreviateFiliereName(classRom.idFiliere?.idFiliere?.nomFiliere!)}}</p>
-                                            <p *ngIf="classRom.specialites.length">Spécialité : @for (item of classRom.specialites; track $index) {
+                                            <p *ngIf="classRom.specialites!.length">Spécialité : @for (item of classRom.specialites; track $index) {
                                                 <a (click)="show_views_sousFiliere(classRom, item)">{{sharedMethod.abreviateFiliereName(item.nomSousFiliere)}}
     
                                                 </a> 
@@ -217,7 +217,7 @@
                                             <h2 class="title">Niveau : {{classRom.idFiliere?.idNiveau?.nom}} </h2>
                                             <p class="title">Filière :
                                                 {{sharedMethod.abreviateFiliereName(classRom.idFiliere?.idFiliere?.nomFiliere!)}}</p>
-                                                <p *ngIf="classRom.specialites.length">Spécialité : @for (item of classRom.specialites; track $index) {
+                                                <p *ngIf="classRom.specialites!.length">Spécialité : @for (item of classRom.specialites; track $index) {
                                                     <a >{{sharedMethod.abreviateFiliereName(item.nomSousFiliere)}}</a>    
                                                 }
                                             </p>

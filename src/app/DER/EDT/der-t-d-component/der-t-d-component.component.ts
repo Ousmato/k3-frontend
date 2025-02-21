@@ -3,14 +3,14 @@ import { EnseiService } from '../../../Admin/Views/Enseignant/ensei.service';
 import { Teacher, teacherConfigureDto } from '../../../Admin/Models/Teachers';
 import { Inscription, Participant, Student_group, StudentGroupDto } from '../../../Admin/Models/Students';
 import { EtudeService } from '../../../Admin/Views/Etudiants/etude.service';
-import { Emplois } from '../../../Admin/Models/Emplois';
+import { Emplois } from '../Models/Emplois';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SalleService } from '../../../Services/salle.service';
 import { Salles } from '../../../Admin/Models/Salles';
-import { Seances, type_seance } from '../../../Admin/Models/Seances';
-import { Journee } from '../../../Admin/Models/Configure_seance';
+import { Seances, type_seance } from '../Models/Seances';
+import { Journee } from '../Models/Configure_seance';
 import { ActivatedRoute } from '@angular/router';
-import { SeancService } from '../emplois-seance/seanc.service';
+import { SeancService } from '../Services/seanc.service';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { Admin } from '../../../Admin/Models/Admin';
 import { SideBarService } from '../../../sidebar/side-bar.service';
@@ -79,16 +79,6 @@ export class DerTDComponentComponent implements OnInit {
 
   //  ------------------load form
   load_form() {
-    // this.form_config = this.fb.group({
-    //   idParticipant: [''],
-    //   idSalle1: [''],
-    //   idSalle2: [''],
-    //   seanceType1: [''],
-    //   seanceType2: [''],
-    //   heureDebut: ['', Validators.required],
-    //   heureFin: ['', Validators.required],
-    // })
-
     this.list_enseignant_checked.forEach(eck => {
       this.form_config = this.fb.group({
         idParticipant: [''],

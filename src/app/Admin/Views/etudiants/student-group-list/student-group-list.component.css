@@ -3,7 +3,22 @@ main{width: 100%;
     height: 80vh;
     padding: 0px 10px;
 }
+.header{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+.classe-name  p{
+  color: var(--secondary);
+  background-color: var(--primary);
+  padding: 5px 8px;
+  border-radius: 5px;
+  letter-spacing: 1px;
+  font-size: 14px;
+  font-weight: 600;
 
+}
 tr td{
     border: 1px solid var(--tertiary);
   }
@@ -69,8 +84,8 @@ select {
     border: none;
     background-color: var(--primary);
     color: var(--secondary);
-    padding: 0 5px;
-    border-radius: 8px;
+    padding: 0 15px;
+    border-radius: 5px;
     cursor: pointer;
     &:hover{
         background-color: var(--secondary);

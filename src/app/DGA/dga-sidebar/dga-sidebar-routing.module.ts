@@ -8,13 +8,13 @@ import { EtudiantsComponent } from '../../Admin/Views/Etudiants/etudiants.compon
 import { DerEmploiDuTempsComponent } from '../../DER/EDT/der-emploi-du-temps-list/der-emploi-du-temps.component';
 import { EmploisSeanceComponent } from '../../DER/EDT/emplois-seance/emplois-seance.component';
 import { StudentNoteComponent } from '../../Admin/Views/student-note/student-note.component';
-import { AllNotesSemestreComponent } from '../../Admin/Views/all-notes-semestre/all-notes-semestre.component';
 import { EtudiantsDeLaClasseComponent } from '../../Admin/Views/Etudiants/etudiants-de-la-classe/etudiants-de-la-classe.component';
 import { StudentBulletinComponent } from '../../Admin/Component/student-bulletin/student-bulletin.component';
 import { SchoolEditWidgetComponent } from '../../Widget/school-edit-widget/school-edit-widget.component';
 import { ViewUeComponent } from '../../Widget/ue-widget/view-ue/view-ue.component';
 import { MyAccuntComponent } from '../../DG/my-accunt/my-accunt.component';
 import { NotificationComponent } from '../../Admin/notification/notification.component';
+import { AllNotesSemestreComponent } from '../../Admin/Views/Etudiants/all-notes-semestre/all-notes-semestre.component';
 
 const routes: Routes = [{path: '', component: DgaSidebarComponent,
   children: [

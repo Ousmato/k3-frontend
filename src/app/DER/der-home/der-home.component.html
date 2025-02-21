@@ -78,12 +78,12 @@
                         <h1>{{emploisCount}}</h1>
                     </div>
 
-                    <div class="input-search">
+                    <div class="input-search" *ngIf="emploisCount > 0">
                         <input type="text" [(ngModel)]="searchTerm" placeholder="Recherche..." class="search-input">
                         
                     </div>
             </div>
-                <div class="class-scrol">
+                <div class="class-scrol" *ngIf="emploisCount > 0">
                     <ng-container *ngFor="let classe of filteredEmplois()">
                         <div class="calendar-classes-content">
                         <p>{{classe.idClasse.idFiliere?.idNiveau?.nom}} {{abrevigateNameFiliere(classe.idClasse.idFiliere?.idFiliere?.nomFiliere!)}}-{{classe.idSemestre.nomSemetre}}</p>

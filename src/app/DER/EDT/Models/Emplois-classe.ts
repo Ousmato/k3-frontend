@@ -1,4 +1,4 @@
-import { ClassRoom } from "./Classe";
+import { ClassRoom } from "../../../Admin/Models/Classe";
 import { Emplois } from "./Emplois";
 
 export interface Emplois_Classe{

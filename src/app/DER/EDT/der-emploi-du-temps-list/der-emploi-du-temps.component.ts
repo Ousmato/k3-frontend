@@ -1,11 +1,12 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { ServiceService } from '../emplois-du-temps/service.service';
-import { Emplois } from '../../../Admin/Models/Emplois';
+import { ServiceService } from '../Services/service.service';
+import { Emplois } from '../Models/Emplois';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { IconsService } from '../../../Services/icons.service';
 import { SideBarService } from '../../../sidebar/side-bar.service';
 import { AdminUSER } from '../../../Admin/Models/Auth';
 import { EventServiceService } from '../../../Services/event-service.service';
+import { Class_shared } from '../../../DGA/class-students/Utils/Class-shared-methods';
 
 @Component({
   selector: 'app-der-emploi-du-temps',
@@ -24,7 +25,8 @@ export class DerEmploiDuTempsComponent implements OnInit, OnDestroy {
   idAnnee!: number
   show_add: boolean = false
   show_update: boolean = false
-  constructor(private emploisService: ServiceService, private sideBarService: SideBarService, private root: ActivatedRoute,
+  constructor(private emploisService: ServiceService, private sideBarService: SideBarService, 
+    private root: ActivatedRoute, public share_methode: Class_shared,
     private router: Router, public icons: IconsService, private eventService: EventServiceService) { }
 
   ngOnInit(): void {

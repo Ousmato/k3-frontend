@@ -8,7 +8,7 @@ export interface ClassRoom{
     effectifs?: number;
     idFiliere?: NivFiliere
     idAnneeScolaire?: AnneeScolaire
-    specialites: Specialite_Filiere[]
+    specialites?: Specialite_Filiere[]
 
 }
 

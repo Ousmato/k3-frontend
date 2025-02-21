@@ -1,21 +1,19 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Emplois } from '../../../Admin/Models/Emplois';
-import { ServiceService } from '../emplois-du-temps/service.service';
+import { Emplois } from '../Models/Emplois';
+import { ServiceService } from '../Services/service.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { ClassStudentService } from '../../../DGA/class-students/class-student.service';
 import { Module } from '../../../Admin/Models/Module';
 
 import { IconsService } from '../../../Services/icons.service';
 import { Teacher, teacherConfigureDto } from '../../../Admin/Models/Teachers';
-import { type_seance } from '../../../Admin/Models/Seances';
+import { type_seance } from '../Models/Seances';
 import { EnseiService } from '../../../Admin/Views/Enseignant/ensei.service';
-import { SeancService } from './seanc.service';
-import { ClassRoom } from '../../../Admin/Models/Classe';
+import { SeancService } from '../Services/seanc.service';
 import { ToastrService } from 'ngx-toastr';
 import { EtudeService } from '../../../Admin/Views/Etudiants/etude.service';
 import { Student_group } from '../../../Admin/Models/Students';
-import { Journee, JourneeDTO } from '../../../Admin/Models/Configure_seance';
+import { Journee, JourneeDTO } from '../Models/Configure_seance';
 
 import jspdf, { jsPDF } from 'jspdf';  
 import html2canvas from 'html2canvas';
@@ -24,6 +22,10 @@ import { PageTitleService } from '../../../Services/page-title.service';
 import { Admin } from '../../../Admin/Models/Admin';
 import { AdminUSER } from '../../../Admin/Models/Auth';
 import { Class_shared } from '../../../DGA/class-students/Utils/Class-shared-methods';
+import { EnumOptions } from '../Utils/emum-options';
+import { Emploi_shared } from '../Utils/shareds-methods';
+import { StudentSharedMethods } from '../../../Admin/Views/Etudiants/Utils/Student-shared-methode';
+import { EmploisJsonExcel } from '../Utils/emplois-json-excel';
 
 @Component({
   selector: 'app-emplois-seance',
@@ -35,6 +37,7 @@ export class EmploisSeanceComponent  implements OnInit{
     classId!: number
     emplois?: Emplois;
     hasDeleted! : Journee
+    journeeSelect! : Journee | null
     admin!: Admin
     scolarite!: Admin
     secretaire!: Admin; 
@@ -49,9 +52,9 @@ export class EmploisSeanceComponent  implements OnInit{
     group!: string;
     journee : Journee[] = [];
     empModule : Module[] = [];
-    enseignants: Teacher[] =[];
+    // enseignants: Teacher[] =[];
     
-    seanceTypeOptions: { key: string, value: string }[] = []
+    // seanceTypeOptions: { key: string, value: string }[] = []
     palageHoraires: string[] =['08H00 - 10H00', '10H00 - 12H00', '12H00 - 14H00', '14H00 - 16H00', '16H00 - 18H00']
 
 
@@ -60,7 +63,7 @@ export class EmploisSeanceComponent  implements OnInit{
     listSalle: { salle: Salles, typeSeance: type_seance[],group: Student_group[] }[] = [];
     // sallesListe: { typeSeance: type_seance ,salle: Salles[], group: Student_group[] }[] = [];
     test : { id: string, seanceType: string, module: string, groupe : string,date: string, heureDebut: string, heureFin: string,plageHoraire : string, nomTeacher: string, prenomTeacher: string }[] = [];
-    journeeDTO : JourneeDTO [] = []
+    // journeeDTO : JourneeDTO [] = []
     teacherConf : teacherConfigureDto [] = []
     deleted_modal: boolean = false;
     pause_midi: string [] = [];
@@ -68,22 +71,20 @@ export class EmploisSeanceComponent  implements OnInit{
     is_show_button : boolean = false
     is_show_configure: boolean = false;
     choisir_group: boolean = false;
-    formattedDate!: string;
+    
     ec: string = '&';
   
 
 
-    constructor(private emploisService: ServiceService, public icons: IconsService, private toastr: ToastrService,
-       private enseignantService: EnseiService,private cdr: ChangeDetectorRef, private router: Router, private studentService: EtudeService,
-      private fb: FormBuilder, private pageTitle: PageTitleService,private route: ActivatedRoute, public sharedMethodClasse: Class_shared,private seanceService: SeancService ) { }
+    constructor(private emploisService: ServiceService, public icons: IconsService, public share_methode: Class_shared,
+       private emploiExcel: EmploisJsonExcel,public enum_options: EnumOptions, private router: Router, public student_shared: StudentSharedMethods,
+      private fb: FormBuilder, private pageTitle: PageTitleService,private route: ActivatedRoute, public emplois_shared: Emploi_shared,private seanceService: SeancService ) { }
     ngOnInit(): void {
       // ------------------------------get id in url path
       this.loadEmploisByClass();
-      this.getMonth();
-      this.load_enseignants();
-      this.load_update_form();
+      this.emplois_shared.getMonth();
+      // this.load_enseignants();
       this.getPermission();
-      this.getStatusOptions();
       
       this.secretaire = AdminUSER()?.secretaire
 
@@ -122,7 +123,7 @@ export class EmploisSeanceComponent  implements OnInit{
             // this.datesWithDaysTest.pop();
             this.datesWithDays = this.emploisService.getDaysBetweenDatesAndDaysDate(dateDebut, dateFin)
             this.datesWithDays.sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-            this.sortDay();
+            this.emplois_shared.sortDay(this.datesWithDays);
             // console.log(this.datesWithDays, "yuuuuuuuuuuuuuuuuu")
             // this.getAllSeance(this.emplois.id!);
             this.getTeacherConf(this.emplois.id!)
@@ -140,7 +141,7 @@ export class EmploisSeanceComponent  implements OnInit{
           // const seance = dat.idSeance
         if(!this.journee.some(cf =>cf.plageHoraire == dat.plageHoraire && dat!.id == cf!.id) ){
             // console.log(dat, "dat")
-           dat.plageHoraire = this.formatTimeString(dat.plageHoraire!)
+           dat.plageHoraire = this.emplois_shared.formatTimeString(dat.plageHoraire!)
             this.journee.push(dat)
 
         }
@@ -188,60 +189,16 @@ export class EmploisSeanceComponent  implements OnInit{
       })
     }
 
-    formatTimeString(timeString: string | string[]): string {
-      if (Array.isArray(timeString)) {
-        // Si `timeString` est un tableau, traiter chaque élément individuellement
-        return timeString.map(time => this.formatTimeString(time)).join(' - ');
-      }
-    
-      // console.log(timeString.replace(/(\d{2})(:)/g, '$1H'), "plage hhhhhhhhhhhh")
-      // Remplace les ":" par "H" pour le formatage en français
-      return timeString.replace(/(\d{2})(:)/g, '$1H');
-    }
-    
-  // ---------------------get current date
-    getCurrentDate() : string{
-      const date = new Date();
-      const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long',  year: 'numeric'};
-      
-      // console.log(Intl.DateTimeFormat('fr-FR', options).format(date))
-      return new Intl.DateTimeFormat('fr-FR', options).format(date);
-    }
-    // -------------------- get day for date
-    getDayFromDate(date: string): string {
-      const dateObject = new Date(date);
-      
-      const options: Intl.DateTimeFormatOptions = { weekday: 'long' };
-      // console.log(Intl.DateTimeFormat('fr-FR', options).format(dateObject))
-      return new Intl.DateTimeFormat('fr-FR', options).format(dateObject);
-    }
-    // ---------------------get current month
-    getMonth(): string {
-      const date = new Date();
-      const monthNames = [
-        'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 
-        'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
-      ];
-      const month = monthNames[date.getMonth()];
-      const year = date.getFullYear();
-      this.formattedDate = `${month}, ${year}`;
-      
-      return this.formattedDate;
-    }
-    // -----------------------------------load all enseignants
-    load_enseignants(){
-      this.enseignantService.getAll().subscribe((data: Teacher[]) => {
-        this.enseignants = data;
-        // console.log(this.enseignants, "enseignants");
-      })
-    }
-  show_form() : void{
-    this.cdr.detectChanges();
-    // this.updateWidth();
-  }
- 
 
-  // -------------------------editer les seance
+    // -----------------------------------load all enseignants
+    // load_enseignants(){
+    //   this.enseignantService.getAll().subscribe((data: Teacher[]) => {
+    //     this.enseignants = data;
+    //     // console.log(this.enseignants, "enseignants");
+    //   })
+    // }
+
+  //editer les seance
   to_show_button(){
     this.is_show_button =!this.is_show_button;
    
@@ -277,36 +234,21 @@ export class EmploisSeanceComponent  implements OnInit{
     this.is_show_configure = false;
     this.loadEmploisByClass();
   }
-
-  getStatusOptions() {
-      const objet = Object.keys(type_seance).map(key => ({
-        
-        key: key,
-        value: type_seance[key as keyof typeof type_seance] 
-      }));
-      objet.forEach(o => {
-        if(o.value != type_seance.SESSION && o.value != type_seance.Examen ){
-          this.seanceTypeOptions.push(o)
-        }
-      })
-    }
-
-// -----------------------------------------update seance
-  show_update_seance(idSeance: string){
-    const navigationExtras: NavigationExtras = {
-      queryParams: {id : +idSeance}
-    } 
-    this.router.navigate(['/der/edit-seance'], navigationExtras)
-  }
-  preventClick(event: MouseEvent): void {
-    event.stopPropagation(); // Empêche la propagation de l'événement de clic
+  //update seance
+  show_update_seance(date: string){
+    this.journeeSelect = this.journee.find(j => j.date.toString() == date)!;
+    console.log(this.journeeSelect, "journee select")
   }
   exit(){
-    this.selected_seance_heure_fin = null;
+    this.journeeSelect = null;
+    this.datesWithDays = []
+    this.test = []
+    this.journee = []
+    this.loadEmploisByClass()
   }
   // -------------------------------------------deleted seance
-  show_comfirme_delete(heureDebut: string, heureFin: string){
-    this.hasDeleted =  this.journee.find(s =>s.heureFin == heureFin && s.heureDebut == heureDebut)!;
+  show_comfirme_delete(date: string){
+    this.hasDeleted =  this.journee.find(j =>j.date.toString() == date)!;
  
     this.deleted_modal =! this.deleted_modal
   }
@@ -317,6 +259,7 @@ export class EmploisSeanceComponent  implements OnInit{
       console.log(resp, "data");
       this.pageTitle.showSuccessToast(resp.message)
       this.deleted_modal = false
+      this.loadEmploisByClass()
     },
     error : (erreur) =>{
       this.pageTitle.showErrorToast(erreur.error.message);
@@ -324,18 +267,6 @@ export class EmploisSeanceComponent  implements OnInit{
     }
   })
   
-  }
-  // ----------------------------------------load update form
-  load_update_form(){
-    this.update_seance_form = this.fb.group({
-      id: ['',],
-      heureDebut: ['',Validators.required],
-      heureFin: ['',Validators.required],
-      date: ['',Validators.required],
-      idEmplois: [''],
-      idModule: ['',Validators.required],
-      idTeacher: ['',Validators.required],
-    })
   }
   // ------------------------------------------
   to_groupe(idClasse: number, idEmploi: number, idAnnee: number){
@@ -351,19 +282,6 @@ export class EmploisSeanceComponent  implements OnInit{
     }
     this.router.navigate(['/der/group-student'], navigationExtras)
   }
- 
-    // ------------------trie les seances par jours
-    sortDay() {
-      const daysOfWeek = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
-  
-    // Trier les séances par jour en utilisant l'ordre défini dans daysOfWeek
-    this.datesWithDays.sort((a, b) => {
-      const dayIndexA = daysOfWeek.indexOf(a.day!);
-      const dayIndexB = daysOfWeek.indexOf(b.day!);
-      
-      return dayIndexA - dayIndexB;
-    });
-    }
   // ----------------------------------------------exit delete modal
   close_delete_modal(){
     this.deleted_modal = false;
@@ -373,48 +291,51 @@ export class EmploisSeanceComponent  implements OnInit{
 
 
   // button to imprime
-  imprimer() { 
-    const buttonBack = document.getElementById('back') as HTMLElement;
-    buttonBack.style.display = "none";
-    const buttonContent = document.getElementById('idContent') as HTMLElement;
-    buttonContent.style.display = "none";
-    const logo = document.getElementById('logo') as HTMLElement;
-    var data = document.getElementById('idTable') as HTMLElement;
-    if(data){
-        // Save current styles to restore them later
-        const originalPadding = data.style.padding;
-        const originalHeight = data.style.height;
-        const originalOverflow = data.style.overflow;
+  // imprimer() { 
+  //   const buttonBack = document.getElementById('back') as HTMLElement;
+  //   buttonBack.style.display = "none";
+  //   const buttonContent = document.getElementById('idContent') as HTMLElement;
+  //   buttonContent.style.display = "none";
+  //   const logo = document.getElementById('logo') as HTMLElement;
+  //   var data = document.getElementById('idTable') as HTMLElement;
+  //   if(data){
+  //       // Save current styles to restore them later
+  //       const originalPadding = data.style.padding;
+  //       const originalHeight = data.style.height;
+  //       const originalOverflow = data.style.overflow;
     
-        // Temporarily set styles to capture the entire scrollable area
-        data.style.padding = '50px'; 
-        data.style.height = 'auto';
-        data.style.fontSize = '12px';
-        data.style.overflow = 'visible'; 
-        logo.style.display = 'block';
+  //       // Temporarily set styles to capture the entire scrollable area
+  //       data.style.padding = '50px'; 
+  //       data.style.height = 'auto';
+  //       data.style.fontSize = '12px';
+  //       data.style.overflow = 'visible'; 
+  //       logo.style.display = 'block';
     
     
     
-    // Id of the table
-    html2canvas(data!, { scale: 2 }).then(canvas => {
-        // Few necessary setting options
-        let imgWidth = 297; // A4 landscape width in mm
-        let imgHeight = (canvas.height * imgWidth) / canvas.width;
+  //   // Id of the table
+  //   html2canvas(data!, { scale: 2 }).then(canvas => {
+  //       // Few necessary setting options
+  //       let imgWidth = 297; // A4 landscape width in mm
+  //       let imgHeight = (canvas.height * imgWidth) / canvas.width;
         
-        const contentDataURL = canvas.toDataURL('image/png');
-        let pdf = new jsPDF('l', 'mm', 'a4'); // 'l' for landscape
-        let position = 0;
-        pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-        pdf.save('emplois-du-temps.pdf');
-        buttonBack.style.display = "block";
-        buttonContent.style.display = "block";
-        logo.style.display = "none";
-        data.style.padding = originalPadding;
-        data.style.height = originalHeight;
-        data.style.overflow = originalOverflow;
-    });
+  //       const contentDataURL = canvas.toDataURL('image/png');
+  //       let pdf = new jsPDF('l', 'mm', 'a4'); // 'l' for landscape
+  //       let position = 0;
+  //       pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+  //       pdf.save('emplois-du-temps.pdf');
+  //       buttonBack.style.display = "block";
+  //       buttonContent.style.display = "block";
+  //       logo.style.display = "none";
+  //       data.style.padding = originalPadding;
+  //       data.style.height = originalHeight;
+  //       data.style.overflow = originalOverflow;
+  //   });
+  // }
+  // } 
+  exportToExcel(){
+    this.emploiExcel.exportAsExcelFile(this.test,  this.palageHoraires, this.datesWithDays, this.teacherConf, this.emplois!);
   }
-  } 
   // ------------------------------get double of each configure seance
   filteredJournee(jList: Journee[]) : Journee[]{
     return jList.filter(j => j.seanceType)
@@ -448,6 +369,17 @@ export class EmploisSeanceComponent  implements OnInit{
       queryParams: {
         id : idGroup,
         idEmploi: this.idEmplois
+      }
+    }
+    this.router.navigate(['/der/liste-groupe'], navigationExtras)
+  }
+  goToListStudent(idClasse: number, idEmploi: number) {
+    console.log(this.idEmplois)
+    const navigationExtras : NavigationExtras ={
+      queryParams: {
+        idClasse : idClasse,
+        idEmploi: idEmploi
+        
       }
     }
     this.router.navigate(['/der/liste-groupe'], navigationExtras)

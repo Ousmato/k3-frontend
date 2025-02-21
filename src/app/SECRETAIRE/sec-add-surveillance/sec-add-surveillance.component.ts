@@ -1,14 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { type_seance } from '../../Admin/Models/Seances';
+import { type_seance } from '../../DER/EDT/Models/Seances';
 import { Teacher } from '../../Admin/Models/Teachers';
 import { Salles } from '../../Admin/Models/Salles';
-import { Journee, Surveillance } from '../../Admin/Models/Configure_seance';
+import { Journee, Surveillance } from '../../DER/EDT/Models/Configure_seance';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PageTitleService } from '../../Services/page-title.service';
 import { SalleService } from '../../Services/salle.service';
 import { EnseiService } from '../../Admin/Views/Enseignant/ensei.service';
-import { SeancService } from '../../DER/EDT/emplois-seance/seanc.service';
-import { Emplois } from '../../Admin/Models/Emplois';
+import { SeancService } from '../../DER/EDT/Services/seanc.service';
+import { Emplois } from '../../DER/EDT/Models/Emplois';
 import { ActivatedRoute } from '@angular/router';
 import { Participant } from '../../Admin/Models/Students';
 import { EtudeService } from '../../Admin/Views/Etudiants/etude.service';

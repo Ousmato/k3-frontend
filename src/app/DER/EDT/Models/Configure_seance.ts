@@ -1,9 +1,9 @@
 import { Emplois } from "./Emplois";
-import { Module } from "./Module";
-import { Salles } from "./Salles";
+import { Module } from "../../../Admin/Models/Module";
+import { Salles } from "../../../Admin/Models/Salles";
 import { type_seance } from "./Seances";
-import { Participant, Student_group } from "./Students";
-import { Teacher } from "./Teachers";
+import { Participant, Student_group } from "../../../Admin/Models/Students";
+import { Teacher } from "../../../Admin/Models/Teachers";
 
 export interface Surveillance{
     date:  string;

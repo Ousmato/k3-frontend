@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { EtudeService } from '../../Admin/Views/Etudiants/etude.service';
 import { Router } from '@angular/router';
 import { ClassStudentService } from '../class-students/class-student.service';
-import { ServiceService } from '../../DER/EDT/emplois-du-temps/service.service';
-import { Emplois } from '../../Admin/Models/Emplois';
+import { ServiceService } from '../../DER/EDT/Services/service.service';
+import { Emplois } from '../../DER/EDT/Models/Emplois';
 import { Admin } from '../../Admin/Models/Admin';
 import { AdminUSER } from '../../Admin/Models/Auth';
 

@@ -8,14 +8,6 @@ main{
     transform: rotate(180deg);
 }
 
-.head{
-    display: none;
-    width: 100%;
-    gap: 25%;
-    justify-content: center;
-    align-items: center;
-    /* border: 1px solid; */
-}
 .header{
     display: flex;
     width: 100%;
@@ -62,9 +54,7 @@ p{
 h4{
     font-size: 20px;
 }
-.nom-module{
-    font-weight: normal;
-}
+
 
 .info{
     display: flex;
@@ -72,28 +62,6 @@ h4{
     justify-content: center;
     align-items: center;
     text-align: center;
-}
-.logo img{
-    height: 70px;
-    width: auto;
-
-}
-
-.back-button{
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    padding: 8px;
-    font-size: 20px;
-    margin: 10px 0;
-    &:hover{
-        background-color: var(--tertiary);
-        color: var(--primary);
-        border: none;
-        border-radius: 50%;
-    }
-
 }
 
 select{
@@ -108,15 +76,32 @@ select:focus{
 .table-container{
     position: relative;
     width: 100%;
-    height: 92%;
+    height: 88%;
 }
 .table-responsive{
     width:  100%;
-    height: 92%;
     position: absolute;
     overflow-x: auto;
     overflow-y: auto;
 }
+/* Personnalisation de la barre de défilement */
+.table-container::-webkit-scrollbar {
+    width: 5px; /* Largeur de la barre de défilement */
+  }
+  
+  .table-container::-webkit-scrollbar-track {
+    background: white; /* Couleur de l'arrière-plan de la piste */
+    border-radius: 10px; /* Coins arrondis de la piste */
+  }
+  
+  .table-container::-webkit-scrollbar-thumb {
+    background: var(--tertiary); /* Couleur de la barre de défilement */
+    border-radius: 10px; /* Coins arrondis de la barre */
+  }
+  
+  .table-container::-webkit-scrollbar-thumb:hover {
+    background: var(--primary); /* Couleur de la barre au survol */
+  }
 
 .btn-contenair{
     display: flex;
@@ -132,10 +117,7 @@ select:focus{
 
 
 .btn-contenair button {
-    height: 35px;
-    /* width: 100px; */
-    /* margin-: 10px; */
-    background-color: var(--primary);
+    height: 30px;
     color: var(--secondary);
     border-radius: 5px;
     padding: 0 5px;
@@ -143,8 +125,8 @@ select:focus{
     border: none;
     cursor: pointer;
     &:hover {
-        background-color: var(--secondary);
-        color: var(--primary);
+        background-color: var(--primary);
+        color: var(--secondary);
         border: none;
     }
   }

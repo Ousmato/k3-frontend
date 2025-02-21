@@ -4,7 +4,6 @@ import { AnneeScolaire } from "../../../Models/School-info";
 
 import jspdf, { jsPDF } from 'jspdf';  
 import html2canvas from 'html2canvas';
-import * as XLSX from 'xlsx';
 import { Chart, registerables } from "chart.js";
 Chart.register(...registerables)
 @Injectable({
@@ -95,72 +94,16 @@ export class StudentSharedMethods implements OnDestroy{
   }
   } 
 
-//export excel
-exportExcel(group: Student_group) {
-    // Cacher les éléments non pertinents pour l'export
-    const buttonBack = document.getElementById('back') as HTMLElement;
-    buttonBack.style.display = "none";
-    const buttonContent = document.getElementById('idContent') as HTMLElement;
-    buttonContent.style.display = "none";
-
-    let data = document.getElementById('idTable') as HTMLElement;
-    let headerContent = document.getElementById('idContent') as HTMLElement;
-
-    // Créer un élément contenant le tout : table + autres sections
-    let fullContent = document.createElement('div');
-    fullContent.appendChild(headerContent.cloneNode(true)); // Clone l'entête (idContent)
-    fullContent.appendChild(data.cloneNode(true)); // Clone la table (idTable)
-
-    // Créer la feuille de calcul à partir du contenu HTML
-    if (fullContent) {
-        let ws = XLSX.utils.table_to_sheet(fullContent);
-
-        // Appliquer les bordures à chaque cellule de la feuille
-        let range = XLSX.utils.decode_range(ws['!ref'] as string);
-        for (let row = range.s.r; row <= range.e.r; row++) {
-            for (let col = range.s.c; col <= range.e.c; col++) {
-                let cell = ws[XLSX.utils.encode_cell({ r: row, c: col })];
-                if (!cell) continue;
-
-                // Définir les bordures (haut, bas, gauche, droite)
-                cell.s = {
-                    border: {
-                        top: { style: 'solid', color: { rgb: "000000" } },
-                        right: { style: 'solid', color: { rgb: "000000" } },
-                        bottom: { style: 'solid', color: { rgb: "000000" } },
-                        left: { style: 'solid', color: { rgb: "000000" } }
-                    }
-                };
-            }
-        }
-
-        // Conserver les largeurs des colonnes
-        let colWidths = [];
-        for (let col = range.s.c; col <= range.e.c; col++) {
-            let maxWidth = 5; // Valeur par défaut de largeur minimale
-            for (let row = range.s.r; row <= range.e.r; row++) {
-                let cell = ws[XLSX.utils.encode_cell({ r: row, c: col })];
-                if (cell && cell.v) {
-                    maxWidth = Math.max(maxWidth, (cell.v.toString().length + 2));
-                }
-            }
-            colWidths.push({ wpx: maxWidth * 8 }); // Largeur en pixels
-        }
-        ws['!cols'] = colWidths;
-
-        // Créer le fichier Excel
-        let wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Etudiant");
-
-        // Télécharger le fichier Excel avec un nom dynamique
-        XLSX.writeFile(wb, `liste-de-${group.nom}.xlsx`);
-    }
-
-    // Restauration de l'affichage des éléments cachés après l'export
-    buttonBack.style.display = "block";
-    buttonContent.style.display = "block";
+//get date in this format le 25 fevrier 2025
+getCurrentDate() : string{
+  const date = new Date();
+  const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long',  year: 'numeric'};
+  
+  // console.log(Intl.DateTimeFormat('fr-FR', options).format(date))
+  return new Intl.DateTimeFormat('fr-FR', options).format(date);
 }
 
+  // filter students
 
  // sort students
  onSorted(event: any, Inscriptions : Inscription[]) : any{

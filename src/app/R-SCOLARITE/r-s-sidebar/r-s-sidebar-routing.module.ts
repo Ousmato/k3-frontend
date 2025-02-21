@@ -5,11 +5,9 @@ import { RSHomeComponent } from '../r-s-home/r-s-home.component';
 import { SinginComponent } from '../../Admin/Views/Etudiants/CRUD/singin/singin.component';
 import { EtudiantsComponent } from '../../Admin/Views/Etudiants/etudiants.component';
 import { StudentEditComponent } from '../../Admin/Views/Etudiants/CRUD/student-edit/student-edit.component';
-import { StudentViewComponent } from '../../Admin/Views/Etudiants/CRUD/student-view/student-view.component';
 import { ClassStudentsComponent } from '../../DGA/class-students/class-students.component';
 import { StudentNoteComponent } from '../../Admin/Views/student-note/student-note.component';
 import { EtudiantsDeLaClasseComponent } from '../../Admin/Views/Etudiants/etudiants-de-la-classe/etudiants-de-la-classe.component';
-import { AllNotesSemestreComponent } from '../../Admin/Views/all-notes-semestre/all-notes-semestre.component';
 import { StudentBulletinComponent } from '../../Admin/Component/student-bulletin/student-bulletin.component';
 import { RSReinscriptionComponent } from '../r-s-reinscription/r-s-reinscription.component';
 import { ViewUeComponent } from '../../Widget/ue-widget/view-ue/view-ue.component';
@@ -21,6 +19,7 @@ import { StudentDetailsComponent } from '../../Admin/Views/Etudiants/student-det
 import { SemestreMoyennesComponent } from '../../Admin/Views/semestre-moyennes/semestre-moyennes.component';
 import { StudentPaiementRapportComponent } from '../../Admin/Views/Etudiants/student-paiement-rapport/student-paiement-rapport.component';
 import { StatistiqueSudentsValuesComponent } from '../../Admin/Views/Etudiants/statistique-sudents-values/statistique-sudents-values.component';
+import { AllNotesSemestreComponent } from '../../Admin/Views/Etudiants/all-notes-semestre/all-notes-semestre.component';
 
 const routes: Routes = [{path: '', component: RSSidebarComponent,
   children: [

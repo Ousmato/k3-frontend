@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Emplois } from '../../../Admin/Models/Emplois';
-import { ServiceService } from '../emplois-du-temps/service.service';
+import { Emplois } from '../Models/Emplois';
+import { ServiceService } from '../Services/service.service';
 import { EtudeService } from '../../../Admin/Views/Etudiants/etude.service';
 import { Participant } from '../../../Admin/Models/Students';
 import { IconsService } from '../../../Services/icons.service';
 import { Admin } from '../../../Admin/Models/Admin';
 import { AdminUSER } from '../../../Admin/Models/Auth';
+import { Class_shared } from '../../../DGA/class-students/Utils/Class-shared-methods';
 
 @Component({
   selector: 'app-der-e-d-t',
@@ -23,7 +24,8 @@ export class DerEDTComponent implements OnInit{
   participants: Participant[] = []
   
   datesWithDays: { day: string, date: string }[] = [];
-  constructor(private root: ActivatedRoute, public icons: IconsService, private studentService: EtudeService,
+  constructor(private root: ActivatedRoute, public share_methode: Class_shared,
+    public icons: IconsService, private studentService: EtudeService,
     private emploiService: ServiceService) { }
   ngOnInit(): void {
    this.load_all();

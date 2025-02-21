@@ -18,13 +18,14 @@ import { DerDocComponent } from '../der-doc/der-doc.component';
 import { AddDocComponent } from '../Widget/add-doc/add-doc.component';
 import { ProgramSoutenanceComponent } from '../Widget/program-soutenance/program-soutenance.component';
 import { ViewSoutenanceComponent } from '../Widget/view-soutenance/view-soutenance.component';
-import { StudentGroupListComponent } from '../student-group-list/student-group-list.component';
 import { MyAccuntComponent } from '../../DG/my-accunt/my-accunt.component';
 import { NotificationComponent } from '../../Admin/notification/notification.component';
 import { SpecialitesComponent } from '../specialites/specialites.component';
 import { ClassStudentsComponent } from '../../DGA/class-students/class-students.component';
 import { ImportEnseignantComponent } from '../../Admin/Views/Enseignant/import-enseignant/import-enseignant.component';
 import { ViewUeComponent } from '../../Widget/ue-widget/view-ue/view-ue.component';
+import { StudentGroupListComponent } from '../../Admin/Views/Etudiants/student-group-list/student-group-list.component';
+import { EtudiantsDeLaClasseComponent } from '../../Admin/Views/Etudiants/etudiants-de-la-classe/etudiants-de-la-classe.component';
 
 const routes: Routes = [{path: '', component: DerSidebarComponent,
   children: [
@@ -50,6 +51,7 @@ const routes: Routes = [{path: '', component: DerSidebarComponent,
     {path: 'specialites', component: SpecialitesComponent, data:{title: "Les Specialites"}},
     {path: 'import', component: ImportEnseignantComponent, data:{title: "IMporter Enseignant"}},
     {path: 'view-ues', component: ViewUeComponent, data:{title: "LES UNITES D'ENSEIGNEMENT"}},
+    {path: 'etudiant-de-la-classe', component: EtudiantsDeLaClasseComponent, data:{title: "Etudiants de la classe"}},
 
     
     { path: 'students-class', component: ClassStudentsComponent, data:{title: "Les Classes de Formation"} },

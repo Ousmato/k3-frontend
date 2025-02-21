@@ -1,5 +1,5 @@
 import { Admin } from "./Admin";
-import { TeacherEmplois } from "./Emplois";
+import { TeacherEmplois } from "../../DER/EDT/Models/Emplois";
 import { Filiere, Specialites } from "./Filieres";
 
 export interface Teacher {
@@ -16,6 +16,7 @@ export interface Teacher {
     telephone: number;
     urlPhoto?: string;
     active?: boolean;
+    desable?: boolean;
     status: TeachersStatus;
     admin: Admin
 }

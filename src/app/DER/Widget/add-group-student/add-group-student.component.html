@@ -1,14 +1,19 @@
 <main>
-    <div (click)="goBack()" class="back-button">
-        <fa-icon [icon]="icons.back"></fa-icon>
+    <div class="head">
+        <div (click)="goBack()" class="back-button">
+            <fa-icon [icon]="icons.back"></fa-icon>
+        </div>
+        <div class="classe-name">
+            <p>Classe : {{share_methode.abrevigateNiveauName(inscriptions[0].idClasse.idFiliere?.idNiveau?.nom!)}}-{{share_methode.abreviateFiliereName(inscriptions[0].idClasse.idFiliere?.idFiliere?.nomFiliere!)}} {{share_methode.extractAnnee(inscriptions[0].idClasse.idAnneeScolaire!)}}-{{share_methode.extractAnnee(inscriptions[0].idClasse.idAnneeScolaire!) + 1}}</p>
+        </div>
     </div>
     <div class="input-count">
         <form [formGroup]="form_participants" (ngSubmit)="create_participant(list_checked)">
-            <div >
+            <!-- <div > -->
                 <div class="left">
                     <div class="form-group">
-                        <label>Groupe :</label>
-                        <select class="form-select" formControlName="idStudentGroup"
+                        <!-- <label>Groupe :</label> -->
+                        <select class="select" formControlName="idStudentGroup"
                             [class.is-invalid]="form_participants.get('idStudentGroup')!.invalid && form_participants.get('idStudentGroup')!.touched"
                             (change)="onSelect($event)">
                             <option selected disabled value="">Choisir Le groupe</option>
@@ -18,11 +23,12 @@
                                 Champ obligatoire*
                             </span> -->
                     </div>
-                    <div class="button-cash">
-                        <button *ngIf="is_Show_addParticipant" type="submit">Ajouter participants</button>
-                        <a *ngIf="is_Show_addParticipant" (click)="exit()">Annuler</a>
+                    <!-- <div > -->
+                        <button class="grp-btn" *ngIf="is_Show_addParticipant" type="submit">Ajouter participants</button>
+                        <a class="grp-btn" *ngIf="is_Show_addParticipant" (click)="exit()">Annuler</a>
+                        <a class="grp-btn" *ngIf="!is_Show_addParticipant" (click)="to_createGroup()">Créer</a>
+
                         <div class="create">
-                            <button *ngIf="!is_Show_addParticipant" (click)="to_createGroup()">Créer</button>
                             <div class="views" *ngIf="is_Show_addGroup">
                                 <p>Ajouter groupe</p>
                                 <form class="form" [formGroup]="form_add" (ngSubmit)="add_groupe()">
@@ -52,12 +58,12 @@
                             </div>
                         </div>
         
-                    </div>
+                    <!-- </div> -->
                 </div>
                 
                
     
-            </div>
+            <!-- </div> -->
     
         </form>
         <div class="input-search">
@@ -82,10 +88,10 @@
                         </div>
                     </th>
                     <th>Nom</th>
-                    <th>Prenom</th>
-                    <th>Classe</th>
-                    <th>Filiere</th>
-                    <th>Telephone</th>
+                    <th>Prénom</th>
+                    <th>Date de Naissance</th>
+                    <th>Lieux de Naissance</th>
+                    <th>Sexe</th>
                     <th>Groupe</th>
 
                 </tr>
@@ -105,12 +111,12 @@
                             </td>
                             <td>{{inscrit.idEtudiant.nom}}</td>
                             <td>{{inscrit.idEtudiant.prenom}}</td>
-                            <td class="class-name" title="{{inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}">
-                                {{inscrit.idClasse.idFiliere?.idNiveau?.nom}}</td>
-                            <td class="class-name" title="{{inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}">
-                                {{inscrit.idClasse.idFiliere?.idFiliere?.nomFiliere}}</td>
+                            <td class="class-name" >
+                                {{inscrit.idEtudiant.dateNaissance}}</td>
+                            <td class="class-name">
+                                {{inscrit.idEtudiant.lieuNaissance}}</td>
 
-                            <td>{{inscrit.idEtudiant.telephone}}</td>
+                            <td>{{inscrit.idEtudiant.sexe.includes('FEMME') ? 'F' : 'M'}}</td>
                             <td >{{isPresent(inscrit.id!) ? particip?.idStudentGroup?.nom : 'Accun'}}</td>
                         </tr>
                     </ng-container>
@@ -119,7 +125,7 @@
 
                 <ng-template #noResults>
                     <tr>
-                        <td colspan="9" class="text-center">Aucun résultat trouvé</td>
+                        <td colspan="8" class="text-center">Aucun résultat trouvé</td>
                     </tr>
                 </ng-template>
 

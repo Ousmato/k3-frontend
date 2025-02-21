@@ -9,7 +9,6 @@ import { SinginComponent } from '../Admin/Views/Etudiants/CRUD/singin/singin.com
 import { EmploisSeanceComponent } from '../DER/EDT/emplois-seance/emplois-seance.component';
 import { EnseignantComponent } from '../Admin/Views/Enseignant/enseignant.component';
 import { StudentNoteComponent } from '../Admin/Views/student-note/student-note.component';
-import { AllNotesSemestreComponent } from '../Admin/Views/all-notes-semestre/all-notes-semestre.component';
 import { EtudiantsDeLaClasseComponent } from '../Admin/Views/Etudiants/etudiants-de-la-classe/etudiants-de-la-classe.component';
 import { TeachersEditComponent } from '../Admin/Views/Enseignant/CRUD/teachers-edit/teachers-edit.component';
 import { StudentBulletinComponent } from '../Admin/Component/student-bulletin/student-bulletin.component';
@@ -20,6 +19,7 @@ import { AdminListComponent } from '../DG/admin-list/admin-list.component';
 import { MyAccuntComponent } from '../DG/my-accunt/my-accunt.component';
 import { NotificationComponent } from '../Admin/notification/notification.component';
 import { RolesComponent } from '../DG/roles/roles.component';
+import { AllNotesSemestreComponent } from '../Admin/Views/Etudiants/all-notes-semestre/all-notes-semestre.component';
 
 const routes: Routes = [{path: "", component: SidebarComponent,
     

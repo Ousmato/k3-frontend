@@ -6,12 +6,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { Inscription, Participant, Student, Student_group } from '../../../Admin/Models/Students';
 import { StudentPages } from '../../../Admin/Models/Pagination-module';
-import { Emplois } from '../../../Admin/Models/Emplois';
-import { ServiceService } from '../../EDT/emplois-du-temps/service.service';
+import { Emplois } from '../../EDT/Models/Emplois';
+import { ServiceService } from '../../EDT/Services/service.service';
 import { InscriptionService } from '../../../Services/inscription.service';
 import { Admin } from '../../../Admin/Models/Admin';
 import { SideBarService } from '../../../sidebar/side-bar.service';
 import { AdminUSER } from '../../../Admin/Models/Auth';
+import { Class_shared } from '../../../DGA/class-students/Utils/Class-shared-methods';
 
 @Component({
   selector: 'app-add-group-student',
@@ -39,7 +40,7 @@ export class AddGroupStudentComponent implements OnInit {
 
   constructor(private service: EtudeService, private inscriptionService: InscriptionService, private studentsServices: EtudeService,
     private fb: FormBuilder, private root: ActivatedRoute, private sidebarService: SideBarService,
-    private emploisService: ServiceService, public icons: IconsService, private pageTitle: PageTitleService) { }
+    public share_methode: Class_shared, public icons: IconsService, private pageTitle: PageTitleService) { }
 
 
   ngOnInit(): void {
@@ -62,7 +63,6 @@ export class AddGroupStudentComponent implements OnInit {
       const idAnnee = param['idAnnee'];
       this.service.getStudentListByIdAnneeAndIdClasse(idAnnee, this.idClasse).subscribe(result =>{
         this.inscriptions = result
-        console.log(this.inscriptions, "les inscrit de la classe");
       })
      
      
@@ -177,11 +177,14 @@ export class AddGroupStudentComponent implements OnInit {
     let list_student: Participant[] = [];
 
     const formData = this.form_participants.value;
+    console.log(formData, "form_data")
     const group_fund = this.groupes.find(g => g.id == formData.idStudentGroup);
     if (list_checked && list_checked.length > 0) {
       list_checked.forEach(inscrit => {
         
-    const {scolarite, ...newList_cheked } = inscrit
+    const {scolarite, totalPaie,...newList_cheked } = inscrit
+    const {specialites,...newClass } = inscrit.idClasse
+     newList_cheked.idClasse = newClass
 
         const group: Participant = {
           idStudentGroup: group_fund!,
@@ -194,6 +197,7 @@ export class AddGroupStudentComponent implements OnInit {
       
     }
     console.log(list_student, "list to add")
+    // return
     if (this.form_participants.valid) {
       this.service.addParticipant(list_student).subscribe({
         next: (res) => {

@@ -15,18 +15,26 @@
             <div class="semestre" >
                 <p *ngFor="let item of semestres"><span (click)="onSelect(item.id!)" [ngClass]="{'active': idSemestre && item.id === idSemestre}">{{item.nomSemetre}}</span></p>
               </div>
-            <!-- <select class="select" (change)="onSelect($event)">
-                <option selected disabled value="">Semestre</option>
-                <option *ngFor="let sem of semestres" [value]="sem.id">{{sem.nomSemetre}}</option>
-            </select> -->
                 <div class="btn-content">
                     <button *ngIf="notes.length > 0" (click)="downloadToPdf()" type="button">
-                        PDF</button>
+                        Exporter</button>
             
                 </div>
-            <button *ngIf="students.length" (click)="calculate()">Calculer moyenne</button>
+            <button *ngIf="students.length" (click)="calculate()">Calculer Moyenne</button>
 
            </div>
+
+           <!-- <section id="head" class="head" >
+            <div class="info">
+                <h4>Institut Universitaire de Formation Professionnelle (IUFP)</h4>
+                <p>Annee Universitaire {{anneeScolaire}}</p>
+                <p>Resultat definitifs  {{semestreSelect?.nomSemetre || undefined}}
+    
+                </p>
+                <p>Filiere : {{classe?.idFiliere?.idNiveau?.nom}} {{classe?.idFiliere?.idFiliere?.nomFiliere}}</p>
+            </div>
+        </section> -->
+
            <div class="filter-content" *ngIf="students.length">
             <div class="trie-content">
                 <label for="tri"><fa-icon [icon]="icons.filter" ></fa-icon> </label>
@@ -43,20 +51,9 @@
           
           
        </div>
+      
    </div>
-    <section id="head" class="head" >
-        <!-- <div class="logo" *ngIf="school?.urlPhoto">
-            <img src="/assets/logounivsegou.png" alt="PHOTO">
-        </div> -->
-        <div class="info">
-            <h4>Institut Universitaire de Formation Professionnelle (IUFP)</h4>
-            <p>Annee Universitaire {{anneeScolaire}}</p>
-            <p>Resultat definitifs  {{semestreSelect?.nomSemetre || undefined}}
-
-            </p>
-            <p>Filiere : {{classe?.idFiliere?.idNiveau?.nom}} {{classe?.idFiliere?.idFiliere?.nomFiliere}}</p>
-        </div>
-    </section>
+    
     <!-- -------------------------------------------------- -->
     <section class="table-container">
         <div class="table-responsive">
@@ -153,6 +150,7 @@
                 </tbody>
                 
             </table>
+           
         </div>
        
     </section>

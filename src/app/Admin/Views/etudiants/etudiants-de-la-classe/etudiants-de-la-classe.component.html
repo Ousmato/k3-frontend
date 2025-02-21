@@ -76,7 +76,7 @@
                         <td *ngIf="!adminDga">
                             <div class="btn-contenaire">
                                 <a (click)="load_bulletin(inscrit.id!)" ><fa-icon  [icon]="icons.eye" class="icons"></fa-icon><span>Rélever</span></a>
-                                <a  *ngIf="inscrit.idClasse.specialites.length" (click)="show_specialite(inscrit.id!)"><fa-icon [icon]="icons.paperClip"></fa-icon> Spécialiés</a> 
+                                <a  *ngIf="inscrit.idClasse.specialites!.length" (click)="show_specialite(inscrit.id!)"><fa-icon [icon]="icons.paperClip"></fa-icon> Spécialiés</a> 
                                 
                                 <div class="views" *ngIf="idInscritSelect === inscrit.id">
                                     <div class="input-content" *ngFor="let filiere of inscrit.idClasse.specialites">

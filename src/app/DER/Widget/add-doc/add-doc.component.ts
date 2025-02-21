@@ -84,7 +84,7 @@ export class AddDocComponent implements OnInit {
   // -laod student by classe id
   load_students(idAnnee: number, idClass: number) {
     console.log(idClass, "idClasse")
-    this.inscriptionService.getInscriptionsIdClasse(idAnnee, idClass).subscribe(
+    this.inscriptionService.getInscriptionsIdClasse(idClass).subscribe(
       data => {
         this.inscriptions = data;
         console.log(this.inscriptions, "students")

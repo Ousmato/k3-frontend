@@ -1,9 +1,8 @@
-import { Admin } from "./Admin";
-import { ClassModules } from "./ClassModule";
-import { ClassRoom } from "./Classe";
-import { Module } from "./Module";
+import { Admin } from "../../../Admin/Models/Admin";
+import { ClassRoom } from "../../../Admin/Models/Classe";
+import { Module } from "../../../Admin/Models/Module";
 import { Seances } from "./Seances";
-import { Semestres } from "./Semestre";
+import { Semestres } from "../../../Admin/Models/Semestre";
 
 export interface Emplois{
     id?:number;

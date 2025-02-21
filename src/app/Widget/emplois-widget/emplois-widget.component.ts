@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ServiceService } from '../../DER/EDT/emplois-du-temps/service.service';
+import { ServiceService } from '../../DER/EDT/Services/service.service';
 import { Semestres } from '../../Admin/Models/Semestre';
 import { SemestreService } from '../../Services/semestre.service';
 import { ClassRoom } from '../../Admin/Models/Classe';
 import { ClassStudentService } from '../../DGA/class-students/class-student.service';
-import { Emplois } from '../../Admin/Models/Emplois';
+import { Emplois } from '../../DER/EDT/Models/Emplois';
 import { DatePipe, Location } from '@angular/common';
 import { PageTitleService } from '../../Services/page-title.service';
 import { Module } from '../../Admin/Models/Module';

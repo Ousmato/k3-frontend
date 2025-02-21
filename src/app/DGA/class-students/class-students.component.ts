@@ -5,8 +5,8 @@ import { ClassRoom, Specialite_Filiere } from '../../Admin/Models/Classe';
 import { SetService } from '../../Admin/Views/settings/set.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClassModules } from '../../Admin/Models/ClassModule';
-import { ServiceService } from '../../DER/EDT/emplois-du-temps/service.service';
-import { Emplois } from '../../Admin/Models/Emplois';
+import { ServiceService } from '../../DER/EDT/Services/service.service';
+import { Emplois } from '../../DER/EDT/Models/Emplois';
 import { NavigationExtras, Route, Router } from '@angular/router';
 import { IconsService } from '../../Services/icons.service';
 import { ToastrService } from 'ngx-toastr';
@@ -240,8 +240,8 @@ export class ClassStudentsComponent implements OnInit {
       this.router.navigate(['/r-scolarite/etudiant-de-la-classe'], navigationExtras);
     } else if (dga) {
       this.router.navigate(['/dga/etudiant-de-la-classe'], navigationExtras);
-
-
+    }else if(AdminUSER()?.der){
+      this.router.navigate(['/der/etudiant-de-la-classe'], navigationExtras);
     } else {
       this.router.navigate(['/sidebar/etudiant-de-la-classe'], navigationExtras);
 

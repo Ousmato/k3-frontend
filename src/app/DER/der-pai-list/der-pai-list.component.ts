@@ -10,7 +10,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { SchoolService } from '../../Services/school.service';
 import { AnneeScolaire } from '../../Admin/Models/School-info';
 import { ActivatedRoute } from '@angular/router';
-import { TeacherEmplois } from '../../Admin/Models/Emplois';
+import { TeacherEmplois } from '../EDT/Models/Emplois';
 import { Class_shared } from '../../DGA/class-students/Utils/Class-shared-methods';
 import { TeacherDto } from '../../Admin/Models/Teachers';
 import { Admin } from '../../Admin/Models/Admin';

@@ -1,7 +1,6 @@
 
-import { Journee } from "./Configure_seance";
 import { Emplois } from "./Emplois";
-import { Module } from "./Module";
+import { Module } from "../../../Admin/Models/Module";
 
 export interface Seances{
     id?:number;

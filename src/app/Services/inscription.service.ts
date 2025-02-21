@@ -6,7 +6,6 @@ import { finalize, Observable } from 'rxjs';
 import { Response_String } from '../Admin/Models/Response_String';
 import { LoaderService } from './loader.service';
 import { AddNoteDto } from '../Admin/Models/Notes';
-import { Paie } from '../Admin/Models/paie';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +15,9 @@ export class InscriptionService {
   private baseUrl = `${environment.apiUrl}api-subscribe/`
   constructor(private http: HttpClient, private loadingService: LoaderService) { }
 
-   // -----------------------inscription by id classe
-   getInscriptionsIdClasse(idAnnee: number, idClasse: number) : Observable<Inscription[]>{
-    return this.http.get<Inscription[]>(`${this.baseUrl}subscribe-by-class-id/${idAnnee}/${idClasse}`);
+   // inscription by id classe
+   getInscriptionsIdClasse(idClasse: number) : Observable<Inscription[]>{
+    return this.http.get<Inscription[]>(`${this.baseUrl}get-incrits-by-idClasse/${idClasse}`);
   }
   // list inscription by id groupe
   getListInscriptionByIdGroup(idGroup: number, idEmploi: number) : Observable<AddNoteDto[]>{

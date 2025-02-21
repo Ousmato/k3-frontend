@@ -1,7 +1,12 @@
 <main>
-    <div id="back" (click)="goBack()" class="back-button">
+  <div class="head">
+    <div (click)="goBack()" class="back-button">
         <fa-icon [icon]="icons.back"></fa-icon>
-      </div>
+    </div>
+    <div class="classe-name">
+        <p>Classe : {{share_methode.abrevigateNiveauName(emploi!.idClasse.idFiliere?.idNiveau?.nom!)}}-{{share_methode.abreviateFiliereName(emploi!.idClasse.idFiliere?.idFiliere?.nomFiliere!)}} {{share_methode.extractAnnee(emploi!.idClasse.idAnneeScolaire!)}}-{{share_methode.extractAnnee(emploi!.idClasse.idAnneeScolaire!) + 1}}</p>
+    </div>
+</div>
     @if(datesWithDays.length > 0){
        <!-- <app-der-jour-component [datesWithDays]="datesWithDays" [currentEmploi]="emploi" [currentTypeSeance]="url_typeSeance"></app-der-jour-component> -->
         <app-der-t-d-component *ngIf="permission" [datesWithDays]="datesWithDays" [currentEmploi]="emploi"></app-der-t-d-component>

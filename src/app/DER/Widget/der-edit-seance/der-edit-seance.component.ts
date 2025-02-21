@@ -1,22 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Teacher } from '../../../Admin/Models/Teachers';
 import { Module } from '../../../Admin/Models/Module';
 import { ClassRoom } from '../../../Admin/Models/Classe';
 import { Salles } from '../../../Admin/Models/Salles';
-import { Emplois } from '../../../Admin/Models/Emplois';
+import { Emplois } from '../../EDT/Models/Emplois';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ServiceService } from '../../EDT/emplois-du-temps/service.service';
+import { ServiceService } from '../../EDT/Services/service.service';
 import { EnseiService } from '../../../Admin/Views/Enseignant/ensei.service';
-import { SeancService } from '../../EDT/emplois-seance/seanc.service';
+import { SeancService } from '../../EDT/Services/seanc.service';
 import { ClassStudentService } from '../../../DGA/class-students/class-student.service';
 import { IconsService } from '../../../Services/icons.service';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { SalleService } from '../../../Services/salle.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Seances } from '../../../Admin/Models/Seances';
+import { Seances } from '../../EDT/Models/Seances';
 import { NivFiliere } from '../../../Admin/Models/NivFiliere';
 import { Admin } from '../../../Admin/Models/Admin';
 import { AdminUSER } from '../../../Admin/Models/Auth';
+import { Journee } from '../../EDT/Models/Configure_seance';
+import { EnumOptions } from '../../EDT/Utils/emum-options';
 
 @Component({
   selector: 'app-der-edit-seance',
@@ -31,20 +33,17 @@ export class DerEditSeanceComponent implements OnInit{
   classes: ClassRoom [] = [];
   salles: Salles [] = [];
   emplois!: Emplois;
-  seance!: Seances;
   idUrl!: number
-  
-  datesWithDays: { day: string, date: string }[] = [];
-  datesWithDaysTest: { day: string, dates: string[] }[] = [];
+  @Input() journee! : Journee
 
-  nomMension?: NivFiliere;
+  @Output() closeUpdate = new EventEmitter<any>();
   enseig?: Teacher;
   salle?: Salles;
   nomModule?: Module;
   admin!: Admin
 
   form_seance?: FormGroup
-  constructor(private emploisService: ServiceService, public icons: IconsService,
+  constructor(public enum_options: EnumOptions, public icons: IconsService,
     private enseignantService: EnseiService, private pageTitle: PageTitleService,
    private fb: FormBuilder, private classService: ClassStudentService, private route: ActivatedRoute, private router: Router, private seanceService: SeancService, private salleService: SalleService){}
 
@@ -52,8 +51,7 @@ export class DerEditSeanceComponent implements OnInit{
   ngOnInit(): void {
     this.load_form(); 
     this.admin = AdminUSER()?.der
-    this.get_by_id();
-      this.load_classe();
+    
       this.load_enseignants();
       this.getSeance_date();
       this.load_salles();
@@ -64,39 +62,17 @@ export class DerEditSeanceComponent implements OnInit{
 
    load_form(){
     this.form_seance = this.fb.group({
-      id: [''],
-      heureDebut: [''],
-      heureFin: [''],
-      idEmplois: [''],
+      
+      heureDebut: [this.journee.heureDebut, Validators.required],
+      heureFin: [this.journee.heureFin, Validators.required],
+      seanceType: ['', Validators.required],
       idSalle: [''],
       idTeacher: [''],
-      date: [""],
-      idModule: [''],
-      jour: [""],
-      idClasse: ['']
+      // date: [this.journee.date],
+      
     });
   }
 
-  // -------------------load seance by id
-  get_by_id(){
-    this.route.queryParams.subscribe(param =>{
-      this.idUrl = +param['id'];
-    })
-    this.seanceService.getSeance_byId(this.idUrl).subscribe((data: Seances) =>{
-      this.seance = data;
-
-      this.form_seance?.get('id')?.setValue(this.seance.id);
-      this.form_seance?.get('idEmplois')?.setValue(this.seance.idEmplois);
-      this.form_seance?.get('heureDebut')?.setValue(this.seance.heureDebut);
-      this.form_seance?.get('heureFin')?.setValue(this.seance.heureFin);
-      this.form_seance?.get('date')?.setValue(this.seance.date);
-
-      // this.enseig = this.seance.idTeacher;
-      this.nomMension = this.seance.idEmplois.idClasse.idFiliere!;
-      this.nomModule = this.seance.idModule
-    
-    });
-  }
 
    // -----------------------------------load all enseignants
    load_enseignants(){
@@ -105,12 +81,6 @@ export class DerEditSeanceComponent implements OnInit{
     })
   }
 
-  // ----------------------load class-room
-  load_classe(){
-    this.classService.getAllCurrentClassOfYear(this.admin.idAdministra!).subscribe(data =>{
-      this.classes = data;
-    })
-  }
   // --------------------------load salle
   load_salles(){
     this.salleService.getAll_non_occuper().subscribe(data =>{
@@ -121,19 +91,43 @@ export class DerEditSeanceComponent implements OnInit{
 
   updat_seance(){
     const formData = this.form_seance?.value;
-      const idModule: Module = this.modules.find(mod => mod.id == +formData.idModule)!;
-      const idEmploi: Emplois = this.seance.idEmplois;
-      const idTeacher: Teacher = this.enseignants.find(t => t.idEnseignant == +formData.idTeacher)!;
-      const idSalle: Salles = this.salles.find(s => s.id == +formData.idSalle)!;
+    const { noteModule, ...idModuleWithoutNoteModule } = this.journee.idEmplois.idModule;
+    const tchr : Teacher = this.journee.idTeacher
+    this.journee.idEmplois.idModule = { ...idModuleWithoutNoteModule };
+      const idEmploi = this.journee.idEmplois;
+      const idTeacher : Teacher = formData.idTeacher != '' ? this.enseignants.find(t => t.idEnseignant == +formData.idTeacher)! : this.journee.idTeacher;
+      const idSalle  = formData.idSalle != '' ?  this.salles.find(s => s.id == +formData.idSalle)! : this.journee.idSalle;
+      const seanceType = formData.seanceType != '' ? formData.seanceType : this.journee.seanceType;
+      const {desable,...newTeacher} = idTeacher
+      console.log(newTeacher, "newTeacher")
 
-      const seance: Seances = {
-        id: formData.id,
+      const enseignant = { 
+        idEnseignant: idTeacher.idEnseignant, 
+        nom: idTeacher.nom, 
+        prenom: idTeacher.prenom, 
+        email: idTeacher.email, 
+        dateNaissance: idTeacher.dateNaissance, 
+        sexe: idTeacher.sexe,  
+        diplome: idTeacher.diplome, 
+        telephone: idTeacher.telephone, 
+        urlPhoto: idTeacher.urlPhoto, 
+        status: idTeacher.status,
+        admin: idTeacher.admin
+      }
+      // const sall ={
+      //   id: this.journee.idSalle.id,
+      //   nom: idSalle.nom,
+      //   nombrePlace: idSalle.nombrePlace,
+      // }
+      const seance: Journee = {
+        id: this.journee.id,
         heureDebut: formData.heureDebut,
         heureFin: formData.heureFin,
-        date: formData.date,
+        date: this.journee.date,
         idEmplois: idEmploi,
-        idModule: idModule,
-        // idTeacher: idTeacher,
+        idTeacher: enseignant,
+        idSalle: idSalle,
+        seanceType: seanceType,
         // idClasse: idEmploi.idClasse
         
       }
@@ -143,7 +137,7 @@ export class DerEditSeanceComponent implements OnInit{
           this.seanceService.update(seance).subscribe({
           next : (resp) =>{
            this.pageTitle.showSuccessToast(resp.message)
-           window.history.back();
+            this.closeUpdate.emit()
             
           },
           error : (erreur) => {
@@ -155,30 +149,9 @@ export class DerEditSeanceComponent implements OnInit{
 
   // ------------select mention
   onSelect(event : any){
-    this.idUrl = event.target.value;
-    
-    this.emploisService.getEmploisByClasse2(this.idUrl).subscribe(data  =>{
-      this.emplois = data;
-      const dateDebut = this.emplois.dateDebut;
-      const dateFin = this.emplois.dateFin;
-
-      // this.datesWithDaysTest = this.emploisService.getDaysBetweenDatesTest(dateDebut, dateFin)
-      this.datesWithDays = this.emploisService.getDaysBetweenDates(dateDebut, dateFin)
-      this.datesWithDays.sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-      
-      this.loadModulesByClass(this.idUrl)
-    })
+  
   }
 
-  // ------------ modules of classe
-  loadModulesByClass(idClasse: number) : void{
-     this.classService.getAllModules(idClasse).subscribe((data: Module[]) => {
-      this.modules = data;
-      // console.log(this.modules,"modules");
-    //  });
-      })
-     
-  }
 
   // ----------------------------get automatic date 
   getSeance_date(){
@@ -193,7 +166,7 @@ export class DerEditSeanceComponent implements OnInit{
 
   }
 
-  goBack(){
-    window.history.back();
+  closeModal(){
+    this.closeUpdate.emit()
   }
 }

@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { finalize, Observable } from 'rxjs';
-import { Seances} from '../../../Admin/Models/Seances';
+import { Seances} from '../Models/Seances';
 import { Response_String } from '../../../Admin/Models/Response_String';
-import { Journee } from '../../../Admin/Models/Configure_seance';
+import { Journee } from '../Models/Configure_seance';
 import { teacherConfigureDto } from '../../../Admin/Models/Teachers';
 import { environment } from '../../../../environments/environment';
 import { LoaderService } from '../../../Services/loader.service';
@@ -36,11 +36,11 @@ export class SeancService {
   }
   // ---------------------------------------delete seance 
   delete(id: number): Observable<Response_String>{
-    return this.http.delete<Response_String>(this.baseUrl + 'delete/' + id);
+    return this.http.delete<Response_String>(this.baseUrl + 'delete-journee-by-id/' + id);
   }
   //update seance method 
-  update(seance: Seances) : Observable<Response_String>{
-    return this.http.put<Response_String>(this.baseUrl+"update", seance);
+  update(seance: Journee) : Observable<Response_String>{
+    return this.http.put<Response_String>(this.baseUrl+"update-seance", seance);
   }
 
   getSeance_byId(idSeance: number) : Observable<any>{

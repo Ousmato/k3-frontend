@@ -1,8 +1,15 @@
 <main id="idTable">
+  <div class="head">
+    <div (click)="goBack()" class="back-button">
+        <fa-icon [icon]="icons.back"></fa-icon>
+    </div>
+  <app-der-edit-seance *ngIf="journeeSelect != null" [journee]="journeeSelect" (closeUpdate)="exit()"></app-der-edit-seance>
 
-  <div id="back" (click)="goBack()" class="back-button">
-    <fa-icon [icon]="icons.back"></fa-icon>
-  </div>
+    <div class="classe-name">
+        <p>Classe : {{share_methode.abrevigateNiveauName(emplois!.idClasse.idFiliere?.idNiveau?.nom!)}}-{{share_methode.abreviateFiliereName(emplois!.idClasse.idFiliere?.idFiliere?.nomFiliere!)}} {{share_methode.extractAnnee(emplois!.idClasse.idAnneeScolaire!)}}-{{share_methode.extractAnnee(emplois!.idClasse.idAnneeScolaire!) + 1}}</p>
+    </div>
+
+</div>
 
   <section class="section-head">
 
@@ -19,8 +26,8 @@
     <div id="idContent" class="btn-contenaire">
       <div class="child-1">
 
-        <button *ngIf="permission" (click)="imprimer()" class="btn btn-valid-emplois" type="button"><fa-icon
-            [icon]="icons.pdf" class="pdf-icon"></fa-icon> Imprimer</button>
+        <button *ngIf="permission" (click)="exportToExcel()" class="btn btn-valid-emplois" type="button"><fa-icon
+            [icon]="icons.download"></fa-icon> Exporter</button>
         <button *ngIf="permission" (click)="to_show_button()" class="btn btn-valid-emplois" type="button"><fa-icon
             [icon]="icons.edit"></fa-icon> Editer</button>
 
@@ -29,7 +36,7 @@
             [icon]="icons.user"></fa-icon>
           Groupe</button>
         <button class="btn btn-show-form" *ngIf="scolarite || permission || secretaire" type="button"
-          (click)="to_configure()"><fa-icon [icon]="icons.setting"></fa-icon> Configurer</button>
+          (click)="to_configure()"><fa-icon [icon]="icons.setting"></fa-icon> Séance</button>
       </div>
 
 
@@ -39,14 +46,14 @@
 
   <div class="entete-content">
     <div class="children">
-      <h4>FILIERE : {{sharedMethodClasse.abreviateFiliereName(emplois?.idClasse?.idFiliere?.idFiliere?.nomFiliere!)}}
+      <h4>FILIERE : {{share_methode.abreviateFiliereName(emplois?.idClasse?.idFiliere?.idFiliere?.nomFiliere!)}}
       </h4>
     </div>
     <div class="children">
-      <h4>NIVEAU : {{emplois?.idClasse?.idFiliere?.idNiveau?.nom}}-{{emplois?.idSemestre?.nomSemetre}}</h4>
+      <h4>NIVEAU : {{share_methode.abrevigateNiveauName(emplois?.idClasse?.idFiliere?.idNiveau?.nom!)}}-{{emplois?.idSemestre?.nomSemetre}}</h4>
     </div>
     <div class="children">
-      <h4>Annee : {{formattedDate}}</h4>
+      <h4>Annee : {{emplois_shared.getMonth()}}</h4>
     </div>
     <!-- <div class="children">
       @for (salle of listSalle; track $index) {
@@ -78,8 +85,8 @@
 
     </div>
   </div>
-  <section class="content">
 
+  <section class="content">
     <!-- ------------------------------------------------------ -->
     <div class="section-table">
       <table class="table table-bordered" id="table">
@@ -88,7 +95,19 @@
             <th class="horai">Horaires</th>
             <!-- En-tête des jours -->
             <ng-container *ngFor="let dateInfo of datesWithDays">
-              <th scope="col">{{ dateInfo.dateDay }}</th>
+              <th scope="col">{{ dateInfo.dateDay }}
+                <div class="childre-2">
+
+                  <div class="btn-cont" *ngIf="is_show_button">
+                    <button (click)="show_comfirme_delete(dateInfo.date)" type="button">
+                      <fa-icon [icon]="icons.delete" [ngStyle]="{ color: 'red' }" class="icon"></fa-icon>
+                    </button>
+                    <button (click)="show_update_seance(dateInfo.date)">
+                      <fa-icon [icon]="icons.edit" class="icon"></fa-icon>
+                    </button>
+                  </div>
+                </div>
+              </th>
             </ng-container>
           </tr>
         </thead>
@@ -107,7 +126,7 @@
                   <ng-container *ngFor="let seance of test">
                     <!-- <p *ngIf="dateInfo.day.toLowerCase() == getDayFromDate(seance.date?.toString()!)">{{dateInfo.date}}</p> -->
                     <ng-container
-                      *ngIf="dateInfo.day.toLowerCase() === getDayFromDate(seance.date?.toString()!) && seance.plageHoraire?.includes(timeSlot)">
+                      *ngIf="dateInfo.day.toLowerCase() === emplois_shared.getDayFromDate(seance.date?.toString()!) && seance.plageHoraire?.includes(timeSlot)">
 
                       <div class="seance-content">
                         <div class="childre-1">
@@ -128,33 +147,13 @@
                           {{seance.nomTeacher.charAt(0).toUpperCase()}}. {{seance.prenomTeacher}}
 
                             }
-                          <!-- @for (jour of journee; track $index) {
-                              @if ($index == 0) {
-                                @for (gp of jour.groupes; track $index) {
-                                  {{gp.nom}} 
-                                  
-                                }
-                            }
-                          } -->
-                          <!-- {{seance.groupe ? seance.groupe : ""}} <br> -->
-                          <!-- {{seance.idParticipant}} <br>
-                                  {{seance.nomTeacher}} -->
                           }@else {
                           {{seance.nomTeacher.charAt(0).toUpperCase()}}. {{seance.prenomTeacher}}
 
                           }
                           }
                         </div>
-                        <div class="childre-2">
-                          <div class="btn-cont" *ngIf="is_show_button">
-                            <button (click)="show_comfirme_delete(seance.heureDebut!, seance.heureFin!)" type="button">
-                              <fa-icon [icon]="icons.delete" [ngStyle]="{ color: 'red' }" class="icon"></fa-icon>
-                            </button>
-                            <button (click)="show_update_seance(seance.id)">
-                              <fa-icon [icon]="icons.edit" class="icon"></fa-icon>
-                            </button>
-                          </div>
-                        </div>
+                       
 
                       </div>
                     </ng-container>
@@ -197,9 +196,15 @@
 
           </div>
           }
+          
+          <div class="salle-row" *ngIf="teacherConf.length == 0">
+            <p class="group" (click)="goToListStudent(emplois?.idClasse?.id!, emplois?.id!)">Toute la classe</p>
+            
+
+          </div>
         </div>
         <div class="signature">
-          <p>Ségou le, {{getCurrentDate()}}<br>
+          <p>Ségou le, {{student_shared.getCurrentDate()}}<br>
             Le chéf de Département
           </p>
           <p>Dr {{admin.nom.charAt(0).toLocaleUpperCase()}} {{admin.prenom.toLocaleUpperCase()}}<br>
@@ -217,19 +222,22 @@
 
   <!-- --------------------------------------- -->
 
-  <div class="overlay" *ngIf="selected_seance_heure_fin" (click)="preventClick($event)"></div>
   <div class="overlay" *ngIf="is_show_configure"></div>
   <div class="overlay" *ngIf="choisir_group"></div>
-  <div class="overlay" *ngIf="deleted_modal" (click)="preventClick($event)"></div>
 
   <div class="views delete-modal" *ngIf="deleted_modal">
     <h4>Confirmation de suppression</h4>
-    <div class="content">
-      <p>Êtes-vous sûr de vouloir supprimer cet élément ?</p>
+    <div class="views-content">
+      <div class="content">
+        <p>Êtes-vous sûr de vouloir supprimer cette séance pour cette date : {{hasDeleted.date}} ?</p>
+      </div>
+      <div class="button-cash">
+        <a (click)="close_delete_modal()"><span>Annuler</span></a>
+        <a class="submit" (click)="deleted(hasDeleted)"><span>Confirmer</span></a>
+      </div>
     </div>
-    <div class="button-cash">
-      <a (click)="close_delete_modal()"><span>Annuler</span></a>
-      <button class="submit" (click)="deleted(hasDeleted)"><span>Confirmer</span></button>
-    </div>
+    
   </div>
+  <div class="overlay" *ngIf="journeeSelect != null"></div>
+
 </main>
