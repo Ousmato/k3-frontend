@@ -19,51 +19,7 @@
               </a>
             </li>
           </div>
-          <!-- <li class="menu-link">
-            <a routerLink="/sidebar/enseignants" routerLinkActive="active">
-              <span><fa-icon [icon]="icons.users"></fa-icon>Enseignants</span>
-            </a>
-          </li> -->
-          <!-- <li class="menu-link">
-            <div (click)="toggleSubMenuEnseignant()">
-              <a><span><fa-icon [icon]="icons.users"></fa-icon>Enseignants<fa-icon [icon]="isSubMenuOpen.enseignants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
-                    
-              </a>
-            </div>
-            <ul class="sub-menu" *ngIf="isSubMenuOpen.enseignants">
-              <li><a routerLink="/sidebar/enseignants" routerLinkActive="active">La liste</a></li>
-              <li><a routerLink="/sidebar/list-presence" routerLinkActive="active">Les emplois du temps</a></li>
-              <li><a routerLink="/sidebar/archive" routerLinkActive="active">Les présences du mois</a></li>
-              <li><a routerLink="/sidebar/paiement" routerLinkActive="active">Les fiches de paie</a></li>
-            
-            </ul>
-          </li> -->
-          <!-- <li class="menu-link">
-            <div (click)="toggleSubMenuStudent()">
-              <a> <span><fa-icon [icon]="icons.grade"></fa-icon>Etudiants<fa-icon [icon]="isSubMenuOpen.etudiants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
-              </a>
-            </div>
-            <ul class="sub-menu" *ngIf="isSubMenuOpen.etudiants">
-              <li><a routerLink="/sidebar/etudiant" routerLinkActive="active">Liste des Etudiants</a></li>
-              <li><a routerLink="/sidebar/inscription" routerLinkActive="active">Fiche d'inscription</a></li>
-            </ul>
-          </li> -->
-          <!-- <li class="menu-link">
-            <a  routerLink="/sidebar/etudiants"   routerLinkActive="active">
-              <span><fa-icon [icon]="icons.grade"></fa-icon>Etudiants</span>
-            </a>
-          </li> -->
-          <!-- <li class="menu-link">
-            <a routerLink="/sidebar/classe" routerLinkActive="active">
-              <span><fa-icon [icon]="icons.scool"></fa-icon>Classes</span>
-            </a>
-          </li> -->
-          <!-- <li class="menu-link">
-            <a routerLink="/sidebar/inscription" routerLinkActive="active">
-              <span><fa-icon [icon]="icons.scool"></fa-icon>Inscription</span>
-            </a>
-          </li> -->
-
+          <!-- ---------------- -->
           <li class="menu-link">
             <a routerLink="/sidebar/roles" routerLinkActive="active">
               <span><fa-icon [icon]="icons.userCheck"></fa-icon>Roles</span>
@@ -72,19 +28,9 @@
 
           <li class="menu-link">
             <a routerLink="/sidebar/admin-list" routerLinkActive="active">
-              <span><fa-icon [icon]="icons.user_surveillance"></fa-icon>Administrateurs</span>
+              <span><fa-icon [icon]="icons.user_surveillance"></fa-icon>Postes</span>
             </a>
           </li>
-
-          <!-- <li class="menu-link">
-            <a routerLink="/sidebar/parametre" routerLinkActive="active">
-              <span><fa-icon [icon]="icons.user_surveillance"></fa-icon>Paramettre</span>
-            </a>
-          </li> -->
-         
-
-
-
 
         </ul>
         <ul id="components">
@@ -108,35 +54,7 @@
 
     <!-- Page Content -->
     <div id="content">
-      <div class="nav-content">
-        <div class="btn-contenair">
-          <button type="button" class="btn btn-info" (click)="toggleSidebar()">
-            <fa-icon [icon]="icons.menu"></fa-icon>
-
-          </button>
-          <h6>{{title.toUpperCase()}}</h6>
-        </div>
-
-        <div class="title-page">
-
-        </div>
-
-        <div class="item-image">
-          <div class="icon-new-content" (click)="toNotifications()">
-            <fa-icon [icon]="icons.bell" class="icon-new"></fa-icon>
-            <span class="badge-new">5</span>
-          </div>
-          <img [src]="dataAdmin.urlPhoto" (error)="onError($event)" alt="">
-          <div class="name-content">
-            <span>{{dataAdmin.nom.charAt(0)}}. {{dataAdmin.prenom.toUpperCase()}}</span>
-            <span class="text-muted small">{{abreviateName(dataAdmin.idRole.nom)}}</span>
-            <!-- <fa-icon [icon]="show_admin ? icons.sortUp : icons.sortDown" class="my-custom-style"></fa-icon> -->
-
-          </div>
-
-        </div>
-
-      </div>
+      <app-header [sidbar]="sidebar"></app-header>
       <div >
         <main>
           <!-- <div> -->

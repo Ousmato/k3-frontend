@@ -6,7 +6,6 @@ import { Teacher } from '../Admin/Models/Teachers';
 import { Router } from '@angular/router';
 import { IconsService } from '../Services/icons.service';
 import { ToastrService } from 'ngx-toastr';
-import { SideBarService } from '../sidebar/side-bar.service';
 import { environment } from '../../environments/environment';
 
 @Component({
@@ -22,10 +21,11 @@ export class LoginComponent implements OnInit {
   invalid : boolean = false
   errorMessage: any;
   urlLogo = ""
+  urlAssetsImage = environment.urlAssetsImage;
 
 
   constructor(private authService: AuthServiceService, public icons:IconsService, private toastr: ToastrService,
-    private formBuilder: FormBuilder, private route: Router, private sidbarService: SideBarService) { } 
+    private formBuilder: FormBuilder, private route: Router) { } 
 
   ngOnInit() {
     this.urlLogo = environment.assetUrlLogo,

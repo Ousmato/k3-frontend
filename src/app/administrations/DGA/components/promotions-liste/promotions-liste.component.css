@@ -1,0 +1,72 @@
+main{
+    width: 100%;
+    height: 80vh;
+}
+
+.pro-list-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+.pro-list-header button{
+    color: var(--secondary);
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    background-color: var(--primary);
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+}
+
+.pro-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espacement entre les éléments */
+    padding: 20px;
+    border-radius: 8px;
+    overflow-y: auto;
+    height: 90%;
+   
+  }
+
+  .pro-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    background-color: #ffffff; /* Fond blanc */
+    border: 1px solid #e0e0e0; /* Bordure subtile */
+    border-radius: 6px;
+    transition: all 0.3s ease; /* Transition pour les effets */
+    cursor: pointer;
+  }
+
+  .pro-list-item:hover {
+    background-color: #f0f8ff; /* Couleur de fond au survol */
+    border-color: var(--primary); /* Bordure bleue au survol */
+    box-shadow: 0 4px 8px rgba(1, 45, 92, 0.2); /* Ombre plus prononcée */
+  }
+  p{
+    margin: 0;
+  }
+  fa-icon{
+    color: var(--primary);
+    &:hover{
+        color: var(--secondary);
+    }
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 2;
+    /* Assurez-vous que l'overlay est au-dessus de tout */
+  }

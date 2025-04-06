@@ -5,6 +5,7 @@ import { IconsService } from '../../../Services/icons.service';
 import { SchoolInfo } from '../../Models/School-info';
 import { SchoolService } from '../../../Services/school.service';
 import { Router } from '@angular/router';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-settings',
@@ -19,7 +20,7 @@ export class SettingsComponent implements OnInit {
 
   addUe!: FormGroup;
 
-
+  urlAsset = environment.urlAssetsImage
   isshow_school_detail: boolean = false
   isshow_school_update: boolean = false
   isOverlay : boolean = false

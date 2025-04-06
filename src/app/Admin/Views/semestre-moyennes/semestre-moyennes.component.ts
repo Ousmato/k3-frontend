@@ -9,6 +9,9 @@ import { EtudeService } from '../Etudiants/etude.service';
 import { Admin } from '../../Models/Admin';
 import { AdminUSER } from '../../Models/Auth';
 import { EventServiceService } from '../../../Services/event-service.service';
+import { utils } from '../../../administrations/shared/utils/utils';
+import { ClassStudentService } from '../../../DGA/class-students/class-student.service';
+import { ClassRoom } from '../../Models/Classe';
 
 @Component({
   selector: 'app-semestre-moyennes',
@@ -23,10 +26,12 @@ export class SemestreMoyennesComponent implements OnInit, OnDestroy {
   searchTerm: string =""
   listIds: number[] = [];
   admin!: Admin;
+  classe!: ClassRoom
+  classeNames!: string
   semestreMoyennes: InscriptionNoteDto[] = [];
   semestreMoyennesFiltered: InscriptionNoteDto[] = [];
-  constructor(public icons: IconsService,
-    public sharedMethode: Class_shared, private eventService: EventServiceService,
+  constructor(public icons: IconsService, public util: utils, private classeService: ClassStudentService,
+    public sharedMethode: Class_shared, private eventService: EventServiceService, private studentService: EtudeService,
     private sideBarService: SideBarService, private noteService: NoteService, private root: ActivatedRoute) { }
   ngOnInit(): void {
     this.admin = AdminUSER()?.scolarite;
@@ -48,6 +53,12 @@ ngOnDestroy(): void {
    getAllSemestreMoyens(){
     this.root.queryParams.subscribe(params => {
       this.idClasse = +params['id'];
+      this.classeService.getClassById(this.idClasse).subscribe(classe => {
+        this.classe = classe
+        this.classeNames = `${classe.idFiliere?.idNiveau.nom} ${this.util.abrevigate(classe.idFiliere?.idFiliere.nomFiliere!)}`
+
+       
+      })
       this.idAnnee = +params['idAnnee'];
       this.noteService.getAllSemestreMoyen(this.idClasse).subscribe(res =>{
         this.semestreMoyennes =  res
@@ -70,26 +81,34 @@ ngOnDestroy(): void {
 
   getObservation(inscrit: any): string {
     // Récupérer les données pour S1 et S2
-    const s1 = inscrit.ueValidate.find((item: any) => item.nomSemestre.includes('S1'));
-    const s2 = inscrit.ueValidate.find((item: any) => item.nomSemestre.includes('S2'));
+    const semestres = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6'];
+
+        // Récupérer les données pour chaque semestre
+        const semestresData = semestres.map(sem => 
+            inscrit.ueValidate.find((item: any) => item.nomSemestre.includes(sem))
+            
+        );
+
+    // const s1 = inscrit.ueValidate.find((item: any) => item.nomSemestre.includes('S1'));
+    // const s2 = inscrit.ueValidate.find((item: any) => item.nomSemestre.includes('S2'));
   
     // Vérifier si les deux semestres ont une moyenne supérieure à 10
-    if (s1?.moyenSemestre > 10 && s2?.moyenSemestre > 10) {
-      if(!this.listIds.some(i => i == inscrit.id)){
-      // console.log(inscrit.id, "id inscrit")
-        this.listIds.push(inscrit.id);
-      }
+    if (semestresData[0]?.moyenSemestre > 10 && semestresData[1]?.moyenSemestre > 10) {
+      // if(!this.listIds.some(i => i == inscrit.id)){
+      // // console.log(inscrit.id, "id inscrit")
+      //   this.listIds.push(inscrit.id);
+      // }
       return 'Admis';      
 
     }
   
     // Vérifier si un des semestres a une moyenne inférieure à 10
-    if (s1?.moyenSemestre < 10 || s2?.moyenSemestre < 10) {
-      const semestreEnEchec = s1?.moyenSemestre < 10 ? s1 : s2;
+    if (semestresData[0]?.moyenSemestre < 10 || semestresData[1]?.moyenSemestre < 10) {
+      const semestreEnEchec = semestresData[0]?.moyenSemestre < 10 ? semestresData[1] : semestresData[1];
   
       // Vérifier si le pourcentage d'UE validées est supérieur à 75%
       if (semestreEnEchec?.percentUeSemestre > 75) {
-        return 'Ajourné avec crédit';
+        return 'Admin avec crédit';
       } else {
         return 'Ajourné';
       }
@@ -99,15 +118,29 @@ ngOnDestroy(): void {
     return '';
   }
 
+  isChecked(idInscrit: number): boolean {
+    return this.listIds.some(i => i == idInscrit);
+  }
+
+  onChecked(idInscrit: number){
+    if(!this.listIds.some(i => i == idInscrit)){
+      this.listIds.push(idInscrit);
+    }
+    else{
+      this.listIds = this.listIds.filter(i => i != idInscrit);
+    }
+    console.log(this.listIds, "list ids")
+  }
+
   // reinscription
   reInscritption(){
     this.isConfirm = true;
     console.log(this.listIds, "reinscription")
-    // this.studentService.reInscriptionStudent(this.listIds, this.idClasse, this.admin.idAdministra!).subscribe(res => {
-    //   console.log(res, "reinscription")
-    //   this.listIds = [];
-    //   // this.getAllSemestreMoyens();
-    // })
+    this.studentService.reInscriptionStudent(this.listIds, this.idClasse, this.admin.idAdministra!).subscribe(res => {
+      console.log(res, "reinscription")
+      this.listIds = [];
+      // this.getAllSemestreMoyens();
+    })
   }
 
   closeModale(){

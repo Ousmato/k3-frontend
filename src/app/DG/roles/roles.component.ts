@@ -8,6 +8,7 @@ import { PageTitleService } from '../../Services/page-title.service';
 import { SideBarService } from '../../sidebar/side-bar.service';
 import { TypeFilieres } from '../../Admin/Models/Filieres';
 import { of } from 'rxjs';
+import { utils } from '../../administrations/shared/utils/utils';
 
 @Component({
   selector: 'app-roles',
@@ -29,7 +30,7 @@ export class RolesComponent  implements OnInit{
   typeFilieresOption : {key: string, value: string}[] = []
   adminDG!: Admin
 
-  constructor(private fb: FormBuilder, private pageTitle: PageTitleService, private sideBarService: SideBarService,
+  constructor(private fb: FormBuilder, private pageTitle: PageTitleService, private sideBarService: SideBarService, public utils: utils,
     private adminService: AdminService, public icons: IconsService){}
 
   ngOnInit(): void {
@@ -50,6 +51,7 @@ export class RolesComponent  implements OnInit{
   // load form add
   loadForm(){
     this.addForm = this.fb.group({
+      idAdminDg: [this.adminDG.idAdministra, [Validators.required]],
       nom: ['', [Validators.required, Validators.maxLength(40), Validators.minLength(3)]],
       typeFiliere: ['', [Validators.required]]
     })
@@ -69,7 +71,6 @@ export class RolesComponent  implements OnInit{
   loadRoles(){
     this.adminService.getAllRoles(this.adminDG.idAdministra!).subscribe(result =>{
       this.roles = result
-      console.log(this.roles, "roles")
     })
   }
   // show add role
@@ -80,7 +81,6 @@ export class RolesComponent  implements OnInit{
   // submit form
   addRole(){
     const formData = this.addForm.value;
-    console.log(formData, "formData");
     if(this.addForm.valid){
       this.adminService.addRole(formData, this.adminDG.idAdministra!).subscribe({
         next: (res) =>{
@@ -95,7 +95,6 @@ export class RolesComponent  implements OnInit{
     }else{
       this.addForm.markAllAsTouched();
     }
-    console.log(formData, "add role")
 
   }
   filteredRoles(){
@@ -163,12 +162,6 @@ export class RolesComponent  implements OnInit{
         this.pageTitle.showErrorToast(erreur.error.message);
       }
     })
-  }
-
-  // abrevigate
-  abrevigateName(name: string){
-    const words = name.split(' ')
-    return words.filter(words => words.length > 3).map(words => words[0].toUpperCase()).join('');
   }
 
   getTypeFilieresOptions(): {key: string, value: string}[]{

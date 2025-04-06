@@ -72,7 +72,7 @@ export class EtudiantsDeLaClasseComponent implements OnInit{
       this.pages = Array.from({ length: data.totalPages! }, (_, i) => i);
 
       this.Classe = this.inscrits[0].idClasse;
-      console.log(this.inscrits, "inscrit of class")
+      console.log(this.Classe, "inscrit of class")
     });
   }
 
@@ -105,7 +105,8 @@ export class EtudiantsDeLaClasseComponent implements OnInit{
       
       if(AdminUSER()?.dg){
       this.router.navigate(['/sidebar/student-bulletin'], navigationExtrat);
-
+      }else if(AdminUSER()?.der){
+        this.router.navigate(['/der/student-bulletin'], navigationExtrat);
       }else{
       this.router.navigate(['/r-scolarite/student-bulletin'], navigationExtrat);
 

@@ -4,7 +4,7 @@
             <fa-icon [icon]="icons.back"></fa-icon>
         </div>
         <div class="classe-name">
-            <p>Classe : {{share_methode.abrevigateNiveauName(emplois[0].idClasse.idFiliere?.idNiveau?.nom!)}}-{{share_methode.abreviateFiliereName(emplois[0].idClasse.idFiliere?.idFiliere?.nomFiliere!)}} {{share_methode.extractAnnee(emplois[0].idClasse.idAnneeScolaire!)}}-{{share_methode.extractAnnee(emplois[0].idClasse.idAnneeScolaire!) + 1}}</p>
+            <p *ngIf="emplois.length > 0">Classe : {{share_methode.abrevigateNiveauName(emplois[0].idClasse.idFiliere?.idNiveau?.nom!)}}-{{share_methode.abreviateFiliereName(emplois[0].idClasse.idFiliere?.idFiliere?.nomFiliere!)}} {{share_methode.extractAnnee(emplois[0].idClasse.idAnneeScolaire!)}}-{{share_methode.extractAnnee(emplois[0].idClasse.idAnneeScolaire!) + 1}}</p>
         </div>
     </div>
     

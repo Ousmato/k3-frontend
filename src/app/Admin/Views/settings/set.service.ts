@@ -8,6 +8,7 @@ import { AddUeDto, Ue } from '../../Models/UE';
 import { Module } from '../../Models/Module';
 import { Semestres } from '../../Models/Semestre';
 import { Response_String } from '../../Models/Response_String';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ import { Response_String } from '../../Models/Response_String';
 export class SetService {
 
   constructor(private http: HttpClient) { }
-  private baseUrl = 'http://localhost:8080/';
+  private baseUrl = environment.apiUrl; // Replace with your API URL
 
  
   createFiliere(filiere: Filiere): Observable<Response_String> {

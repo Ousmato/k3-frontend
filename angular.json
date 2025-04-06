@@ -65,7 +65,8 @@
                   "maximumError": "5kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "baseHref": "/gestion/"
             },
             "development": {
               "optimization": false,

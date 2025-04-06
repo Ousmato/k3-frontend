@@ -140,7 +140,7 @@ createChart(statistic: any): void {
   this.myChart = new Chart('myChart', {
     type: 'pie',
     data: {
-      labels: ['Payer', 'Non Payer', 'Avec Dette'],
+      labels: ['Payé', 'Non Payé', 'Avec Réliquat'],
       datasets: [{
         label: 'Pourcentage de Paiement ',
         // Utiliser des valeurs numériques sans le symbole %

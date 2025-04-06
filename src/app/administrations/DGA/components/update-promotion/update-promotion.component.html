@@ -1,0 +1,40 @@
+<main>
+    <div class="views">
+        <h3 class="span">Modifier promotion</h3>
+         <form  [formGroup]="form" (ngSubmit)="update_promotion()">
+            <div class="container-views">
+                <!-- <div class="form-group">
+                    <label for="">Promotion :</label>
+                    <select  class="form-select"  (change)="onChange($event)">
+                        <option  selected disabled value="">Choisir La promotion</option>
+                        
+                        <option  *ngFor="let an of promotions" [value]="an.id">Promotion {{an.ans}}</option>
+                    </select>
+                    
+                </div> -->
+                <div class="form-group">
+                    <label for="">Début d'année :</label>
+                    <input type="number" formControlName="id" *ngIf="false">
+                    <input type="date" class="form-control" formControlName="debutAnnee" [class.is-invalid]="form.get('debutAnnee')!.invalid && form.get('debutAnnee')!.touched">
+                    <span *ngIf="form.controls['debutAnnee'].hasError('required') && form.controls['debutAnnee'].touched"
+                        [ngStyle]="{color: 'red'}">
+                        Champ obligatoire*
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label >Fin d'année :</label>
+                    <input type="date" class="form-control" formControlName="finAnnee" [class.is-invalid]="form.get('finAnnee')!.invalid && form.get('finAnnee')!.touched">
+                    <span *ngIf="form.controls['finAnnee'].hasError('required') && form.controls['finAnnee'].touched"
+                        [ngStyle]="{color: 'red'}">
+                        Champ obligatoire*
+                    </span>
+                </div>
+                <div class="button-cash">
+                    <a (click)="close_update()" class="submit" ><span>Annuler</span></a>
+                    <button class="submit" type="submit" ><span>Enregistre</span></button>
+                </div>
+            </div>
+            
+        </form>
+    </div>
+</main>

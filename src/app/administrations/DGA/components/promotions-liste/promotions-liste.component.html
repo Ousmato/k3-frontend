@@ -1,0 +1,30 @@
+<main>
+    <div class="pro-list-header">
+        <button (click)="showAddModalAdd()">Ajouter promotion</button>
+        <app-search-bar (search)="onSearch($event)"></app-search-bar>
+    </div>
+    <app-add-promotion *ngIf="Ishow_add" (closeModal)="closeModal()" (closeModalAfterSuccess)="afterSuccess()"></app-add-promotion>
+
+    <div class="pro-list-container">
+        @if (filteredItems.length > 0) {
+            <div class="pro-list-item" *ngFor="let promotion of filteredItems; let i = index" >
+                <div class="left-child">
+                    <p> Promotion {{utils.extractAnnee(promotion)}}-{{utils.extractAnnee(promotion) + 1}}</p>
+                    <span class="small"> Du {{promotion.debutAnnee}} au {{promotion.finAnnee}}</span>
+                </div>
+                <div class="right-child">
+                    <a title="Modifier les dates" (click)="showAddModalUpdate(i)"> <fa-icon [icon]="icons.edit"></fa-icon></a>
+                    <a title="Desactiver la promotion" (click)="showAddModalConfirm(i)"> <fa-icon [icon]="icons.desactive"></fa-icon></a>
+                <app-update-promotion *ngIf="ishow_update && i == indexSelected" [promotion]="promotion" (closeModal)="closeModal()" (closeModalAfterSuccess)="afterSuccess()"></app-update-promotion>
+                <app-confirmation-modal *ngIf="isconfirmed && i == indexSelected" [confirmationObjet]="(promotion.id)" (closeModal)="closeModal()" [confirmationMessage]="confirmationMessage + ' ' + utils.extractAnnee(promotion) + '-' + (utils.extractAnnee(promotion) + 1)"></app-confirmation-modal>
+
+                    <!-- <p> Promotions {{utils.extractAnnee(promotion)}}-{{utils.extractAnnee(promotion) + 1}}</p> -->
+                </div>
+            </div>
+        }@else {
+            <p class="text-center">Aucune promotion trouvée.</p>
+        }
+        
+    </div>
+    <div class="overlay" *ngIf="ishow_update || Ishow_add"></div>
+</main>

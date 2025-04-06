@@ -95,6 +95,12 @@ import { StudentStatistiqueComponent } from './Admin/Views/Etudiants/student-sta
 import { StatistiqueSudentsValuesComponent } from './Admin/Views/Etudiants/statistique-sudents-values/statistique-sudents-values.component';
 import { AllNotesSemestreComponent } from './Admin/Views/Etudiants/all-notes-semestre/all-notes-semestre.component';
 import { StudentGroupListComponent } from './Admin/Views/Etudiants/student-group-list/student-group-list.component';
+import { PromotionsListeComponent } from './administrations/DGA/components/promotions-liste/promotions-liste.component';
+import { SearchBarComponent } from './administrations/shared/component/search-bar/search-bar.component';
+import { AddPromotionComponent } from './administrations/DGA/components/add-promotion/add-promotion.component';
+import { UpdatePromotionComponent } from './administrations/DGA/components/update-promotion/update-promotion.component';
+import { ConfirmationModalComponent } from './administrations/shared/component/confirmation-modal/confirmation-modal.component';
+import { HeaderComponent } from './administrations/shared/component/header/header.component';
 registerLocaleData(localeFr);
 @NgModule({
   declarations: [
@@ -163,7 +169,7 @@ registerLocaleData(localeFr);
     StudentPaiementRapportComponent,
     StudentStatistiqueComponent,
     StatistiqueSudentsValuesComponent,
-    SoutenanceNoteComponent, StudentGroupListComponent, AdminListComponent, MyAccuntComponent, ForgotPasswordComponent, ResetPasswordComponent, SetNewPasswordComponent, SessionExpiredModalComponent, NotificationComponent, RolesComponent, StudentSuivisComponent, StudentDetailsComponent, SpecialitesComponent, EditComponent, AddTeacherSpecialitesComponent, ImportEnseignantComponent, SemestreMoyennesComponent
+    SoutenanceNoteComponent, StudentGroupListComponent, AdminListComponent, MyAccuntComponent, ForgotPasswordComponent, ResetPasswordComponent, SetNewPasswordComponent, SessionExpiredModalComponent, NotificationComponent, RolesComponent, StudentSuivisComponent, StudentDetailsComponent, SpecialitesComponent, EditComponent, AddTeacherSpecialitesComponent, ImportEnseignantComponent, SemestreMoyennesComponent, PromotionsListeComponent, SearchBarComponent, AddPromotionComponent, UpdatePromotionComponent, ConfirmationModalComponent, HeaderComponent
   ],
   imports: [
     BrowserModule,

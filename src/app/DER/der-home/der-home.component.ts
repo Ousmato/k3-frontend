@@ -11,6 +11,7 @@ import { ClassRoom } from '../../Admin/Models/Classe';
 import { SideBarService } from '../../sidebar/side-bar.service';
 import { Admin } from '../../Admin/Models/Admin';
 import { AdminUSER } from '../../Admin/Models/Auth';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-der-home',
@@ -19,6 +20,7 @@ import { AdminUSER } from '../../Admin/Models/Auth';
 })
 export class DerHomeComponent  implements OnInit{
 
+  urlAsset = environment.urlAssetsImage
   teacherCount: number = 0;
   studentNumber_noInscrit: number = 0;
   salle: number = 0

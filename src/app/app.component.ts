@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EventServiceService } from './Services/event-service.service';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,7 @@ import { EventServiceService } from './Services/event-service.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent  implements OnInit {
+  urlLogo = environment.assetUrlLogo;
   title = 'Gestion-scolaire';
   showModal = false;
   alertModal = false;

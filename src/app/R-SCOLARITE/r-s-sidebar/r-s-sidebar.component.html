@@ -59,7 +59,7 @@
         <ul class="sub-menu" *ngIf="isSubMenuVisible">
           <li><a (click)="toAccunt()" routerLink="/r-scolarite/my-accunt" routerLinkActive="active">Mon compte</a></li>
           @for (poste of postes; track $index) {
-            <li *ngFor="let p of poste.roleNames"><a (click)="switchAccuntDGA()"  routerLinkActive="active">Compte {{abrevigate(p.toString())}}</a></li>
+            <li *ngFor="let p of poste.roleNames"><a (click)="switchAccuntDGA()"  routerLinkActive="active">Compte {{utils.abrevigate(p.toString())}}</a></li>
 
           }
           <!-- <li><a routerLink="/r-scolarite/inscription" routerLinkActive="active"> Compte DER</a></li> -->
@@ -81,36 +81,7 @@
 
   <!-- Page Content -->
   <div id="content">
-    <div class="nav-content">
-      <div class="btn-contenair">
-        <button type="button" class="btn btn-info" (click)="toggleSidebar()">
-          <fa-icon [icon]="icons.menu"></fa-icon>
-
-        </button>
-        <h6>{{title.toUpperCase()}}</h6>
-      </div>
-
-      <div class="title-page">
-
-      </div>
-
-      <div class="item-image">
-        <div class="icon-new-content" (click)="toNotifications()">
-          <fa-icon [icon]="icons.bell" class="icon-new"></fa-icon>
-          <span class="badge-new">5</span>
-        </div>
-        
-        <img [src]="dataAdmin!.urlPhoto" (error)="onError($event)" alt="">
-        <div class="name-content">
-          <span>{{dataAdmin.nom.charAt(0).toUpperCase()}}. {{dataAdmin.prenom.toUpperCase()}}</span>
-          <span class="text-muted small">{{abrevigate(dataAdmin.idRole.nom)}}</span>
-          <!-- <fa-icon [icon]="show_admin ? icons.sortUp : icons.sortDown" class="my-custom-style"></fa-icon> -->
-
-        </div>
-
-      </div>
-
-    </div>
+    <app-header [sidbar]="sidebar"></app-header>
     <div id="layoutSidenav_content">
       <main>
         <div>

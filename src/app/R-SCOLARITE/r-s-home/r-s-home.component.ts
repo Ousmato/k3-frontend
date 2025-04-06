@@ -10,6 +10,7 @@ import { AnneeScolaire } from '../../Admin/Models/School-info';
 import { SchoolService } from '../../Services/school.service';
 import { InscriptionService } from '../../Services/inscription.service';
 import { StudentSharedMethods } from '../../Admin/Views/Etudiants/Utils/Student-shared-methode';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-r-s-home',
@@ -18,7 +19,7 @@ import { StudentSharedMethods } from '../../Admin/Views/Etudiants/Utils/Student-
 })
 export class RSHomeComponent implements OnInit{
 
-  
+  urlAsset = environment.urlAssetsImage
   studentNumber_inscrit: number = 0;
   studentNumber_noInscrit: number = 0;
   statistics!: any

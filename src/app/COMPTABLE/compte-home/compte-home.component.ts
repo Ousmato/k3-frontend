@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { EtudeService } from '../../Admin/Views/Etudiants/etude.service';
 import { montantsCount, Student } from '../../Admin/Models/Students';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-compte-home',
@@ -10,6 +11,7 @@ import { Router } from '@angular/router';
 })
 export class CompteHomeComponent implements OnInit {
 
+  urlAsset = environment.urlAssetsImage
   students : Student[] =[]
   montantCunt!: montantsCount
   studentNumber_inscrit= 0

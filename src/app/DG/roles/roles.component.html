@@ -29,7 +29,8 @@
                 @if(filteredRoles().length){
                     <tr *ngFor="let role of filteredRoles() let i = index">
                         <td>{{i + 1}} </td>
-                        <td>{{role.nom.toUpperCase()}} <strong>({{abrevigateName(role.nom)}} {{role.typeFiliere ? "-" +role.typeFiliere : ""}})</strong></td>
+                        
+                        <td>{{role.nom.toUpperCase()}} <strong>({{utils.abrevigate(role.nom)}} {{role.typeFiliere && role.typeFiliere !== 'AUCUN' ? "-" +role.typeFiliere : ""}})</strong></td>
                         
                         <td >
                             <span (click)="show_confirm(i)">Supprimer <fa-icon [icon]="icons.delete"></fa-icon></span>
@@ -75,6 +76,7 @@
             <form [formGroup]="addForm" (ngSubmit)="addRole()">
                 <div class="container-views">
                     <div class="form-group">
+                        <input type="number" formControlName="idAdminDg" *ngIf="false">
                         <label for="nom">Nom du role</label>
                         <input type="text" class="input-with form-control" formControlName="nom" id="nom" [class.is-invalid]="addForm.get('nom')!.invalid && addForm.get('nom')!.touched"  placeholder="Nom du role...">
                         <span *ngIf="addForm.controls['nom']!.errors?.['required'] && addForm.controls['nom'].touched" [ngStyle]="{color: 'red', 'font-size': '11px'}">

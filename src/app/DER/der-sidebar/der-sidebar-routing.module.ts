@@ -26,6 +26,7 @@ import { ImportEnseignantComponent } from '../../Admin/Views/Enseignant/import-e
 import { ViewUeComponent } from '../../Widget/ue-widget/view-ue/view-ue.component';
 import { StudentGroupListComponent } from '../../Admin/Views/Etudiants/student-group-list/student-group-list.component';
 import { EtudiantsDeLaClasseComponent } from '../../Admin/Views/Etudiants/etudiants-de-la-classe/etudiants-de-la-classe.component';
+import { StudentBulletinComponent } from '../../Admin/Component/student-bulletin/student-bulletin.component';
 
 const routes: Routes = [{path: '', component: DerSidebarComponent,
   children: [
@@ -52,6 +53,7 @@ const routes: Routes = [{path: '', component: DerSidebarComponent,
     {path: 'import', component: ImportEnseignantComponent, data:{title: "IMporter Enseignant"}},
     {path: 'view-ues', component: ViewUeComponent, data:{title: "LES UNITES D'ENSEIGNEMENT"}},
     {path: 'etudiant-de-la-classe', component: EtudiantsDeLaClasseComponent, data:{title: "Etudiants de la classe"}},
+    {path: 'student-bulletin', component: StudentBulletinComponent, data:{title: "Relever de notes"}},
 
     
     { path: 'students-class', component: ClassStudentsComponent, data:{title: "Les Classes de Formation"} },

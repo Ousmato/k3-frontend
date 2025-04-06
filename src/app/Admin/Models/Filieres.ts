@@ -14,6 +14,7 @@ export enum FiliereNiveau{
 }
 
 export enum TypeFilieres{
+    AUCUN = "AUCUN",
     GESTIONS = "GESTIONS",
     SCIENTIFIQUES = "SCIENTIFIQUES",
 }

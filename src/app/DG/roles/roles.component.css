@@ -17,7 +17,7 @@ main {
 }
 
 .table-container {
-  height: 70%;
+  height: 80%;
   position: relative;
   overflow-y: auto;
 }

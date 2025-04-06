@@ -4,34 +4,37 @@
             <div class="child-card">
                 <div class="child-card-content">
                     <div class="card-img">
-                        <img src="assets/study-group-icon.svg" alt="Logo">
+                        <fa-icon [icon]="icons.user_surveillance"></fa-icon>
+
+                        <!-- <img src="{{urlAsset}}study-group-icon.svg" alt="Logo"> -->
                     </div>
-                    <div class="card-text" (click)="toggle_toEtudiant()">
-                        <p>Nombres d'Etudiants</p>
-                        <h1>{{studentsCount}}</h1>
+                    <div class="card-text" (click)="toggle_toPostes()">
+                        <p>Les postes</p>
+                        <h1>7</h1>
                     </div>
                     
                 </div>
                 
             </div>
-            <div class="child-card" (click)="toggle_toEnseignant()">
+            <div class="child-card" (click)="toggle_toRoles()">
                 <div class="child-card-content">
                     <div class="card-img">
-                        <img  src="assets/group-icon.svg" alt="Logo">
+                        <fa-icon [icon]="icons.userCheck"></fa-icon>
+                        <!-- <img  src="{{urlAsset}}group-icon.svg" alt="Logo"> -->
                     </div>
                     <div class="card-text">
-                        <p>Nombres d'Enseignants</p>
-                        <h1>{{teachersCount}}</h1>
+                        <p>Les Roles</p>
+                        <h1>7</h1>
                     </div>
                     
                 </div>
                 
                 
             </div>
-            <div class="child-card" (click)="toggle_toClasse()">
+            <!-- <div class="child-card" (click)="toggle_toClasse()">
                 <div class="child-card-content">
                     <div class="card-img">
-                        <img src="assets/school-admission-icon.svg" alt="Logo">
+                        <img src="{{urlAsset}}school-admission-icon.svg" alt="Logo">
                     </div>
                     <div class="card-text" >
                         <p>Nombres de Classes</p>
@@ -41,86 +44,11 @@
                 </div>
                 
                 
-            </div>
+            </div> -->
            
         </div>
         <!-- -------------------------------------------------------------- -->
-        <div class="body-content">
-            <div class="child-cards">
-                <!-- <div class="child-card-content"> -->
-                    <div  id="card-img">
-                        <img id="calendar" src="assets/booking-confirmed-icon.svg" alt="Logo">
-                    </div>
-                    <div id="cart-text" class="card-text">
-                        <h5>Emplois du temps en cours</h5>
-                        <h1>{{emploisCount}}</h1>
-                    <!-- </div> -->
-                    
-                </div>
-            </div>
-                <div class="class-scrol">
-                    <ng-container *ngFor="let classe of emplois">
-                        <div class="calendar-classes-content">
-                        <p>{{classe.idClasse.idFiliere?.idNiveau?.nom}} {{abrevigateNameFiliere(classe.idClasse.idFiliere?.idFiliere?.nomFiliere!)}}</p>
-                       
-                        <progress id="file" [value]="classe.progess" max="100"></progress>
-                        
-                        <div class="date-content">
-                            <p> Debuté le : {{classe.dateDebut}}</p>
-                            <p> Prend fin le : <span id="span">{{classe.dateFin}}</span></p>
-                        </div>
-                        <div class="active-contente">
-                            <p > {{classe.toDay ? "En cours" : "En attente"}}
-                                 <fa-icon [ngStyle]="{color: classe.toDay ? 'green' : 'red'}" [icon]="icons.circle"></fa-icon>
-                            </p>
-                        </div>
-                        <div class="button-content">
-                            <button class="btn " (click)="gotoEmploi(classe.id!)"><fa-icon [icon]="icons.nexte"></fa-icon></button>
-                        </div>
-                    </div>
-                    </ng-container>
-                </div>
-            
-            <!-- <h2>Body Content</h2>
-            <p>Here you can add more detailed information, graphs, tables, etc.</p> -->
-        </div>
+        
     </div>
-    <div class="second-container" *ngIf="false">
-       
-        <section class="section-scrolable"> 
-            <h4>Evenement</h4>
-            <ng-container *ngFor="let notific of notifs">
-                 <div class="div-notification">
-                 
-                <div class="fisrt-col">
-                    <img src="" alt="Photo">
-                </div>
-                <div class="second-col">
-                    <h6>{{notific.date}}</h6>
-                    <span>{{notific.titre}}</span>
-                    <p>{{notific.description}}</p>
-                    <div class="proprio"><span>{{notific.idAdmin?.nom}} {{notific.idAdmin?.prenom}}</span></div>
-                    
-                </div>
-            </div>
-            </ng-container>
-           <ng-container *ngFor="let book of books">
-            <div class="book-name">{{ book.author_alternative_name?.join(', ') || 'Unknown' }}</div>
-           </ng-container>
-            
-           
-        </section>
-        <div class="input-content">
-            <form [formGroup]="noti_form" (ngSubmit)="add_notification()">
-                <div class="form-group">
-                    <!-- <input type="text" class="form-control"  formControlName="Object"  placeholder="Object..."> -->
-                    <input type="text" class="form-control"  formControlName="titre"  placeholder="Objet..."> 
-                    <textarea type="text" class="form-control"  formControlName="description"  placeholder="Messages..."></textarea>
-               
-                </div>
-                 <button type="submit"><img src="assets/map-direction-navigation-right-orange-icon.svg" alt="uuu"></button>
-       
-            </form>
-             </div>
-    </div>
+    
 </main>

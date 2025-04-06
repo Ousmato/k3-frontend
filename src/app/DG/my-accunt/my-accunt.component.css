@@ -120,7 +120,7 @@ img{
     width: 100px;
     border: 1px solid var(--tertiary);
     border-radius: 5px;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .img-content{

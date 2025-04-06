@@ -4,23 +4,23 @@
         <div class="top-content-body">
                
             <div class="left" >
-                <p>Nombres de paiement par status </p>
+                <p>Paiement des étudiants par status </p>
                 <div class="status-content" *ngFor="let status of statusInscrits; let i = index">
                     <span (click)="choseIndex(i)" [ngClass]="{'active' : showStatus[i]}" >{{status.status}} <fa-icon [icon]="showStatus[i] ? icons.angleUp : icons.angleDown"></fa-icon></span>
                     <div class="status-body" *ngIf="showStatus[i]">
                         <div class="content">
                             <div class="color-carre" style="background-color: green;"> </div>
-                            <p (click)="toggle_to_status_student(status.status, 1)">{{status.numbreInscit}} Payer </p>
+                            <p (click)="toggle_to_status_student(status.status, 1)">{{status.numbreInscit}} Payé </p>
                 
                         </div>
                         <div class="content" >
                             <div class="color-carre" style="background-color: red;"></div>
-                            <p (click)="toggle_to_status_student(status.status, 2)">{{status.numberNotIncrit}} Non Payer </p>
+                            <p (click)="toggle_to_status_student(status.status, 2)">{{status.numberNotIncrit}} Non Payé </p>
                 
                         </div>
                         <div class="content">
                             <div class="color-carre" style="background-color: gray;"></div>
-                            <p (click)="toggle_to_status_student(status.status, 3)">{{status.dette}} Avec Dette </p>
+                            <p (click)="toggle_to_status_student(status.status, 3)">{{status.dette}} Avec Réliquat </p>
                 
                         </div>
                     </div>
@@ -31,7 +31,7 @@
         </div>
         
         <div class="right">
-            <canvas id="myChart" width="330" height="300"></canvas>
+            <canvas id="myChart" width="340" height="300"></canvas>
             <!-- statistique circle -->
         </div>
     </div>
@@ -43,12 +43,12 @@
                 <div class="status-body" *ngIf="showFilieres[i]">
                     <div class="content">
                         <div class="color-carre" style="background-color: green;"> </div>
-                        <p (click)="toggle_to_filiere_student(filiere.idFiliere, true)">{{filiere.numbreInscrit}} Payer </p>
+                        <p (click)="toggle_to_filiere_student(filiere.idFiliere, true)">{{filiere.numbreInscrit}} Payé </p>
             
                     </div>
                     <div class="content" >
                         <div class="color-carre" style="background-color: red;"></div>
-                        <p (click)="toggle_to_filiere_student(filiere.idFiliere, false)">{{filiere.numberNotInscrit}} non Payer </p>
+                        <p (click)="toggle_to_filiere_student(filiere.idFiliere, false)">{{filiere.numberNotInscrit}} Non Payé </p>
             
                     </div>
                     

@@ -6,6 +6,7 @@ import { ServiceService } from '../../DER/EDT/Services/service.service';
 import { Emplois } from '../../DER/EDT/Models/Emplois';
 import { Admin } from '../../Admin/Models/Admin';
 import { AdminUSER } from '../../Admin/Models/Auth';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-dga-home',
@@ -13,7 +14,7 @@ import { AdminUSER } from '../../Admin/Models/Auth';
   styleUrl: './dga-home.component.css'
 })
 export class DgaHomeComponent implements OnInit{
-
+  urlAsset = environment.urlAssetsImage
   studentNumber_inscrit: number = 0;
   studentNumber_noInscrit: number = 0;
   class_Number: number = 0

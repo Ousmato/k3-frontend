@@ -74,7 +74,7 @@ p{
     width: 60px;
     border: 1px solid var(--tertiary);
     border-radius: 50%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .profil{

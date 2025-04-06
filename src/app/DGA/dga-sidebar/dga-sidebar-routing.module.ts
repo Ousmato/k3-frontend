@@ -15,6 +15,7 @@ import { ViewUeComponent } from '../../Widget/ue-widget/view-ue/view-ue.componen
 import { MyAccuntComponent } from '../../DG/my-accunt/my-accunt.component';
 import { NotificationComponent } from '../../Admin/notification/notification.component';
 import { AllNotesSemestreComponent } from '../../Admin/Views/Etudiants/all-notes-semestre/all-notes-semestre.component';
+import { PromotionsListeComponent } from '../../administrations/DGA/components/promotions-liste/promotions-liste.component';
 
 const routes: Routes = [{path: '', component: DgaSidebarComponent,
   children: [
@@ -23,7 +24,7 @@ const routes: Routes = [{path: '', component: DgaSidebarComponent,
     {path: 'setting', component: SettingsComponent, data:{title: "PARAMETRE ET CONFIDENTIALITE"}},
     {path: 'etudiant', component: EtudiantsComponent},
     {path: 'student-notes', component: StudentNoteComponent},
-    // {path: 'all-notes', component: AllNotesSemestreComponent, data:{title: "Notes du Semestre"}},
+    {path: 'list-promotion', component: PromotionsListeComponent, data:{title: "Les promotions"}},
     {path: 'etudiant-de-la-classe', component : EtudiantsDeLaClasseComponent, data:{title: "Etudiants de la classe"}},
     {path: 'student-bulletin', component: StudentBulletinComponent},
     {path: 'update-school', component: SchoolEditWidgetComponent, data:{title: "Information de l'Etablissement"}},

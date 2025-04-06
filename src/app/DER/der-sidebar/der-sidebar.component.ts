@@ -18,14 +18,14 @@ import { AuthServiceService } from '../../auth-service.service';
 })
 export class DerSidebarComponent implements OnInit, OnDestroy {
 
-  
+  urlAsset = environment.urlAssetsImage
   title!: string;
-  isSidebarCollapsed = false;
   isSubmenuCollapsed = false;
   desable_add_button = true;
   showSearchInput: boolean = false
   isConfirm: boolean = false
   urlLogo = ""
+  sidebar: any
 
   show_admin: boolean = false
   show_add_form: boolean = false
@@ -62,29 +62,22 @@ toggleSubMenuArchive(){
   this.isSubMenuOpen.archive =!this.isSubMenuOpen.archive
 }
 
-  toggleSidebar() {
-    this.isSidebarCollapsed = !this.isSidebarCollapsed;
-    const sidebar = document.getElementById('sidebar');
-    if (this.isSidebarCollapsed) {
-      sidebar!.classList.add('active');
-    } else {
-      sidebar!.classList.remove('active');
-    }
-  }
+ 
  
   constructor(public auth: AuthServiceService, private schoolService: SchoolService, private sidebarService: SideBarService,
      private router: Router, public icons: IconsService, private route: ActivatedRoute){}
 
  
 ngOnInit(): void {
+  this.sidebar =  document.getElementById('sidebar');
   this.urlLogo = environment.assetUrlLogo
   this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
     this.setTitle();
   });
 
   this.setTitle();
-   this.load_school_info();
    this.load_admin();
+
 }
 
 setTitle(): void {
@@ -98,12 +91,6 @@ setTitle(): void {
   this.title = route?.snapshot.data['title'] || '';
   console.log(this.title, "le titre")
 }
-load_school_info(){
-  this.schoolService.getSchools().subscribe(data => {
-    this.school! = data    
-    // console.log(data, "----------------------------");
-  })
-}
 // ------------------------------------------load current admin
 load_admin(){
   this.dataAdmin = AdminUSER()?.der
@@ -116,7 +103,7 @@ load_admin(){
 
   onError(event: Event) {
     const target = event.target as HTMLImageElement;
-    target.src = 'assets/business-professional-icon.svg';
+    target.src = `${this.urlAsset}business-professional-icon.svg`;
   }
   show_confirm(){
     this.isConfirm = true
@@ -137,16 +124,5 @@ load_admin(){
     this.router.navigate(['/der/my-accunt'], {queryParams:{id: this.dataAdmin.idAdministra}})
   }
 
-  // got to notifications
-  toNotifications(){
-    this.router.navigate(['/der/notifications']);
-  }
 
-  // abrevigate role name
-  abreviateName(filiere: string): string {
-    const nameWord = filiere.split(' ');
-    const word = nameWord.filter(wd => wd.length > 3).map(word => word[0].toUpperCase()).join('')
-    // console.log("word", word)
-    return word;
-  }
 }

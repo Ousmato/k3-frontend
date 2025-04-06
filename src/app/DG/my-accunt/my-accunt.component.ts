@@ -37,10 +37,10 @@ export class MyAccuntComponent implements OnInit {
   }
 
   load_admin() {
-    this.root.queryParams.subscribe(param => {
-      const idAdmin = param['id']
-      this.idAdmin = idAdmin
-      this.adminService.getAdminById(idAdmin).subscribe(admin => {
+    // this.root.queryParams.subscribe(param => {
+      // const idAdmin = param['id']
+      this.idAdmin = AdminUSER()?.admin.idAdministra
+      this.adminService.getAdminById(this.idAdmin).subscribe(admin => {
         console.log(admin, "aaaa")
         this.admin = admin
         this.admin.urlPhoto = `${environment.urlPhoto}${admin.urlPhoto}`
@@ -52,14 +52,14 @@ export class MyAccuntComponent implements OnInit {
         this.update_form.get('email')?.setValue(admin.email);
         this.update_form.get('telephone')?.setValue(admin.telephone);
         this.update_form.get('sexe')?.setValue(admin.sexe);
-        if (AdminUSER()?.dg) {
+        if (AdminUSER()?.admin) {
           this.permission = true
         }
 
       })
 
 
-    })
+    // })
 
   }
 

@@ -4,7 +4,7 @@
             <div class="child-card" (click)="toggle_student()">
                 <div class="child-card-content">
                     <div class="card-img">
-                        <img src="assets/study-group-icon.svg" alt="Logo">
+                        <img src="{{urlAsset}}study-group-icon.svg" alt="Logo">
                     </div>
                     <div class="card-text" >
                         <p>Les Etudiants Inscrit</p>
@@ -17,7 +17,7 @@
             <div class="child-card" (click)="toggle_student()">
                 <div class="child-card-content">
                     <div class="card-img">
-                        <img  src="assets/study-group-icon.svg" alt="Logo">
+                        <img  src="{{urlAsset}}study-group-icon.svg" alt="Logo">
                     </div>
                     <div class="card-text">
                         <p>Les Etudiants non Inscrit</p>
@@ -31,7 +31,7 @@
             <div class="child-card" >
                 <div class="child-card-content">
                     <div class="card-img">
-                        <img src="assets/money-icon.svg" alt="Logo">
+                        <img src="{{urlAsset}}money-icon.svg" alt="Logo">
                     </div>
                     <div class="card-text" >
                         <p>Scolarité annuelle versé</p>
@@ -48,7 +48,7 @@
             <div class="child-card" >
                 <div class="child-card-content">
                     <div class="card-img">
-                        <img src="assets/money-icon.svg" alt="Logo">
+                        <img src="{{urlAsset}}money-icon.svg" alt="Logo">
                     </div>
                     <div class="card-text" >
                         <p>Réliquat annuel</p>
@@ -64,30 +64,6 @@
            
         </div>
         <!-- -------------------------------------------------------------- -->
-        <!-- <div class="body-content">
-            <div class="child-cards">
-                    <div  id="card-img">
-                        <img id="calendar" src="assets/booking-confirmed-icon.svg" alt="Logo">
-                    </div>
-                    <div id="cart-text" class="card-text">
-                        <h5>Emplois Actifs</h5>
-                        <h1></h1>
-                    </div>
-            </div> -->
-                <!-- <div class="class-scrol">
-                    <ng-container *ngFor="let classe of emplois">
-                        <div class="calendar-classes-content">
-                        <p>{{classe.idClasse.idFiliere?.idNiveau?.nom}} ({{classe.idClasse.idFiliere?.idFiliere?.nomFiliere}})</p>
-                        <div class="date-content">
-                            <p> Debuté le : {{classe.dateDebut}}</p>
-                            <p> Prend fin le : <span id="span">{{classe.dateFin}}</span></p>
-                        </div>
-                    </div>
-                    </ng-container>
-                </div> -->
-            
-            <!-- <h2>Body Content</h2>
-            <p>Here you can add more detailed information, graphs, tables, etc.</p> -->
-        <!-- </div> -->
+        
     </div>
 </main>

@@ -4,18 +4,12 @@
              <fa-icon [icon]="icons.back"></fa-icon>            
         </div>
         <div class="classe-name">
-            <p>Classe : {{shared_methode.abrevigateNiveauName(Classe.idFiliere?.idNiveau?.nom!)}}-{{shared_methode.abreviateFiliereName(Classe.idFiliere?.idFiliere?.nomFiliere!)}}</p>
+            <p *ngIf="Classe">Classe : {{shared_methode.abrevigateNiveauName(Classe.idFiliere?.idNiveau?.nom!)}}-{{shared_methode.abreviateFiliereName(Classe.idFiliere?.idFiliere?.nomFiliere!)}}-{{shared_methode.extractAnnee(Classe.idAnneeScolaire!)}}-{{shared_methode.extractAnnee(Classe.idAnneeScolaire!)+1}}</p>
         </div>
     </div>
     
     <div class="head">
-        <div class="left">
-            
-            <!-- <select class="select">
-            <option selected disabled value="">Exporter</option>
-            <option  value="PDF">PDF</option>
-            <option  value="EXCEL">EXCEL</option>
-        </select> -->
+        <div class="left" *ngIf="Classe">
             <p (click)="allInscrit()" [ngClass]="{'active' : idSouFiiere == null }" class="speciality-link">Tout</p>
            @for (item of Classe.specialites; track $index) {
             <p (click)="getSpecialite(item.id!, $index)" [ngClass]="{'active' : idSouFiiere != null && $index == indexSelect }" class="speciality-link">{{shared_methode.abreviateFiliereName (item.nomSousFiliere)}}</p>
