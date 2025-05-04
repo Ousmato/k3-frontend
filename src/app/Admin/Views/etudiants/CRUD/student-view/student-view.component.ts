@@ -7,11 +7,11 @@ import { IconsService } from '../../../../../Services/icons.service';
 import { PageTitleService } from '../../../../../Services/page-title.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
-import { Admin } from '../../../../Models/Admin';
-import { AdminUSER } from '../../../../Models/Auth';
+import { Admin } from '../../../../../administrations/shared/models/Admin';
 import { InscriptionService } from '../../../../../Services/inscription.service';
 import { Class_shared } from '../../../../../DGA/class-students/Utils/Class-shared-methods';
 import { Student_Enum_Options } from '../../Utils/Student-enum-options';
+import { AdminUSER } from '../../../../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-student-view',
@@ -62,7 +62,7 @@ export class StudentViewComponent implements OnInit {
   }
   // --------------------permission to pay
   getPermission(): boolean {
-    const autorize = AdminUSER()?.scolarite;
+    const autorize = AdminUSER()?.scolarite!;
     this.admin = autorize;
     if(autorize){
       this.permission = true;
@@ -87,7 +87,7 @@ export class StudentViewComponent implements OnInit {
     console.log(dto)
     
     if(this.update_paie_student_form.valid){
-      this.studentService.update_student_scolarite( dto, this.admin.idAdministra!).subscribe({
+      this.studentService.update_student_scolarite( dto, this.admin.id!).subscribe({
       next: (response) =>{
         this.pageTitle.showSuccessToast(response.message);
         

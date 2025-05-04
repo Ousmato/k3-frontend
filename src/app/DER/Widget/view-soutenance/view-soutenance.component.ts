@@ -5,10 +5,10 @@ import { EtudeService } from '../../../Admin/Views/Etudiants/etude.service';
 import { SchoolService } from '../../../Services/school.service';
 import { SchoolInfo } from '../../../Admin/Models/School-info';
 import { Salles } from '../../../Admin/Models/Salles';
-import { Admin } from '../../../Admin/Models/Admin';
+import { Admin } from '../../../administrations/shared/models/Admin';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import { AdminUSER } from '../../../Admin/Models/Auth';
+import { getUser } from '../../../administrations/shared/models/auth';
 
 
 @Component({
@@ -31,7 +31,7 @@ export class ViewSoutenanceComponent implements OnInit {
  ngOnInit(): void {
      this.load_soutenanceActif();
      this.load_school();
-     this.admin = AdminUSER()?.der
+     this.admin = getUser()
  }
 
  load_soutenanceActif(){

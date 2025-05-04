@@ -1,7 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { finalize, map, Observable } from 'rxjs';
-import { ClassModules } from '../../Admin/Models/ClassModule';
 import { Module } from '../../Admin/Models/Module';
 import { AddUeDto, Ue } from '../../Admin/Models/UE';
 import { ClassRoom } from '../../Admin/Models/Classe';
@@ -42,10 +41,7 @@ export class ClassStudentService {
   getAllClasse(idAnnee: number, idAdmin: number) : Observable<ClassRoom[]> {
     return this.http.get<ClassRoom[]>(`${this.baseUrl}get-all-classe-by-id-annee/${idAnnee}/${idAdmin}`);
   }
-  // -------------------------------------add modules in classroom
-  createClassModule(modules: ClassModules): Observable<Response_String> {
-    return this.http.post<Response_String>(`${this.baseUrl}add-module-class`, modules);
-  }
+ 
   //  ------------------------get class by id
   getClassById(id: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}class/${id}`);

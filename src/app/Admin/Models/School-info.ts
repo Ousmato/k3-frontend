@@ -1,4 +1,4 @@
-import { Admin } from "./Admin";
+import { Admin } from "../../administrations/shared/models/Admin";
 
 export interface SchoolInfo{
     id?: number;

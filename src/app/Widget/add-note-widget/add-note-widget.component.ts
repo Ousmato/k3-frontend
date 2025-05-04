@@ -13,9 +13,9 @@ import { ClassStudentService } from '../../DGA/class-students/class-student.serv
 import { AddUeDto } from '../../Admin/Models/UE';
 import { InscriptionService } from '../../Services/inscription.service';
 import { environment } from '../../../environments/environment';
-import { Admin } from '../../Admin/Models/Admin';
-import { AdminUSER } from '../../Admin/Models/Auth';
+import { Admin } from '../../administrations/shared/models/Admin';
 import { NoteService } from '../../Services/note.service';
+import { getUser } from '../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-add-note-widget',
@@ -54,8 +54,7 @@ export class AddNoteWidgetComponent implements OnInit {
     this.loadSemestre();
     // this.loadInscription();
    
-    this.admin = AdminUSER()?.scolarite;
-
+    this.admin = getUser()
   }
 
   // load form add

@@ -4,14 +4,10 @@ import { AddUeDto, Ue } from '../../Admin/Models/UE';
 import { SetService } from '../../Admin/Views/settings/set.service';
 import { PageTitleService } from '../../Services/page-title.service';
 import { IconsService } from '../../Services/icons.service';
-import { NivFiliere } from '../../Admin/Models/NivFiliere';
 import { ClassRoom } from '../../Admin/Models/Classe';
-import { ClassStudentService } from '../../DGA/class-students/class-student.service';
-import { SemestreService } from '../../Services/semestre.service';
-import { Semestres } from '../../Admin/Models/Semestre';
-import { Admin } from '../../Admin/Models/Admin';
-import { AdminUSER } from '../../Admin/Models/Auth';
+import { Admin } from '../../administrations/shared/models/Admin';
 import { Ecue, Module } from '../../Admin/Models/Module';
+import { getUser } from '../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-ue-widget',
@@ -48,7 +44,7 @@ export class UeWidgetComponent implements OnInit {
       this.load_formUpdate();
     }
     
-    this.admin = AdminUSER()?.scolarite
+    this.admin = getUser()
   }
 
   // load form

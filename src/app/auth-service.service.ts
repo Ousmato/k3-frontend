@@ -10,6 +10,18 @@ import { Router } from '@angular/router';
 })
 export class AuthServiceService {
   private authUrl = `${environment.apiUrl}Auth/login`;
+  private readonly USER_KEY = 'user';
+  private readonly TOKEN_KEY = 'authToken';
+  private readonly REFRESH_TOKEN_KEY = 'refreshToken';
+
+  roleRouteMap: { [key: string]: string } = {
+    SA: '/sidebar',
+    DGA: '/dga',
+    RS: '/r-scolarite',
+    DER: '/der',
+    COMPTABLE: '/comptable',
+    SP: '/secretaire'
+  };
 
   constructor(private http : HttpClient, private loadingService: LoaderService, private router: Router) { }
 
@@ -22,10 +34,10 @@ export class AuthServiceService {
       // Vérifier si le token existe dans la réponse
       if (response && response.token) {
         // Stocker le token dans le localStorage
-        console.log(response, "response")
-        sessionStorage.setItem('authToken', response.token);
-        sessionStorage.setItem('refreshToken', response.refreshToken);
-        sessionStorage.setItem('user', JSON.stringify(response.user));
+        // console.log(response, "response")
+        sessionStorage.setItem(this.TOKEN_KEY, response.token);
+        sessionStorage.setItem(this.REFRESH_TOKEN_KEY, response.refreshToken);
+        sessionStorage.setItem(this.USER_KEY, JSON.stringify(response.user));
       }
       return response;
     }),
@@ -38,21 +50,36 @@ export class AuthServiceService {
   }
 
 
-  logout() {
-   sessionStorage.clear();
-   this.router.navigate(['']);
-  }
-
-  // Méthode pour vérifier si l'utilisateur est actuellement authentifié
   isLoggedIn(): boolean {
-    console.log( sessionStorage.getItem('user') != null)
-    return sessionStorage.getItem('user') != null
-    // return sessionStorage.getItem('admin') != null || sessionStorage.getItem('der') != null || sessionStorage.getItem('dga') != null || sessionStorage.getItem('dg') != null
-    //  || sessionStorage.getItem('comptable') != null || sessionStorage.getItem('scolarite') != null || sessionStorage.getItem('secretaire') != null; // Exemple : vérifie si un jeton est présent dans le stockage local
+    return !!this.getUser();
   }
- // Méthode pour rafraîchir le token
- refreshToken(email: string, refreshToken: string): Observable<{token: string}> {
-  return this.http.post<{ token: string }>(`${environment.apiUrl}Auth/refresh-token`, { email, refreshToken })
 
-}
+  getUser(): any {
+    const userJson = sessionStorage.getItem(this.USER_KEY);
+    return userJson ? JSON.parse(userJson) : null;
+  }
+
+  getToken(): string | null {
+    return sessionStorage.getItem(this.TOKEN_KEY);
+  }
+
+  logout(): void {
+    sessionStorage.clear();
+    this.router.navigate(['']);
+  }
+
+  isTokenExpired(): boolean {
+    const token = this.getToken();
+    if (!token) return true;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const exp = payload.exp;
+      const now = Math.floor(Date.now() / 1000);
+      return now >= exp;
+    } catch (e) {
+      return true;
+    }
+  }
+ 
 }

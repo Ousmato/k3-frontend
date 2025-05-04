@@ -1,0 +1,16 @@
+<main>
+    <div class="search-view-header">
+        <div class="icon" (click)="hide_view()">
+            <fa-icon [icon]="dependencies.icons.previous"></fa-icon>
+        </div>
+        
+        
+        <app-search-bar class="header-search-bar" (search)="onSearch($event)"></app-search-bar>
+    </div>
+    <div class="search-veiw-contente">
+        <ng-container *ngFor=" let item of filteredItems">
+            <p (click)="chose_teacher(item)"  >{{item.nom}}  {{item.prenom}}</p>
+        </ng-container>
+        
+    </div>
+</main>

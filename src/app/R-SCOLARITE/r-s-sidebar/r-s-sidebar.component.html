@@ -6,7 +6,7 @@
       <!-- <img src="assets/logounivsegou.png" alt=""> -->
       <!-- <h1>UAM</h1> -->
       <!-- <strong>{{school?.nomSchool}}</strong> -->
-      <strong>IUFP <fa-icon [icon]="icons.grade" [ngStyle]="{'font-size': '16px' }"></fa-icon> GESTION</strong>
+      <strong>IUFP <fa-icon [icon]="dependencies.icons.grade" [ngStyle]="{'font-size': '16px' }"></fa-icon> GESTION</strong>
 
     </div>
     <div class="side-child">
@@ -14,25 +14,38 @@
         <div>
           <li class="menu-link">
             <a routerLink="/r-scolarite">
-              <span><fa-icon [icon]="icons.home"></fa-icon>Acceuil</span>
+              <span><fa-icon [icon]="dependencies.icons.home"></fa-icon>Acceuil</span>
             </a>
           </li>
         </div>
+        <li class="menu-link">
+          <div (click)="toggleSubMenuStudent()">
+            <a  >
+              <span >
+                <fa-icon [icon]="dependencies.icons.grade"></fa-icon>
+                Etudiants
+                <fa-icon [icon]="isSubMenuOpen.ETUDIANTS ? dependencies.icons.angleUp : dependencies.icons.angleDown" class="float-end"></fa-icon>
 
-        <li class="menu-link">
-          <a routerLink="/r-scolarite/etudiant" routerLinkActive="active">
-            <span><fa-icon [icon]="icons.users"></fa-icon>Liste des Etudiants</span>
-          </a>
+              </span>
+                  
+            </a>
+
+            
+          </div> 
+          <ul  class="sub-menu" *ngIf="isSubMenuOpen.ETUDIANTS">
+            <li routerLink="/r-scolarite/inscription" routerLinkActive="active" > Inscriptions </li>
+            <li routerLink="/r-scolarite/re-inscription" routerLinkActive="active" > Ré-inscriptions </li>
+            <li routerLink="/r-scolarite/etudiant" routerLinkActive="active" > Liste des étudiants</li>
+            
+            <!-- <li routerLink="/der/t-singin" routerLinkActive="active"> Ajouter Enseignants</li> -->
+          </ul>
+         
         </li>
-        <li class="menu-link">
-          <a routerLink="/r-scolarite/inscription" routerLinkActive="active">
-            <span><fa-icon [icon]="icons.user_plus"></fa-icon>Inscriptions</span>
-          </a>
-        </li>
+        
         
         <li class="menu-link">
           <a routerLink="/r-scolarite/classe" routerLinkActive="active">
-            <span><fa-icon [icon]="icons.scool"></fa-icon>Les Classes</span>
+            <span><fa-icon [icon]="dependencies.icons.scool"></fa-icon>Les Classes</span>
           </a>
         </li>
         <!-- <li class="menu-link">
@@ -42,7 +55,7 @@
         </li> -->
         <li class="menu-link">
           <a routerLink="/r-scolarite/import" routerLinkActive="active">
-            <span><fa-icon [icon]="icons.upload"></fa-icon>Importer Etudiants</span>
+            <span><fa-icon [icon]="dependencies.icons.upload"></fa-icon>Importer Etudiants</span>
           </a>
         </li>
 
@@ -52,16 +65,16 @@
     <ul id="components">
       <li class="menu-link">
         <div (click)="submenuOpen()">
-          <a> <span><fa-icon [icon]="icons.grade"></fa-icon>Compte<fa-icon
-                [icon]="isSubMenuVisible ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon></span>
+          <a> <span><fa-icon [icon]="dependencies.icons.user"></fa-icon>Compte<fa-icon
+                [icon]="isSubMenuVisible ? dependencies.icons.angleUp : dependencies.icons.angleDown" class="float-end"></fa-icon></span>
           </a>
         </div>
         <ul class="sub-menu" *ngIf="isSubMenuVisible">
-          <li><a (click)="toAccunt()" routerLink="/r-scolarite/my-accunt" routerLinkActive="active">Mon compte</a></li>
-          @for (poste of postes; track $index) {
-            <li *ngFor="let p of poste.roleNames"><a (click)="switchAccuntDGA()"  routerLinkActive="active">Compte {{utils.abrevigate(p.toString())}}</a></li>
+          <li><a  routerLink="/r-scolarite/my-accunt" routerLinkActive="active">Mon compte</a></li>
+          <!-- @for (poste of postes; track $index) {
+            <li *ngFor="let p of poste.roleNames"><a (click)="switchAccuntDGA()"  routerLinkActive="active">Compte {{dependencies.util.abrevigate(p.toString())}}</a></li>
 
-          }
+          } -->
           <!-- <li><a routerLink="/r-scolarite/inscription" routerLinkActive="active"> Compte DER</a></li> -->
         </ul>
       </li>
@@ -73,7 +86,7 @@
       </li> -->
       <li class="menu-link">
         <a (click)="show_confirm()">
-          <span><fa-icon [icon]="icons.aout"></fa-icon>Déconnexion</span>
+          <span><fa-icon [icon]="dependencies.icons.aout"></fa-icon>Déconnexion</span>
         </a>
       </li>
     </ul>
@@ -104,20 +117,20 @@
         <img [src]="dataAdmin.urlPhoto" (error)="onError($event)" alt="">
         <div class="info-pofil">
           <p>{{dataAdmin.nom}} {{dataAdmin.prenom}}</p>
-          <p class="text-muted small">{{dataAdmin.idRole.nom.toUpperCase()}}</p>
+          <p class="text-muted small">{{dataAdmin.idPoste.nom.toUpperCase()}}</p>
         </div>
 
       </div>
       <div class="button-cash">
         <a type="button" (click)="close()">Annuler</a>
-        <button type="button" (click)="auth.logout()">Confirmer</button>
+        <button type="button" (click)="dependencies.authService.logout()">Confirmer</button>
       </div>
 
     </div>
   </div>
 </ng-container>
 
-<ng-container *ngIf="isSwitch">
+<!-- <ng-container *ngIf="isSwitch">
   <div class="views-switch">
     <h3 class="span">Changer Compte</h3>
     <div class="container-views">
@@ -126,17 +139,17 @@
         <img [src]="dataAdmin.urlPhoto" (error)="onError($event)" alt="">
         <div class="info-pofil">
           <p>{{dataAdmin.nom}} {{dataAdmin.prenom}}</p>
-          <p class="text-muted small">{{dataAdmin.idRole.nom.toUpperCase()}}</p>
+          <p class="text-muted small">{{dataAdmin.idPoste.nom.toUpperCase()}}</p>
         </div>
 
       </div>
       <div class="button-cash">
         <a type="button" (click)="close()">Annuler</a>
-        <button type="button" (click)="auth.logout()">Confirmer</button>
+        <button type="button" (click)="dependencies.authService.logout()">Confirmer</button>
       </div>
 
     </div>
   </div>
-</ng-container>
+</ng-container> -->
 <div class="overlay" *ngIf="isConfirm || isSwitch"></div>
 </main>

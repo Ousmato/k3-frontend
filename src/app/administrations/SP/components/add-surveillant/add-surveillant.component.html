@@ -1,0 +1,34 @@
+<main>
+    <div class="form-wrapper">
+        
+        <form [formGroup]="form" class="styled-form" (ngSubmit)="submit()">
+            <h4>Ajouter un surveillant</h4>
+            <div class="form-contente">
+                <div class="form-group">
+                    <label>Nom</label>
+                    <input type="text" formControlName="nom" placeholder="Nom" required />
+                  </div>
+              
+                  <div class="form-group">
+                    <label>Prénom</label>
+                    <input type="text" formControlName="prenom" placeholder="Prénom" required />
+                  </div>
+              
+                  <div class="form-group">
+                    <label>Téléphone</label>
+                    <input type="text" formControlName="telephone" placeholder="Téléphone" required />
+                  </div>
+              
+                  <div class="button-container">
+                    <a type="button" (click)="hideForm()">Annuler</a>
+                    <button type="submit">Enregistrer</button>
+                  </div>
+            </div>
+          
+        </form>
+
+
+    </div>
+      
+    
+</main>

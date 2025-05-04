@@ -5,14 +5,12 @@ import { IconsService } from '../../../Services/icons.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { Inscription, Participant, Student, Student_group } from '../../../Admin/Models/Students';
-import { StudentPages } from '../../../Admin/Models/Pagination-module';
-import { Emplois } from '../../EDT/Models/Emplois';
-import { ServiceService } from '../../EDT/Services/service.service';
+import { Emplois } from '../../../administrations/DER/models/Emplois';
 import { InscriptionService } from '../../../Services/inscription.service';
-import { Admin } from '../../../Admin/Models/Admin';
+import { Admin } from '../../../administrations/shared/models/Admin';
 import { SideBarService } from '../../../sidebar/side-bar.service';
-import { AdminUSER } from '../../../Admin/Models/Auth';
 import { Class_shared } from '../../../DGA/class-students/Utils/Class-shared-methods';
+import { getUser } from '../../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-add-group-student',
@@ -45,7 +43,7 @@ export class AddGroupStudentComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.admin = AdminUSER()?.der
+    this.admin = getUser()
     this.load_form();
     this.getAll_group();
     this.load_participant_form();

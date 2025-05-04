@@ -4,15 +4,12 @@ import { EtudeService } from '../Etudiants/etude.service';
 import { ClassStudentService } from '../../../DGA/class-students/class-student.service';
 import { EnseiService } from '../Enseignant/ensei.service';
 import { ServiceService } from '../../../DER/EDT/Services/service.service';
-import { ClassRoom } from '../../Models/Classe';
-import { Emplois } from '../../../DER/EDT/Models/Emplois';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NotificationService } from '../../../Services/notification.service';
-import { Admin } from '../../Models/Admin';
-import { Notifications_gestion } from '../../Models/Notifications-gestion';
+import { Admin } from '../../../administrations/shared/models/Admin';
 import { NavigationExtras, Router } from '@angular/router';
-import { AdminUSER } from '../../Models/Auth';
 import { environment } from '../../../../environments/environment';
+import { getUser } from '../../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-dasboard',
@@ -28,7 +25,7 @@ export class DasboardComponent implements OnInit {
     private notifiService: NotificationService, private emploisService: ServiceService, private fb: FormBuilder,
     public icons: IconsService, private etudiantService: EtudeService, private classeService: ClassStudentService) { }
   ngOnInit(): void {
-    this.admin =  AdminUSER()?.admin
+    this.admin =  getUser()
   
     // this.searchBooks("henry")
   }

@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { type_seance } from "../Models/Seances";
+import { type_seance } from "../../../administrations/DER/models/Seances";
 
 @Injectable({
     providedIn:`root`

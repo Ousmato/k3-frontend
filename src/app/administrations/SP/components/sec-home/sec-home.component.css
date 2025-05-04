@@ -1,0 +1,63 @@
+
+.head-section{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px;
+}
+
+.content{
+    height: 70%;
+    padding: 10px;
+    position: relative;
+    overflow-y: auto;
+}
+
+.calendar-classes-content {
+    padding:  8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--primo-light);
+    border: var(--tertiary) 1px solid;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); */
+}
+.content p{
+    margin: 0;
+    font-size: 12px;
+}
+.class-scrol fa-icon{
+    font-size: 16px;
+}
+.button-content button{
+    color: var(--primary) !important;
+    border: none;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+}
+.button-content fa-icon{
+    color: var(--primary);
+}
+
+/* Personnalisation de la barre de défilement */
+.content::-webkit-scrollbar {
+  width: 5px; /* Largeur de la barre de défilement */
+}
+
+.content::-webkit-scrollbar-track {
+  background: white; /* Couleur de l'arrière-plan de la piste */
+  border-radius: 10px; /* Coins arrondis de la piste */
+}
+
+.content::-webkit-scrollbar-thumb {
+  background: var(--tertiary); /* Couleur de la barre de défilement */
+  border-radius: 10px; /* Coins arrondis de la barre */
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+  background: var(--primary); /* Couleur de la barre au survol */
+}

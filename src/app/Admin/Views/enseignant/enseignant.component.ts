@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {  Teacher, TeacherDto, TeachersStatus } from '../../Models/Teachers';
+import {  Teacher, TeacherDto } from '../../../administrations/DER/models/Teachers';
 import { IconsService } from '../../../Services/icons.service';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { TeacherPages } from '../../Models/Pagination-module';
 import { SideBarService } from '../../../sidebar/side-bar.service';
-import { Filiere } from '../../Models/Filieres';
-import { Admin } from '../../Models/Admin';
-import { AdminUSER } from '../../Models/Auth';
+import { Admin } from '../../../administrations/shared/models/Admin';
 import { EnseiService } from './ensei.service';
+import { AdminUSER } from '../../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-enseignant',
@@ -119,12 +118,6 @@ export class EnseignantComponent implements OnInit {
       this.setPage(this.page - 1);
     }
   }
-
-
-  addTeacher() {
-    this.root.navigate(['/der/t-singin']);
-  }
-
   // ----------------------abreviation name filiere
   abbreviateFiliereName(nomFiliere: string): string {
     // Découper le nom de la filière en mots
@@ -155,7 +148,7 @@ export class EnseignantComponent implements OnInit {
   }
 
   getPermission() : boolean{
-    const admin = AdminUSER()?.der
+    const admin = AdminUSER()?.der!
     this.admin = admin;
     if(admin){
       this.permission = true;

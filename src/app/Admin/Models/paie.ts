@@ -1,4 +1,4 @@
-import { Journee } from "../../DER/EDT/Models/Configure_seance";
+import { Journee } from "../../administrations/DER/models/Configure_seance";
 
 export interface Paie{
     id?: number;

@@ -1,13 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { AdminService } from '../../Services/admin.service';
-import { Admin, adminEtat, AdminRoleDto, Roles } from '../../Admin/Models/Admin';
-import { SideBarService } from '../../sidebar/side-bar.service';
-import { IconsService } from '../../Services/icons.service';
-import { PageTitleService } from '../../Services/page-title.service';
-import { Router } from '@angular/router';
-import { getActionCache } from '@angular/core/primitives/event-dispatch';
+import { Component, inject, OnInit } from '@angular/core';
+import { Admin, adminEtat, AdministrationUserPostes, AdminRoleDto, Poste, Roles, RoleTypes } from '../../administrations/shared/models/Admin';
 import { environment } from '../../../environments/environment';
-import { AdminUSER } from '../../Admin/Models/Auth';
+import { contructor_dependencies } from '../../administrations/dependencies/dependencies';
+import { Enumerateds } from '../../administrations/shared/utils/enumerateds';
+import { getUser } from '../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-admin-list',
@@ -15,61 +11,52 @@ import { AdminUSER } from '../../Admin/Models/Auth';
   styleUrl: './admin-list.component.css'
 })
 export class AdminListComponent implements OnInit {
+  urlAsset = environment.urlAssetsImage
 
   admin_etats: { key: string; value: number }[] = []
   // admins: Admin[] = []
   adminsDto: AdminRoleDto[] = []
   searchTerm: string = ""
   adminFiltered: AdminRoleDto[] = []
-  roles: Roles[] = []
+  postes: AdministrationUserPostes[] = []
+  filteredPostesItems: AdministrationUserPostes[] = []
   index!: number
-  idRoleSelect!: Roles
-  dg!: Admin
+  idPosteSelect!: AdministrationUserPostes
+  admin!: Admin
+  adminPoste!: any
   show_add_form: boolean = false
   isAfectPoste: boolean = false
   isConfirm: boolean = false
   isAddPostConfirm: boolean = false
   overlay: boolean = false
 
-  constructor(private adminService: AdminService, public icons: IconsService, private router: Router,
-    private pageTitle: PageTitleService,
-    private sideBareService: SideBarService) { }
+  public dependencies = inject(contructor_dependencies)
 
   ngOnInit(): void {
+    this.admin = getUser()
+    this.adminPoste = Enumerateds.getEnumKeyByValue(RoleTypes, RoleTypes.SUPER_ADMIN)
+    console.log(this.adminPoste, "le poste admin")
     this.getAllAdminActif();
     this.admin_etats = this.getAdminEtat();
-
-    this.dg = AdminUSER()?.admin
-    this.getAllRoles();
-    this.sideBareService.currentSearchTerm.subscribe(term => {
-      this.searchTerm = term;
-      this.filteredAdmins();
-
-    });
   }
 
   // load all admin
   getAllAdminActif() {
-    this.adminService.getAllAdminActifs().subscribe(admins => {
+    this.dependencies.adminService.getAllAdminActifs().subscribe(admins => {
      this.formatedData(admins)
     this.adminFiltered = this.adminsDto
+    console.log(this.adminFiltered, "admins actifs")
 
     })
   }
-  // get all roles
-  getAllRoles() {
-    this.adminService.getAllRoles(this.dg.idAdministra!).subscribe(roles => {
-      this.roles = roles;
-      console.log(this.roles, "roles")
-    })
-  }
+ 
 
   // ------------onErro
   onError(event: Event) {
     const target = event.target as HTMLImageElement;
-    target.src = 'assets/business-professional-icon.svg';
+    target.src = `${this.urlAsset}business-professional-icon.svg`;
   }
-  // ----------------get admin etats
+  // // ----------------get admin etats
   getAdminEtat(): { key: string, value: number }[] {
     return Object.keys(adminEtat)
     .filter(key => isNaN(Number(key))) // Filtrer pour obtenir seulement les clés
@@ -81,7 +68,7 @@ export class AdminListComponent implements OnInit {
   // ---------------
   getEtat(event: any) {
     const value = event.target.value
-    this.adminService.getAllByEtat(value).subscribe(adm =>{
+    this.dependencies.adminService.getAllByEtat(value).subscribe(adm =>{
      this.formatedData(adm);
     this.adminFiltered = this.adminsDto
     })
@@ -97,27 +84,17 @@ export class AdminListComponent implements OnInit {
     this.getAllAdminActif();
   }
 
-  // ----filter
-  filteredAdmins() {
-    if (!this.searchTerm) {
-      return this.adminFiltered = this.adminsDto
-    }
-    return this.adminFiltered = this.adminsDto.filter(ad => ad.admin.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      ad.admin.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) || ad.admin.idRole.nom.includes(this.searchTerm.toLowerCase())
-    )
-  }
-  // ---------------change etat
+  //change etat
   changeEtat(idAdmin: number){
-    this.adminService.changeEtat(idAdmin).subscribe({
+    this.dependencies.adminService.changeEtat(idAdmin).subscribe({
       next: (result) => {
-        this.pageTitle.showSuccessToast(result.message)
+        this.dependencies.queryreturnMessage.showSuccessToast(result.message)
         this.getAllAdminActif();
         this.overlay = false
         this.isConfirm = false
-        this.getAdminEtat();
       },
       error: (error) => {
-        this.pageTitle.showErrorToast(error.error.message)
+        this.dependencies.queryreturnMessage.showErrorToast(error.error.message)
       }
       
     })
@@ -127,8 +104,8 @@ export class AdminListComponent implements OnInit {
   onRoleChange(event: any) {
     const id = Number(event.target.value);
     
-    this.idRoleSelect = this.roles.find(r => r.id === id)!
-    console.log(this.idRoleSelect, "role change")
+    this.idPosteSelect = this.postes.find(r => r.id === id)!
+    console.log(this.idPosteSelect, "role change")
   }
   // post afectation
   postAffectation(idAdmin: number,  i: number) {
@@ -141,9 +118,9 @@ export class AdminListComponent implements OnInit {
     this.isAddPostConfirm = true
 
   }
-  // -----------------go to edit component
+  //go to edit component
   toEdit(idAdmin: number){
-    this.router.navigate(['/sidebar/my-accunt'], {queryParams: {id: idAdmin}})
+    this.dependencies.router.navigate(['/sidebar/my-accunt'], {queryParams: {id: idAdmin}})
   }
 
   show_confirm(i: number){
@@ -167,30 +144,29 @@ export class AdminListComponent implements OnInit {
     })
   }
 
-  // abrevigate name
-  abrevigateName(name: string){
-    const words = name.split(' ')
-   let w = words.filter(words => words.length > 3).map(words => words[0].toUpperCase()).join('');
-    if(w === "A"){
-      w = "ADMIN"
-    }
-    return w
-  }
 
   submit(idAdminDefault: number, idRole: number){
     // console.log(idAdminDefault, "admin", idRole, "role");
     // return
-    this.adminService.postAfectation(idAdminDefault, idRole).subscribe({
+    this.dependencies.adminService.postAfectation(idAdminDefault, idRole).subscribe({
       next: (res) => {
-        this.pageTitle.showSuccessToast(res.message)
+        this.dependencies.queryreturnMessage.showSuccessToast(res.message)
         this.getAllAdminActif();
         this.isAddPostConfirm = false
         this.isAfectPoste = false
       },
       error: (err) => {
-        this.pageTitle.showErrorToast(err.error.message);
+        this.dependencies.queryreturnMessage.showErrorToast(err.error.message);
       }
     })
 
+  }
+
+  onSearch(searchTerm: string) {
+    
+    this.adminFiltered = this.adminsDto.filter(item =>
+      item.admin.nom.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.admin.prenom.toLowerCase().includes(searchTerm.toLowerCase())
+    );
   }
 }

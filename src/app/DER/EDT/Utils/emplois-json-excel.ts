@@ -2,11 +2,11 @@ import { Inject, Injectable } from "@angular/core";
 import { Class_shared } from "../../../DGA/class-students/Utils/Class-shared-methods";
 
 import * as ExcelJS from 'exceljs';
-import { teacherConfigureDto } from "../../../Admin/Models/Teachers";
+import { teacherConfigureDto } from "../../../administrations/DER/models/Teachers";
 import { Emploi_shared } from "./shareds-methods";
-import { Emplois } from "../Models/Emplois";
+import { Emplois } from "../../../administrations/DER/models/Emplois";
 import { StudentSharedMethods } from "../../../Admin/Views/Etudiants/Utils/Student-shared-methode";
-import { AdminUSER } from "../../../Admin/Models/Auth";
+import { getUser } from "../../../administrations/shared/models/auth";
 
 @Injectable({
     providedIn: 'root',
@@ -228,7 +228,7 @@ export class EmploisJsonExcel {
         });
     }
     private addFooter(worksheet: ExcelJS.Worksheet) {
-        const admin = AdminUSER()?.der
+        const admin = getUser()
         // Ajouter les séances des enseignants
         this.teacherConf.forEach(seance => {
             const row = worksheet.addRow([`${seance.nom} ${seance.prenom} : ${seance.seanceType}`]);

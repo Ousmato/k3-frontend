@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Salles } from '../Admin/Models/Salles';
 import { Response_String } from '../Admin/Models/Response_String';
-import { teacherConfigureDto } from '../Admin/Models/Teachers';
+import { teacherConfigureDto } from '../administrations/DER/models/Teachers';
 import { environment } from '../../environments/environment';
 
 @Injectable({

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Admin, Admin_role } from '../../Admin/Models/Admin';
+import { Admin, Admin_role } from '../../administrations/shared/models/Admin';
 import { IconsService } from '../../Services/icons.service';
 import { Router } from '@angular/router';
 
@@ -23,7 +23,7 @@ export class AdminSettingWidgetComponent implements OnInit{
   }
 
   load_admin(){
-    if(this.admin.idRole.nom != Admin_role.DG.toString().toLocaleLowerCase()){
+    if(this.admin.idPoste.nom != Admin_role.DG.toString().toLocaleLowerCase()){
       // console.log(this.admin.role, "666776")
       this.desable_add_button = false
     }else{

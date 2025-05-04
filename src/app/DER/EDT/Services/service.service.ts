@@ -1,16 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Emplois, TeacherEmplois } from '../Models/Emplois';
-import { Observable } from 'rxjs';
+import { DtoWeek_Emplois, Emplois, TeacherEmplois } from '../../../administrations/DER/models/Emplois';
+import { finalize, Observable } from 'rxjs';
 import { Response_String } from '../../../Admin/Models/Response_String';
 import { environment } from '../../../../environments/environment';
+import { httpResponse } from '../../../administrations/shared/models/httpResponse.model';
+import { LoaderService } from '../../../Services/loader.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private loading: LoaderService) { }
   private baseUrl = `${environment.apiUrl}api-emplois/`;
 
   // -------------------------------add emplois
@@ -28,18 +30,6 @@ export class ServiceService {
   // --------------------------get emplois by id class
   getEmploisByClasse2(id: number): Observable<Emplois>{
     return this.http.get<Emplois>(`${this.baseUrl}read/${id}`);
-  }
-   // Méthode pour vérifier si une classe a un emploi du temps actif
-   hasActiveEmploisByClasse(classId: number): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}hasEmplois/${classId}`);
-  }
-  // ----------------------------validate emplois
-  validateEmplois(idEmplois: number) : Observable<any>{
-    return this.http.get<any>(`${this.baseUrl}valid/${idEmplois}`);
-  }
-  // ---------------------------method to verifier emplois is valid
-  isEmploisValid(idEmplois: number): Observable<any>{
-    return this.http.get<any>(`${this.baseUrl}is-valid/${idEmplois}`);
   }
  
 
@@ -104,19 +94,27 @@ sortByDay(dates: { day: string, date: string }[]) {
     return dates;
 }
 
-  // ----------------------------------------grt all emplois actifs
+  // grt all emplois actifs
   getAllEmploisActifs(idAdmin: number): Observable<Emplois[]>{
     return this.http.get<Emplois[]>(`${this.baseUrl}all-actifs-emplois/${idAdmin}`);
   }
+
+  getAllEmploisHaveJourneeOfWeek(value: string): Observable<any[]>{
+    this.loading.loading()
+    return this.http.get<any[]>(`${this.baseUrl}all-actifs-emplois-with-journee`,{params: { value }}).pipe(
+      finalize(() => this.loading.stopLoading())
+    );
+  }
+
   getAllEmploisActifsByidClasse(idClasse: number): Observable<Emplois[]>{
     return this.http.get<Emplois[]>(`${this.baseUrl}all-actifs-emplois-of-classe/${idClasse}`);
   }
   getAllEmploisActifs_with_seances(): Observable<Emplois[]>{
-    return this.http.get<Emplois[]>(`${this.baseUrl}all-actifs-emplois-with-seances`);
+    return this.http.get<Emplois[]>(`${this.baseUrl}all-actifs-emplois-with-seances-without-exam`);
   }
-  // ------------------------update emplois without seance
-  updateEmplois(emplois: Emplois): Observable<Response_String>{
-    return this.http.put<Response_String>(`${this.baseUrl}update`, emplois);
+  //update emplois without seance
+  updateEmplois(emplois: Emplois): Observable<httpResponse>{
+    return this.http.put<httpResponse>(`${this.baseUrl}update`, emplois);
   }
 
 }

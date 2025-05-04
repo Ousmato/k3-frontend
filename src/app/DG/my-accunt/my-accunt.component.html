@@ -5,16 +5,16 @@
                 <p id="prof">Profil</p>
                 <p class="text-muted small">Dernière mises à jour : {{admin.updateDate}}</p>
             </div>
-            <div class="head-riht" *ngIf="permission">
-                <a class="btn-edit" *ngIf="!isEdit" (click)="show_edit()">Editer <fa-icon [icon]="icons.edit"></fa-icon></a>
-                <a class="btn-edit" *ngIf="isEdit" (click)="annuler()">Annuler</a>
+            <!-- <div class="head-riht" *ngIf="permission">
+                <a class="btn-edit" (click)="show_edit()">Editer <fa-icon [icon]="dependencies.icons.edit"></fa-icon></a>
+                <a class="btn-edit"  (click)="annuler()">Annuler</a>
                 
                 <button class="btn-save" type="submit" *ngIf="isEdit">Enregistrer </button>
-            </div>
+            </div> -->
         </div>
         <div class="content-form">
             <div class="profil-img">
-                <p><fa-icon [icon]="icons.image"></fa-icon> Photo de profil  </p>
+                <p><fa-icon [icon]="dependencies.icons.image"></fa-icon> Photo de profil  </p>
                 <div class="img-content">
                     <img *ngIf="!urlImage" [src]="admin.urlPhoto"  alt="photo">
                     <img *ngIf="urlImage" [src]="urlImage" alt="">
@@ -27,12 +27,14 @@
                
             </div>
             <div class="information">
-                <p><fa-icon [icon]="icons.user"></fa-icon> Informations personnelle</p>
+                <p><fa-icon [icon]="dependencies.icons.user"></fa-icon> Informations personnelle</p>
+                <p >Poste actuelle : <span class="text-muted small">{{admin.idPoste.nom.toUpperCase()}}</span></p>
+                <p >Grade : <span class="text-muted small">{{admin.usersGrade?.libelle?.toUpperCase()}}</span></p>
                 <div class="information-contenu">
                     <div class="column-f">
                         <div class="input">
                             <label for="validationDefault01" class="label form-label">Nom :</label>
-                            <input [attr.readonly]="!isEdit ? true : null" type="text" class="input-with input-control" formControlName="nom" id="nom" [class.is-invalid]="update_form.get('nom')!.invalid && update_form.get('nom')!.touched"  placeholder="Nom....">
+                            <input  type="text" class="input-with input-control" formControlName="nom" id="nom" [class.is-invalid]="update_form.get('nom')!.invalid && update_form.get('nom')!.touched"  placeholder="Nom....">
                             <span class="small" *ngIf="update_form.controls['nom'].invalid && update_form.controls['nom'].touched" [ngStyle]="{color: 'red'}">
                             Champ obligatoire*
                             </span>
@@ -42,8 +44,8 @@
                         </div>
                 
                         <div class="input">
-                            <label for="validationDefault02" class="label form-label">Prenom :</label>
-                            <input [attr.readonly]="!isEdit ? true : null" type="text" formControlName="prenom" class="input-with input-control" id="prenom" [class.is-invalid]="update_form.get('prenom')!.invalid && update_form.get('prenom')!.touched"   placeholder="Prenom....">
+                            <label  class="label form-label">Prenom :</label>
+                            <input  type="text" formControlName="prenom" class="input-with input-control" id="prenom" [class.is-invalid]="update_form.get('prenom')!.invalid && update_form.get('prenom')!.touched"   placeholder="Prenom....">
                             <span class="small" *ngIf="update_form.controls['prenom'].invalid && update_form.controls['prenom'].touched" [ngStyle]="{color: 'red'}">
                             Champ obligatoire*
                             </span>
@@ -54,11 +56,37 @@
                 
                         <div class="input">
                             <label  class="label form-label">Email :</label>
-                            <input [attr.readonly]="!isEdit ? true : null" type="email" formControlName="email" class=" input-with input-control" [class.is-invalid]="update_form.get('email')!.invalid && update_form.get('email')!.touched" placeholder="Email...">
+                            <input  type="email" formControlName="email" class=" input-with input-control" [class.is-invalid]="update_form.get('email')!.invalid && update_form.get('email')!.touched" placeholder="Email...">
                             <span class="small" *ngIf="update_form.controls['email'].invalid && update_form.controls['email'].touched" [ngStyle]="{color: 'red'}">
                             Champ bligatoire*
                             </span>
                             
+                        </div>
+
+                        <div class="input">
+                            <label  class="label form-label">Compte banque :</label>
+                            <input  type="text" formControlName="compteBanque" class="input-control" [class.is-invalid]="update_form.get('compteBanque')!.invalid && update_form.get('compteBanque')!.touched" placeholder="Numéro de compte....">
+                            <span class="small" *ngIf="update_form.controls['compteBanque'].hasError('required') && update_form.controls['compteBanque'].touched"
+                                [ngStyle]="{color: 'red'}">
+                                Champ obligatoire*
+                            </span>
+                            <!-- <span class="small" *ngIf="update_form.controls['compteBanque'].hasError('pattern') && !update_form.controls['compteBanque'].hasError('required')"
+                                [ngStyle]="{color: 'red'}">
+                                Maximum 8 chiffres autorisés*
+                            </span> -->
+                        </div>
+
+                        <div class="input">
+                            <label  class="label form-label">Matricule :</label>
+                            <input  type="text" formControlName="matricule" class="input-control" [class.is-invalid]="update_form.get('matricule')!.invalid && update_form.get('matricule')!.touched" placeholder="Numéro matricule....">
+                            <span class="small" *ngIf="update_form.controls['matricule'].hasError('required') && update_form.controls['matricule'].touched"
+                                [ngStyle]="{color: 'red'}">
+                                Champ obligatoire*
+                            </span>
+                            <!-- <span class="small" *ngIf="update_form.controls['matricule'].hasError('pattern') && !update_form.controls['matricule'].hasError('required')"
+                                [ngStyle]="{color: 'red'}">
+                                Maximum 8 chiffres autorisés*
+                            </span> -->
                         </div>
                 
                         <!-- <div class="input">
@@ -76,8 +104,21 @@
                     <div class="column-f">
                         
                         <div class="input">
+                            <label  class="label form-label">Banque :</label>
+                            <input  type="text" formControlName="nomBanque" class="input-control" [class.is-invalid]="update_form.get('nomBanque')!.invalid && update_form.get('nomBanque')!.touched"  placeholder="Nom de la banque....">
+                            <span class="small" *ngIf="update_form.controls['nomBanque'].hasError('required') && update_form.controls['nomBanque'].touched"
+                                [ngStyle]="{color: 'red'}">
+                                Champ obligatoire*
+                            </span>
+                            <!-- <span class="small" *ngIf="update_form.controls['nomBanque'].hasError('pattern') && !update_form.controls['nomBanque'].hasError('required')"
+                                [ngStyle]="{color: 'red'}">
+                                Maximum 8 chiffres autorisés*
+                            </span> -->
+                        </div>
+
+                        <div class="input">
                             <label for="telephone" class="label form-label">Téléphone :</label>
-                            <input [attr.readonly]="!isEdit ? true : null" type="text" formControlName="telephone" class="input-control" [class.is-invalid]="update_form.get('telephone')!.invalid && update_form.get('telephone')!.touched" pattern="[0-9]{1,8}" placeholder="Numero de telephone....">
+                            <input  type="text" formControlName="telephone" class="input-control" [class.is-invalid]="update_form.get('telephone')!.invalid && update_form.get('telephone')!.touched" placeholder="Numero de telephone....">
                             <span class="small" *ngIf="update_form.controls['telephone'].hasError('required') && update_form.controls['telephone'].touched"
                                 [ngStyle]="{color: 'red'}">
                                 Champ obligatoire*
@@ -91,33 +132,46 @@
                         <!-- button radio sexe start -->
                         
             
-                        <div class="input">
-                        <label class="label form-label" >Role : <span class="text-muted small" *ngIf="isEdit">Non modifiable</span> </label> 
+                        <div class="input" >
+                        <label class="label form-label" >Poste : </label> 
                         <!-- <p *ngIf="!isEdit">{{admin.role.toUpperCase()}}</p> -->
-                        <input [attr.readonly]="admin.idRole.nom ? true : null" type="text" class="input-control" value="{{admin.idRole.nom.toUpperCase()}}">
-                            <!-- <select class="input-control"  formControlName="role"  id="select" placeholder="role"   [class.is-invalid]="update_form.get('role')!.invalid && update_form.get('role')!.touched" *ngIf="isEdit">
-                            <option  selected disabled value="">Choisir Le status</option>
-                            <option *ngFor="let status of adminStatusOptions" [value]="status.value" >{{status.key}}</option>
+                        <input [attr.readonly]="admin.idPoste.nom ? true : null" type="text" class="input-control" value="{{admin.idPoste.nom.toUpperCase()}}" *ngIf="!permission">
+                            <select class="input-control"  formControlName="idPoste"  [class.is-invalid]="update_form.get('idPoste')!.invalid && update_form.get('idPoste')!.touched"  *ngIf="permission">
+                                <option  selected disabled value="">Choisir le poste</option>
+                                <option *ngFor="let post of postes" [value]="post.id" >{{post.nom}}</option>
                             </select> 
-                            <span class="small" *ngIf="update_form.controls['role'].invalid && update_form.controls['role'].touched" [ngStyle]="{color: 'red'}">
+                            <span class="small" *ngIf="update_form.controls['idPoste'].invalid && update_form.controls['idPoste'].touched" [ngStyle]="{color: 'red'}">
                                 Champ obligatoire*
-                            </span> -->
+                            </span>
+                        </div>
+
+                        <div class="input" >
+                        <label class="label form-label" >Grades : </label> 
+                        <!-- <p *ngIf="!isEdit">{{admin.role.toUpperCase()}}</p> -->
+                        <input [attr.readonly]="admin.idPoste.nom ? true : null" type="text" class="input-control" value="{{admin.usersGrade?.libelle?.toUpperCase()}}" *ngIf="!permission">
+                            <select class="input-control"  formControlName="usersGrade"  [class.is-invalid]="update_form.get('usersGrade')!.invalid && update_form.get('usersGrade')!.touched" *ngIf="permission">
+                                <option  selected disabled value="">Choisir le grade</option>
+                                <option *ngFor="let grd of grades" [value]="grd.id" >{{grd.libelle}}</option>
+                            </select> 
+                            <span class="small" *ngIf="update_form.controls['usersGrade'].invalid && update_form.controls['usersGrade'].touched" [ngStyle]="{color: 'red'}">
+                                Champ obligatoire*
+                            </span>
                         </div>
             
                         
             
                         <div class="radio input">
                             <label for="">Sexe : <span class="text-muted small" *ngIf="isEdit">Non modifiable</span> </label>
-                             <input [attr.readonly]="admin.idRole.nom ? true : null" type="text" class="input-control" value="{{admin.sexe.toUpperCase()}}">
+                             <input [attr.readonly]="admin.idPoste.nom ? true : null" type="text" class="input-control" value="{{admin.sexe.toUpperCase()}}">
 
                             <!-- <div class="radio-content input-control" *ngIf="!isEdit">
                                 <div class="form-check form-check-inline">
-                                    <input [attr.readonly]="!isEdit ? true : null" class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio1" value="Homme" required>
+                                    <input  class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio1" value="Homme" required>
                                     <label class="form-check-label" for="inlineRadio1">Homme</label>
                                 </div>
             
                                 <div class="form-check form-check-inline">
-                                    <input [attr.readonly]="!isEdit ? true : null" class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio2" value="Femme" required>
+                                    <input  class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio2" value="Femme" required>
                                     <label class="form-check-label" for="inlineRadio2">Femme</label>
                                 </div>
                             </div> -->
@@ -131,8 +185,11 @@
 
             </div>
         </div>
+        <div class="button-cash" *ngIf="permission">
+            <button type="submit" class="btn-save">Enregistrer</button>
+        </div>
     </form>
     <div class="change-password" *ngIf="!isEdit">
-        <a *ngIf="permission" (click)="changePass(admin.idAdministra!)">Changer le mot de passe</a>
+        <a *ngIf="permission" (click)="changePass(admin.id!)">Changer le mot de passe</a>
     </div>
 </main>

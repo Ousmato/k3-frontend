@@ -1,10 +1,11 @@
 import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AnneeScolaire } from '../../../../Admin/Models/School-info';
-import { AdminUSER } from '../../../shared/models/auth';
-import { Admin } from '../../../../Admin/Models/Admin';
+// import { AdminUSER } from '../../../shared/models/auth';
+import { Admin } from '../../../shared/models/Admin';
 import { PromotionServiceService } from '../../../shared/services/promotion-service.service';
-import { errorMessage } from '../../../shared/utils/errorMessage';
+import { returnMessages } from '../../../shared/utils/returnMessages';
+import { getUser } from '../../../shared/models/auth';
 
 @Component({
   selector: 'app-add-promotion',
@@ -14,7 +15,7 @@ import { errorMessage } from '../../../shared/utils/errorMessage';
 export class AddPromotionComponent implements OnInit {
 
   private _promotionsService = inject(PromotionServiceService)
-  public _errorsMessage = inject(errorMessage)
+  public _errorsMessage = inject(returnMessages)
 
   form!: FormGroup;
   private fb = inject(FormBuilder);
@@ -25,7 +26,7 @@ export class AddPromotionComponent implements OnInit {
   @Output() closeModalAfterSuccess = new EventEmitter<any>();
 
   ngOnInit(): void {
-    this.admin = AdminUSER()?.dga
+    this.admin = getUser()
     this.load_form();
   }
   load_form() {
@@ -45,7 +46,7 @@ export class AddPromotionComponent implements OnInit {
     console.log(annee, "promotion");
     // return
     if (this.form.valid) {
-      this._promotionsService.addAnnee(annee, this.admin.idAdministra!).subscribe({
+      this._promotionsService.addAnnee(annee, this.admin.id!).subscribe({
         next: (result) => {
           this._errorsMessage.showSuccessToast(result.message);
           this.form.reset();

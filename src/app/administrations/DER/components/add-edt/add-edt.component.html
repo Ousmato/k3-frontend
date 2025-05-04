@@ -1,0 +1,75 @@
+<main>
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form-container">
+        <div class="form-contente">
+            <div class="form-child">
+
+                <div class="form-group">
+                    <label>Promotion</label>
+                    <select  class="form-select" formControlName="idAnnee" (change)="onPromotionSelect($event)"
+                        [class.invalid]="form.get('idAnnee')?.invalid && form.get('idAnnee')?.touched">
+                        <option value="" disabled selected>Choisir la promotion</option>
+                        <option *ngFor="let pro of promotions" [value]="pro.id">
+                           Pro {{dependencies.util.extractAnnee(pro)}} - {{dependencies.util.extractAnnee(pro) + 1}}
+                        </option>
+                    </select>
+                </div>
+    
+                <div class="form-group">
+                    <label>Classe</label>
+                    <select  class="form-select" formControlName="idClasse" (change)="onClasseSelect($event)"
+                        [class.invalid]="form.get('idClasse')?.invalid && form.get('idClasse')?.touched">
+                        <option value="" disabled selected>Choisir la classe</option>
+                        <option *ngFor="let cl of classes" [value]="cl.id">
+                            {{dependencies.util.abrevigateNiveauName(cl.idFiliere?.idNiveau?.nom!)}} -
+                            {{dependencies.util.abrevigate(cl.idFiliere?.idFiliere?.nomFiliere!)}}
+                        </option>
+                    </select>
+                </div>
+    
+                <!-- <div > -->
+                <div class="form-group">
+                    <label>Semestre</label>
+                    <select   class="form-select" formControlName="idSemestre" (change)="onSemestreSelect($event)"
+                        [class.invalid]="form.get('idSemestre')?.invalid && form.get('idSemestre')?.touched">
+                        <option disabled selected value="">Choisir le semestre</option>
+                        <option *ngFor="let seme of semestre" [value]="seme.id">{{seme.nomSemetre}}</option>
+                    </select>
+                    <span class="error" *ngIf="form.controls['idSemestre'].invalid && form.controls['idSemestre'].touched">
+                        Champ obligatoire*
+                    </span>
+                </div>
+            </div>
+    
+            <div class="form-child">
+                <div class="form-group">
+                    <label>Modules</label>
+                    <select   aria-label="Disabled select example" class="form-select" formControlName="idModule"
+                        [class.invalid]="form.get('idModule')?.invalid && form.get('idModule')?.touched" >
+                        <option disabled selected value="">Choisir le module</option>
+                        <option *ngFor="let mod of modules" [ngValue]="mod.id">{{mod.nomModule}}</option>
+                    </select>
+                </div>
+                <!-- </div> -->
+        
+                <div class="form-group">
+                    <label>Date du début</label>
+                    <input  class="form-control" type="date" formControlName="dateDebut" (change)="check_date($event)"
+                        [class.invalid]="form.get('dateDebut')?.invalid && form.get('dateDebut')?.touched" />
+                    <span class="error" *ngIf="form.controls['dateDebut'].invalid && form.controls['dateDebut'].touched">
+                        Champ obligatoire*
+                    </span>
+                </div>
+        
+                <div class="form-group">
+                    <label>Date de fin</label>
+                    <input class="form-control" type="date" formControlName="dateFin" readonly />
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="button-group">
+            <button type="submit">Enregistrer</button>
+        </div>
+    </form>
+</main>

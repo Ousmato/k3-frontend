@@ -1,0 +1,32 @@
+<main>
+    <div class="header">
+        
+        <button (click)="showAddApp()">Ajouter surveillant </button>
+        <app-search-bar (search)="onSearch($event)"></app-search-bar>
+    </div>
+    
+    <app-add-surveillant *ngIf="showAdd" (closeModal)="hideForm()"></app-add-surveillant>
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>N° </th>
+                <th>Nom </th>
+                <th>Prénom </th>
+                <th>Telephone </th>
+                <th>Action </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let surveillant of filteredItems; let i = index">
+                <td class="numerotation-clumn">{{ i + 1 }}</td>
+                <td> {{surveillant.nom}}</td>
+                <td> {{surveillant.prenom}}</td>
+                <td> {{surveillant.telephone}}</td>
+                <td></td>
+                
+            </tr>
+        </tbody>
+
+    </table>
+</main>

@@ -85,7 +85,7 @@
           <img [src]="dataAdmin!.urlPhoto" (error)="onError($event)" alt="">
           <div class="name-content">
             <span>{{dataAdmin.nom.charAt(0).toUpperCase()}}. {{dataAdmin.prenom.toUpperCase()}}</span>
-            <span class="text-muted small">{{abreviateName(dataAdmin.idRole.nom)}}</span>
+            <span class="text-muted small">{{abreviateName(dataAdmin.idPoste.nom)}}</span>
             <!-- <fa-icon [icon]="show_admin ? icons.sortUp : icons.sortDown" class="my-custom-style"></fa-icon> -->
   
           </div>
@@ -117,7 +117,7 @@
         <img [src]="dataAdmin.urlPhoto" (error)="onError($event)" alt="">
         <div class="info-pofil">
           <p>{{dataAdmin.nom}} {{dataAdmin.prenom}}</p>
-          <p class="text-muted small">{{dataAdmin.idRole.nom.toUpperCase()}}</p>
+          <p class="text-muted small">{{dataAdmin.idPoste.nom.toUpperCase()}}</p>
         </div>
 
       </div>

@@ -1,0 +1,25 @@
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    margin: 10px;
+}
+
+button{
+    border: none;
+    display: flex;
+    gap: 8px;
+    text-align: center;
+    padding: 5px 20px;
+    border-radius: 5px;
+    background-color: var(--primary);
+    color: var(--secondary) !important;
+    cursor: pointer;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary) !important;
+    }
+   
+}

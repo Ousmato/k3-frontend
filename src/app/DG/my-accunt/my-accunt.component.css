@@ -1,6 +1,8 @@
 main{
     padding: 10px 20px;
     height: 80vh;
+    position: relative;
+    font-family: Arial, sans-serif;
 }
 #prof{
     font-weight: bold;
@@ -9,6 +11,11 @@ main{
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+}
+form{
+    height: 100%;
+    overflow: hidden;
+    overflow-y: auto;
 }
 p{
     margin: 0;

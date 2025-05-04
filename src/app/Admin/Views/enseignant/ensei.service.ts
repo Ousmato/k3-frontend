@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { finalize, Observable } from 'rxjs';
-import { Teacher, TeacherDto } from '../../Models/Teachers';
+import { Teacher, TeacherDto } from '../../../administrations/DER/models/Teachers';
 import { Response_String } from '../../Models/Response_String';
 import { TeacherPages } from '../../Models/Pagination-module';
 import { environment } from '../../../../environments/environment';
 import { LoaderService } from '../../../Services/loader.service';
+import { httpResponse } from '../../../administrations/shared/models/httpResponse.model';
 
 
 @Injectable({
@@ -86,8 +87,14 @@ export class EnseiService {
     return this.http.get<TeacherDto>(`${this.baseUrl}all-emplois-of-teacher/${idAnnee}/${idTeacher}`);
   }
   // desable teacher 
-  desableTeacher(idTeacher: number): Observable<Response_String> {
-    return this.http.put<Response_String>(`${this.baseUrl}desable-teacher/${idTeacher}`, null);
+  desableTeacher(idTeacher: number): Observable<httpResponse> {
+    return this.http.put<httpResponse>(`${this.baseUrl}desable-teacher/${idTeacher}`, null);
+  }
+
+  //all teacher haves emploi by year
+  getAllTeachersHaveEmploisByIdAnneeAndIdSemestre(idAnnee: number, idSemestre: number) : Observable<any>{
+    return this.http.get<any>(`${this.baseUrl}get-all-teachers-have-emplois-by-idAnnee-and-idSemestre/${idAnnee}/${idSemestre}`)
+
   }
  
  

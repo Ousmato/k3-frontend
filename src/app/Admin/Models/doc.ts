@@ -1,8 +1,8 @@
-import { Admin } from "./Admin";
+import { Admin } from "../../administrations/shared/models/Admin";
 import { ClassRoom } from "./Classe";
 import { Salles } from "./Salles";
 import { Inscription, Student } from "./Students";
-import { Teacher } from "./Teachers";
+import { Teacher } from "../../administrations/DER/models/Teachers";
 
 export enum TypeDoc{
     RAPPORT = "rapport",

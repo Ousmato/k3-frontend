@@ -21,7 +21,7 @@ import { NoteService } from '../../../../Services/note.service';
 import { SideBarService } from '../../../../sidebar/side-bar.service';
 import { JsonExcelFileService } from '../../../../Services/json-excel-file.service';
 import { StudentSharedMethods } from '../Utils/Student-shared-methode';
-import { Admin } from '../../../Models/Admin';
+import { Admin } from '../../../../administrations/shared/models/Admin';
 @Component({
   selector: 'app-all-notes-semestre',
   templateUrl: './all-notes-semestre.component.html',

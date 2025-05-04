@@ -5,10 +5,9 @@ import { Student_Enum_Options } from '../Utils/Student-enum-options';
 import { IconsService } from '../../../../Services/icons.service';
 import { AnneeScolaire } from '../../../Models/School-info';
 import { StudentSharedMethods } from '../Utils/Student-shared-methode';
-import { InscriptionService } from '../../../../Services/inscription.service';
-import { AdminUSER } from '../../../Models/Auth';
-import { Admin } from '../../../Models/Admin';
+import { Admin } from '../../../../administrations/shared/models/Admin';
 import { Router } from '@angular/router';
+import { AdminUSER } from '../../../../administrations/shared/models/auth';
 Chart.register(...registerables)
 
 @Component({
@@ -52,7 +51,7 @@ export class StudentStatistiqueComponent implements OnInit,  OnChanges{
     }
   }
   ngOnInit(): void {
-    this.scolarite = AdminUSER()?.scolarite
+    this.scolarite = AdminUSER()?.scolarite!
    
       // Initially, only the first two statuses are visible
    

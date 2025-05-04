@@ -1,118 +1,140 @@
-<main >
-    <h4>Ajouter Administrateur</h4>
-    <form  [formGroup]="add_admin_form" (ngSubmit)="add_admin()" >
-        <div class="form-add">
-            <div class="column-f">
-                <div class="input">
-                    <label for="validationDefault01" class="label form-label">Nom :</label>
-                    <input type="text" class="input-with form-control" formControlName="nom" id="nom" [class.is-invalid]="add_admin_form.get('nom')!.invalid && add_admin_form.get('nom')!.touched"  placeholder="Nom....">
-                    <span class="small" *ngIf="add_admin_form.controls['nom'].invalid && add_admin_form.controls['nom'].touched" [ngStyle]="{color: 'red'}">
-                        Champ obligatoire*
-                        </span>
-                        <div *ngIf="add_admin_form.controls['nom']!.errors?.['maxlength']">
-                            <span [ngStyle]="{color: 'red', 'font-size': '12px'}">Le nom  ne doit pas dépasser 20 caractères.</span>
-                        </div>
-                </div>
-        
-                <div class="input">
-                    <label for="validationDefault02" class="label form-label">Prenom :</label>
-                    <input type="text" formControlName="prenom" class="input-with form-control" id="prenom" [class.is-invalid]="add_admin_form.get('prenom')!.invalid && add_admin_form.get('prenom')!.touched"   placeholder="Prenom....">
-                    <span class="small" *ngIf="add_admin_form.controls['prenom'].invalid && add_admin_form.controls['prenom'].touched" [ngStyle]="{color: 'red'}">
-                    Champ obligatoire*
-                    </span>
-                    <div *ngIf="add_admin_form.controls['prenom']!.errors?.['maxlength']">
-                        <span [ngStyle]="{color: 'red', 'font-size': '12px'}">Le nom  ne doit pas dépasser 20 caractères.</span>
-                    </div>
-                </div>
-        
-                <div class="input">
-                    <label  class="label form-label">Email :</label>
-                    <input type="email" formControlName="email" class=" input-with form-control" [class.is-invalid]="add_admin_form.get('email')!.invalid && add_admin_form.get('email')!.touched" placeholder="Email...">
-                    <span class="small" *ngIf="add_admin_form.controls['email'].invalid && add_admin_form.controls['email'].touched" [ngStyle]="{color: 'red'}">
-                    Champ bligatoire*
-                    </span>
-                    
-                </div>
-        
-                <div class="input">
-                    <label for="validationDefault02" class="label form-label">Mot de Passe :</label>
-                    <div class="pass-chec position-relative">
-                        <input type="{{ passwordVisible ? 'text' : 'password' }}" class="form-control" formControlName="password" [class.is-invalid]="add_admin_form.get('password')!.invalid && add_admin_form.get('password')!.touched" id="password" placeholder="Mot de passe....">
-                        <span class="small" *ngIf="add_admin_form.controls['password'].invalid && add_admin_form.controls['password'].touched" [ngStyle]="{color: 'red'}">
-                            Champ obligatoire*
-                        </span>
-                        <!-- <span class="small" *ngIf="add_admin_form.controls['password'].errors?.['pattern'] && add_admin_form.controls['password'].touched" [ngStyle]="{color: 'red'}">
-                            Au moins 8 caractères, une majuscule, une minuscule et un symbole
-                        </span> -->
-                        <fa-icon [icon]="passwordVisible ? icons.eyeSlash : icons.eye" class="toggle-password position-absolute" id="togglePassword" [ngStyle]="{cursor: 'pointer', right: '10px', top: '50%', transform: 'translateY(-50%)'}" (click)="togglePasswordVisibility()"></fa-icon>
-                    </div>
-                </div>
-                
+<main>
+    <h6>Ajouter Personnel Administratif</h6>
+    <form [formGroup]="add_admin_form" (ngSubmit)="add_admin()">
+      
+      <!-- ÉTAPE 1 -->
+      <div class="form-add" *ngIf="currentStep === 1">
+        <div class="column-f">
+          <div class="input">
+            <label class="label form-label">Nom :</label>
+            <input type="text" class="form-control" formControlName="nom" placeholder="Nom...">
+            <div *ngIf="add_admin_form.get('nom')?.invalid && add_admin_form.get('nom')?.touched" class="error-msg">
+              Champ obligatoire*
             </div>
-            <div class="column-f">
-                
-                <div class="input">
-                    <label for="telephone" class="label form-label">Téléphone :</label>
-                    <input type="text" formControlName="telephone" class="form-control" [class.is-invalid]="add_admin_form.get('telephone')!.invalid && add_admin_form.get('telephone')!.touched" pattern="[0-9]{1,8}" placeholder="Numero de telephone....">
-                    <span class="small" *ngIf="add_admin_form.controls['telephone'].hasError('required') && add_admin_form.controls['telephone'].touched"
-                        [ngStyle]="{color: 'red'}">
-                        Champ obligatoire*
-                    </span>
-                    <span class="small" *ngIf="add_admin_form.controls['telephone'].hasError('pattern') && !add_admin_form.controls['telephone'].hasError('required')"
-                        [ngStyle]="{color: 'red'}">
-                        Maximum 8 chiffres autorisés*
-                    </span>
-                </div>
-    
-                <!-- button radio sexe start -->
-                
-    
-                <div class="input">
-                <label class="label form-label">Role de l'Administrateur</label> 
-                    <select class="form-select" formControlName="idRole"   placeholder="role"   [class.is-invalid]="add_admin_form.get('idRole')!.invalid && add_admin_form.get('idRole')!.touched">
-                    <option  selected disabled value="">Choisir Le role</option>
-                    <option *ngFor="let role of roles" value="{{role.id}}" >{{role.nom}} {{ role.typeFiliere && role.typeFiliere !== 'AUCUN' ? "-" +role.typeFiliere : ""}}</option>
-                    </select> 
-                    <span class="small" *ngIf="add_admin_form.controls['idRole'].invalid && add_admin_form.controls['idRole'].touched" [ngStyle]="{color: 'red'}">
-                        Champ obligatoire*
-                    </span>
-                </div>
-    
-                <div class="input">
-                    <label for="validationDefault05" class="label form-label">Photo :</label>
-                    <input type="file" accept="image/*" class="input-with form-control"  id="inputPhoto" (change)="onFileSelected($event)"  required>
-                    <!-- <span *ngIf="teacher_form.controls['urlPhoto'].invalid && teacher_form.controls['urlPhoto'].touched" [ngStyle]="{color: 'red'}">
-                    Champ obligatoire*
-                    </span> -->
-                </div>
-    
-                <div class="radio">
-                    <label for="">Choisir le sexe :</label>
-                    <div class="radio-content">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio1" value="Homme" required>
-                            <label class="form-check-label" for="inlineRadio1">Homme</label>
-                        </div>
-    
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" formControlName="sexe" id="inlineRadio2" value="Femme" required>
-                            <label class="form-check-label" for="inlineRadio2">Femme</label>
-                        </div>
-                    </div>
-                    <span class="small" *ngIf="add_admin_form.controls['sexe'].invalid && add_admin_form.controls['sexe'].touched" [ngStyle]="{color: 'red'}">
-                        Champ obligatoire*
-                    </span>
-                    
-                    
-                </div>
-                
+          </div>
+  
+          <div class="input">
+            <label class="label form-label">Prénom :</label>
+            <input type="text" class="form-control" formControlName="prenom" placeholder="Prénom...">
+            <div *ngIf="add_admin_form.get('prenom')?.invalid && add_admin_form.get('prenom')?.touched" class="error-msg">
+              Champ obligatoire*
             </div>
-    
+          </div>
+  
+          <div class="input">
+            <label class="label form-label">Email :</label>
+            <input type="email" class="form-control" formControlName="email" placeholder="Email...">
+            <div *ngIf="add_admin_form.get('email')?.invalid && add_admin_form.get('email')?.touched" class="error-msg">
+              Champ obligatoire*
+            </div>
+          </div>
+  
+          <div class="input">
+            <label class="label form-label">Mot de passe :</label>
+            <div class="pass-chec position-relative">
+              <input type="{{ passwordVisible ? 'text' : 'password' }}" class="form-control"
+                     formControlName="password" placeholder="Mot de passe...">
+              <fa-icon [icon]="passwordVisible ? dependencies.icons.eyeSlash : dependencies.icons.eye"
+                       class="toggle-password position-absolute"
+                       (click)="togglePasswordVisibility()"></fa-icon>
+            </div>
+            <div *ngIf="add_admin_form.get('password')?.invalid && add_admin_form.get('password')?.touched" class="error-msg">
+              Champ obligatoire*
+            </div>
+          </div>
         </div>
-        <div class="btn-container">
-          <button id="exit" (click)="close_modal()" type="button">Annuler</button>
+  
+        <div class="column-f">
+          <div class="input">
+            <label class="label form-label">Téléphone :</label>
+            <input type="text" class="form-control" formControlName="telephone" placeholder="Téléphone...">
+            <div *ngIf="add_admin_form.get('telephone')?.invalid && add_admin_form.get('telephone')?.touched" class="error-msg">
+              Champ obligatoire ou invalide*
+            </div>
+          </div>
+  
+          
+  
+          <div class="radio">
+            <label class="label">Sexe :</label>
+            <div class="radio-content">
+              <label><input type="radio" formControlName="sexe" value="Homme"> Homme</label>
+              <label><input type="radio" formControlName="sexe" value="Femme"> Femme</label>
+            </div>
+            <div *ngIf="add_admin_form.get('sexe')?.invalid && add_admin_form.get('sexe')?.touched" class="error-msg">
+              Champ obligatoire*
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- ÉTAPE 2 -->
+      <div class="form-add" *ngIf="currentStep === 2">
+        <div class="column-f">
+          <div class="input">
+            <label class="label form-label">Compte bancaire :</label>
+            <input type="text" class="form-control" formControlName="compteBanque" placeholder="Compte banque...">
+            <!-- <div *ngIf="add_admin_form.get('compteBanque')?.invalid && add_admin_form.get('compteBanque')?.touched" class="error-msg">
+              Champ obligatoire*
+            </div> -->
+          </div>
+  
+          <div class="input">
+            <label class="label form-label">Nom de la Banque :</label>
+            <input type="text" class="form-control" formControlName="nomBanque" placeholder="Banque...">
+            <!-- <div *ngIf="add_admin_form.get('nomBanque')?.invalid && add_admin_form.get('nomBanque')?.touched" class="error-msg">
+              Champ obligatoire*
+            </div> -->
+          </div>
+        </div>
+  
+        <div class="column-f">
+          <div class="input">
+            <label class="label form-label">Grade :</label>
+            <select class="form-select" formControlName="usersGrade">
+              <option value="" disabled selected>Choisir le grade</option>
+              <option *ngFor="let grd of grades" [value]="grd.id">{{grd.libelle}}</option>
+            </select>
+            <!-- <div *ngIf="add_admin_form.get('usersGrade')?.invalid && add_admin_form.get('usersGrade')?.touched" class="error-msg">
+              Champ obligatoire*
+            </div> -->
+          </div>
+  
+          <div class="input">
+            <label class="label form-label">Poste :</label>
+            <select class="form-select" formControlName="idPoste">
+              <option value="" disabled selected>Choisir le poste</option>
+              <option *ngFor="let role of postes" [value]="role.id">
+                {{ role.nom }} {{ role.typeFiliere && role.typeFiliere !== 'AUCUN' ? '-' + role.typeFiliere : '' }}
+              </option>
+            </select>
+            <div *ngIf="add_admin_form.get('idPoste')?.invalid && add_admin_form.get('idPoste')?.touched" class="error-msg">
+              Champ obligatoire*
+            </div>
+          </div>
 
-          <button   type="submit">Enregistrer</button>
+          <div class="input">
+            <label class="label form-label">Matricule :</label>
+            <input type="text" class="form-control" formControlName="matricule" placeholder="Matricule...">
+            <div *ngIf="add_admin_form.get('matricule')?.invalid && add_admin_form.get('matricule')?.touched" class="error-msg">
+              Champ obligatoire*
+            </div>
+          </div>
+  
+          <div class="input">
+            <label class="label form-label">Photo :</label>
+            <input type="file" class="form-control" (change)="onFileSelected($event)" accept="image/*">
+          </div>
         </div>
+      </div>
+  
+      <!-- BOUTONS DE NAVIGATION -->
+      <div class="btn-container">
+        <button type="button" *ngIf="currentStep > 1" (click)="previousStep()">Précédent</button>
+        <button type="button" *ngIf="currentStep < totalSteps" (click)="nextStep()">Suivant</button>
+        <button type="submit" *ngIf="currentStep === totalSteps">Enregistrer</button>
+        <button type="button" class="cancel" (click)="close_modal()">Annuler</button>
+      </div>
     </form>
-</main>
+  </main>
+  

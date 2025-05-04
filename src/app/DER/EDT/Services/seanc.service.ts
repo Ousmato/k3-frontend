@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { finalize, Observable } from 'rxjs';
-import { Seances} from '../Models/Seances';
+import { Seances} from '../../../administrations/DER/models/Seances';
 import { Response_String } from '../../../Admin/Models/Response_String';
-import { Journee } from '../Models/Configure_seance';
-import { teacherConfigureDto } from '../../../Admin/Models/Teachers';
+import { Journee } from '../../../administrations/DER/models/Configure_seance';
+import { teacherConfigureDto } from '../../../administrations/DER/models/Teachers';
 import { environment } from '../../../../environments/environment';
 import { LoaderService } from '../../../Services/loader.service';
 

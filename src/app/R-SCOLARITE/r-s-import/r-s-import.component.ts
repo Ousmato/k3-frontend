@@ -10,11 +10,10 @@ import { IconsService } from '../../Services/icons.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EtudeService } from '../../Admin/Views/Etudiants/etude.service';
 import { PageTitleService } from '../../Services/page-title.service';
-import { Admin } from '../../Admin/Models/Admin';
-import { AdminUSER } from '../../Admin/Models/Auth';
-import { SideBarService } from '../../sidebar/side-bar.service';
+import { Admin } from '../../administrations/shared/models/Admin';
 import { EventServiceService } from '../../Services/event-service.service';
 import { SharedMethodes } from '../Utils/SharedMethodes';
+import { getUser } from '../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-r-s-import',
@@ -42,7 +41,7 @@ export class RSImportComponent implements OnInit {
   ngOnInit(): void {
     this.get_annees();
     this.load_form();
-    this.admin = AdminUSER()?.scolarite
+    this.admin = getUser()
   }
 
   onFileChange(event: any): void {
@@ -230,7 +229,7 @@ export class RSImportComponent implements OnInit {
 
   onSelect(event: any) {
     const idAnne = event.target.value
-    this.classService.getAllClasse(idAnne, this.admin.idAdministra!).subscribe(result => {
+    this.classService.getAllClasse(idAnne, this.admin.id!).subscribe(result => {
       this.classes = result;
       // console.log(this.classes, "class");
     })

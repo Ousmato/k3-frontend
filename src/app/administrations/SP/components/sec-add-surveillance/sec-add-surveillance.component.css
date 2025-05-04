@@ -1,0 +1,101 @@
+main{
+    height: 75vh;
+}
+.plag{
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5%;
+}
+
+.input-content{
+    cursor: pointer;
+    display: flex;
+    /* gap: 5px; */
+    width: 50%;
+    font-size: 12px;
+    align-items: center;
+    border: 1px solid var(--tertiary);
+    border-radius: 5px;
+    padding: 5px;
+    transition: background-color 0.2s ease;
+    &:hover{
+        background-color: var(--tertiary);
+        color: var(--primary);
+    }
+}
+.contenair-teach{
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid var(--tertiary);
+    border-radius: 5px;
+}
+.color-red{
+    background-color: red;
+}
+.plag-enseignat{
+    
+    gap: 10px;
+    margin-top: 10px;
+}
+.input-time{
+    display: flex;
+    gap: 20px;
+}
+.plage-days{
+    display: flex;
+    gap: 5%;
+    margin-top: 10px;
+}
+.group{
+    margin-top: 10px;
+}
+#type-seance{
+    width: 238px;
+}
+.input{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.form-group{
+    margin: 10px 0;
+}
+.chose_teacher{
+    font-size: 14px;
+    margin-right: 10px;
+    background-color: var(--primary);
+    cursor: pointer;
+    color: var(--secondary);
+    padding: 5px;
+    border-radius: 4px;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+}
+
+button{
+    border: none;
+    padding: 5px;
+    background-color: var(--primary);
+    cursor: pointer;
+    color: var(--secondary);
+    margin-top: 20px;
+    border-radius: 5px;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+    }
+}
+input:focus,
+select:focus {
+    outline: none;
+    border: 1px solid var(--primary);
+    box-shadow: 0 0 5px var(--primary);
+}
+
+.is-invalid{
+    border: 1px solid red;
+    box-shadow: 0 0 5px red;
+}

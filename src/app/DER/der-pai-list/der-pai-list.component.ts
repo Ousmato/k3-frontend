@@ -10,11 +10,12 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { SchoolService } from '../../Services/school.service';
 import { AnneeScolaire } from '../../Admin/Models/School-info';
 import { ActivatedRoute } from '@angular/router';
-import { TeacherEmplois } from '../EDT/Models/Emplois';
+import { TeacherEmplois } from '../../administrations/DER/models/Emplois';
 import { Class_shared } from '../../DGA/class-students/Utils/Class-shared-methods';
-import { TeacherDto } from '../../Admin/Models/Teachers';
-import { Admin } from '../../Admin/Models/Admin';
-import { AdminUSER } from '../../Admin/Models/Auth';
+import { TeacherDto } from '../../administrations/DER/models/Teachers';
+import { Admin } from '../../administrations/shared/models/Admin';
+import { environment } from '../../../environments/environment';
+import { getUser } from '../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-der-pai-list',
@@ -30,7 +31,7 @@ import { AdminUSER } from '../../Admin/Models/Auth';
   ]
 })
 export class DerPaiListComponent implements OnInit {
-
+  assetUrl = environment.urlAssetsImage
   searchTerm: string = ''
   currentYear!: number
   idTeacher!: number
@@ -48,7 +49,7 @@ export class DerPaiListComponent implements OnInit {
     public icons: IconsService, private sideBarService: SideBarService) { }
 
   ngOnInit(): void {
-    this.admin = AdminUSER()?.der
+    this.admin = getUser()
     this.root.queryParams.subscribe(params => {
       this.idTeacher = params['id'];
       this.getAllEmploiByIdTeacherAndCurrentYear();
@@ -70,11 +71,11 @@ export class DerPaiListComponent implements OnInit {
   
   //filter method
   filteredEmplois() {
-    if (!this.searchTerm && this.emploisDto.teacherEmploiList.length) {
-      return this.filteredIteme = this.emploisDto.teacherEmploiList
-    }
-    return this.filteredIteme = this.emploisDto.teacherEmploiList.filter(p => p.nomModule.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      p.filiere.toLowerCase().includes(this.searchTerm.toLowerCase()))
+    // if (!this.searchTerm && this.emploisDto.teacherEmploiList.length) {
+    //   return this.filteredIteme = this.emploisDto.teacherEmploiList
+    // }
+    // return this.filteredIteme = this.emploisDto.teacherEmploiList.filter(p => p.nomModule.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+    //   p.filiere.toLowerCase().includes(this.searchTerm.toLowerCase()))
   }
   goBack() {
     this.searchTerm = ''
@@ -114,7 +115,7 @@ export class DerPaiListComponent implements OnInit {
     this.annee_check = this.annees.find(annee => annee.id == idAnnee)!;
     this.teacherService.getAllEmploiOfTeacherByIdYear(idAnnee, this.idTeacher).subscribe(result => {
         this.emploisDto = result;
-        this.teacherEmploi = this.emploisDto.teacherEmploiList
+        // this.teacherEmploi = this.emploisDto.teacherEmploiList
       })
    
   }
@@ -134,12 +135,12 @@ export class DerPaiListComponent implements OnInit {
   getAllEmploiByIdTeacherAndCurrentYear(){
     this.teacherService.getAllEmploiOfTeacherOfCurrentYear(this.idTeacher).subscribe(result => {
       
-      if(result.teacherEmploiList != null) {
-      this.teacherEmploi = result.teacherEmploiList
+      // if(result.teacherEmploiList != null) {
+      // this.teacherEmploi = result.teacherEmploiList
 
-      }else{
-        result.teacherEmploiList = []
-      }
+      // }else{
+      //   result.teacherEmploiList = []
+      // }
       this.emploisDto = result;
       console.log(this.emploisDto, "emploisDto")
     })

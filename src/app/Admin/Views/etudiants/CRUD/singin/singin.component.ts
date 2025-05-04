@@ -3,13 +3,10 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ClassStudentService } from '../../../../../DGA/class-students/class-student.service';
 import { ClassRoom } from '../../../../Models/Classe';
 import { Accademies, Diplome, Inscription, Quartier, seriesType, Student, Type_status } from '../../../../Models/Students';
-import { Admin } from '../../../../Models/Admin';
+import { Admin } from '../../../../../administrations/shared/models/Admin';
 import { IconsService } from '../../../../../Services/icons.service';
 import { PageTitleService } from '../../../../../Services/page-title.service';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AnneeScolaire } from '../../../../Models/School-info';
-import { SchoolService } from '../../../../../Services/school.service';
-import { AdminUSER } from '../../../../Models/Auth';
 import { NiveauService } from '../../../../../Services/niveau.service';
 import { Niveau } from '../../../../Models/Niveau';
 import { Filiere } from '../../../../Models/Filieres';
@@ -18,6 +15,8 @@ import { InscriptionService } from '../../../../../Services/inscription.service'
 import { Student_Enum_Options } from '../../Utils/Student-enum-options';
 import { StudentSharedMethods } from '../../Utils/Student-shared-methode';
 import { Class_shared } from '../../../../../DGA/class-students/Utils/Class-shared-methods';
+import { utils } from '../../../../../administrations/shared/utils/utils';
+import { AdminUSER } from '../../../../../administrations/shared/models/auth';
 
 
 @Component({
@@ -44,9 +43,10 @@ export class SinginComponent implements OnInit {
   anneeScolaire: AnneeScolaire[] = []
   promotion!: number
   passwordVisible: boolean = false
+  currentSection: number = 1;
 
   constructor(private formBuilder: FormBuilder, private pageTitle: PageTitleService, private niveauService: NiveauService,
-    private inscriptionService: InscriptionService, public icons: IconsService, public enum_options: Student_Enum_Options, 
+    private inscriptionService: InscriptionService, public icons: IconsService, public enum_options: Student_Enum_Options, public utils: utils, 
     private filiereService: FiliereService, public studen_shared_methods: StudentSharedMethods, public class_shared: Class_shared,
     private classeService: ClassStudentService) { }
   ngOnInit(): void {
@@ -59,7 +59,7 @@ export class SinginComponent implements OnInit {
 
     this.get_all_niveau();
     this.get_all_filiere();
-    this.admin = AdminUSER()?.scolarite
+    this.admin = AdminUSER()?.scolarite!
     // this.studentStatusOptions = Object.keys(Type_status);
     this.studentForm = this.formBuilder.group({
       nom: ['', [Validators.required,Validators.minLength(3),Validators.maxLength(30)]],
@@ -82,25 +82,37 @@ export class SinginComponent implements OnInit {
       residenceParent: ['',[Validators.maxLength(30)]],
   
       diplome: ['',[Validators.required]],
-      academies: [],
-      series: [], 
-      quartier: [], 
+      academies: [""],
+      series: [""], 
+      quartier: [""], 
   
       numeroPlace: [''],
       anneeObtention: [''],
       idFiliere: ['', Validators.required],
       idNivau: ['', Validators.required] 
     });
+   
     // ----------------------------------------------------------------------
 
-    this.classeService.getAllCurrentClassOfYear(this.admin.idAdministra!).subscribe(data => {
-      this.classRoom = data;
-      console.log(this.classRoom);
-    });
+    // this.classeService.getAllCurrentClassOfYear(this.admin.idAdministra!).subscribe(data => {
+    //   this.classRoom = data;
+    //   console.log(this.classRoom);
+    // });
 
     this.load_all_annee();
   }
 
+  nextSection(): void {
+    if (this.currentSection < 4) {
+      this.currentSection++;
+    }
+  }
+
+  prevSection(): void {
+    if (this.currentSection > 1) {
+      this.currentSection--;
+    }
+  }
   // Méthode pour basculer l'état du mot de passe
   togglePasswordVisibility(): void {
     this.passwordVisible = !this.passwordVisible;
@@ -156,7 +168,7 @@ export class SinginComponent implements OnInit {
     const formData = this.studentForm.value;
     console.log("fom", formData);
 
-    this.admin = AdminUSER()?.scolarite
+    this.admin = AdminUSER()?.scolarite!
     // console.log(this.classRoom.find(c => c.id === formData.idClasse));
     const classe: ClassRoom = this.classRoom.find(c => c.idFiliere?.idNiveau.id === +formData.idNivau && c.idFiliere.idFiliere.id == +formData.idFiliere)!;
     console.log(classe, "classe------------")
@@ -196,7 +208,7 @@ export class SinginComponent implements OnInit {
     }
 
     console.log(inscription, "student");
-    // return;
+    return;
     if (this.studentForm.valid) {
       this.inscriptionService.singIn(inscription, this.fileName).subscribe(
         {

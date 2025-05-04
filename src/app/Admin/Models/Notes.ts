@@ -1,4 +1,4 @@
-import { Admin } from "./Admin";
+import { Admin } from "../../administrations/shared/models/Admin";
 import { Ecue, Module } from "./Module";
 import { Semestres } from "./Semestre";
 import { Inscription, InscriptionNoteDto, Student } from "./Students";

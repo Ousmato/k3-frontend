@@ -30,29 +30,63 @@
               <span><fa-icon [icon]="icons.scool"></fa-icon>Salles</span>
             </a>
           </li>
+          
           <!-- ------------------------------- -->
-           <li class="menu-link">
+          <li class="menu-link">
             <div (click)="toggleSubMenuEnseignant()">
-              <!-- <fa-icon [icon]="isSubMenuOpen.enseignants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon> -->
-              <a routerLink="/der/enseignants" routerLinkActive="active"><span><fa-icon [icon]="icons.users"></fa-icon>Enseignants</span>
+              <a  >
+                <span [ngClass]="{'is-click': isSubMenuOpen.enseignants }">
+                  <fa-icon [icon]="icons.users"></fa-icon>
+                  Enseignants
+                  <fa-icon [icon]="isSubMenuOpen.enseignants ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon>
+
+                </span>
                     
               </a>
-            </div>
+
+              
+            </div> 
+            <ul  class="sub-menu" *ngIf="isSubMenuVisible">
+              <li routerLink="/der/edt-individuel" routerLinkActive="active" > Les EDT Individuels</li>
+              <li routerLink="/der/enseignants" routerLinkActive="active" > Liste des Enseignants </li>
+              <li routerLink="/der/t-singin" routerLinkActive="active"> Ajouter Enseignants</li>
+            </ul>
            
           </li>
           
          
           <li class="menu-link" >
             <a routerLink="/der/students-class" routerLinkActive="active">
-              <span ><fa-icon [icon]="icons.calandarPlus"></fa-icon> Les Classes</span>
+              <span ><fa-icon [icon]="icons.folder"></fa-icon> Les Classes</span>
             </a>
           </li>
 
-         <li class="menu-link">
-            <a routerLink="/der/doc" routerLinkActive="active">
-              <span><fa-icon [icon]="icons.archive"></fa-icon>Rapport et Memoire</span>
-            </a>
+        
+
+          <li class="menu-link">
+            <div (click)="toggleSubMenuEDT()">
+              <a  >
+                <span >
+                  <fa-icon [icon]="icons.calandarday"></fa-icon>
+                  Emplois du temps
+                  <fa-icon [icon]="isSubMenuOpen.EDT ? icons.angleUp : icons.angleDown" class="float-end"></fa-icon>
+
+                </span>
+                    
+              </a>
+
+              
+            </div> 
+            <ul  class="sub-menu" *ngIf="isSubMenuOpen.EDT">
+              <li routerLink="/der/add-edt" routerLinkActive="active" > Ajouter EDT</li>
+              <li routerLink="/der/all-edt" routerLinkActive="active" > Liste des EDT</li>
+              
+              <!-- <li routerLink="/der/t-singin" routerLinkActive="active"> Ajouter Enseignants</li> -->
+            </ul>
+           
           </li>
+
+         
 
          <li class="menu-link">
             <a routerLink="/der/import" routerLinkActive="active">
@@ -103,7 +137,7 @@
             <img [src]="dataAdmin.urlPhoto" (error)="onError($event)" alt="">
             <div class="info-pofil">
               <p>{{dataAdmin.nom}} {{dataAdmin.prenom}}</p>
-              <p class="text-muted small">{{dataAdmin.idRole.nom.toUpperCase()}}</p>
+              <p class="text-muted small">{{dataAdmin.idPoste.nom.toUpperCase()}}</p>
             </div>
     
           </div>

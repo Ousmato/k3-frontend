@@ -52,7 +52,7 @@ main {
     border-bottom-right-radius: 5px;
     border-top-right-radius: 5px ;
     /* background-color: var(--primary); */
-    background-image: url("/assets/recta.png");
+    /* background-image: url("/assets/recta.png"); */
     background-size: cover; /* S'adapte à la taille de l'élément */
     background-position: center;
 }
@@ -95,7 +95,7 @@ main {
    border-radius: 5px;
    
 }
-.input-groupe input{
+.input-groupe input, select{
     border: none;
     outline: none;
     background-color: transparent !important;
@@ -104,6 +104,9 @@ main {
     border-bottom-right-radius: 5px;
     border-top-right-radius: 5px;
     width: 100%;
+}
+select{
+    margin-right: 5px;
 }
 #password{
     border-bottom-right-radius: 0;

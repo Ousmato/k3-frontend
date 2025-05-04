@@ -9,12 +9,12 @@ import { PageTitleService } from '../../../Services/page-title.service';
 import { IconsService } from '../../../Services/icons.service';
 import { debounceTime } from 'rxjs';
 import { EnseiService } from '../../../Admin/Views/Enseignant/ensei.service';
-import { Teacher } from '../../../Admin/Models/Teachers';
+import { Teacher } from '../../../administrations/DER/models/Teachers';
 import { InscriptionService } from '../../../Services/inscription.service';
-import { Admin } from '../../../Admin/Models/Admin';
+import { Admin } from '../../../administrations/shared/models/Admin';
 import { ToastrService } from 'ngx-toastr';
 import { SideBarService } from '../../../sidebar/side-bar.service';
-import { AdminUSER } from '../../../Admin/Models/Auth';
+import { getUser } from '../../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-add-doc',
@@ -62,7 +62,7 @@ export class AddDocComponent implements OnInit {
       })
     })
     
-    this.admin = AdminUSER()?.der;
+    this.admin = getUser();
     
     this.sidebarService.currentSearchTerm.subscribe(term =>{
       this.searchTerm = term

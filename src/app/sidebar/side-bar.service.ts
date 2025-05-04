@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Admin } from '../Admin/Models/Admin';
+import { Admin } from '../administrations/shared/models/Admin';
 
 @Injectable({
   providedIn: 'root'

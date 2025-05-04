@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Teacher } from '../../../Admin/Models/Teachers';
+import { Teacher } from '../../../administrations/DER/models/Teachers';
 import { EnseiService } from '../../../Admin/Views/Enseignant/ensei.service';
 import { SalleService } from '../../../Services/salle.service';
 import { Salles } from '../../../Admin/Models/Salles';
@@ -11,8 +11,8 @@ import { EtudeService } from '../../../Admin/Views/Etudiants/etude.service';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { DatePipe } from '@angular/common';
 import { debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs';
-import { Admin } from '../../../Admin/Models/Admin';
-import { AdminUSER } from '../../../Admin/Models/Auth';
+import { Admin } from '../../../administrations/shared/models/Admin';
+import { getUser } from '../../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-program-soutenance',
@@ -49,7 +49,7 @@ export class ProgramSoutenanceComponent implements OnInit {
     this.getAllTeacher();
     this.getAllSalles();
 
-    this.admin = AdminUSER()?.der
+    this.admin = getUser()
 
   }
 
@@ -108,7 +108,7 @@ export class ProgramSoutenanceComponent implements OnInit {
       heureFin: formData.heureFin,
       idDoc: formData.idDoc,
       idSalle: this.salle!,
-      idAdmin: this.admin.idAdministra!
+      idAdmin: this.admin.id!
       
     }
     const prog : ProgramSoutenance ={

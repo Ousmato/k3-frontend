@@ -1,15 +1,14 @@
 import { Component, EnvironmentInjector, OnDestroy, OnInit } from '@angular/core';
-import { Admin, Admin_role } from '../../Admin/Models/Admin';
+import { Admin, Admin_role } from '../../administrations/shared/models/Admin';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { PageTitleService } from '../../Services/page-title.service';
 import { IconsService } from '../../Services/icons.service';
 import { SchoolService } from '../../Services/school.service';
 import { SideBarService } from '../../sidebar/side-bar.service';
 import { SchoolInfo } from '../../Admin/Models/School-info';
 import { filter, Subscription } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { AdminUSER } from '../../Admin/Models/Auth';
 import { AuthServiceService } from '../../auth-service.service';
+import { getUser } from '../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-der-sidebar',
@@ -41,7 +40,8 @@ export class DerSidebarComponent implements OnInit, OnDestroy {
   isSubMenuOpen = {
     enseignants: false,
     etudiants: false,
-    archive: false
+    archive: false,
+    EDT: false
   };
 
  
@@ -49,14 +49,15 @@ export class DerSidebarComponent implements OnInit, OnDestroy {
 isSubMenuVisible: boolean = false;
 
 toggleSubMenuEnseignant() {
-  this.isSubMenuOpen.enseignants = !this.isSubMenuOpen.enseignants
-  this.isSubMenuOpen.etudiants  = false
+  this.isSubMenuVisible = !this.isSubMenuVisible;
+  // this.isSubMenuOpen.enseignants  = false
+}
+toggleSubMenuEDT() {
+  // this.isSubMenuVisible = !this.isSubMenuVisible;
+  this.isSubMenuOpen.EDT  =! this.isSubMenuOpen.EDT
 }
 
-toggleSubMenuStudent(){
-  this.isSubMenuOpen.etudiants = !this.isSubMenuOpen.etudiants
-  this.isSubMenuOpen.enseignants = false
-}
+
 
 toggleSubMenuArchive(){
   this.isSubMenuOpen.archive =!this.isSubMenuOpen.archive
@@ -93,7 +94,7 @@ setTitle(): void {
 }
 // ------------------------------------------load current admin
 load_admin(){
-  this.dataAdmin = AdminUSER()?.der
+  this.dataAdmin = getUser();
     this.dataAdmin.urlPhoto = `${environment.urlPhoto}${this.dataAdmin.urlPhoto}`
 }
 // --------------------------------shearch 
@@ -121,7 +122,7 @@ load_admin(){
   }
 
   toAccunt(){
-    this.router.navigate(['/der/my-accunt'], {queryParams:{id: this.dataAdmin.idAdministra}})
+    this.router.navigate(['/der/my-accunt'], {queryParams:{id: this.dataAdmin.id}})
   }
 
 

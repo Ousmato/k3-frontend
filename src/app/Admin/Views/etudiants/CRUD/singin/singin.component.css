@@ -1,153 +1,80 @@
-
-main{
-    display: flex;
-    flex-direction: column;
-    height: 80vh;
-    /* justify-content: center; */
-    /* align-items: center; */
-  /* background: #fafafa; */
-  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15); */
-    
-}
-button{
-    color: var(--secondary);
-    margin-top: 20px;
-    background-color: var(--primary);
-    border: none;
-    &:hover{
-        background-color: var(--secondary);
-        color: var(--primary);
-    }
-}
-form{
-    width: 100%;
-    padding: 10px;
-    justify-content: center;
-    /* border: 1px solid #ccc; */
+.form-section {
+    margin-bottom: 20px;
+    padding: 20px;
     border-radius: 8px;
+    background-color: #f9f9f9;
 }
-
-.contenaires{
-    height: 80%;
-    overflow-y: auto;
-}
-/* Personnalisation de la barre de défilement */
-.contenaires::-webkit-scrollbar {
-    width: 5px; /* Largeur de la barre de défilement */
-  }
-  
-  .contenaires::-webkit-scrollbar-track {
-    background: white; /* Couleur de l'arrière-plan de la piste */
-    border-radius: 10px; /* Coins arrondis de la piste */
-  }
-  
-  .contenaires::-webkit-scrollbar-thumb {
-    background: var(--tertiary); /* Couleur de la barre de défilement */
-    border-radius: 10px; /* Coins arrondis de la barre */
-  }
-  
-  .contenaires::-webkit-scrollbar-thumb:hover {
-    background: var(--primary); /* Couleur de la barre au survol */
-  }
-
-.input{
-    margin-top: 10px;
-}
-.label{
+.form-section h4 {
+    font-size: 16px;
+    color: var(--primary);
     font-weight: bold;
-    margin-right: 30px;
+    margin-bottom: 5px;
 }
-
-.chil{
+.section-child{
     width: 100%;
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap;
+    gap: 20px;
 }
-.position-relative {
-    position: relative;
+.first{
+    width: 50%;
 }
-
-.position-absolute {
-    position: absolute;
+.second{
+    width: 50%;
 }
-.radio-button{
-    display: flex;
-}
-a{
-    color: rgb(101, 101, 253);
-}
-#btn-label{
-    display: flex;
-    flex-direction: column;
-    padding-left: 20%;
-   margin-top: 10px;
+.input {
+    margin-bottom: 15px;
 }
 
-.input input[type="file"] {
-    display: none; /* Hide the default file input */
-}
-.childrem{
-    /* border: 1px solid red; */
-    margin: 10px 0px;
-}
-.second-child-children{
-    
-    /* width: 90%; */
-    display: grid;
-    justify-content: center;
-    align-items: center;
-    column-gap: 20px;
-    grid-template-columns: repeat(4, 1fr);
-    
-}
-.second-child-children .input{
-    margin-top: 0px;
+.input label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
 }
 
-.form-control, .form-select{
-    height: 35px;
-    border-radius: 4px;
-    width: 200px;
-}
-.img-contenaire img{
-    cursor: pointer;
-    border: 1px dashed var(--tertiary);
-    border-radius: 5px;
-    height: auto;
-    width: 130px;
-    object-fit: cover;
-    aspect-ratio: 1/1;
-}
-
-/* .contenaires{
-    display: flex;
-    fl
-    justify-content: space-between;
-} */
-label span{
-    font-size: 12px;
-    color: var(--tertiary);
-    font-weight: 300;
-}
-.back-button{
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
+.input input, .input select {
+    width: 100%;
     padding: 8px;
-    font-size: 20px;
-    margin: 10px 0;
-    &:hover{
-        background-color: var(--tertiary);
-        color: var(--primary);
-        border: none;
-        border-radius: 50%;
-    }
-
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
-input:focus, select:focus{
-    border-color: var(--primary);
-    outline: none;
-    box-shadow: 0 0 5px var(--primary);
+
+.btn-next, .btn-prev, .btn-submit {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.btn-next {
+    padding: 8px 20px;
+    background-color: var(--primary);
+    color: var(--secondary);
+}
+
+.btn-prev {
+    padding: 8px 20px;
+    border: 1px solid var(--primary);
+    color: var(--secondary);
+}
+
+.btn-submit {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-next:hover, .btn-prev:hover, .btn-submit:hover {
+    opacity: 0.9;
+}
+
+.radio-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.radio-button label{
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }

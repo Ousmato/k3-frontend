@@ -6,12 +6,12 @@ import { InscriptionNoteDto } from '../../Models/Students';
 import { SideBarService } from '../../../sidebar/side-bar.service';
 import { Class_shared } from '../../../DGA/class-students/Utils/Class-shared-methods';
 import { EtudeService } from '../Etudiants/etude.service';
-import { Admin } from '../../Models/Admin';
-import { AdminUSER } from '../../Models/Auth';
+import { Admin } from '../../../administrations/shared/models/Admin';
 import { EventServiceService } from '../../../Services/event-service.service';
 import { utils } from '../../../administrations/shared/utils/utils';
 import { ClassStudentService } from '../../../DGA/class-students/class-student.service';
 import { ClassRoom } from '../../Models/Classe';
+import { getUser } from '../../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-semestre-moyennes',
@@ -34,7 +34,7 @@ export class SemestreMoyennesComponent implements OnInit, OnDestroy {
     public sharedMethode: Class_shared, private eventService: EventServiceService, private studentService: EtudeService,
     private sideBarService: SideBarService, private noteService: NoteService, private root: ActivatedRoute) { }
   ngOnInit(): void {
-    this.admin = AdminUSER()?.scolarite;
+    this.admin = getUser();
     this.getAllSemestreMoyens();
     this.sideBarService.currentSearchTerm.subscribe(term => {
       this.searchTerm = term;
@@ -136,7 +136,7 @@ ngOnDestroy(): void {
   reInscritption(){
     this.isConfirm = true;
     console.log(this.listIds, "reinscription")
-    this.studentService.reInscriptionStudent(this.listIds, this.idClasse, this.admin.idAdministra!).subscribe(res => {
+    this.studentService.reInscriptionStudent(this.listIds, this.idClasse, this.admin.id!).subscribe(res => {
       console.log(res, "reinscription")
       this.listIds = [];
       // this.getAllSemestreMoyens();

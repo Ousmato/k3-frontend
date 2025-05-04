@@ -8,9 +8,9 @@ import { Inscription, Student } from '../../Models/Students';
 import { Semestres } from '../../Models/Semestre';
 import jspdf, { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
-import { Admin } from '../../Models/Admin';
+import { Admin } from '../../../administrations/shared/models/Admin';
 import { InscriptionService } from '../../../Services/inscription.service';
-import { AdminUSER } from '../../Models/Auth';
+import { AdminUSER } from '../../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-student-bulletin',
@@ -36,7 +36,7 @@ export class StudentBulletinComponent implements OnInit {
   ngOnInit(): void {
     // this.load_bulletin();
     // this.load_ues()
-    this.adminRscolarite = AdminUSER()?.scolarite;
+    this.adminRscolarite = AdminUSER()?.scolarite!;
     this.load_student();
 
   }

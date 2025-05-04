@@ -1,0 +1,118 @@
+<main>
+    <!-- <div (click)="goBack()" class="back-button">
+        <fa-icon [icon]="icons.back"></fa-icon>
+    </div> -->
+    <div class="head-content">
+        <div class="btn-contente">
+            <button (click)="export_excel_file()">Exporter</button>
+            
+            <select *ngIf="!show_hours" (change)="checkYear($event)">
+                <option selected disabled value="">Choisir une Promotion</option>
+                <option *ngFor="let an of promotions" value="{{an.id}}">
+                    {{dependencies.util.extractAnnee(an)}}-{{dependencies.util.extractAnnee(an) + 1}}</option>
+            </select>
+
+            <select *ngIf="!show_hours" (change)="checkSemestre($event)">
+                <option selected disabled value="">Choisir une Semestre</option>
+                <option *ngFor="let sem of semestres" value="{{sem.id}}">
+                    {{sem.nomSemetre}}</option>
+            </select>
+            
+        </div>
+        <div class="recherche">
+            <app-search-bar *ngIf="!show_hours" (search)="onSearch($event)"></app-search-bar>
+        </div>
+        <!-- <div class="logo">
+            <img src="{{assetUrl}}logounivsegou.png" alt="">
+        </div> -->
+
+    </div>
+
+
+    <div class="teacher-content scrollbar-custom">
+        @if (filteredItems.length) {
+        <!-- Si show_hours est faux, on affiche la liste -->
+        <ng-container *ngIf="!show_hours">
+            <div *ngFor="let teacher of filteredItems" class="content-child" (click)="open_teacher(teacher)">
+                <p>{{teacher.nom}} {{teacher.prenom}}<br>
+                    <span class="text-muted">{{teacher.status}}</span>
+                </p>
+            </div>
+        </ng-container>
+
+        <!-- Si show_hours est vrai, on affiche le détail d’un seul -->
+        <ng-container *ngIf="show_hours">
+            <div class="content-child">
+                <div class="return" (click)="close_teacher()">
+                    <span class="icons-previous">
+                        <fa-icon [icon]="dependencies.icons.previous"></fa-icon>
+                    </span>
+                    <p>Retour</p>
+                </div>
+                <p>{{activeIndex.nom}} {{activeIndex.prenom}}<br>
+                    <span class="text-muted">{{activeIndex.status}}</span>
+                </p>
+
+                <!-- Tu peux afficher ici les heures, ou un autre composant avec l’emploi du temps -->
+            </div>
+        </ng-container>
+
+        }@else {
+        <ng-container *ngFor="let v of vides">
+            <div class="vides"></div>
+
+        </ng-container>
+
+        }
+        <div class="table-container scrollbar-custom" id="idTable" *ngIf="show_hours">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Semaines</th>
+                        <!-- <ng-container *ngFor="let semaine of semaines"> -->
+                          <ng-container *ngFor="let emploi of semaines[0].emplois, let i = index">
+                            <th>Module {{i + 1}} (VH)/Classe</th>
+                            <!-- Tu peux ajouter plus d'infos ici si besoin -->
+                          </ng-container>
+                        <!-- </ng-container> -->
+                      </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let semaine of semaines; let i = index">
+                      <td >
+                        {{ semaine.periode }}
+                      </td>
+                      <ng-container *ngFor="let emp of semaines[i].emplois">
+                        <!-- <ng-container *ngFor="let emploi of semaine.emplois"> -->
+                          <td>
+                           {{emp.niveau}} {{dependencies.util.abrevigate(emp.filiere) }} {{ emp.nomModule }} 
+                           @for (item of items; track $index) {}
+                            
+                          </td>
+                        <!-- </ng-container> -->
+                      </ng-container>
+                    </tr>
+                  </tbody>
+            </table>
+            <div class="footer">
+                <p>Heures Total : {{teacherEmplois.heureTotal}} </p>
+                <p>Heures dues : 20</p>
+                <p>Heures supplementaires : 120</p>
+                <div class="signature">
+                    <!-- <p>Ségou le, {{getCurrentDate()}}<br>
+                      Le chéf de Département
+                    </p>
+                    <p>Dr {{admin.nom.charAt(0).toLocaleUpperCase()}} {{admin.prenom.toLocaleUpperCase()}}<br>
+                      Maître assistant
+                    </p> -->
+                </div>
+            </div>
+        </div>
+
+        <!-- <p>{{teacher.telephone}}</p> -->
+    </div>
+
+
+
+
+</main>

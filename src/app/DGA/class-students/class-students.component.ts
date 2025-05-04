@@ -2,24 +2,18 @@ import { Component, OnInit } from '@angular/core';
 // import { faEye,faPlus,faBookOpen,faCalendar, faBell, faClipboard, faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { ClassStudentService } from './class-student.service';
 import { ClassRoom, Specialite_Filiere } from '../../Admin/Models/Classe';
-import { SetService } from '../../Admin/Views/settings/set.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ClassModules } from '../../Admin/Models/ClassModule';
-import { ServiceService } from '../../DER/EDT/Services/service.service';
-import { Emplois } from '../../DER/EDT/Models/Emplois';
+import { FormGroup, Validators } from '@angular/forms';
 import { NavigationExtras, Route, Router } from '@angular/router';
 import { IconsService } from '../../Services/icons.service';
-import { ToastrService } from 'ngx-toastr';
 import { SideBarService } from '../../sidebar/side-bar.service';
 import { AnneeScolaire } from '../../Admin/Models/School-info';
 import { SchoolService } from '../../Services/school.service';
-import { AdminUSER } from '../../Admin/Models/Auth';
-import { Admin } from '../../Admin/Models/Admin';
+import { Admin } from '../../administrations/shared/models/Admin';
 import { Class_shared } from './Utils/Class-shared-methods';
 import { NoteService } from '../../Services/note.service';
 import { InscriptionNoteDto } from '../../Admin/Models/Students';
 import { EventServiceService } from '../../Services/event-service.service';
-import { Specialites } from '../../Admin/Models/Filieres';
+import { AdminUSER } from '../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-class-students',
@@ -118,7 +112,7 @@ export class ClassStudentsComponent implements OnInit {
   //get all classRoom
   loadClasses(): void {
 
-    this.service.getAllCurrentClassOfYear(this.admin.idAdministra!).subscribe((classRoms: ClassRoom[]) => {
+    this.service.getAllCurrentClassOfYear(this.admin.id!).subscribe((classRoms: ClassRoom[]) => {
 
       this.classRoms = classRoms;
       // console.log(classRoms, "classroom")
@@ -165,7 +159,7 @@ export class ClassStudentsComponent implements OnInit {
   }
   // ---------------------get permission to access
   getPermission(): boolean {
-    const autorize = AdminUSER()?.scolarite;
+    const autorize = AdminUSER()?.scolarite //scolarite
     if (autorize) {
       this.permission = true
       console.log(autorize, "autorize")
@@ -240,7 +234,7 @@ export class ClassStudentsComponent implements OnInit {
       this.router.navigate(['/r-scolarite/etudiant-de-la-classe'], navigationExtras);
     } else if (dga) {
       this.router.navigate(['/dga/etudiant-de-la-classe'], navigationExtras);
-    }else if(AdminUSER()?.der){
+    }else if(AdminUSER()?.der) {
       this.router.navigate(['/der/etudiant-de-la-classe'], navigationExtras);
     } else {
       this.router.navigate(['/sidebar/etudiant-de-la-classe'], navigationExtras);
@@ -314,7 +308,7 @@ export class ClassStudentsComponent implements OnInit {
     }
     // const idAnnee = event.target.value
     // console.log(this.der," der")
-    this.service.getAllClasse(this.idAnnee, this.admin.idAdministra!).subscribe(classRoms => {
+    this.service.getAllClasse(this.idAnnee, this.admin.id!).subscribe(classRoms => {
       this.classRoms = []
       this.classRoms = classRoms;
       this.classesSorted = classRoms

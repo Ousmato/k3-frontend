@@ -2,19 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SeancService } from '../EDT/Services/seanc.service';
 import { Module } from '../../Admin/Models/Module';
-import { Teacher } from '../../Admin/Models/Teachers';
-import { Seances, type_seance } from '../EDT/Models/Seances';
+import { Teacher } from '../../administrations/DER/models/Teachers';
+import { Seances, type_seance } from '../../administrations/DER/models/Seances';
 import { IconsService } from '../../Services/icons.service';
 import { ServiceService } from '../EDT/Services/service.service';
 import { EnseiService } from '../../Admin/Views/Enseignant/ensei.service';
 import { ClassStudentService } from '../../DGA/class-students/class-student.service';
-import { Emplois } from '../EDT/Models/Emplois';
+import { Emplois } from '../../administrations/DER/models/Emplois';
 import { ActivatedRoute } from '@angular/router';
 import { ClassRoom } from '../../Admin/Models/Classe';
 import { SalleService } from '../../Services/salle.service';
 import { Salles } from '../../Admin/Models/Salles';
 import { PageTitleService } from '../../Services/page-title.service';
-import { Admin } from '../../Admin/Models/Admin';
+import { Admin } from '../../administrations/shared/models/Admin';
 
 @Component({
   selector: 'app-der-seances',
@@ -82,7 +82,7 @@ seanceTypeOptions: { key: string, value: string }[] = [];
 
   // ----------------------load class-room
   load_classe(){
-    this.classService.getAllCurrentClassOfYear(this.admin.idAdministra!).subscribe(data =>{
+    this.classService.getAllCurrentClassOfYear(this.admin.id!).subscribe(data =>{
       this.classes = data;
       // console.log(this.classes, "classes")
     })

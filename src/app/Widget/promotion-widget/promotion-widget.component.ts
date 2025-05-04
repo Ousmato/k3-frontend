@@ -4,8 +4,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IconsService } from '../../Services/icons.service';
 import { SchoolService } from '../../Services/school.service';
 import { PageTitleService } from '../../Services/page-title.service';
-import { Admin } from '../../Admin/Models/Admin';
-import { AdminUSER } from '../../Admin/Models/Auth';
+import { Admin } from '../../administrations/shared/models/Admin';
+import { getUser } from '../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-promotion-widget',
@@ -36,7 +36,7 @@ export class PromotionWidgetComponent implements OnInit {
     this.load_form();
     this.get_annees();
     this.load_edit_form();
-    this.admin = AdminUSER()?.dga
+    this.admin = getUser()
       
   }
   // --------------------load form 
@@ -64,7 +64,7 @@ export class PromotionWidgetComponent implements OnInit {
     console.log(annee, "promotion");
     // return
     if(this.form_annee.valid){
-      this.infoSchool.addAnnee(annee, this.admin.idAdministra!).subscribe({
+      this.infoSchool.addAnnee(annee, this.admin.id!).subscribe({
         next: (result) =>{
           this.pageTile.showSuccessToast(result.message);
           this.form_annee.reset();

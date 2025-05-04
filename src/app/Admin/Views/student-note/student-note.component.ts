@@ -2,26 +2,18 @@ import { AfterContentInit, Component, ElementRef, OnDestroy, OnInit, ViewChild }
 import { AddNoteDto, Notes } from '../../Models/Notes';
 import { Inscription, InscriptionNoteDto, Student } from '../../Models/Students';
 import { IconsService } from '../../../Services/icons.service';
-import { EtudeService } from '../Etudiants/etude.service';
 import { ActivatedRoute, NavigationExtras, NavigationStart, Router } from '@angular/router';
-import { SemestreService } from '../../../Services/semestre.service';
-import { Semestres } from '../../Models/Semestre';
-import { Module } from '../../Models/Module';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Students_Module } from '../../Models/studends_modules';
-import { SchoolService } from '../../../Services/school.service';
 import { AnneeScolaire, SchoolInfo } from '../../Models/School-info';
 import { Location } from '@angular/common';
 import { AddNoteDtoPages, NotesPages, StudentPages } from '../../Models/Pagination-module';
 import { SideBarService } from '../../../sidebar/side-bar.service';
 import { PageTitleService } from '../../../Services/page-title.service';
-import { environment } from '../../../../environments/environment';
 import { NoteService } from '../../../Services/note.service';
-import { InscriptionService } from '../../../Services/inscription.service';
-import { AdminUSER } from '../../Models/Auth';
 import { StudentSharedMethods } from '../Etudiants/Utils/Student-shared-methode';
 import { EventServiceService } from '../../../Services/event-service.service';
 import { StudentSessionService } from '../../../Services/student-session.service';
+import { getUser } from '../../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-student-note',
@@ -200,7 +192,7 @@ export class StudentNoteComponent implements OnInit, OnDestroy {
           idInscription: inscriptionId,
           idModule: formData.idModule!,
           idSemestre: this.idSemestre,
-          idAdmin: AdminUSER()?.scolarite
+          idAdmin: getUser()
         }
         console.log(note, "note")
 

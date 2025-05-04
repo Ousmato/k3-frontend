@@ -1,12 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthServiceService } from '../auth-service.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Admin, Admin_role } from '../Admin/Models/Admin';
-import { Teacher } from '../Admin/Models/Teachers';
-import { Router } from '@angular/router';
-import { IconsService } from '../Services/icons.service';
-import { ToastrService } from 'ngx-toastr';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormGroup, Validators } from '@angular/forms';
+import { Admin, RoleTypes } from '../administrations/shared/models/Admin';
 import { environment } from '../../environments/environment';
+import { contructor_dependencies } from '../administrations/dependencies/dependencies';
 
 @Component({
   selector: 'app-login',
@@ -16,20 +12,20 @@ import { environment } from '../../environments/environment';
 export class LoginComponent implements OnInit {
   userForm!: FormGroup; 
   admin!: Admin;
-  teacher!: Teacher;
   passwordVisible: boolean = false
   invalid : boolean = false
   errorMessage: any;
+  posteName: any;
+  roleType: any;
   urlLogo = ""
   urlAssetsImage = environment.urlAssetsImage;
 
-
-  constructor(private authService: AuthServiceService, public icons:IconsService, private toastr: ToastrService,
-    private formBuilder: FormBuilder, private route: Router) { } 
+  public dependencies = inject(contructor_dependencies)
 
   ngOnInit() {
     this.urlLogo = environment.assetUrlLogo,
-    this.userForm = this.formBuilder.group({
+    this.userForm = this.dependencies.fb.group({
+      // faculte: ['', Validators.required],
       email: ['', Validators.required],
       password: ['', Validators.required]
     });
@@ -37,94 +33,124 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-   var email = this.userForm.value.email;
-   var password = this.userForm.value.password
-    // return;
-    if (this.userForm.valid) { 
-      // console.log('ici')
-      this.authService.login(email, password).subscribe({
-        next: (data) =>{
-          console.log(data.user.idRole.nom, "role")
-          if (data.user.idRole.nom === "Admin") {
-            this.route.navigate(["/sidebar"])
-            console.log('Je suis admin', data.user.role);
-            this.toastr.success('Connexion avec succès!!', 'Succès',{timeOut: 3000})
-
+    const formData = this.userForm.value;
   
-          } else if (this.abreviateName(data.user.idRole.nom) === Admin_role.DGA.toString().toUpperCase()) {
-         
-            console.log('Je suis dga');
-            this.route.navigate(['/dga'])
-            this.toastr.success('Connexion avec succès!!', 'Succès',{timeOut: 3000})
-
-
-          }else if(this.abreviateName(data.user.idRole.nom )=== Admin_role.SCOLARITE.toString().toUpperCase()){
-       
-            this.route.navigate(['/r-scolarite']);
-            this.toastr.success('Connexion avec succès!!', 'Succès',{timeOut: 3000})
-
+    if (this.userForm.invalid) return;
   
-          } else if (this.abreviateName(data.user.idRole.nom) === Admin_role.DER.toString().toUpperCase()) {
-            // const adminDataString = JSON.stringify(data);
-            // sessionStorage.setItem("der", adminDataString);
-            this.route.navigate(['/der']);
-            this.toastr.success('Connexion avec succès!!', 'Succès',{timeOut: 3000})
-
+    this.dependencies.authService.login(formData.email, formData.password).subscribe({
+      next: (data) => {
+        const user = this.dependencies.authService.getUser();
   
-          } else if (this.abreviateName(data.user.idRole.nom) === Admin_role.COMPTABLE.toString().toUpperCase()) {
-            // const adminDataString = JSON.stringify(data);
-            // sessionStorage.setItem("comptable", adminDataString);
-            this.route.navigate(['/comptable']);
-            this.toastr.success('Connexion avec succès!!', 'Succès',{timeOut: 3000})
-
-            
-            // } else if (data.role === Admin_role.DG.toLocaleLowerCase()) {
-            //   const adminDataString = JSON.stringify(data);
-            //   sessionStorage.setItem("dg", adminDataString);
-            //   this.route.navigate(['/dg']);
-            
-            }else if (this.abreviateName(data.user.idRole.nom) === Admin_role.SECRET_P.toString().toUpperCase()) {
-              // const adminDataString = JSON.stringify(data);
-              // sessionStorage.setItem("secretaire", adminDataString);
-              this.route.navigate(['/secretaire']);
-            this.toastr.success('Connexion avec succès!!', 'Succès',{timeOut: 3000})
-
-
-          }else{
-            this.toastr.error('User introuvable', 'Erreur',)
-          }
-        },
-        error: (erreur) =>{
-          if(erreur.status == 0){
-            this.toastr.error("Verifier la connexion a votre base de données", "Erreur");
-          }
-        this.errorMessage = erreur.error.message;
-        this.invalid =! this.invalid;
-          // this.pageTitle.showErrorToast(erreur.error.message)
-        },
-        
-      })
-    }else{
-      this.userForm.markAllAsTouched();
-      console.log("invalid", this.userForm.value)
-    }
+        if (!user || !user.idPoste || !user.idPoste.nom) {
+          this.dependencies.queryreturnMessage.showErrorToast('Informations utilisateur invalides');
+          return;
+        }
+  
+        const role = this.dependencies.util.abrevigate(user.idPoste.nom); 
+  
+        const redirectTo = this.dependencies.authService.roleRouteMap[role];
+  
+        if (redirectTo) {
+          this.dependencies.router.navigate([redirectTo]);
+          this.dependencies.queryreturnMessage.showSuccessToast('Connexion réussie !');
+        } else {
+          this.dependencies.queryreturnMessage.showErrorToast("Rôle non reconnu !");
+        }
+      },
+      error: (error) => {
+        if (error.status === 0) {
+          this.dependencies.queryreturnMessage.showErrorToast("Erreur de connexion au serveur !");
+        } else if (error.status === 401) {
+          this.dependencies.queryreturnMessage.showErrorToast("Email ou mot de passe incorrect !");
+        } else {
+          this.dependencies.queryreturnMessage.showErrorToast("Une erreur est survenue.");
+        }
+      }
+    });
   }
+ 
+  // login() {
+  //   const formData = this.userForm.value
+    
+  //   // return;
+  //   if (this.userForm.valid) { 
+  //     // console.log('ici')
+  //     this.dependencies.authService.login(formData.email, formData.password).subscribe({
+  //       next: (data) =>{
+  //         if (data.user.idPoste.nom === RoleTypes.SUPER_ADMIN) {
+  //           this.dependencies.router.navigate(["/sidebar"])
+  //           console.log('Je suis admin');
+  //           this.dependencies.queryreturnMessage.showSuccessToast('Connexion avec succès!!',)
+
+  
+  //         // } else if (this.util.abrevigate(data.user.idRole.nom) === Admin_role.DGA.toString().toUpperCase()) {
+         
+  //         //   console.log('Je suis dga');
+  //         //   this.route.navigate(['/dga'])
+  //         //   this.toastr.success('Connexion avec succès!!', 'Succès',{timeOut: 3000})
+
+
+  //         // }else if(this.util.abrevigate(data.user.idRole.nom )=== Admin_role.SCOLARITE.toString().toUpperCase()){
+       
+  //         //   this.route.navigate(['/r-scolarite']);
+  //         //   this.toastr.success('Connexion avec succès!!', 'Succès',{timeOut: 3000})
+
+  
+  //         // } else if (this.util.abrevigate(data.user.idRole.nom) === Admin_role.DER.toString().toUpperCase()) {
+  //         //   // const adminDataString = JSON.stringify(data);
+  //         //   // sessionStorage.setItem("der", adminDataString);
+  //         //   this.route.navigate(['/der']);
+  //         //   this.toastr.success('Connexion avec succès!!', 'Succès',{timeOut: 3000})
+
+  
+  //         // } else if (this.util.abrevigate(data.user.idRole.nom) === Admin_role.COMPTABLE.toString().toUpperCase()) {
+  //         //   // const adminDataString = JSON.stringify(data);
+  //         //   // sessionStorage.setItem("comptable", adminDataString);
+  //         //   this.route.navigate(['/comptable']);
+  //         //   this.toastr.success('Connexion avec succès!!', 'Succès',{timeOut: 3000})
+
+            
+  //         //   }else if (this.util.abrevigate(data.user.idRole.nom) === Admin_role.SECRET_P.toString().toUpperCase()) {
+  //         //     // const adminDataString = JSON.stringify(data);
+  //         //     // sessionStorage.setItem("secretaire", adminDataString);
+  //         //     this.route.navigate(['/secretaire']);
+  //         //   this.toastr.success('Connexion avec succès!!', 'Succès',{timeOut: 3000})
+
+
+  //         // }else{
+  //         //   this.toastr.error('User introuvable', 'Erreur',)
+  //         }
+  //       },
+  //       error: (erreur) =>{
+  //         if(erreur.status == 0){
+  //           this.dependencies.queryreturnMessage.showErrorToast("Verifier la connexion a votre base de données");
+  //         }
+  //       this.errorMessage = erreur.error.message;
+  //       this.invalid =! this.invalid;
+  //         // this.pageTitle.showErrorToast(erreur.error.message)
+  //       },
+
+        
+  //     })
+  //   }else{
+  //     this.userForm.markAllAsTouched();
+  //     console.log("invalid", this.userForm.value)
+  //   }
+  // }
+
+
   // --------------------------------method password visible
   togglePasswordVisibility(): void {
     this.passwordVisible = !this.passwordVisible;
 }
 
 to_forgotPassword(){
-  this.route.navigate(['/forgot-password']);
+  this.dependencies.router.navigate(['/forgot-password']);
 }
 
-// abrevigate role name
-abreviateName(filiere: string): string {
-  const nameWord = filiere.split(' ');
-  const word = nameWord.filter(wd => wd.length > 3).map(word => word[0].toUpperCase()).join('')
-  // console.log("word", word)
-  return word;
-}
+
+
+
 }
 
 

@@ -1,10 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Admin, AdminDto, AdminRoleDto, Roles } from '../Admin/Models/Admin';
+import { Admin, AdminDto, AdministrationUserPostes, AdminRoleDto, Roles } from '../administrations/shared/models/Admin';
 import { finalize, Observable } from 'rxjs';
 import { Response_String } from '../Admin/Models/Response_String';
 import { environment } from '../../environments/environment';
 import { LoaderService } from './loader.service';
+import { httpResponse } from '../administrations/shared/models/httpResponse.model';
+import { usersGrade } from '../administrations/shared/models/userModel';
 
 @Injectable({
   providedIn: 'root'
@@ -49,8 +51,8 @@ export class AdminService {
     return this.http.put<Admin>(`${this.baseUrl}change-photo/${idAdmin}`, formData);
   }
   // --------------------update
-  updateAdmin(admin: AdminDto) : Observable<Admin>{
-    return this.http.put<Admin>(`${this.baseUrl}update-admin`, admin);
+  updateAdmin(admin: Admin) : Observable<httpResponse>{
+    return this.http.put<httpResponse>(`${this.baseUrl}update-admin`, admin);
   }
 
   forgotPassword(email: any) : Observable<any[]>{
@@ -74,14 +76,18 @@ export class AdminService {
     return this.http.get<Roles[]>(`${this.baseUrl}List-roles/${idAdmin}`);
   }
 
+  getAllAdministrationUserPoste(idAdmin: number): Observable<AdministrationUserPostes[]>{
+    return this.http.get<AdministrationUserPostes[]>(`${this.baseUrl}List-roles/${idAdmin}`);
+  }
+
   // add role
-  addRole(role: Roles, idAdmin: number): Observable<Response_String>{
-    return this.http.post<Response_String>(`${this.baseUrl}add-role/${idAdmin}`, role);
+  addPoste(role: AdministrationUserPostes, idAdmin: number): Observable<httpResponse>{
+    return this.http.post<httpResponse>(`${this.baseUrl}add-poste/${idAdmin}`, role);
   }
 
   // update role
-  updateRole(role: Roles): Observable<Response_String>{
-    return this.http.put<Response_String>(`${this.baseUrl}update-role`, role);
+  updatePoste(poste: AdministrationUserPostes): Observable<httpResponse>{
+    return this.http.put<httpResponse>(`${this.baseUrl}update-role`, poste);
   }
 
   // delete role
@@ -97,5 +103,19 @@ export class AdminService {
   // get all postes associated with the current user
   getPostesByIdCurrentAdmin(idCurrentAdmin: number): Observable<AdminRoleDto[]>{
     return this.http.get<AdminRoleDto[]>(`${this.baseUrl}get-roles-of-post-by-idAdmin/${idCurrentAdmin}`)
+  }
+
+  // get all grades 
+  getAllGrades(idAdmin: number): Observable<usersGrade[]>{
+    return this.http.get<usersGrade[]>(`${this.baseUrl}get-all-grades/${idAdmin}`);
+  }
+
+  // add grade
+  addGrade(grade: usersGrade, idAdmin: number): Observable<httpResponse>{
+    return this.http.post<httpResponse>(`${this.baseUrl}add-grade/${idAdmin}`, grade);
+  }
+  // update grade
+  updateGrade(grade: usersGrade): Observable<httpResponse>{
+    return this.http.put<httpResponse>(`${this.baseUrl}update-grade`, grade);
   }
 }

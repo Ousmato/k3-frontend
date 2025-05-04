@@ -3,12 +3,12 @@ import { EnseiService } from '../../ensei.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PageTitleService } from '../../../../../Services/page-title.service';
 import { IconsService } from '../../../../../Services/icons.service';
-import { Diplomes, Teacher, TeachersStatus } from '../../../../Models/Teachers';
+import { Diplomes, Teacher, TeachersStatus } from '../../../../../administrations/DER/models/Teachers';
 import { ActivatedRoute } from '@angular/router';
 import { SetService } from '../../../settings/set.service';
-import { Admin } from '../../../../Models/Admin';
-import { AdminUSER } from '../../../../Models/Auth';
-import { TeacherUtils } from '../../Utils/teacher-utils';
+import { Admin } from '../../../../../administrations/shared/models/Admin';
+import { TeacherUtils } from '../../../../../administrations/DER/utils/teacher-utils';
+import { AdminUSER } from '../../../../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-teachers-edit',
@@ -43,7 +43,7 @@ export class TeachersEditComponent implements OnInit {
    this.teacher_form = this.teacherUtils.InitializeForm(this.fb);
     this.getTeacher();
      this.teacherDiplomOptions = this.teacherUtils.getDiplomesOptions();
-    this.admin = AdminUSER()?.der
+    this.admin = AdminUSER()?.der!
     this.gradesOptions = this.teacherUtils.getGradesOptions()
       
   }

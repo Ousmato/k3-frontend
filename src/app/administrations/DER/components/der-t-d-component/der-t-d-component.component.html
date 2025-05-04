@@ -1,0 +1,132 @@
+<main>
+    <div class="modal-search" *ngIf="show_views">
+        <div class="views">
+            <div class="form-input">
+                <fa-icon class="search-icon" [icon]="dependencies.icons.search"></fa-icon>
+                <input type="text" class="search" (input)="onSearchChange()" [(ngModel)]="searchTerm"
+                    placeholder="Rechercher...">
+
+                    <div (click)="cancel()" class="cancel-modal">
+                        <fa-icon  [icon]="dependencies.icons.xmark"></fa-icon>
+                    </div>
+            </div>
+            <div class="content-scroll">
+                <ng-container *ngFor="let teacher of filteredItems">
+                <p (click)="chose_teacher(teacher)">{{teacher.nom}} {{teacher.prenom}}</p>
+            </ng-container>
+            </div>
+            
+
+        </div>
+    </div>
+
+    <label class="chose_teacher" (click)="show_teachers()">Selectionner Enseignants</label>
+
+    <form *ngIf="list_enseignant_checked.length" [formGroup]="form_config" (ngSubmit)="onSubmit()">
+        <div class="input-time">
+            <div class="left">
+                <div class="">
+                    <label>Heure de début :</label>
+                    <input type="time" class="form-control input-width" id="heureDebut" formControlName="heureDebut"
+                        [class.is-invalid]="form_config.get('heureDebut')!.invalid && form_config.get('heureDebut')!.touched"
+                        required>
+    
+                </div>
+                <div class="">
+                    <label>Heure de Fin :</label>
+                    <input type="time" class="form-control" id="heureFin" formControlName="heureFin"
+                        [class.is-invalid]="form_config.get('heureFin')!.invalid && form_config.get('heureFin')!.touched"
+                        required>
+    
+                </div>
+            </div>
+            <div class="name-classe">
+                <p>Semestre : {{currentEmploi.idSemestre.nomSemetre}} {{dependencies.util.extractAnnee(currentEmploi.idClasse.idAnneeScolaire!)}}-{{dependencies.util.extractAnnee(currentEmploi.idClasse.idAnneeScolaire!) + 1}}</p>
+            </div>
+        </div>
+        
+
+
+        <div class="contenair-teach" *ngIf="list_enseignant_checked.length">
+
+            <div class="plag plag-enseignat">
+
+                <div class="plage-container" *ngFor="let item of list_enseignant_checked ; let i = index">
+                    <div class="container-header">
+                        <label *ngIf="is_Teacher_checked(item!)">{{item.nom}} {{item.prenom}}</label>
+                    <fa-icon class="delete" [icon]="dependencies.icons.xmark" (click)="removeTeacher(item)"></fa-icon>
+                    </div>
+
+                    <div class="plage-days" *ngIf="is_Teacher_checked(item)">
+                        <div class="input-content" *ngFor="let dateInfo of datesWithDays">
+                            <div class="input">
+                                <label>{{dateInfo.day.charAt(0)}}</label>
+                                <input type="checkbox" (change)="day_check(item.password!, dateInfo.date, $event)"
+                                    [checked]="is_checked(item.password!, dateInfo.date)"
+                                    [ngClass]="{ 'custom-checked': is_checked(item.password!, dateInfo.date) }">
+                            </div>
+
+                           
+                        </div>
+                    </div>
+
+
+
+                    <div class="plag-enseignat">
+                        
+                        <div class="group" *ngIf="showPerTeacher[item.password!]">
+                            @if (participants.length) {
+                                <div class="form-check form-check-inline" *ngFor="let participant of participants">
+                                    <input class="form-check-input" type="radio" name="groupSelection"
+                                        [value]="participant.id"
+                                        (change)="group_check(item.password!, participant.id!, $event)"
+                                        [checked]="isGroupSelected(item.password!, participant.id!)"
+                                        [disabled]="isGroupAlreadySelected(participant.id!)"
+                                        id="inlineRadio{{ participant.id }}"/>
+                                    <label class="form-check-label" [for]="'inlineRadio' + participant.id">
+                                        {{ participant.idStudentGroup.nom }}
+                                    </label>
+                                </div>
+                            }@else if(studentOldGroup.length) {
+                                <select (change)="onSelectOldGrp($event, item.password!)">
+                                    <option selected disabled value="">Groupes</option>
+                                    <option *ngFor="let item of studentOldGroup" value="{{item.id}}">{{item.idStudentGroup.nom}}</option>
+                                </select>
+                            }
+                            
+                        </div>
+
+                        <div class="form form-group" *ngIf="showPerTeacher[item.password!]">
+                            
+                            <select  formControlName='seanceType' (change)="onTypeChange(item.password!, $event, (i + 1))"
+                            
+                            [class.is-invalid]="form_config.get('seanceType')!.invalid && form_config.get('seanceType')!.touched">
+                                <option selected disabled value="">Choisir Le type</option>
+                                <option *ngFor="let s_type of seanceTypeOptions" [value]="s_type.value">{{s_type.key}}
+                                </option>
+
+                            </select>
+
+                        </div>
+                        <select  formControlName="idSalle" *ngIf="showPerTeacher[item.password!]"
+                            [class.is-invalid]="form_config.get('idSalle')!.invalid && form_config.get('idSalle')!.touched"
+                            (change)="onRoomChange(item.password!, $event)">
+                            <option selected disabled value="">Salles</option>
+                            <option *ngFor="let salle of salles" [value]="salle.id">{{salle.nom}}</option>
+                        </select>
+
+
+                    </div>
+
+                </div>
+
+
+            </div>
+            <div class="button-cash">
+                <button class="btn" type="submit">Enregistrer</button>
+            </div>
+
+        </div>
+    </form>
+
+</main>

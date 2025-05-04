@@ -2,7 +2,7 @@ import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AnneeScolaire } from '../../../../Admin/Models/School-info';
 import { PromotionServiceService } from '../../../shared/services/promotion-service.service';
-import { errorMessage } from '../../../shared/utils/errorMessage';
+import { returnMessages } from '../../../shared/utils/returnMessages';
 
 @Component({
   selector: 'app-update-promotion',
@@ -11,7 +11,7 @@ import { errorMessage } from '../../../shared/utils/errorMessage';
 })
 export class UpdatePromotionComponent implements OnInit {
   private _promotionsService = inject(PromotionServiceService)
-  private _errorMessages = inject(errorMessage)
+  private _errorMessages = inject(returnMessages)
   
   @Output() closeModal = new EventEmitter<any>();
   @Output() closeModalAfterSuccess = new EventEmitter<any>();

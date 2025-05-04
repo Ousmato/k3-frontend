@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Specialites } from '../../../../Admin/Models/Filieres';
-import { AdminUSER } from '../../../../Admin/Models/Auth';
 import { SpecialiteService } from '../../../../Services/specialite.service';
 import { PageTitleService } from '../../../../Services/page-title.service';
+import { getUser } from '../../../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-edit',
@@ -24,7 +24,7 @@ export class EditComponent {
   initForm(){
     this.form = this.fb.group({
       id: [this.specialite.id],
-      idAdmin: [AdminUSER()?.der],
+      idAdmin: [getUser()],
       nom: [this.specialite.nom, [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
     });
   }

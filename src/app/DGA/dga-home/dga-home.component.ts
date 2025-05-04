@@ -3,10 +3,10 @@ import { EtudeService } from '../../Admin/Views/Etudiants/etude.service';
 import { Router } from '@angular/router';
 import { ClassStudentService } from '../class-students/class-student.service';
 import { ServiceService } from '../../DER/EDT/Services/service.service';
-import { Emplois } from '../../DER/EDT/Models/Emplois';
-import { Admin } from '../../Admin/Models/Admin';
-import { AdminUSER } from '../../Admin/Models/Auth';
+import { Emplois } from '../../administrations/DER/models/Emplois';
+import { Admin } from '../../administrations/shared/models/Admin';
 import { environment } from '../../../environments/environment';
+import { getUser } from '../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-dga-home',
@@ -25,13 +25,13 @@ export class DgaHomeComponent implements OnInit{
     private router: Router, private classService: ClassStudentService){}
 
   ngOnInit(): void {
-     this.dga = AdminUSER()?.dga;  // get admin user info from local storage.
+     this.dga = getUser();  // get admin user info from local storage.
       this.load_cunt();
       this.classNumber();
       this.load_all_emplois_actif();
   }
   load_all_emplois_actif(){
-    this.emploisService.getAllEmploisActifs(this.dga.idAdministra!).subscribe(data =>{
+    this.emploisService.getAllEmploisActifs(this.dga.id!).subscribe(data =>{
       this.emplois = data;
       this.emploiCount = data.length;
     })

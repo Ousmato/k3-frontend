@@ -1,0 +1,100 @@
+<main>
+    <div class="all-edt-header">
+        <app-search-bar (search)="onSearch($event)"></app-search-bar>
+    </div>
+    <div class="programation" *ngIf="dependencies.util.abrevigate(admin.idPoste.nom) === 'DER'">
+        <p (click)="getWeeksPlaning(filterValueDefault)" [ngClass]="{'is_active' : filterValueDefault == '' || filterValueDefault !== 'empty'}">Les emplois du temps programmé </p>
+        <p (click)="getWeeksNotPlaning(filterValueDefault)" [ngClass]="{'is_active' : filterValueDefault === 'empty'}"> Les emplois du temps non programmé </p>
+    </div>
+    <div class="all-edt-content">
+        <div class="app-update" *ngIf="show_update">
+            <app-emplois-widget [emplois]="emploiSelect" (closeUpdateModal)="close()"></app-emplois-widget>
+        </div>
+        <div class="week-edt" *ngFor="let week of filteredItems; let i = index">
+            <div class="week-head" >
+                <div class="first" *ngIf="activeIndex === week">
+                   
+                    <span (click)="close_week()">
+
+                        <fa-icon [icon]=" dependencies.icons.previous"></fa-icon>
+                    </span>
+                    <p > Retour</p>
+                </div>
+                
+                <p title="{{activeIndex !== week ? 'Cliquer pour voir les emplois du temps de la semaine' : ''}}  " class="open" (click)="open_week(week)">Semaine du {{ week.weekStart | date:'dd/MM/yyyy' }} au {{ week.weekEnd | date:'dd/MM/yyyy' }}</p>
+                    <p>
+                        {{week.status}}
+                        <fa-icon
+                            [ngStyle]="{ color: week.status === 'En cours' ? 'green' : week.status === 'En Attente' ? 'blue' : 'gray' }"
+                            [icon]="dependencies.icons.circle">
+                        </fa-icon>
+                    </p>
+                
+
+            </div>
+            <div class="grid-container" *ngIf="week === activeIndex">
+                @if(emplois.length){
+                <div class="grid-item" *ngFor="let eploi of emplois">
+                    <!-- <div class="section-folder"> -->
+                    <div class="emploi-item">
+
+                        <!-- <div class="info-folder">
+                            <h6 class="title">Date de début</h6>
+                            <p class="small">{{eploi.dateDebut}}</p>
+    
+                        </div>
+                        <div class="info-folder">
+                            <h6 class="title">Date de fin</h6>
+                            <p class="small">{{eploi.dateFin}}</p>
+    
+                        </div> -->
+                        <div class="info-folder-module">
+                            <h6 class="title">Module</h6>
+                            <p class="small">{{eploi.nomModule}}</p>
+
+                        </div>
+                        <div class="info-folder-module">
+                            <h6 class="title">Prof</h6>
+                            <p class="small">{{eploi.nomTeacher}}</p>
+
+                        </div>
+                        <div class="info-folder">
+                            <h6 class="title">Semestre</h6>
+                            <p class="small">{{eploi.nomSemestre}}</p>
+
+                        </div>
+                        <div class="info-folder-module">
+                            <h6 class="title">Classe</h6>
+                            <p class="small">{{dependencies.util.abrevigateNiveauName(eploi.nomNiveau)}}
+                                {{dependencies.util.abrevigate(eploi.nomFiliere)}}</p>
+
+                        </div>
+                        <!-- <div class="active-contente"> -->
+
+
+                        <!-- </div> -->
+                        <div class="next-col second-child">
+                            <!-- <a *ngIf="permission" (click)="deleted(eploi.id!)" ><fa-icon [icon]="icons.delete" class="delete"></fa-icon> Supprimer</a> -->
+
+                            <a *ngIf="permission" (click)="updated(eploi)"><fa-icon
+                                    [icon]="dependencies.icons.edit"></fa-icon>Modifier</a>
+                            <div class="button-content">
+                                <button class="btn " (click)="toggle_toSeance(eploi.idEmploi!, filterValueDefault)"><fa-icon
+                                        [icon]="dependencies.icons.nexte"></fa-icon></button>
+                            </div>
+                            <!-- <a (click)="toggle_toSeance(eploi.id!)"><fa-icon [icon]="icons.eye"></fa-icon>Consulter</a> -->
+                        </div>
+
+
+                    </div>
+                    <!-- </div> -->
+                </div>
+                }@else {
+                <app-empty-widget></app-empty-widget>
+                }
+            </div>
+        </div>
+
+
+    </div>
+</main>

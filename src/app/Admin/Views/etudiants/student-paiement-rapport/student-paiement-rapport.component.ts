@@ -3,12 +3,11 @@ import { IconsService } from '../../../../Services/icons.service';
 import { ActivatedRoute } from '@angular/router';
 import { InscriptionService } from '../../../../Services/inscription.service';
 import { Dto_scolarite, paiement } from '../../../Models/Students';
-import { StudentSharedMethods } from '../Utils/Student-shared-methode';
 import { Class_shared } from '../../../../DGA/class-students/Utils/Class-shared-methods';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageTitleService } from '../../../../Services/page-title.service';
-import { Admin } from '../../../Models/Admin';
-import { AdminUSER } from '../../../Models/Auth';
+import { Admin } from '../../../../administrations/shared/models/Admin';
+import { AdminUSER } from '../../../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-student-paiement-rapport',
@@ -30,7 +29,7 @@ export class StudentPaiementRapportComponent implements OnInit{
   ngOnInit(): void {
     this.getAllPaiement();
     this.load_form();
-    this.Admin = AdminUSER()?.scolarite
+    this.Admin = AdminUSER()?.scolarite!
 
   }
 
@@ -80,7 +79,7 @@ export class StudentPaiementRapportComponent implements OnInit{
     if(this.form.valid){
       console.log(scolarite, "valid")
       // return
-    this.inscriptionService.updatePaiement(idPaiement, scolarite, this.Admin.idAdministra!).subscribe({
+    this.inscriptionService.updatePaiement(idPaiement, scolarite, this.Admin.id!).subscribe({
       next: (res) => {
         this.pageTitle.showSuccessToast(res.message);
         this.getAllPaiement();

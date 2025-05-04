@@ -21,21 +21,31 @@
           </div>
           <!-- ---------------- -->
           <li class="menu-link">
-            <a routerLink="/sidebar/roles" routerLinkActive="active">
-              <span><fa-icon [icon]="icons.userCheck"></fa-icon>Roles</span>
+            <a routerLink="/sidebar/poste" routerLinkActive="active">
+              <span><fa-icon [icon]="icons.userCheck"></fa-icon>Postes</span>
+            </a>
+          </li>
+          <li class="menu-link">
+            <a routerLink="/sidebar/grades" routerLinkActive="active">
+              <span><fa-icon [icon]="icons.grade"></fa-icon>Grades</span>
             </a>
           </li>
 
           <li class="menu-link">
             <a routerLink="/sidebar/admin-list" routerLinkActive="active">
-              <span><fa-icon [icon]="icons.user_surveillance"></fa-icon>Postes</span>
+              <span><fa-icon [icon]="icons.users"></fa-icon>Personnels</span>
             </a>
           </li>
+          <!-- <li class="menu-link">
+            <a routerLink="/sidebar/taches" routerLinkActive="active">
+              <span><fa-icon [icon]="icons.user_surveillance"></fa-icon>Taches</span>
+            </a>
+          </li> -->
 
         </ul>
         <ul id="components">
           <li class="menu-link">
-            <a (click)="toggleAdminView(dataAdmin.idAdministra!)" routerLink="/sidebar/my-accunt"
+            <a (click)="toggleAdminView(dataAdmin.id!)" routerLink="/sidebar/my-accunt"
               routerLinkActive="active">
               <span><fa-icon [icon]="icons.user"></fa-icon>Mon Compte</span>
             </a>
@@ -76,7 +86,7 @@
           <img [src]="dataAdmin.urlPhoto" (error)="onError($event)" alt="">
           <div class="info-pofil">
             <p>{{dataAdmin.nom}} {{dataAdmin.prenom}}</p>
-            <p class="text-muted small">{{dataAdmin.idRole.nom.toUpperCase()}}</p>
+            <p class="text-muted small">{{dataAdmin.idPoste.nom.toUpperCase()}}</p>
           </div>
 
         </div>

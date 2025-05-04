@@ -1,0 +1,152 @@
+/* main{
+    width: 100%;
+}
+
+form{
+    padding: 10px;
+}
+.back-button{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    font-size: 20px;
+    margin: 10px 0;
+    &:hover{
+        background-color: var(--tertiary);
+        color: var(--primary);
+        border: none;
+        border-radius: 50%;
+    }
+
+}
+.form-add{
+    display: flex;
+    gap: 50px;
+}
+label{
+    margin-right: 5px;
+    font-weight: bold;
+
+}
+.radio{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.radio .radio-content{
+    height: 50px;
+    display: flex;
+    width: 100%;
+    padding-left: 8px;
+    border-radius: 5px;
+    border: 1px solid var(--tertiary);
+    align-items: center;
+}
+.column-f{
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+*/
+button{
+    margin-top: 10px;
+    background-color: var(--primary);
+    color: var(--secondary);
+    border: var(--primary);
+    padding: 8px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+       
+    }
+}
+    
+input:focus, select:focus{
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 5px var(--primary);
+}
+
+
+main {
+    padding: 2rem;
+    background-color: #f9f9f9;
+    height: 80vh;
+    overflow-y: auto;
+  }
+  
+  form {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+  
+  .form-add {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  
+  .column-f {
+    flex: 1 1 30%;
+    min-width: 300px;
+  }
+  
+  .input, select
+  .radio {
+    margin-bottom: 10px;
+  }
+  
+  .label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: block;
+    color: #333;
+  }
+  
+  .input-with,
+  .form-control,
+  .form-select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+  }
+  
+  .is-invalid {
+    border-color: red !important;
+  }
+  
+  span[ngStyle] {
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+    display: block;
+  }
+  
+  .radio-content {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+  
+  .toggle-password {
+    color: #888;
+    transition: color 0.2s ease;
+  }
+  .toggle-password:hover {
+    color: var(--primary);
+  }
+  
+  button[type="submit"]:hover {
+    background-color: var(--secondary);
+  }
+  

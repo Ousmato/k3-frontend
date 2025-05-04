@@ -98,3 +98,18 @@ p{
     z-index: 100;
     /* Assurez-vous que l'overlay est au-dessus de tout */
   }
+  .sub-menu li{
+    padding: 5px;
+    border-radius: 5px;
+
+    margin-top: 8px;
+    color: var(--primary);
+    &:hover{
+        color: var(--secondary);
+    }
+  }
+
+  .is-click{
+    background-color: var(--primary);
+    color: var(--secondary);
+  }

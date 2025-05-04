@@ -1,5 +1,5 @@
 
-import { Admin } from "./Admin";
+import { Admin } from "../../administrations/shared/models/Admin";
 import { Ecue } from "./Module";
 import { Semestres } from "./Semestre";
 

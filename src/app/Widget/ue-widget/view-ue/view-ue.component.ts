@@ -10,11 +10,10 @@ import { Ecue } from '../../../Admin/Models/Module';
 import { Class_shared } from '../../../DGA/class-students/Utils/Class-shared-methods';
 import { EventServiceService } from '../../../Services/event-service.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AddNoteDto } from '../../../Admin/Models/Notes';
 import { UeService } from '../../../Services/ue.service';
 import { PageTitleService } from '../../../Services/page-title.service';
-import { Admin } from '../../../Admin/Models/Admin';
-import { AdminUSER } from '../../../Admin/Models/Auth';
+import { Admin } from '../../../administrations/shared/models/Admin';
+import { getUser } from '../../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-view-ue',
@@ -54,7 +53,7 @@ export class ViewUeComponent implements OnInit, OnDestroy  {
 
   ngOnInit(): void {
     this.load_ues();
-    this.der = AdminUSER()?.der
+    this.der = getUser()
     this.eventService.event$.subscribe(event =>{
      this.callBackUes(event)
     })

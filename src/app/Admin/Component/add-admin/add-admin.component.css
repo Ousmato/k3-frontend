@@ -1,82 +1,156 @@
-main{
-    width: 100%;
-}
-h4{
-    width: 100%;
-    margin: 0;
-    padding: 10px;
-    text-align: center;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    font-size: 18px;
-    background-color: var(--primary);
-    color: var(--secondary);
-}
-form{
-    width: 100%;
+/* Style général pour le formulaire */
+main {
+    max-width: 800px;
+    margin: 0 auto;
     padding: 10px 20px;
-}
-.form-add{
-    display: flex;
-    gap: 30px;
-}
-.column-f{
-    width: 50%;
-}
-.radio{
-    margin-top: 10px;
-}
-.radio .radio-content{
-
-    height: 50px;
-    display: flex;
-    width: 100%;
-    padding-left: 8px;
-    border-radius: 5px;
-    border: 1px solid var(--tertiary);
-    align-items: center;
-}
-
-.btn-container{
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-}
-#exit{
-    background-color: var(--secondary);
-    border: none;
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+  }
+  
+  h6 {
+    text-align: center;
     color: var(--primary);
+    padding: 10px;
+    font-weight: bold;
+    background-color: var(--tertiary);
+  }
+  
+  /* Style des colonnes */
+  .column-f {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .input, .radio {
+    flex: 1 1 calc(50% - 20px);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .input label, .radio label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  .input input, .input select, .radio-content label {
     padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .input input:focus, .input select:focus {
+    border-color: var(--primary);
+    box-shadow: none;
+    outline: none;
+  }
+  
+  .radio-content {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .radio-content label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .radio-content input {
+    accent-color: var(--primary);
+  }
+  
+  /* Style des messages d'erreur */
+  .error-msg {
+    color: #d9534f;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  
+  /* Style des boutons */
+  .btn-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  button {
+    padding: 8px 20px;
+    font-size: 14px;
+    border: none;
     border-radius: 5px;
     cursor: pointer;
-
-    &:hover{
-        background-color: var(--primary);
-        color: var(--secondary);
-       
-    }
-}
-button{
-    width: 100%;
-    border: none;
-    margin-top: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  button[type="button"] {
     background-color: var(--primary);
     color: var(--secondary);
-    padding: 8px;
-    border-radius: 5px;
+  }
+  
+  button[type="button"]:hover {
+    background-color: var(--secondary);
+    transform: scale(1.05);
+    color: var(--primary);
+  }
+  
+  button[type="submit"] {
+    background-color: #28a745;
+    color: #fff;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+  }
+  
+  button.cancel {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  
+  button.cancel:hover {
+    background-color: #c82333;
+    transform: scale(1.05);
+  }
+  
+  /* Style des étapes */
+  .form-add {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .pass-chec {
+    position: relative;
+  }
+  
+  .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
     cursor: pointer;
-
-    &:hover{
-        background-color: var(--secondary);
-        color: var(--primary);
-       
-    }
-}
-input:focus, select:focus{
-    border-color: var(--primary);
-    outline: none;
-    box-shadow: 0 0 5px var(--primary);
-}
-.input{
-    margin-top: 10px;
-}
+    color: var(--primary);
+    font-size: 18px;
+  }
+  
+  .toggle-password:hover {
+    color: var(--secondary);
+  }
+  
+  /* Style pour les fichiers */
+  input[type="file"] {
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+  }

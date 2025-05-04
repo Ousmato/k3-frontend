@@ -5,7 +5,6 @@ import { finalize, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { LoaderService } from '../../../Services/loader.service';
 import { httpResponse } from '../models/httpResponse.model';
-import { errorMessage } from '../utils/errorMessage';
 
 @Injectable({
   providedIn: 'root'

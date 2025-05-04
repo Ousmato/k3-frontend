@@ -1,0 +1,147 @@
+main{
+    height: 80vh;
+    width: 100%;
+    padding: 10px;
+   
+}
+.head-content{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 10px;
+}
+.logo img{
+    width: 70px;
+    height: auto;
+}
+
+button{
+    border: none;
+    padding: 5px;
+    background-color: var(--primary);
+    cursor: pointer;
+    color: var(--secondary);
+    border-radius: 5px;
+    &:hover{
+        background-color: var(--secondary);
+        color: var(--primary);
+        transition: background-color 0.2s ease-in-out;
+       
+    }
+}
+select{
+    border: none;
+    font-size: 14px;
+}
+
+
+.table-container{
+    /* height: 60%; */
+    position: relative;
+    overflow-y: auto;
+}
+.table thead {
+    background-color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+/* Personnalisation de la barre de défilement */
+.scrollbar-custom::-webkit-scrollbar {
+  width: 5px; /* Largeur de la barre de défilement */
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: white; /* Couleur de l'arrière-plan de la piste */
+  border-radius: 10px; /* Coins arrondis de la piste */
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background: var(--tertiary); /* Couleur de la barre de défilement */
+  border-radius: 10px; /* Coins arrondis de la barre */
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+  background: var(--primary); /* Couleur de la barre au survol */
+}
+
+select {
+    height: 30px;
+    margin-left: 10px;
+    
+    color: var(--primary);
+    border-radius: 5px;
+    padding: 0 5px;
+    outline: none;
+    border: 1px solid var(--primary);
+  }
+
+.table-head-info{
+    display: flex;
+    justify-content: space-between;
+}
+h6 span{
+    font-weight: normal;
+}
+
+.footer{
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.teacher-content{
+    height: calc(100% - 50px);
+    width: 100%;
+    border-radius: 4px;
+    overflow-y: auto;
+}
+
+.teacher-content .content-child{
+    font-size: 16px;
+    margin: 0;
+    width: 100%;
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 4px;
+    background-color: #f2f2f2;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+    &:hover{
+        background-color: var(--tertiary);
+        color: var(--primary);
+    }
+}
+.content-child p, .return p{
+    margin: 0;
+}
+.vides{
+    background-color: #f2f2f2;
+    margin-top: 10px;
+    height: 30px;
+}
+.text-muted{
+    font-size: 12px;
+}
+.icons-previous{
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    &:hover{
+        background-color: var(--primary);
+        color: var(--secondary);
+    }
+}
+.return{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}

@@ -41,7 +41,6 @@
             "styles": [
               "src/styles.css",
               "./node_modules/bootstrap/dist/css/bootstrap.css",
-              "./node_modules/bootstrap/style/styles.css",
               "node_modules/ngx-toastr/toastr.css",
               "node_modules/ngx-spinner/animations/ball-scale-ripple.css"
             ],
@@ -120,5 +119,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "361422ca-7398-4ad0-b0ff-507d521d2eca"
   }
 }

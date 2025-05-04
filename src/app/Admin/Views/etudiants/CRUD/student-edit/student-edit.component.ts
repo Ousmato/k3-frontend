@@ -4,19 +4,17 @@ import { IconsService } from '../../../../../Services/icons.service';
 import { ClassRoom } from '../../../../Models/Classe';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EtudeService } from '../../etude.service';
-import { ClassStudentService } from '../../../../../DGA/class-students/class-student.service';
 import { Inscription, Student } from '../../../../Models/Students';
 import { PageTitleService } from '../../../../../Services/page-title.service';
 import { Location } from '@angular/common';
 import { SchoolService } from '../../../../../Services/school.service';
 import { AnneeScolaire } from '../../../../Models/School-info';
-import { environment } from '../../../../../../environments/environment';
 import { InscriptionService } from '../../../../../Services/inscription.service';
-import { Admin } from '../../../../Models/Admin';
-import { AdminUSER } from '../../../../Models/Auth';
+import { Admin } from '../../../../../administrations/shared/models/Admin';
 import { Class_shared } from '../../../../../DGA/class-students/Utils/Class-shared-methods';
 import { Student_Enum_Options } from '../../Utils/Student-enum-options';
 import { StudentSharedMethods } from '../../Utils/Student-shared-methode';
+import { AdminUSER } from '../../../../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-student-edit',
@@ -60,7 +58,7 @@ export class StudentEditComponent implements OnInit {
     this.serieOptions = this.enum_options.getSeriesOptions();
     this.load_form();
     // this.load_student();
-    this.admin = AdminUSER()?.scolarite
+    this.admin = AdminUSER()?.scolarite!
   }
   goBack() {
     this.location.back();

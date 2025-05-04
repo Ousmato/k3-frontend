@@ -1,0 +1,30 @@
+<main>
+    <div class="head-section">
+        
+        <app-search-bar (search)="onSearch($event)"></app-search-bar>
+
+    </div>
+    <div class="content" *ngIf="emplois.length > 0">
+        <!-- <div class="class-scrol" > -->
+            <ng-container *ngFor="let emploi of filteredEmploisItem">
+                <div class="calendar-classes-content">
+                    <p>{{emploi.idClasse.idFiliere?.idNiveau?.nom}} {{dependencies.util.abrevigate
+                        (emploi.idClasse.idFiliere?.idFiliere?.nomFiliere!)}}-{{emploi.idSemestre.nomSemetre}}</p>
+
+                    <p>{{emploi.idModule.nomModule}}</p>
+                    <!-- <progress id="file" [value]="emploi.progess" max="100"></progress> -->
+
+                    <div class="date-content">
+                        <p> Debuté le : {{emploi.dateDebut}}</p>
+                        <p> Prend fin le : <span id="span">{{emploi.dateFin}}</span></p>
+                    </div>
+                    
+                    <div class="button-content">
+                        <button class="btn " (click)="gotoEmploi(emploi.id!)"><fa-icon
+                                [icon]="dependencies.icons.nexte"></fa-icon></button>
+                    </div>
+                </div>
+            </ng-container>
+        <!-- </div> -->
+    </div>
+</main>

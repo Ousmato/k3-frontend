@@ -1,4 +1,4 @@
-import { Admin } from "./Admin";
+import { Admin } from "../../administrations/shared/models/Admin";
 
 
 export interface Filiere{
@@ -27,4 +27,12 @@ export interface filiereSpecialite{
     id: number
     filieres: Filiere[]
     specialite: Specialites
+}
+
+export enum faculte{
+    FAGES = "FAGES",
+    FAMA = "FAMA",
+    FASSO = "FASSO",
+    IUFP = "IUFP"
+
 }

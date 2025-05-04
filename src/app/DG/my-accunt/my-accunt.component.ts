@@ -1,14 +1,13 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
-import { IconsService } from '../../Services/icons.service';
-import { AdminService } from '../../Services/admin.service';
-import { Admin, Admin_role, AdminDto } from '../../Admin/Models/Admin';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PageTitleService } from '../../Services/page-title.service';
-import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { SidebarComponent } from '../../sidebar/sidebar.component';
-import { EventServiceService } from '../../Services/event-service.service';
+import { Component,inject, OnInit} from '@angular/core';
+
+import { Admin, AdminDto, AdministrationUserPostes, RoleTypes } from '../../administrations/shared/models/Admin';
+import { FormGroup, Validators } from '@angular/forms';
+import { NavigationExtras } from '@angular/router';
 import { environment } from '../../../environments/environment';
-import { AdminUSER } from '../../Admin/Models/Auth';
+import { contructor_dependencies } from '../../administrations/dependencies/dependencies';
+import { Enumerateds } from '../../administrations/shared/utils/enumerateds';
+import { usersGrade } from '../../administrations/shared/models/userModel';
+import { getUser } from '../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-my-accunt',
@@ -26,50 +25,61 @@ export class MyAccuntComponent implements OnInit {
   urlImage!: string | ArrayBuffer | null
   photoSelect!: File
   idAdmin!: number
+  superAdmin : Admin = getUser()
+  postes: AdministrationUserPostes[] = []
+  grades: usersGrade[] = []
+
+  urlAsset = environment.urlAssetsImage
+
+  public dependencies = inject(contructor_dependencies)
 
 
 
-  constructor(public icons: IconsService, private router: Router, private root: ActivatedRoute, private eventService: EventServiceService,
-    private adminService: AdminService, private fb: FormBuilder, private pageTitle: PageTitleService) { }
   ngOnInit(): void {
     this.load_admin()
     this.load_add_form();
+    this.getPoste()
+    this.loadGrades()
   }
 
   load_admin() {
-    // this.root.queryParams.subscribe(param => {
-      // const idAdmin = param['id']
-      this.idAdmin = AdminUSER()?.admin.idAdministra
-      this.adminService.getAdminById(this.idAdmin).subscribe(admin => {
+    this.dependencies.root.queryParams.subscribe(param => {
+      this.idAdmin = param['id'];
+      this.dependencies.adminService.getAdminById(this.idAdmin).subscribe(admin => {
         console.log(admin, "aaaa")
         this.admin = admin
         this.admin.urlPhoto = `${environment.urlPhoto}${admin.urlPhoto}`
-      
-        // this.admin.urlPhoto = `${environment.apiUrl}StudentImg/${this.admin.urlPhoto}`
-
         this.update_form.get('nom')?.setValue(admin.nom);
         this.update_form.get('prenom')?.setValue(admin.prenom);
         this.update_form.get('email')?.setValue(admin.email);
         this.update_form.get('telephone')?.setValue(admin.telephone);
         this.update_form.get('sexe')?.setValue(admin.sexe);
-        if (AdminUSER()?.admin) {
+        // this.update_form.get('idPoste')?.setValue(admin.idPoste.nom);
+        this.update_form.get('nomBanque')?.setValue(admin.nomBanque);
+        this.update_form.get('compteBanque')?.setValue(admin.compteBanque);
+        this.update_form.get('matricule')?.setValue(admin.matricule);
+        // this.update_form.get('usersGrade')?.setValue(admin.usersGrade?.libelle);
+        if (this.superAdmin.idPoste.roleType.toString() !== Enumerateds.getEnumKeyByValue(RoleTypes, RoleTypes.SUPER_ADMIN)) {
+         
+          this.update_form.disable();
+
+        }else{
           this.permission = true
+          this.update_form.enable()
         }
 
       })
-
-
-    // })
+    })
 
   }
 
-  // ------------onErro
+  //onErro
   onError(event: Event) {
     const target = event.target as HTMLImageElement;
-    target.src = 'assets/business-professional-icon.svg';
+    target.src = `${this.urlAsset}business-professional-icon.svg`;
   }
 
-  // -----------------show edit
+  //show edit
   show_edit() {
     const elements = document.querySelectorAll('.input-control');
     const bordeNone = document.querySelectorAll('.input');
@@ -90,55 +100,62 @@ export class MyAccuntComponent implements OnInit {
 
 
   load_add_form() {
-    this.update_form = this.fb.group({
+    this.update_form = this.dependencies.fb.group({
       nom: ['', [Validators.required, Validators.maxLength(20)]],
       prenom: ['', [Validators.required, Validators.maxLength(20)]],
       email: ['', Validators.required],
       sexe: ['', Validators.required],
       telephone: ['', Validators.required],
 
+      idPoste : ['', Validators.required],
+      nomBanque: [''],
+      compteBanque: [''],
+      matricule: [''],
+      usersGrade: [''],
+
+
     })
-    this.adminStatusOptions = this.getStatusOptions();
 
   }
 
   togglePasswordVisibility(): void {
     this.passwordVisible = !this.passwordVisible;
   }
-
-
-
-  getStatusOptions(): { key: string, value: string }[] {
-    return Object.keys(Admin_role).map(key => ({
-      key: key,
-      value: Admin_role[key as keyof typeof Admin_role]
-    }));
-  }
-  // ------------------------------add admin
+  // add admin
   update() {
     const formData = this.update_form.value;
+    const idPoste = this.postes.find(poste => poste.id == formData.idPoste)
+    console.log(idPoste, "id poste")
+    const idGrade = this.grades.find(grade => grade.id == formData.usersGrade)
+    console.log(idGrade, "id grade")
     if (this.update_form.valid) {
-      const admin: AdminDto = {
-        idAdministra: this.idAdmin,
+      const admin: Admin = {
+        id: this.idAdmin,
         nom: formData.nom,
         prenom: formData.prenom,
         email: formData.email,
         telephone: formData.telephone,
+        sexe: formData.sexe,
+        idPoste: idPoste!,
+        nomBanque: formData.nomBanque,
+        compteBanque: formData.compteBanque,
+        matricule: formData.matricule,
+        usersGrade: idGrade,
       }
 
       console.log(admin, "admin")
       // return
-      this.adminService.updateAdmin(admin).subscribe({
+      this.dependencies.adminService.updateAdmin(admin).subscribe({
         next: (response) => {
-          this.pageTitle.showSuccessToast("Mises à jour éffectué avec succès");
+          this.dependencies.queryreturnMessage.showSuccessToast(response.message);
           this.update_form.reset();
           this.load_add_form();
           this.isEdit = false;
           this.load_admin();
-          this.eventService.emitEvent(response)
+          // this.eventService.emitEvent(response)
         },
         error: (erreur) => {
-          this.pageTitle.showErrorToast(erreur.error.message);
+          this.dependencies.queryreturnMessage.showErrorToast(erreur.error.message);
         }
       })
     } else {
@@ -148,14 +165,14 @@ export class MyAccuntComponent implements OnInit {
     // this.closeModal.emit();
   }
 
-  // --------------------change password
+  //change password
   changePass(idAdmin: number) {
     const navigationExtras: NavigationExtras = {
       queryParams: {
         id: idAdmin
       }
     }
-    this.router.navigate(['/sidebar/change-password'], navigationExtras)
+    this.dependencies.router.navigate(['/sidebar/change-password'], navigationExtras)
   }
 
   annuler() {
@@ -180,24 +197,44 @@ export class MyAccuntComponent implements OnInit {
     }
 
   }
-  // --------------send image
+  //send image
   sendImage() {
     if (this.urlImage) {
       console.log(this.photoSelect, "la photo selectionner")
       // return
-      this.adminService.changeProfilImage(this.idAdmin, this.photoSelect).subscribe({
+      this.dependencies.adminService.changeProfilImage(this.idAdmin, this.photoSelect).subscribe({
         next: (response) => {
-          this.pageTitle.showSuccessToast("Mises à jour effectué avec succès");
-          this.eventService.emitEvent(response)
+          this.dependencies.queryreturnMessage.showSuccessToast("Mises à jour effectué avec succès");
+          // this.dependencies..emitEvent(response)
           this.urlImage = null
           this.load_admin();
         },
         error: (erreur) => {
-          this.pageTitle.showErrorToast(erreur.error.message);
+          this.dependencies.queryreturnMessage.showErrorToast(erreur.error.message);
         }
       })
     }
   }
 
+   // load all roles
+   getPoste() {
+    this.dependencies.adminService.getAllAdministrationUserPoste(this.superAdmin.id!).subscribe(result => {
+     const role = Enumerateds.getEnumKeyByValue(RoleTypes, RoleTypes.SUPER_ADMIN)
+     const resFilter =  result.filter(rf =>rf.roleType.toString() !== role)
+      // const {postFilter}
+      this.postes = resFilter;
+      console.log(this.postes, "roles")
+    })
+  }
+
+   // load all roles
+   loadGrades() {
+    this.dependencies.adminService.getAllGrades(this.superAdmin.id!).subscribe(result => {
+      const gradeFilter = result.filter(grade =>
+        grade.libelle.toLowerCase().includes('avec poste'))
+      this.grades = gradeFilter
+      console.log("les grade : ",this.postes)
+    })
+  }
 
 }

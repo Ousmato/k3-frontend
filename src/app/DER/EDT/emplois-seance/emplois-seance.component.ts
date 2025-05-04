@@ -1,31 +1,26 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Emplois } from '../Models/Emplois';
+import { Emplois } from '../../../administrations/DER/models/Emplois';
 import { ServiceService } from '../Services/service.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Module } from '../../../Admin/Models/Module';
 
 import { IconsService } from '../../../Services/icons.service';
-import { Teacher, teacherConfigureDto } from '../../../Admin/Models/Teachers';
-import { type_seance } from '../Models/Seances';
-import { EnseiService } from '../../../Admin/Views/Enseignant/ensei.service';
+import { Teacher, teacherConfigureDto } from '../../../administrations/DER/models/Teachers';
+import { type_seance } from '../../../administrations/DER/models/Seances';
 import { SeancService } from '../Services/seanc.service';
-import { ToastrService } from 'ngx-toastr';
-import { EtudeService } from '../../../Admin/Views/Etudiants/etude.service';
 import { Student_group } from '../../../Admin/Models/Students';
-import { Journee, JourneeDTO } from '../Models/Configure_seance';
+import { Journee, JourneeDTO } from '../../../administrations/DER/models/Configure_seance';
 
-import jspdf, { jsPDF } from 'jspdf';  
-import html2canvas from 'html2canvas';
 import { Salles } from '../../../Admin/Models/Salles';
 import { PageTitleService } from '../../../Services/page-title.service';
-import { Admin } from '../../../Admin/Models/Admin';
-import { AdminUSER } from '../../../Admin/Models/Auth';
+import { Admin } from '../../../administrations/shared/models/Admin';
 import { Class_shared } from '../../../DGA/class-students/Utils/Class-shared-methods';
 import { EnumOptions } from '../Utils/emum-options';
 import { Emploi_shared } from '../Utils/shareds-methods';
 import { StudentSharedMethods } from '../../../Admin/Views/Etudiants/Utils/Student-shared-methode';
 import { EmploisJsonExcel } from '../Utils/emplois-json-excel';
+import { AdminUSER } from '../../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-emplois-seance',
@@ -86,15 +81,14 @@ export class EmploisSeanceComponent  implements OnInit{
       // this.load_enseignants();
       this.getPermission();
       
-      this.secretaire = AdminUSER()?.secretaire
+      this.secretaire = AdminUSER()?.secretaire!
 
     }
    
     // ---------------------------------get permission
-    getPermission(): boolean {
-      this.scolarite = AdminUSER()?.scolarite;
+    getPermission(): boolean {// scolarite
 
-      this.admin = AdminUSER()?.der;
+      this.admin = AdminUSER()?.der!; // der
       if(this.admin){
         this.permission = true
         // console.log(autorize,"autorize")

@@ -7,13 +7,13 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { StudentPages } from '../../../Models/Pagination-module';
 import { SideBarService } from '../../../../sidebar/side-bar.service';
 import { environment } from '../../../../../environments/environment';
-import { Admin } from '../../../Models/Admin';
-import { AdminUSER } from '../../../Models/Auth';
+import { Admin } from '../../../../administrations/shared/models/Admin';
 import { ClassRoom } from '../../../Models/Classe';
 import { InscriptionService } from '../../../../Services/inscription.service';
 import { PageTitleService } from '../../../../Services/page-title.service';
 import { Class_shared } from '../../../../DGA/class-students/Utils/Class-shared-methods';
 import { StudentSharedMethods } from '../Utils/Student-shared-methode';
+import { AdminUSER } from '../../../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-etudiants-de-la-classe',
@@ -47,7 +47,7 @@ export class EtudiantsDeLaClasseComponent implements OnInit{
   ngOnInit(): void {
     this.loadStudents();
 
-    this.adminDga = AdminUSER()?.dga;
+    this.adminDga = AdminUSER()?.dga!;
     this.sideBarService.currentSearchTerm.subscribe(term => {
       this.searchTerm = term;
       this.filterStudents();

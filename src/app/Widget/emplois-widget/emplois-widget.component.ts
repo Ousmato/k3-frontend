@@ -5,12 +5,11 @@ import { Semestres } from '../../Admin/Models/Semestre';
 import { SemestreService } from '../../Services/semestre.service';
 import { ClassRoom } from '../../Admin/Models/Classe';
 import { ClassStudentService } from '../../DGA/class-students/class-student.service';
-import { Emplois } from '../../DER/EDT/Models/Emplois';
 import { DatePipe, Location } from '@angular/common';
 import { PageTitleService } from '../../Services/page-title.service';
 import { Module } from '../../Admin/Models/Module';
-import { Admin } from '../../Admin/Models/Admin';
-import { AdminUSER } from '../../Admin/Models/Auth';
+import { Admin } from '../../administrations/shared/models/Admin';
+import { getUser } from '../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-emplois-widget',
@@ -25,7 +24,7 @@ export class EmploisWidgetComponent  {
   semestre: Semestres[] = [];
   semestreSelect!: Semestres
   admin!: Admin
-  @Input() emplois?: Emplois
+  @Input() emplois?: any
   classerom !: ClassRoom
   formattedDateFin!: string
   modules : Module [] = []
@@ -38,7 +37,7 @@ export class EmploisWidgetComponent  {
      private semestreService: SemestreService, private classService: ClassStudentService) { }
 
   ngOnInit(): void {
-    this.admin = AdminUSER()?.der
+    this.admin = getUser()
       this.load_update_form();
       this.loadModules();
   }
@@ -57,7 +56,7 @@ export class EmploisWidgetComponent  {
   }
   // --------------------load all module
   loadModules(){
-    this.classService.getAllModulesByClasseAndSemestre(this.emplois?.idClasse.id!, this.emplois?.idSemestre.id!).subscribe(result =>{
+    this.classService.getAllModulesByClasseAndSemestre(this.emplois?.idClasse!, this.emplois?.idSemestre!).subscribe(result =>{
       this.modules = result;
     })
   }

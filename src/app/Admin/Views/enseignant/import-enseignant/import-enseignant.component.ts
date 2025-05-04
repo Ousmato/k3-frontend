@@ -2,11 +2,11 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import * as ExcelJS from 'exceljs';
 import { IconsService } from '../../../../Services/icons.service';
-import { Diplomes, Teacher, TeachersStatus } from '../../../Models/Teachers';
+import { Diplomes, Teacher, TeachersStatus } from '../../../../administrations/DER/models/Teachers';
 import { PageTitleService } from '../../../../Services/page-title.service';
 import { EnseiService } from '../ensei.service';
-import { Admin } from '../../../Models/Admin';
-import { AdminUSER } from '../../../Models/Auth';
+import { Admin } from '../../../../administrations/shared/models/Admin';
+import { AdminUSER } from '../../../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-import-enseignant',
@@ -24,7 +24,7 @@ export class ImportEnseignantComponent implements OnInit {
   ){}
 
   ngOnInit(){
-    this.admin = AdminUSER()?.der
+    this.admin = AdminUSER()?.der!
   }
 
   // dowloaded file
@@ -99,7 +99,7 @@ export class ImportEnseignantComponent implements OnInit {
   // add methode
   addTeachers(){
     console.log("teachers, ", this.enseignants)
-    this.teacherService.addTeacher(this.enseignants, this.admin.idAdministra!).subscribe({
+    this.teacherService.addTeacher(this.enseignants, this.admin.id!).subscribe({
       next:(result) =>{
         this.pageTitle.showSuccessToast(result.message);
       },

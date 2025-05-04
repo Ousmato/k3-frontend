@@ -2,6 +2,7 @@
 main{
   width: 100%;
   height: 80vh;
+  position: relative;
 }
 .btn-contenair{
     display: flex;
@@ -99,17 +100,14 @@ td span{
     outline: var(--primary);
   }
   .app{
-    width: 500px;
     position: absolute;
     background-color: #fff;
     z-index: 1004;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 15%;
+    top: 0;
     border-radius: 10px;
   }
 
-  .overlay {
+  /* .overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -117,8 +115,7 @@ td span{
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     z-index: 1002;
-    /* Assurez-vous que l'overlay est au-dessus de tout */
-  }
+  } */
 
   button {
     text-decoration: none;

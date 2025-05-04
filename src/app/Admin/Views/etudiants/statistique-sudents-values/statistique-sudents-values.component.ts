@@ -3,13 +3,13 @@ import { InscriptionService } from '../../../../Services/inscription.service';
 import { IconsService } from '../../../../Services/icons.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Admin } from '../../../Models/Admin';
-import { AdminUSER } from '../../../Models/Auth';
+import { Admin } from '../../../../administrations/shared/models/Admin';
 import { StudentSharedMethods } from '../Utils/Student-shared-methode';
 import { SideBarService } from '../../../../sidebar/side-bar.service';
 import { EtudeService } from '../etude.service';
 import { Dto_scolarite } from '../../../Models/Students';
 import { PageTitleService } from '../../../../Services/page-title.service';
+import { AdminUSER } from '../../../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-statistique-sudents-values',
@@ -34,7 +34,7 @@ export class StatistiqueSudentsValuesComponent implements OnInit{
     public icons: IconsService, private root: ActivatedRoute, public studentShared : StudentSharedMethods) { }
 
   ngOnInit(): void {
-    this.admin = AdminUSER()?.scolarite
+    this.admin = AdminUSER()?.scolarite!
     this.load_form()
       this.load_students()
       this.sideBarService.currentSearchTerm.subscribe(term => {
@@ -57,7 +57,7 @@ export class StatistiqueSudentsValuesComponent implements OnInit{
       this.isPayed = params['isPaye'];
       this.idAnnee = params['idAnnee'];
       if(this.idFiliere){
-        this.inscriptionService.getInscriptionByFiliere(this.idFiliere, this.admin.idAdministra!, this.idAnnee, this.isPayed).subscribe((res: any) => {
+        this.inscriptionService.getInscriptionByFiliere(this.idFiliere, this.admin.id!, this.idAnnee, this.isPayed).subscribe((res: any) => {
           this.students = res;
           console.log(this.students, "students-----filiere------");
           this.studentMapper(this.students)
@@ -65,7 +65,7 @@ export class StatistiqueSudentsValuesComponent implements OnInit{
       }else if(this.status){
         console.log(this.status, "status", this.isPayed, "payer")
         // return
-        this.inscriptionService.getInscriptionByStatus(this.status, this.admin.idAdministra!, this.idAnnee, this.isPayed).subscribe(res => {
+        this.inscriptionService.getInscriptionByStatus(this.status, this.admin.id!, this.idAnnee, this.isPayed).subscribe(res => {
           this.students = res;
           console.log(this.students, "students-----status------");
           this.studentMapper(this.students)
@@ -120,7 +120,7 @@ export class StatistiqueSudentsValuesComponent implements OnInit{
       if(this.form.valid){
         console.log(dto)
         // return
-        this.studentService.update_student_scolarite( dto, this.admin.idAdministra!).subscribe({
+        this.studentService.update_student_scolarite( dto, this.admin.id!).subscribe({
         next: (response) =>{
           this.pageTitle.showSuccessToast(response.message);
           

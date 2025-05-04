@@ -25,7 +25,7 @@ import { EtudiantsDeLaClasseComponent } from './Admin/Views/Etudiants/etudiants-
 import { StudentEditComponent } from './Admin/Views/Etudiants/CRUD/student-edit/student-edit.component';
 import { StudentViewComponent } from './Admin/Views/Etudiants/CRUD/student-view/student-view.component';
 import { EmploisWidgetComponent } from './Widget/emplois-widget/emplois-widget.component';
-import { TeachersSinginComponent } from './Admin/Views/Enseignant/CRUD/teachers-singin/teachers-singin.component';
+import { TeachersSinginComponent } from './administrations/DER/teachers-singin/teachers-singin.component';
 import { TeachersEditComponent } from './Admin/Views/Enseignant/CRUD/teachers-edit/teachers-edit.component';
 import { AddNoteWidgetComponent } from './Widget/add-note-widget/add-note-widget.component';
 import { StudentBulletinComponent } from './Admin/Component/student-bulletin/student-bulletin.component';
@@ -33,12 +33,12 @@ import { SchoolEditWidgetComponent } from './Widget/school-edit-widget/school-ed
 import { AdminSettingWidgetComponent } from './Widget/admin-setting-widget/admin-setting-widget.component';
 import { AddAdminComponent } from './Admin/Component/add-admin/add-admin.component';
 import { DerSidebarComponent } from './DER/der-sidebar/der-sidebar.component';
-import { DerHomeComponent } from './DER/der-home/der-home.component';
+import { DerHomeComponent } from './administrations/DER/components/der-home/der-home.component';
 import { DerSallesComponent } from './DER/der-salles/der-salles.component';
 import { DerSallesAddComponent } from './DER/Widget/der-salles-add/der-salles-add.component';
 import { DgaSidebarComponent } from './DGA/dga-sidebar/dga-sidebar.component';
 import { DerSeancesComponent } from './DER/der-seances/der-seances.component';
-import { DerEmploiDuTempsComponent } from './DER/EDT/der-emploi-du-temps-list/der-emploi-du-temps.component';
+import { DerEmploiDuTempsComponent } from './administrations/DER/components/der-emploi-du-temps-list/der-emploi-du-temps.component';
 import { DgaHomeComponent } from './DGA/dga-home/dga-home.component';
 import { DerEditSeanceComponent } from './DER/Widget/der-edit-seance/der-edit-seance.component';
 import { AddGroupStudentComponent } from './DER/Widget/add-group-student/add-group-student.component';
@@ -46,14 +46,11 @@ import { RSSidebarComponent } from './R-SCOLARITE/r-s-sidebar/r-s-sidebar.compon
 import { RSHomeComponent } from './R-SCOLARITE/r-s-home/r-s-home.component';
 import { CompteSidebarComponent } from './COMPTABLE/compte-sidebar/compte-sidebar.component';
 import { CompteHomeComponent } from './COMPTABLE/compte-home/compte-home.component';
-import { SecSidebarComponent } from './SECRETAIRE/sec-sidebar/sec-sidebar.component';
-import { SecHomeComponent } from './SECRETAIRE/sec-home/sec-home.component';
+import { SecSidebarComponent } from './administrations/SP/components/sec-sidebar/sec-sidebar.component';
 import { RSReinscriptionComponent } from './R-SCOLARITE/r-s-reinscription/r-s-reinscription.component';
-import { SecSurveillanceComponent } from './SECRETAIRE/sec-surveillance/sec-surveillance.component';
-import { SecAddSurveillanceComponent } from './SECRETAIRE/sec-add-surveillance/sec-add-surveillance.component';
+import { SecAddSurveillanceComponent } from './administrations/SP/components/sec-add-surveillance/sec-add-surveillance.component';
 import { DerPaiListComponent } from './DER/der-pai-list/der-pai-list.component';
 import { DerEDTComponent } from './DER/EDT/der-e-d-t/der-e-d-t.component';
-import { DerTDComponentComponent } from './DER/EDT/der-t-d-component/der-t-d-component.component';
 import { DerDocComponent } from './DER/der-doc/der-doc.component';
 import { AddDocComponent } from './DER/Widget/add-doc/add-doc.component';
 import { ProgramSoutenanceComponent } from './DER/Widget/program-soutenance/program-soutenance.component';
@@ -82,8 +79,6 @@ import { loadingInterceptor } from './Services/interceptor/loading.interceptor';
 import { SessionExpiredModalComponent } from './Widget/session-expired-modal/session-expired-modal.component';
 import { EmptyWidgetComponent } from './Widget/empty-widget/empty-widget.component';
 import { NotificationComponent } from './Admin/notification/notification.component';
-import { RolesComponent } from './DG/roles/roles.component';
-import { StudentSuivisComponent } from './Admin/Views/Etudiants/student-suivis/student-suivis.component';
 import { StudentDetailsComponent } from './Admin/Views/Etudiants/student-details/student-details.component';
 import { SpecialitesComponent } from './DER/specialites/specialites.component';
 import { EditComponent } from './DER/specialites/CRUD/edit/edit.component';
@@ -91,16 +86,27 @@ import { AddTeacherSpecialitesComponent } from './DER/specialites/CRUD/add-teach
 import { ImportEnseignantComponent } from './Admin/Views/Enseignant/import-enseignant/import-enseignant.component';
 import { SemestreMoyennesComponent } from './Admin/Views/semestre-moyennes/semestre-moyennes.component';
 import { StudentPaiementRapportComponent } from './Admin/Views/Etudiants/student-paiement-rapport/student-paiement-rapport.component';
-import { StudentStatistiqueComponent } from './Admin/Views/Etudiants/student-statistique/student-statistique.component';
 import { StatistiqueSudentsValuesComponent } from './Admin/Views/Etudiants/statistique-sudents-values/statistique-sudents-values.component';
 import { AllNotesSemestreComponent } from './Admin/Views/Etudiants/all-notes-semestre/all-notes-semestre.component';
 import { StudentGroupListComponent } from './Admin/Views/Etudiants/student-group-list/student-group-list.component';
 import { PromotionsListeComponent } from './administrations/DGA/components/promotions-liste/promotions-liste.component';
-import { SearchBarComponent } from './administrations/shared/component/search-bar/search-bar.component';
+import { SearchBarComponent } from './administrations/shared/components/search-bar/search-bar.component';
 import { AddPromotionComponent } from './administrations/DGA/components/add-promotion/add-promotion.component';
 import { UpdatePromotionComponent } from './administrations/DGA/components/update-promotion/update-promotion.component';
-import { ConfirmationModalComponent } from './administrations/shared/component/confirmation-modal/confirmation-modal.component';
-import { HeaderComponent } from './administrations/shared/component/header/header.component';
+import { ConfirmationModalComponent } from './administrations/shared/components/confirmation-modal/confirmation-modal.component';
+import { HeaderComponent } from './administrations/shared/components/header/header.component';
+import { StudentStatistiqueComponent } from './Admin/Views/Etudiants/student-statistique/student-statistique.component';
+import { StudentSuivisComponent } from './Admin/Views/Etudiants/student-suivis/student-suivis.component';
+import { AddSurveillantComponent } from './administrations/SP/components/add-surveillant/add-surveillant.component';
+import { ListDeSurveillantComponent } from './administrations/SP/components/list-de-surveillant/list-de-surveillant.component';
+import { SecHomeComponent } from './administrations/SP/components/sec-home/sec-home.component';
+import { SearchVeiwsComponent } from './administrations/shared/components/search-veiws/search-veiws.component';
+import { DerTDComponentComponent } from './administrations/DER/components/der-t-d-component/der-t-d-component.component';
+import { EDTDeLaClasseComponent } from './administrations/DER/components/edt-de-la-classe/edt-de-la-classe.component';
+import { EDTIndividuelsComponent } from './administrations/shared/components/edt-individuels/edt-individuels.component';
+import { AddEDTComponent } from './administrations/DER/components/add-edt/add-edt.component';
+import { PosteAdminUsersComponent } from './Admin/components/poste-admin-users/poste-admin-users.component';
+import { UserGradesComponent } from './Admin/components/user-grades/user-grades.component';
 registerLocaleData(localeFr);
 @NgModule({
   declarations: [
@@ -110,6 +116,7 @@ registerLocaleData(localeFr);
     EtudiantsComponent,
     LoginComponent,
     SinginComponent,
+    StudentSuivisComponent,
     ClassStudentsComponent,
     SettingsComponent,
     EmploisDuTempsComponent,
@@ -145,7 +152,6 @@ registerLocaleData(localeFr);
     SecSidebarComponent,
     SecHomeComponent,
     RSReinscriptionComponent,
-    SecSurveillanceComponent,
     SecAddSurveillanceComponent,
     DerPaiListComponent,
     DerEDTComponent,
@@ -169,7 +175,7 @@ registerLocaleData(localeFr);
     StudentPaiementRapportComponent,
     StudentStatistiqueComponent,
     StatistiqueSudentsValuesComponent,
-    SoutenanceNoteComponent, StudentGroupListComponent, AdminListComponent, MyAccuntComponent, ForgotPasswordComponent, ResetPasswordComponent, SetNewPasswordComponent, SessionExpiredModalComponent, NotificationComponent, RolesComponent, StudentSuivisComponent, StudentDetailsComponent, SpecialitesComponent, EditComponent, AddTeacherSpecialitesComponent, ImportEnseignantComponent, SemestreMoyennesComponent, PromotionsListeComponent, SearchBarComponent, AddPromotionComponent, UpdatePromotionComponent, ConfirmationModalComponent, HeaderComponent
+    SoutenanceNoteComponent, StudentGroupListComponent, AdminListComponent, MyAccuntComponent, ForgotPasswordComponent, ResetPasswordComponent, SetNewPasswordComponent, SessionExpiredModalComponent, NotificationComponent, StudentViewComponent, StudentDetailsComponent, SpecialitesComponent, EditComponent, AddTeacherSpecialitesComponent, ImportEnseignantComponent, SemestreMoyennesComponent, PromotionsListeComponent, SearchBarComponent, AddPromotionComponent, UpdatePromotionComponent, ConfirmationModalComponent, HeaderComponent, AddSurveillantComponent, ListDeSurveillantComponent, SearchVeiwsComponent, EDTDeLaClasseComponent, EDTIndividuelsComponent, AddEDTComponent, PosteAdminUsersComponent, UserGradesComponent,
   ],
   imports: [
     BrowserModule,

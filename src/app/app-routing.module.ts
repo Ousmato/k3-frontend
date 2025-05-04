@@ -32,7 +32,7 @@ const routes: Routes = [
     loadChildren: () =>import('./COMPTABLE/compte-sidebar/compte-sidebar.module').then(m=>m.CompteSidebarModule),
   },
   {path: 'secretaire', 
-    loadChildren: () => import('./SECRETAIRE/sec-sidebar/sec-sidebar.module').then(m=>m.SecSidebarModule),
+    loadChildren: () => import('./administrations/SP/components/sec-sidebar/sec-sidebar.module').then(m=>m.SecSidebarModule),
     canActivate: [authGuard]
   },
   

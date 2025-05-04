@@ -12,12 +12,27 @@
                     {{errorMessage}}
                 </span>
                 <form [formGroup]="userForm" (ngSubmit)="login()">
+                    <!-- <div class="form-grouppe">
+                        <label for="username">Facultés</label>
+                        <div class="input-groupe">
+                            
+                            <fa-icon class="prefix-icon" [icon]="icons.scool"></fa-icon>
+                            <select  formControlName="faculte" (change)="util.facChange($event)"
+                            [class.is-invalid]="userForm.get('faculte')!.invalid && userForm.get('faculte')!.touched">
+                                <option disabled selected value="">Choisir la structure</option>
+                                <option *ngFor="let fc of facultes" > {{fc}}</option>
+                            </select>
+                        </div>
+                        <span class="small" *ngIf="userForm.controls['faculte'].invalid && userForm.controls['faculte'].touched" [ngStyle]="{color: 'red'}">
+                            Champ obligatoire*
+                        </span>
+                    </div> -->
                     <div class="form-grouppe">
                         <label for="username">Email</label>
                         <div class="input-groupe">
                             <!-- Icone prefix (enveloppe) -->
                             
-                            <fa-icon class="prefix-icon" [icon]="icons.envelope"></fa-icon>
+                            <fa-icon class="prefix-icon" [icon]="dependencies.icons.envelope"></fa-icon>
                             <input type="email" formControlName="email" 
                                 [class.is-invalid]="userForm.get('email')!.invalid && userForm.get('email')!.touched" placeholder="Email...">
                         </div>
@@ -30,12 +45,12 @@
                         <label for="password">Mot de passe</label>
                         <div class="input-groupe">
                             <!-- Icone prefix (cadenas) -->
-                            <fa-icon class="prefix-icon" [icon]="icons.lock"></fa-icon>
+                            <fa-icon class="prefix-icon" [icon]="dependencies.icons.lock"></fa-icon>
                             <input  type="{{ passwordVisible ? 'text' : 'password' }}"  formControlName="password"
                                 [class.is-invalid]="userForm.get('password')!.invalid && userForm.get('password')!.touched" id="password"
                                 placeholder="Mot de passe...">
                             <!-- Icone suffix (oeil pour la visibilité du mot de passe) -->
-                            <fa-icon class="suffix-icon" [icon]="passwordVisible ? icons.eyeSlash : icons.eye"
+                            <fa-icon class="suffix-icon" [icon]="passwordVisible ? dependencies.icons.eyeSlash : dependencies.icons.eye"
                                         (click)="togglePasswordVisibility()"></fa-icon>
                         </div>
                         <span class="small" *ngIf="userForm.controls['password'].invalid && userForm.controls['password'].touched" [ngStyle]="{color: 'red'}">
@@ -49,13 +64,16 @@
                     <button type="submit" class="login-btn">Se Connecter</button>
                 </form>
             </div>
-            <div class="in-right">
+            <div class="in-right" [ngStyle]="{'background-image': 'url(' + urlAssetsImage + 'recta.png)'}">
                 <div class="img-box">
                     <img src="{{urlAssetsImage}}iconlogin.png" alt="Image">
                 </div>
                 <div class="text-box">
                     <h6>Discipline - Travail - Exellence </h6>
-                    <p class="small">Institut Universitaire de Formation Professionnelle <br> IUFP</p>
+                    <!-- <p class="small" *ngIf="util.IUFP">Institut Universitaire de Formation Professionnelle <br> IUFP</p>
+                    <p class="small" *ngIf="util.FAMA">Faculté d'Agronomie et de Médecine Animale <br> FAMA</p>
+                    <p class="small" *ngIf="util.FAGES">Faculté du Génie et des Sciences <br> FAGES</p>
+                    <p class="small" *ngIf="util.FASSO">Faculté des Sciences Sociales <br> FASSO</p> -->
                 </div>
             </div>
             

@@ -1,16 +1,11 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { SideBarService } from './side-bar.service';
-import { IconsService } from '../Services/icons.service';
-import { SchoolService } from '../Services/school.service';
-import { SchoolInfo } from '../Admin/Models/School-info';
-import { Admin, Admin_role, AdminRoleDto } from '../Admin/Models/Admin';
+
+import { Admin, Admin_role, AdminRoleDto } from '../administrations/shared/models/Admin';
 import { ActivatedRoute, NavigationEnd, NavigationExtras, Router } from '@angular/router';
-import { filter, Subscription } from 'rxjs';
-import { EventServiceService } from '../Services/event-service.service';
 import { environment } from '../../environments/environment';
 import { AuthServiceService } from '../auth-service.service';
-import { AdminUSER, getUser } from '../Admin/Models/Auth';
-import { AdminService } from '../Services/admin.service';
+import { IconsService } from '../Services/icons.service';
+import { getUser } from '../administrations/shared/models/auth';
 
 
 @Component({
@@ -38,6 +33,7 @@ export class SidebarComponent implements OnInit{
     this.sidebar = document.getElementById('sidebar');
     this.dataAdmin = getUser()
     this.dataAdmin.urlPhoto = `${environment.urlPhoto}${this.dataAdmin.urlPhoto}`
+    console.log(this.dataAdmin.urlPhoto, 'urlPhoto')
 
   }
   onError(event: Event) {

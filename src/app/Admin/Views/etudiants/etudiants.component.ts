@@ -7,13 +7,13 @@ import { ActivatedRoute, NavigationExtras, Route, Router } from '@angular/router
 import { PageTitleService } from '../../../Services/page-title.service';
 import { StudentPages, TeacherPages } from '../../Models/Pagination-module';
 import { SideBarService } from '../../../sidebar/side-bar.service';
-import { Admin, adminEtat } from '../../Models/Admin';
+import { Admin, adminEtat } from '../../../administrations/shared/models/Admin';
 import { SchoolService } from '../../../Services/school.service';
 import { AnneeScolaire } from '../../Models/School-info';
 import { environment } from '../../../../environments/environment';
-import { AdminUSER } from '../../Models/Auth';
 import { InscriptionService } from '../../../Services/inscription.service';
 import { StudentSharedMethods } from './Utils/Student-shared-methode';
+import { AdminUSER } from '../../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-etudiants',
@@ -65,8 +65,8 @@ export class EtudiantsComponent implements OnInit {
   //get permission
   getPermission(): boolean {
     const autorize = AdminUSER()?.scolarite;
-    this.dg = AdminUSER()?.dg;
-    this.secretaire = AdminUSER()?.secretaire;
+    this.dg = AdminUSER()?.dg!;
+    this.secretaire = AdminUSER()?.secretaire!;
     if (autorize) {
       // console.log(autorize, "autorize")
       this.permission = true

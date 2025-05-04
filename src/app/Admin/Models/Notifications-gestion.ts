@@ -1,6 +1,6 @@
-import { Admin } from "./Admin";
-import { Emplois } from "../../DER/EDT/Models/Emplois";
-import { Teacher } from "./Teachers";
+import { Admin } from "../../administrations/shared/models/Admin";
+import { Emplois } from "../../administrations/DER/models/Emplois";
+import { Teacher } from "../../administrations/DER/models/Teachers";
 
 export interface Notifications_gestion{ 
      id?: number; 

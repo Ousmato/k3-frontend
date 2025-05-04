@@ -5,14 +5,13 @@ import { IconsService } from '../../../Services/icons.service';
 import { SemestreService } from '../../../Services/semestre.service';
 import { ClassRoom } from '../../../Admin/Models/Classe';
 import { ClassStudentService } from '../../../DGA/class-students/class-student.service';
-import { Emplois } from '../Models/Emplois';
-import { ClassModules } from '../../../Admin/Models/ClassModule';
+import { Emplois } from '../../../administrations/DER/models/Emplois';
 import { ServiceService } from '../Services/service.service';
 import { DatePipe, Location } from '@angular/common';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { Module } from '../../../Admin/Models/Module';
-import { Admin } from '../../../Admin/Models/Admin';
-import { AdminUSER } from '../../../Admin/Models/Auth';
+import { Admin } from '../../../administrations/shared/models/Admin';
+import { getUser } from '../../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-emplois-du-temps',
@@ -36,7 +35,6 @@ export class EmploisDuTempsComponent implements OnInit {
   plageHoraire: string[] = []
   module_fund?: Module
   classRoom!: ClassRoom;
-  classModule!: ClassModules;
 
   datesWithDays: { day: string, date: string }[] = [];
   formattedDateFin: any;
@@ -47,7 +45,7 @@ export class EmploisDuTempsComponent implements OnInit {
     private fb: FormBuilder, private emploisService: ServiceService, private pageTitle: PageTitleService, private location: Location) { }
   // -------------------------------------------ngOinit
   ngOnInit(): void {
-    this.admin = AdminUSER()?.der
+    this.admin = getUser()
     this.loadSemestre()
     this.load_form();
 

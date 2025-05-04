@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { AnneeScolaire } from "../../../Admin/Models/School-info";
-import { Admin } from "../../../Admin/Models/Admin";
+import { Admin } from "../../../administrations/shared/models/Admin";
 
 @Injectable({
     providedIn: 'root'

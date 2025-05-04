@@ -9,8 +9,8 @@ import { PageTitleService } from '../../../Services/page-title.service';
 import { SemestreService } from '../../../Services/semestre.service';
 import { IconsService } from '../../../Services/icons.service';
 import { FiliereNiveau } from '../../../Admin/Models/Filieres';
-import { Admin } from '../../../Admin/Models/Admin';
-import { AdminUSER } from '../../../Admin/Models/Auth';
+import { Admin } from '../../../administrations/shared/models/Admin';
+import { getUser } from '../../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-add-ue',
@@ -42,7 +42,7 @@ export class AddUeComponent implements OnInit {
   ngOnInit() {
     this.load_formAdd();
     this.load();
-    this.admin = AdminUSER()?.scolarite;
+    this.admin = getUser();
   }
 
   load_formAdd() {

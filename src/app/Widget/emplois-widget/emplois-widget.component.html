@@ -8,7 +8,7 @@
                         <div class="form form-group date">
                             <label >Les modules :</label> 
                             <select class="form-select" formControlName="idModule"      [class.is-invalid]="updateEmplois.get('idModule')!.invalid && updateEmplois.get('idModule')!.touched">
-                                <option  selected disabled value="">{{emplois?.idModule?.nomModule}}</option>
+                                <option  selected disabled value="">{{emplois?.nomModule}}</option>
                                 <option *ngFor="let mod of modules " [ngValue]="mod.id">{{mod.nomModule}} </option>
                             </select>         
                             <!-- <span *ngIf="EmploisAdd.controls['idModule'].invalid && EmploisAdd.controls['idModule'].touched" [ngStyle]="{color: 'red'}">

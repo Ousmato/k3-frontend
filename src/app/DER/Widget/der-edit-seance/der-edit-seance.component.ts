@@ -1,11 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Teacher } from '../../../Admin/Models/Teachers';
+import { Teacher } from '../../../administrations/DER/models/Teachers';
 import { Module } from '../../../Admin/Models/Module';
 import { ClassRoom } from '../../../Admin/Models/Classe';
 import { Salles } from '../../../Admin/Models/Salles';
-import { Emplois } from '../../EDT/Models/Emplois';
+import { Emplois } from '../../../administrations/DER/models/Emplois';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ServiceService } from '../../EDT/Services/service.service';
 import { EnseiService } from '../../../Admin/Views/Enseignant/ensei.service';
 import { SeancService } from '../../EDT/Services/seanc.service';
 import { ClassStudentService } from '../../../DGA/class-students/class-student.service';
@@ -13,12 +12,10 @@ import { IconsService } from '../../../Services/icons.service';
 import { PageTitleService } from '../../../Services/page-title.service';
 import { SalleService } from '../../../Services/salle.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Seances } from '../../EDT/Models/Seances';
-import { NivFiliere } from '../../../Admin/Models/NivFiliere';
-import { Admin } from '../../../Admin/Models/Admin';
-import { AdminUSER } from '../../../Admin/Models/Auth';
-import { Journee } from '../../EDT/Models/Configure_seance';
+import { Admin } from '../../../administrations/shared/models/Admin';
+import { Journee } from '../../../administrations/DER/models/Configure_seance';
 import { EnumOptions } from '../../EDT/Utils/emum-options';
+import { getUser } from '../../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-der-edit-seance',
@@ -50,7 +47,7 @@ export class DerEditSeanceComponent implements OnInit{
 
   ngOnInit(): void {
     this.load_form(); 
-    this.admin = AdminUSER()?.der
+    this.admin = getUser()
     
       this.load_enseignants();
       this.getSeance_date();

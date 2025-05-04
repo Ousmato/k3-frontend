@@ -3,9 +3,9 @@ import { Filiere, filiereSpecialite, Specialites } from '../../Admin/Models/Fili
 import { IconsService } from '../../Services/icons.service';
 import { SpecialiteService } from '../../Services/specialite.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AdminUSER } from '../../Admin/Models/Auth';
 import { PageTitleService } from '../../Services/page-title.service';
 import { FiliereService } from '../../Services/filiere.service';
+import { getUser } from '../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-specialites',
@@ -47,7 +47,7 @@ export class SpecialitesComponent  implements OnInit{
     const formData = this.addSpecialiteForm.value;
     const specialite : Specialites ={
       nom: formData.nom,
-      idAdmin: AdminUSER()?.der
+      idAdmin: getUser()
     }
     if(this.addSpecialiteForm.valid){
       this.specialiteService.addSpecialite(specialite, this.filieresChecked).subscribe( {

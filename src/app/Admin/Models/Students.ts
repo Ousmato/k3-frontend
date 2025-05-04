@@ -1,4 +1,4 @@
-import { Admin } from "./Admin";
+import { Admin } from "../../administrations/shared/models/Admin";
 import { ClassRoom } from "./Classe";
 import { AnneeScolaire } from "./School-info";
 

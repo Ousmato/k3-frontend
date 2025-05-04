@@ -1,0 +1,102 @@
+<main>
+  <div class="wrapper">
+    <!-- Sidebar -->
+    <nav id="sidebar">
+      <div class="sidebar-header ">
+        <!-- <img  src="assets/logounivsegou.png" alt=""> -->
+        <!-- <h1>UAM</h1> -->
+        <!-- <strong>{{school?.nomSchool}}</strong> -->
+        <strong>IUFP <fa-icon [icon]="dependencies.icons.grade" [ngStyle]="{'font-size': '16px' }"></fa-icon> GESTION</strong>
+
+      </div>
+      <div class="side-child">
+        <ul class="list-unstyled components">
+         <div>
+          <li class="menu-link">
+            <a routerLink="/secretaire">
+              <span><fa-icon [icon]="dependencies.icons.calandarPlus"></fa-icon>Les EDT</span>
+            </a>
+          </li>
+         </div>
+         <!-- ---------------- -->
+         <li class="menu-link">
+            <a routerLink="/secretaire/etudiant" routerLinkActive="active">
+              <span><fa-icon [icon]="dependencies.icons.grade"></fa-icon>Liste Etudiants</span>
+            </a>
+          </li>
+         <li class="menu-link">
+            <a routerLink="/secretaire/list-surveillants" routerLinkActive="active">
+              <span><fa-icon [icon]="dependencies.icons.user_surveillance"></fa-icon>Surveillants</span>
+            </a>
+          </li>
+          <li class="menu-link">
+            <a routerLink="/secretaire/doc" routerLinkActive="active">
+              <span><fa-icon [icon]="dependencies.icons.archive"></fa-icon>Rapport et Memoire</span>
+            </a>
+          </li>
+
+         <li class="menu-link">
+            <a routerLink="/secretaire/salles" routerLinkActive="active">
+              <span><fa-icon [icon]="dependencies.icons.scool"></fa-icon>Salles</span>
+            </a>
+          </li>
+          
+        </ul>
+        
+      </div>
+      <ul id="components">
+        <li class="menu-link">
+          <a (click)="toAccunt()" routerLink="/secretaire/my-accunt" routerLinkActive="active">
+            <span><fa-icon [icon]="dependencies.icons.user"></fa-icon>Mon Compte</span>
+          </a>
+        </li>
+        <li class="menu-link">
+          <a (click)="show_confirm()">
+            <span><fa-icon [icon]="dependencies.icons.aout"></fa-icon>Déconnexion</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  
+    <!-- Page Content -->
+    <div id="content">
+      <app-header [sidbar]="sidbare"></app-header>
+      <div id="layoutSidenav_content">
+        <main>
+          <div>
+  
+            <!--  -->
+            <router-outlet />
+          </div>
+  
+        </main>
+      </div>
+    </div>
+  </div>
+  
+    <!-- ------------------disconnect modal -->
+     
+    <ng-container *ngIf="isConfirm">
+      <div class="views">
+        <h3 class="span">Confirmation</h3>
+        <div class="container-views">
+          <p>Êtes-vous sûr de vouloir vous déconnectez ?</p>
+          <div class="profil">
+            <img [src]="dataAdmin.urlPhoto" (error)="onError($event)" alt="">
+            <div class="info-pofil">
+              <p>{{dataAdmin.nom}} {{dataAdmin.prenom}}</p>
+              <p class="text-muted small">{{dataAdmin.idPoste.nom.toUpperCase()}}</p>
+            </div>
+    
+          </div>
+          <div class="button-cash">
+            <a type="button" (click)="close()">Annuler</a>
+            <button type="button" (click)="singAout()">Confirmer</button>
+          </div>
+    
+        </div>
+      </div>
+    </ng-container>
+    <div class="overlay" *ngIf="isConfirm"></div>
+  
+</main>

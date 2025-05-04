@@ -5,7 +5,7 @@ import { DgaHomeComponent } from '../dga-home/dga-home.component';
 import { ClassStudentsComponent } from '../class-students/class-students.component';
 import { SettingsComponent } from '../../Admin/Views/settings/settings.component';
 import { EtudiantsComponent } from '../../Admin/Views/Etudiants/etudiants.component';
-import { DerEmploiDuTempsComponent } from '../../DER/EDT/der-emploi-du-temps-list/der-emploi-du-temps.component';
+import { DerEmploiDuTempsComponent } from '../../administrations/DER/components/der-emploi-du-temps-list/der-emploi-du-temps.component';
 import { EmploisSeanceComponent } from '../../DER/EDT/emplois-seance/emplois-seance.component';
 import { StudentNoteComponent } from '../../Admin/Views/student-note/student-note.component';
 import { EtudiantsDeLaClasseComponent } from '../../Admin/Views/Etudiants/etudiants-de-la-classe/etudiants-de-la-classe.component';

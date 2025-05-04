@@ -9,10 +9,10 @@ import { Class_shared } from '../../../../DGA/class-students/Utils/Class-shared-
 import { StudentSharedMethods } from '../Utils/Student-shared-methode';
 import { ActivatedRoute } from '@angular/router';
 import { GroupeService } from '../../../../Services/groupe.service';
-import { StudentEmergement } from '../Utils/emergement-liste';
 import { SeancService } from '../../../../DER/EDT/Services/seanc.service';
 import { ServiceService } from '../../../../DER/EDT/Services/service.service';
-import { Emplois } from '../../../../DER/EDT/Models/Emplois';
+import { Emplois } from '../../../../administrations/DER/models/Emplois';
+import { StudentEmergement } from '../Utils/emergement-liste';
 
 @Component({
   selector: 'app-student-group-list',

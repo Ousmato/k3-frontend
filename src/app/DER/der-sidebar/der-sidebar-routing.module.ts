@@ -1,21 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DerSidebarComponent } from './der-sidebar.component';
-import { DerHomeComponent } from '../der-home/der-home.component';
+import { DerHomeComponent } from '../../administrations/DER/components/der-home/der-home.component';
 import { DerSallesComponent } from '../der-salles/der-salles.component';
 import { EnseignantComponent } from '../../Admin/Views/Enseignant/enseignant.component';
-import { TeachersSinginComponent } from '../../Admin/Views/Enseignant/CRUD/teachers-singin/teachers-singin.component';
+import { TeachersSinginComponent } from '../../administrations/DER/teachers-singin/teachers-singin.component';
 import { TeachersEditComponent } from '../../Admin/Views/Enseignant/CRUD/teachers-edit/teachers-edit.component';
 import { DerSeancesComponent } from '../der-seances/der-seances.component';
-import { DerEmploiDuTempsComponent } from '../EDT/der-emploi-du-temps-list/der-emploi-du-temps.component';
+import { DerEmploiDuTempsComponent } from '../../administrations/DER/components/der-emploi-du-temps-list/der-emploi-du-temps.component';
 import { EmploisDuTempsComponent } from '../EDT/emplois-du-temps/emplois-du-temps.component';
 import { EmploisSeanceComponent } from '../EDT/emplois-seance/emplois-seance.component';
 import { DerEditSeanceComponent } from '../Widget/der-edit-seance/der-edit-seance.component';
 import { AddGroupStudentComponent } from '../Widget/add-group-student/add-group-student.component';
-import { DerPaiListComponent } from '../der-pai-list/der-pai-list.component';
 import { DerEDTComponent } from '../EDT/der-e-d-t/der-e-d-t.component';
-import { DerDocComponent } from '../der-doc/der-doc.component';
-import { AddDocComponent } from '../Widget/add-doc/add-doc.component';
 import { ProgramSoutenanceComponent } from '../Widget/program-soutenance/program-soutenance.component';
 import { ViewSoutenanceComponent } from '../Widget/view-soutenance/view-soutenance.component';
 import { MyAccuntComponent } from '../../DG/my-accunt/my-accunt.component';
@@ -27,20 +24,23 @@ import { ViewUeComponent } from '../../Widget/ue-widget/view-ue/view-ue.componen
 import { StudentGroupListComponent } from '../../Admin/Views/Etudiants/student-group-list/student-group-list.component';
 import { EtudiantsDeLaClasseComponent } from '../../Admin/Views/Etudiants/etudiants-de-la-classe/etudiants-de-la-classe.component';
 import { StudentBulletinComponent } from '../../Admin/Component/student-bulletin/student-bulletin.component';
+import { EDTDeLaClasseComponent } from '../../administrations/DER/components/edt-de-la-classe/edt-de-la-classe.component';
+import { EDTIndividuelsComponent } from '../../administrations/shared/components/edt-individuels/edt-individuels.component';
+import { AddEDTComponent } from '../../administrations/DER/components/add-edt/add-edt.component';
 
 const routes: Routes = [{path: '', component: DerSidebarComponent,
   children: [
     {path: '', component: DerHomeComponent, data:{title: "ACCUEIL"}},
     {path: 'salles', component: DerSallesComponent, data:{title: "Les salles"}},
-    {path: 'paiement', component: DerPaiListComponent, data:{title: "Heures effectuees"}},
+    {path: 'add-edt', component: AddEDTComponent, data:{title: "Ajouter un emploi du temps"}},
+    {path: 'edt-individuel', component: EDTIndividuelsComponent, data:{title: "Les edt individuels"}},
     {path: 'enseignants', component: EnseignantComponent, data:{title: "Les enseignants"}},
     {path: 't-singin', component: TeachersSinginComponent, data:{title: "AJOUTER ENSEIGNANT"}},
-    {path: 'doc', component: DerDocComponent, data:{title: "RAPPORTS ET MEMOIRES"}},
-    {path: 'add-doc', component: AddDocComponent, data:{title: "Deposer documment"}},
     {path: 't-edit', component: TeachersEditComponent, data:{title: "INFORMATIONS DE L'ENSEIGNANT"}},
     {path: 'ajouter-seance', component: DerSeancesComponent},
-    {path: 'emplois-du-temps', component: DerEmploiDuTempsComponent, data:{title: "EMPLOI DU TEMPS EN COURS"}},
+    {path: 'emplois-du-temps', component: EDTDeLaClasseComponent, data:{title: "EMPLOI DU TEMPS De la classe"}},
     {path: 'emplois-seances', component: EmploisSeanceComponent, data:{title: "EMPLOI DU TEMPS"}},
+    {path: 'all-edt', component: DerEmploiDuTempsComponent, data:{title: "EMPLOI DU TEMPS"}},
     {path: 'edit-seance', component: DerEditSeanceComponent},
     {path: 'group-student', component: AddGroupStudentComponent, data:{title: "Creer groupes"}},
     {path: 'affect-t-d', component: DerEDTComponent , data:{title: "AJOUTER SEANCE"}},

@@ -1,0 +1,155 @@
+<main>
+    <div class="btn-contenair">
+        <div class="leftly">
+                
+    
+            <div class="all-edt-header">
+                <app-search-bar (search)="onSearch($event)"></app-search-bar>
+            </div>
+        </div>
+        
+        <div class="btn-add">
+            <button (click)="show_form()">Ajouter</button>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table class="table table-hover">
+            <thead>
+    
+                <tr>
+                     <th>N°</th>
+                    <th>Libellée</th>
+                    <th>Heures Dù</th>
+                    <th>Action</th>
+                </tr>
+               
+            </thead>
+            <tbody>
+                @if(filteredGradesItem.length){
+                    <tr *ngFor="let grade of filteredGradesItem let i = index">
+                        <td>{{i + 1}} </td>
+                        
+                        <td>{{grade.libelle.toUpperCase()}} <strong>()</strong></td>
+                        <td>{{grade.heureDu}} </td>
+                        
+                        <td >
+                            <span (click)="show_confirm(i)" >Desactivé <fa-icon [icon]="dependencies.icons.xmark" [ngStyle]="{color: 'red'}"></fa-icon></span>
+                            <span (click)="toEdit(grade)">Editer <fa-icon [icon]="dependencies.icons.edit"></fa-icon> </span>
+                        </td>
+
+                        <ng-container *ngIf="isConfirm && i == index">
+                            <div class="views">
+                                <h3 class="span">Confirmation</h3>
+                                <div class="container-views">
+                                    <p>Êtes-vous sûr de vouloir desactivé ce poste ?</p>
+                                    <div class="profil">
+                                    
+                                    <div class="info-pofil">
+                                        <p>{{grade.libelle.toUpperCase()}}</p>
+                                        <!-- <p class="text-muted small">{{admin.idRole.nom.toUpperCase()}}</p> -->
+                                    </div>
+                                           
+                                    </div>
+                                        <div class="button-cash">
+                                            <a type="button" (click)="exite()">Annuler</a>
+                                            <button type="button" (click)="deleted(grade.id!)">Confirmer</button>
+                                        </div>
+                                    
+                                </div>
+                            </div>
+                        </ng-container>
+                    </tr>
+
+                }@else {
+                    <tr>
+                        <td colspan="3" class="text-center">Aucun grade trouvé</td>
+                    </tr>
+                }
+                
+            </tbody>
+        </table>
+    </div>
+    <div class="app" *ngIf="showAdd">
+
+        <div class="views">
+            <h3 class="span">Ajouter poste</h3>
+            <form [formGroup]="addForm" (ngSubmit)="addGrade()">
+                <div class="container-views">
+                    <div class="form-group">
+                        <label for="nom">Libellée</label>
+                        <input type="text" class="input-with form-control" formControlName="libelle" [class.is-invalid]="addForm.get('libelle')!.invalid && addForm.get('libelle')!.touched"  placeholder="Nom du role...">
+                        <span *ngIf="addForm.controls['libelle']!.errors?.['required'] && addForm.controls['libelle'].touched" [ngStyle]="{color: 'red', 'font-size': '11px'}">
+                            Champ obligatoire*
+                        </span>
+                        <span *ngIf="addForm.controls['libelle'].hasError('maxlength') && addForm.controls['libelle'].touched" [ngStyle]="{color: 'red', 'font-size': '11px'}">
+                            40 caractères maximum
+                          </span>
+                          <div *ngIf="addForm.controls['libelle']!.errors?.['minlength']">
+                            <span [ngStyle]="{color: 'red', 'font-size': '11px'}">3 caractères minimum</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="nom">Heure de début</label>
+                        <input type="number" formControlName="heureDu" class="form-control" [class.is-invalid]="addForm.get('heureDu')!.invalid && addForm.get('heureDu')!.touched" placeholder="Heure du">
+                        <span *ngIf="addForm.controls['heureDu']!.errors?.['required'] && addForm.controls['heureDu'].touched" [ngStyle]="{color: 'red', 'font-size': '11px'}">
+                            Champ obligatoire*
+                        </span>
+                    </div>
+                    
+                    
+                    <div class="button-cash">
+                        <a type="button" (click)="exite()">Annuler</a>
+                        <button type="submit">Enregistrer</button>
+                    </div>
+                </div>
+
+                
+            
+        </form>
+        </div>
+        
+    </div>
+    <!-- ---------------------------------- -->
+    <div class="app" *ngIf="showupdate">
+
+        <div class="views">
+            <h3 class="span">Modifier le poste</h3>
+            <form [formGroup]="updateForm" (ngSubmit)="update()">
+                <div class="container-views">
+                    <input type="number" formControlName="id" *ngIf="false">
+                    <div class="form-group">
+                        <label for="nom">Nom du poste</label>
+                        <input type="text" class="input-with form-control" formControlName="nom" id="nom" [class.is-invalid]="updateForm.get('libelle')!.invalid && updateForm.get('libelle')!.touched"  placeholder="Libellée du grade...">
+                        <span *ngIf="updateForm.controls['libelle']!.errors?.['required'] && updateForm.controls['libelle'].touched" [ngStyle]="{color: 'red', 'font-size': '11px'}">
+                            Champ obligatoire*
+                        </span>
+                        <span *ngIf="updateForm.controls['libelle'].hasError('maxlength') && updateForm.controls['libelle'].touched" [ngStyle]="{color: 'red', 'font-size': '11px'}">
+                            40 caractères maximum
+                          </span>
+                          <div *ngIf="updateForm.controls['libelle']!.errors?.['minlength']">
+                            <span [ngStyle]="{color: 'red', 'font-size': '11px'}">3 caractères minimum</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nom">Heure de début</label>
+                        <input type="number" formControlName="heureDu" class="form-control" [class.is-invalid]="updateForm.get('heureDu')!.invalid && updateForm.get('heureDu')!.touched">
+                        <span *ngIf="updateForm.controls['heureDu']!.errors?.['required'] && updateForm.controls['heureDu'].touched" [ngStyle]="{color: 'red', 'font-size': '11px'}">
+                            Champ obligatoire*
+                        </span>
+                    </div>
+                    
+                    <div class="button-cash">
+                        <a type="button" (click)="exite()">Annuler</a>
+                        <button type="submit">Enregistrer</button>
+                    </div>
+                </div>
+            
+        </form>
+        </div>
+        
+    </div>
+    
+    <!-- <div class="overlay" *ngIf="overlay"></div> -->
+</main>

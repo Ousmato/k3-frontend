@@ -2,7 +2,7 @@ import { Docum, StudentDoc } from "./doc";
 import { AddNoteDto, Notes, StudentsNotesDto } from "./Notes";
 import { Paie } from "./paie";
 import { Inscription, InscriptionNoteDto, Student } from "./Students";
-import { TeacherDto } from "./Teachers";
+import { TeacherDto } from "../../administrations/DER/models/Teachers";
 
 export interface TeacherPages{
     content: TeacherDto[];

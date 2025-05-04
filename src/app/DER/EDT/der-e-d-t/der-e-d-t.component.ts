@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Emplois } from '../Models/Emplois';
+import { Emplois } from '../../../administrations/DER/models/Emplois';
 import { ServiceService } from '../Services/service.service';
 import { EtudeService } from '../../../Admin/Views/Etudiants/etude.service';
 import { Participant } from '../../../Admin/Models/Students';
 import { IconsService } from '../../../Services/icons.service';
-import { Admin } from '../../../Admin/Models/Admin';
-import { AdminUSER } from '../../../Admin/Models/Auth';
+import { Admin } from '../../../administrations/shared/models/Admin';
 import { Class_shared } from '../../../DGA/class-students/Utils/Class-shared-methods';
+import { getUser } from '../../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-der-e-d-t',
@@ -71,7 +71,7 @@ export class DerEDTComponent implements OnInit{
   }
 
   getPermission(): boolean {
-    const autorize = AdminUSER()?.der;
+    const autorize = getUser();
     this.admin = autorize;
     if(autorize){
       this.permission = true

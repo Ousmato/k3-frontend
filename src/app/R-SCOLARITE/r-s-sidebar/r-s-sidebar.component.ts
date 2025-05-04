@@ -1,18 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Admin, Admin_role, AdminRoleDto } from '../../Admin/Models/Admin';
+import { Component, inject, OnInit } from '@angular/core';
+import { Admin, AdminRoleDto } from '../../administrations/shared/models/Admin';
 
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { IconsService } from '../../Services/icons.service';
-import { SchoolService } from '../../Services/school.service';
-import { SideBarService } from '../../sidebar/side-bar.service';
-import { filter, Subscription } from 'rxjs';
-import { SchoolInfo } from '../../Admin/Models/School-info';
 import { environment } from '../../../environments/environment';
-import { AdminUSER } from '../../Admin/Models/Auth';
-import { AuthServiceService } from '../../auth-service.service';
-import { AdminService } from '../../Services/admin.service';
-import { EventServiceService } from '../../Services/event-service.service';
-import { utils } from '../../administrations/shared/utils/utils';
+import { contructor_dependencies } from '../../administrations/dependencies/dependencies';
+import { getUser } from '../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-r-s-sidebar',
@@ -32,27 +23,23 @@ export class RSSidebarComponent implements OnInit {
 
 
   isSubMenuOpen = {
-    DGA: false,
-    DER: false,
-    archive: false
+    ETUDIANTS: false,
   };
 
-
+  public dependencies = inject(contructor_dependencies)
 
   isSubMenuVisible: boolean = false;
 
   sidebar: any
 
-  constructor(public auth: AuthServiceService, private adminService: AdminService,
-    private router: Router, public icons: IconsService, public utils: utils) { }
-
-
+  
   ngOnInit(): void {
+    this.dataAdmin = getUser();
+    console.log(this.dataAdmin, "admin")
     this.sidebar = document.getElementById('sidebar');
-    this.adminService.getPostesByIdCurrentAdmin(this.dataAdmin.idAdministra!).subscribe(res => {
-      this.postes = res
-      console.log(this.postes, "postes")
-    })
+    // this.dependencies.adminService.getPostesByIdCurrentAdmin(this.dataAdmin.id!).subscribe(res => {
+    //   this.postes = res
+    // })
 
   }
 
@@ -69,28 +56,28 @@ export class RSSidebarComponent implements OnInit {
     this.isConfirm = false;
   }
 
-  toAccunt() {
-    this.router.navigate(['/r-scolarite/my-accunt'], { queryParams: { id: this.dataAdmin.idAdministra } })
-  }
+  // toAccunt() {
+  //   this.router.navigate(['/r-scolarite/my-accunt'], { queryParams: { id: this.dataAdmin.idAdministra } })
+  // }
 
 
   submenuOpen() {
     this.isSubMenuVisible = !this.isSubMenuVisible
   }
-  switchAccuntDGA() {
-    this.isSwitch = !this.isSwitch
+  // switchAccuntDGA() {
+  //   this.isSwitch = !this.isSwitch
 
-    this.isSubMenuOpen.DGA = !this.isSubMenuOpen.DGA
-    this.isSubMenuOpen.DER = false
-  }
+  //   this.isSubMenuOpen.DGA = !this.isSubMenuOpen.DGA
+  //   this.isSubMenuOpen.DER = false
+  // }
 
-  switchToDER() {
-    this.isSubMenuOpen.DER = !this.isSubMenuOpen.DER
-    this.isSubMenuOpen.DGA = false
-  }
+  // switchToDER() {
+  //   this.isSubMenuOpen.DER = !this.isSubMenuOpen.DER
+  //   this.isSubMenuOpen.DGA = false
+  // }
 
-  toggleSubMenuArchive() {
-    this.isSubMenuOpen.archive = !this.isSubMenuOpen.archive
+  toggleSubMenuStudent(){
+    this.isSubMenuOpen.ETUDIANTS = !this.isSubMenuOpen.ETUDIANTS
   }
 
 }

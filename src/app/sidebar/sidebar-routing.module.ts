@@ -18,8 +18,9 @@ import { DerPaiListComponent } from '../DER/der-pai-list/der-pai-list.component'
 import { AdminListComponent } from '../DG/admin-list/admin-list.component';
 import { MyAccuntComponent } from '../DG/my-accunt/my-accunt.component';
 import { NotificationComponent } from '../Admin/notification/notification.component';
-import { RolesComponent } from '../DG/roles/roles.component';
 import { AllNotesSemestreComponent } from '../Admin/Views/Etudiants/all-notes-semestre/all-notes-semestre.component';
+import { PosteAdminUsersComponent } from '../Admin/components/poste-admin-users/poste-admin-users.component';
+import { UserGradesComponent } from '../Admin/components/user-grades/user-grades.component';
 
 const routes: Routes = [{path: "", component: SidebarComponent,
     
@@ -48,7 +49,8 @@ const routes: Routes = [{path: "", component: SidebarComponent,
       {path: 'all-notes', component: AllNotesSemestreComponent, data:{title: "Notes du Semestre"}},
      
       {path: 'notifications', component: NotificationComponent, data:{title: "Notifications"}},
-      {path: 'roles', component: RolesComponent, data:{title: "LES ROLES"}},
+      {path: 'poste', component: PosteAdminUsersComponent, data:{title: "LES POSTES du personnel"}},
+      {path: 'grades', component: UserGradesComponent, data:{title: "LES grades du personnel"}},
 
     ]
   },

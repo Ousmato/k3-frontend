@@ -3,8 +3,8 @@ import { EtudeService } from '../../Admin/Views/Etudiants/etude.service';
 import { IconsService } from '../../Services/icons.service';
 import { PageTitleService } from '../../Services/page-title.service';
 import { ClassStudentService } from '../../DGA/class-students/class-student.service';
-import { Admin } from '../../Admin/Models/Admin';
-import { AdminUSER } from '../../Admin/Models/Auth';
+import { Admin } from '../../administrations/shared/models/Admin';
+import { getUser } from '../../administrations/shared/models/auth';
 
 @Component({
   selector: 'app-r-s-reinscription',
@@ -23,7 +23,7 @@ export class RSReinscriptionComponent implements OnInit {
     private pageTitle: PageTitleService) { }
 
   ngOnInit(): void {
-    this.admin = AdminUSER()?.scolarite
+    this.admin = getUser()
    
   }
  
@@ -36,7 +36,7 @@ export class RSReinscriptionComponent implements OnInit {
   }
 
   confirmInscription(ids: number[]){
-    this.service.reInscriptionStudent(ids, this.idClasse, this.admin.idAdministra!).subscribe({
+    this.service.reInscriptionStudent(ids, this.idClasse, this.admin.id!).subscribe({
       next: (result) => {
         this.pageTitle.showSuccessToast(result.message)
         this.list_checked = []
